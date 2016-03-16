@@ -1,0 +1,17 @@
+# vi:ft=gitconfig
+
+[user]
+  # default user
+  name = nobe4
+  email = haffreinguev@gmail.com
+[core]
+  # use vim, damn
+  editor = /usr/local/bin/vi
+  excludesFile = $HOME/.gitignore_global
+[alias]
+  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+  passport =!~/dev/git-passport.sh/git-passport.sh
+  e = !git log --author="\"$(git config user.name)\"" --pretty='format:%Cred%h%Creset - %C(yellow)%ad%Creset %s' --no-merges --date=short
+  ticket =!git-time
+[push]
+  default = current

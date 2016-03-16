@@ -1,0 +1,374 @@
+" Introduction and notes {
+" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldmethod=marker spell:
+"
+"                 _             ___
+"                | |           /   |
+"     _ __   ___ | |__   ___  / /| |
+"    | '_ \ / _ \| '_ \ / _ \/ /_| |
+"    | | | | (_) | |_) |  __/\___  |
+"    |_| |_|\___/|_.__/ \___|    |_/
+"
+"    Personnal vimrc of Victor Haffreingue
+"    Use it and share it as you like.
+"
+"    Copyright (C) 2015-2016, Victor Haffreingue
+"
+"    Permission is hereby granted, free of charge, to any person obtaining a
+"    copy of this software and associated documentation files (the "Software"),
+"    to deal in the Software without restriction, including without limitation
+"    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+"    and/or sell copies of the Software, and to permit persons to whom the
+"    Software is furnished to do so, subject to the following conditions:
+"
+"    The above copyright notice and this permission notice shall be included in
+"    all copies or substantial portions of the Software.
+"
+"    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+"    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+"    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+"    THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+"    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+"    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+"    DEALINGS IN THE SOFTWARE.
+" }
+" Important {
+set nocompatible " be iMproved, required
+let mapleader="\<Space>" " need to set the mapleader before the plugins
+" }
+" Plugins {
+" Vim-Plug Initialisation {
+call plug#begin('~/.vim/plugged')
+" }
+" nobe4 {
+" Plug 'nobe4/did-you-vim'
+" Plug 'nobe4/emmet-show.vim'
+" Plug '~/dev/vim/stackovim/'
+ Plug 'nobe4/gitignore_view/'
+" }
+" editorconfig/editorconfig-vim {
+Plug 'editorconfig/editorconfig-vim'
+" }
+" junegunn/goyo.vim {
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+nnoremap <leader>G :Goyo<CR>
+" }
+" bling/vim-airline {
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#branch#format = 2
+set laststatus=2
+" }
+" Colors {
+Plug 'morhetz/gruvbox'
+if !has("gui_running")
+  let g:gruvbox_italic=0
+endif
+" }
+" edkolev/tmuxline.vim {
+Plug 'edkolev/tmuxline.vim'
+let g:tmuxline_preset = {
+      \ 'a': '#S',
+      \ 'win.dim': '#I',
+      \ 'win': '#W',
+      \ 'cwin.dim': '#I',
+      \ 'cwin': '#W',
+      \ 'x': '#(pmset -g batt | egrep "[0-9]+%.*" -o --colour=auto | cut -f1 -d";" | cut -c2-)',
+      \ 'y': ['%m/%d/%y','%H%M'],
+      \ 'z': '#h',
+      \ 'options': {
+      \'status-justify': 'left'},
+      \ 'win_options': {
+      \'window-status-activity-attr-': 'none'}
+      \}
+" }
+" sjl/gundo.vim {
+Plug 'sjl/gundo.vim', { 'on':  'GundoToggle' }
+nnoremap <leader>u :GundoToggle<CR>
+" }
+" matchit {
+Plug 'vim-scripts/matchit.zip'
+" }
+" mattn/emmet-vim {
+Plug 'mattn/emmet-vim'
+let g:user_emmet_install_global = 0
+autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango EmmetInstall
+let g:user_emmet_leader_key=','
+" }
+" danro/rename.vim {
+Plug 'danro/rename.vim', { 'on': 'Rename' }
+" }
+" scrooloose/nerdcommenter {
+Plug 'scrooloose/nerdcommenter'
+let NERDSpaceDelims=1
+" }
+" christoomey/vim-tmux-navigator {
+Plug 'christoomey/vim-tmux-navigator'
+" }
+" plasticboy/vim-markdown {
+Plug 'plasticboy/vim-markdown', { 'for' : ['md', 'markdown']}
+" }
+" tpope/vim-fugitive {
+Plug 'tpope/vim-fugitive'
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gp :Gpush
+nnoremap <Leader>gl :Gpull
+" }
+" tpope/vim-unimpaired {
+Plug 'tpope/vim-unimpaired'
+" }
+" tpope/vim-surround {
+Plug 'tpope/vim-surround'
+" }
+" Shougo/unite.vim {
+Plug 'Shougo/unite.vim'
+" }
+" Shougo/vimproc.vim {
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+" }
+" temporary plugins {
+Plug 'tpope/vim-scriptease'
+" }
+" Vim-plug end of Initialisation {
+call plug#end()
+" }
+" Unite configuration {
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+call unite#custom#profile('default', 'context', {
+            \   'prompt': '> ',
+            \   'marked_icon': '-',
+            \   'no_hide_icon': 1,
+            \   'start_insert': 1,
+            \   'auto_resize': 1,
+            \   'direction': 'botright',
+            \ })
+call unite#custom_source('file_rec,file_rec/async,file_mru,file,buffer,grep',
+      \ 'ignore_pattern', join([
+      \ '\.git/',
+      \ 'tmp/',
+      \ 'lib/Cake/',
+      \ 'node_modules/',
+      \ 'vendor/',
+      \ 'app_old/',
+      \ 'bower_components/',
+      \ '.sass-cache',
+      \ ], '\|'))
+
+" Custom search program
+if executable('ag')
+    let g:unite_source_rec_async_command = ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-g', '']
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_recursive_opt=''
+    let g:unite_source_grep_default_opts =
+                \ '-i --vimgrep --hidden --ignore ' .
+                \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
+endif
+
+" Bindings
+nnoremap <leader>o :<C-u>Unite -buffer-name=files file_rec/async<CR>
+nnoremap <Leader>b :<C-u>Unite -buffer-name=buffers buffer<CR>
+nnoremap \ :<C-u>Unite -buffer-name=grep grep:.<CR>
+" }
+" The Silver Searcher {
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor\ --column
+  set grepformat=%f:%l:%c%m
+endif
+" }
+" }
+" Moving around, searching and patterns {
+" move vertically inside wrapping lines
+nnoremap j gj
+" move vertically inside wrapping lines
+nnoremap k gk
+set incsearch "highlight as you type you search phrase
+set ignorecase " ignore case when using a search pattern
+set smartcase  " override 'ignorecase' when pattern has upper case characters
+" }
+" Tags {
+" }
+" Displaying text {
+set number
+set relativenumber
+
+set scroll=10 " Set C-u / C-d scroll
+set list " Show <Tab> as ^I and end-of-line as $
+set listchars=tab:\|\ ,trail:~ " Show tabs and trailing
+set nowrap " long lines wrap
+" }
+" Syntax, highlighting and spelling {
+syntax on " Activate syntax highlighting
+set background=dark
+colorscheme gruvbox
+set t_ut= " Clearing uses the current background color
+set t_Co=256 " Number of available colors
+set cursorline
+" add subtle background color for 80+ characters line
+call matchadd('ColorColumn', '\%81v\%#=1', 100)
+" set cc=+1
+" }
+" Multiple windows {
+set hidden " Allow hidden non-written buffers
+set switchbuf=usetab,newtab
+" }
+" Multiple tab pages {
+" }
+" Terminal {
+" }
+" Using the mouse {
+" }
+" GUI {
+" }
+" Printing {
+" }
+" Messages and info {
+set showcmd " Show (partial) command keys in the status line
+" }
+" Selecting text {
+" }
+" Editing text {
+set textwidth=80
+" }
+" Tabs and indenting {
+set expandtab " Expand <Tab> to spaces in Insert mode
+set tabstop=2 " Number of spaces a <Tab> in the text stands for
+set shiftwidth=2 " Number of spaces used for each step of (auto)indent
+set softtabstop=2 " If non-zero, number of spaces to insert for a <Tab>
+set smarttab " A <Tab> in an indent inserts 'shiftwidth' spaces
+" }
+" Folding {
+set foldenable " Turn on folding
+set foldmethod=syntax
+set foldopen=search,block,hor,mark,percent,quickfix,tag " what movements
+set foldlevelstart=99 " disable auto folding on open
+" }
+" Diff mode {
+" }
+" Mapping {
+" }
+" Reading and writing files {
+" }
+" The swap file {
+" Store swap files in fixed location, not current directory.
+set dir=~/.vim/swapdir//
+set updatecount=10
+" }
+" Command line editing {
+set wildmode=longest,list,full " TODO
+set wildmenu " Command-line completion shows a list of matches
+set undofile " save and restore undo history
+set undodir=~/.vim/undodir  " list of directories for undo files
+" }
+" Executing external commands {
+" }
+" Running make and jumping to errors {
+" }
+" Language specific {
+autocmd! bufreadpost *.gs set syntax=javascript " Google script -> Javascript
+autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+autocmd BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
+" }
+" Multi-byte characters {
+scriptencoding=utf-8 " Script encoding
+set encoding=utf-8 " Character encoding
+set fenc=utf-8 " File encoding
+" }
+" Autocmds {
+augroup reload_vimrc
+    autocmd!
+    autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
+augroup END
+" autocmd! bufwritepre * :%s/\s\+$//e " Strip whitespace
+" }
+" Mappings {
+" change paste type
+nnoremap <Leader>pp :set paste!<CR>
+
+" Explore the file system
+nnoremap <Leader>k :e .<CR>
+
+" edit and source .vimrc
+nnoremap <Leader>ev :e ~/.vimrc<CR>
+nnoremap <Leader>sv :so $MYVIMRC
+
+" save file
+nnoremap <Leader>w :w<CR>
+" quit without saving
+nnoremap <Leader>q :quit!
+" quit after saving
+nnoremap <Leader>x :xit
+
+" remove the ex mode
+nnoremap Q <NOP>
+
+" prepare a quick command
+" http://vi.stackexchange.com/a/3136/1821
+nnoremap <Leader>R :nnoremap <lt>Leader>r :
+
+" force save
+cmap w!! w !sudo tee % >/dev/null
+
+" In insert mode <C-\> remove unwanted <CR> insertion
+inoremap <C-\> <C-o>:left 0<Cr><BS>
+
+" Before deleting from insert mode, create a new change
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+
+" Copy/Paste with system clipboard
+function! CmdPast() abort
+  set paste
+  normal! "+p
+  set nopaste
+endfunction
+
+nnoremap <Leader>v :call CmdPast()<CR>
+vnoremap <Leader>c "+y<CR>
+
+" execute cmake from command line
+command! -nargs=1 Cmake !cmake "<args>"
+
+" Make gf always work
+nnoremap gf :e <cfile><CR>
+
+"}
+" Various {
+" Open current file in sublime text
+command! Subl silent execute "!open -a \"Sublime Text 2\" %"
+" }
+" Tests {
+autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window 'vim:" . expand("%:t") . "'")
+
+" Display the full path of the current file
+function! DisplayFullPath() abort
+  echo expand('%:p')
+endfunction
+command! FP call DisplayFullPath()
+
+function! TodoSave()
+  " Get the file title or generate a new file based on the current date
+  " File title is either the first line if it stats with an #
+  " else it is timestamped
+  let l:filetitle = getline('1')
+  if l:filetitle =~ "^#"
+    " replace all spaces by `-` and remove the `#\s+`
+    let l:filetitle = substitute( substitute( substitute(
+                \ l:filetitle
+                \ , '^#\s\+', '', '')
+                \ , '\s\+$', '', '')
+                \ ,' ', '-', 'g')
+  else
+    let l:filetitle = "todo-".localtime()
+  endif
+
+  " Generate the file name
+  let l:filename = l:filetitle . ".md"
+
+  " Save the file on the desktop
+  execute "w ~/Desktop/".l:filename
+endfunction
+" TS is for Todo Save
+command! TS call TodoSave()
+
+" }

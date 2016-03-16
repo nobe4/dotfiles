@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Tell Me when commands ends
+# http://stackoverflow.com/a/4181721/2558252
+tm() {
+  eval $(printf "%q " "$@")
+  notify $@
+}
+

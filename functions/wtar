@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# wget and tar simply
+# @param url to wget
+# @param name of the folder to export into
+
+wtar(){
+	echo "Wget $1"
+	wget $1 -O tmp.tar.bz2
+	mkdir $2
+	echo "Extracting in $2"
+	tar -xzf tmp.tar.bz2 -C $2 --strip-components 1
+	echo "Removing unecessary files"
+	tr tmp.tar.bz2
+}
+

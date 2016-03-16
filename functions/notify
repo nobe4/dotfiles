@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Send a notification
+# $1 is the notification title
+# http://apple.stackexchange.com/a/115373/90995
+notify(){
+  notification="display notification with title \"$1\""
+  osascript -e $notification
+}
+

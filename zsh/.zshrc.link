@@ -1,0 +1,24 @@
+#!/bin/zsh
+
+# shortcut to this dotfiles path is $ZSH
+export ZSH=$HOME/.dot
+
+# add bin folder to path
+export PATH=$PATH:$ZSH/.yada/bin
+
+# List configuration file
+list(){
+  find -H "$ZSH" -type f -name $1 -not -path '*.yada*'
+}
+
+# Run the path files
+for path_file in $(list '*.path')
+do
+  source $path_file
+done
+
+# Link the zsh files to $HOME
+for zsh_file in $(list '*.zsh')
+do
+  source $zsh_file
+done

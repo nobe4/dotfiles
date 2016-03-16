@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Short Working Directory
+# Show only the nth first characters from the pwd directory listing
+# e.g.
+#   pwd_length = 2
+#
+#   pwd -> /private/etc/apache2/extra/
+#   swd -> /pr/et/ap/ex
+
+pwd_length=2
+
+swd=""
+
+while IFS='/' read -ra PWD; do
+  for i in "${PWD[@]}"; do
+    if [ -n "$i" ]; then
+      current_pwd=${i:0:$pwd_length}
+      swd="$swd/$current_pwd"
+    fi
+  done
+done <<< "$(pwd)"
+
+echo "$swd"

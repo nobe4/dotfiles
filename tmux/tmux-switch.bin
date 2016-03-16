@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# tmux-switch
+#
+# Directly jump to a tmux pane that is controlling the asked pid
+
+# break on error
+set -e
+
+if [[ $# -ne 1 ]]
+then
+  printf 'Usage: %s <pid>\n' "$0" >&2
+  exit 1
+fi
+
+# Process pid
+pid="$1"
+
+# Fetch the pane id
+pane_pid=$(ps -o ppid= -p $pid)
+
+if [[ -z "$pane_pid" ]]
+then
+  echo "Could not find the parent pane pid"
+  exit 1
+fi
+
+# List all panes with window and session id displayed
+# grep the line corresponding to the selected pane_pid
+info=$( \
+  tmux list-panes -a -F \
+  "#{pane_pid} #{pane_id} #{window_id} #{session_id}" \
+  | grep $pane_pid )
+
+if [[ -z "$info" ]]
+then
+  echo "Could not find the pane information"
+  exit 1
+fi
+
+# split info by space
+array=($info)
+pane_id=${array[1]}
+window_id=${array[2]}
+session_id=${array[3]}
+
+# Select pane and window, then select the session
+$(tmux select-pane -t $pane_id)
+$(tmux select-window -t $window_id)
+
+# if already in a TMUX session, use switch,
+# otherwise, use attach-session
+if [ -z ${TMUX+x} ]
+then
+  $(tmux attach-session -t $session_id >&2)
+else
+  $(tmux switch -t $session_id >&2)
+fi
