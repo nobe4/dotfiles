@@ -10,8 +10,8 @@
   excludesFile = $HOME/.gitignore_global
 [alias]
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-  passport =!~/dev/git-passport.sh/git-passport.sh
-  e = !git log --author="\"$(git config user.name)\"" --pretty='format:%Cred%h%Creset - %C(yellow)%ad%Creset %s' --no-merges --date=short
-  ticket =!git-time
+  passport = !~/dev/git-passport.sh/git-passport.sh
+  ticket = !git-time
+  me = !git-me
 [push]
   default = current
