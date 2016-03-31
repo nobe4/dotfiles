@@ -238,7 +238,7 @@ set smarttab " A <Tab> in an indent inserts 'shiftwidth' spaces
 " }
 " Folding {
 set foldenable " Turn on folding
-set foldmethod=syntax
+set foldmethod=indent
 set foldopen=search,block,hor,mark,percent,quickfix,tag " what movements
 set foldlevelstart=99 " disable auto folding on open
 " }
