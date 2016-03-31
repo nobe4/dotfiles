@@ -228,7 +228,6 @@ set showcmd " Show (partial) command keys in the status line
 " Selecting text {
 " }
 " Editing text {
-set textwidth=80
 " }
 " Tabs and indenting {
 set expandtab " Expand <Tab> to spaces in Insert mode
