@@ -281,6 +281,8 @@ augroup END
 " autocmd! bufwritepre * :%s/\s\+$//e " Strip whitespace
 " }
 " Mappings {
+" Replay mapping over visual selection
+vnoremap @ :norm@
 " change paste type
 nnoremap <Leader>pp :set paste!<CR>
 
