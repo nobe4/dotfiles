@@ -228,7 +228,6 @@ set showcmd " Show (partial) command keys in the status line
 " Selecting text {
 " }
 " Editing text {
-set textwidth=80
 " }
 " Tabs and indenting {
 set expandtab " Expand <Tab> to spaces in Insert mode
@@ -239,7 +238,7 @@ set smarttab " A <Tab> in an indent inserts 'shiftwidth' spaces
 " }
 " Folding {
 set foldenable " Turn on folding
-set foldmethod=syntax
+set foldmethod=indent
 set foldopen=search,block,hor,mark,percent,quickfix,tag " what movements
 set foldlevelstart=99 " disable auto folding on open
 " }
@@ -282,6 +281,8 @@ augroup END
 " autocmd! bufwritepre * :%s/\s\+$//e " Strip whitespace
 " }
 " Mappings {
+" Replay mapping over visual selection
+vnoremap @ :norm@
 " change paste type
 nnoremap <Leader>pp :set paste!<CR>
 

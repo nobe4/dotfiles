@@ -4,7 +4,10 @@ if ! hash docker 2>/dev/null; then
   return
 fi
 
-eval "$(docker-machine env default)"
+if ! [ "$(docker-machine status)" = "Stopped" ]
+then
+  eval "$(docker-machine env default)"
+fi
 
 alias dk="docker"
 alias dc="docker-compose"
