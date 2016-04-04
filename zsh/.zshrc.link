@@ -17,7 +17,7 @@ do
   source $path_file
 done
 
-# Link the zsh files to $HOME
+# Source all zsh files
 for zsh_file in $(list '*.zsh')
 do
   source $zsh_file
