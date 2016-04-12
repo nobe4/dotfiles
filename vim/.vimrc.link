@@ -338,6 +338,10 @@ nnoremap gf :e <cfile><CR>
 nnoremap <silent> <C-C> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
 
 "}
+" Abbreviations {
+iabbrev pdebug import pdb; pdb.set_trace()
+iabbrev red* * { color: red !important; }
+"}
 " Various {
 " Open current file in sublime text
 command! Subl silent execute "!open -a \"Sublime Text 2\" %"
