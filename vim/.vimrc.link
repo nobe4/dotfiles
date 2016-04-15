@@ -113,6 +113,9 @@ Plug 'tpope/vim-fugitive'
 nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gp :Gpush
 nnoremap <Leader>gl :Gpull
+" tpope/vim-projectionist {
+Plug 'tpope/vim-projectionist'
+" }
 " }
 " tpope/vim-unimpaired {
 Plug 'tpope/vim-unimpaired'
