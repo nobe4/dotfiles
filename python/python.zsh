@@ -7,3 +7,4 @@ alias pyserve='foreman start'
 alias pyservedebug='foreman run python -m pdb manage.py runserver'
 
 alias pyman='python manage.py'
+alias fopyman='foreman run python manage.py'
