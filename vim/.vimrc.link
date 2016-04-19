@@ -342,7 +342,7 @@ nnoremap <silent> <C-C> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR
 
 "}
 " Abbreviations {
-iabbrev pdebug import pdb; pdb.set_trace()
+iabbrev pydebug import pdb; pdb.set_trace()
 iabbrev red* * { color: red !important; }
 "}
 " Various {
