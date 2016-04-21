@@ -340,6 +340,9 @@ nnoremap gf :e <cfile><CR>
 " Clear the highlight
 nnoremap <silent> <C-C> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
 
+" Make <C-F> insert current path in command line mode
+cnoremap <C-F> <C-R>=expand('%:p:h')<CR>/
+
 "}
 " Abbreviations {
 iabbrev pydebug import pdb; pdb.set_trace()
