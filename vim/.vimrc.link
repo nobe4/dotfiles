@@ -196,7 +196,7 @@ set smartcase  " override 'ignorecase' when pattern has upper case characters
 set number
 set relativenumber
 
-set scroll=10 " Set C-u / C-d scroll
+set scrolloff=5 " keep 5 lines up/down the cursor
 set list " Show <Tab> as ^I and end-of-line as $
 set listchars=tab:\|\ ,trail:~ " Show tabs and trailing
 set nowrap " long lines wrap
