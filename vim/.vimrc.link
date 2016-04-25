@@ -44,6 +44,7 @@ call plug#begin('~/.vim/plugged')
 " Plug 'nobe4/emmet-show.vim'
 " Plug '~/dev/vim/stackovim/'
  Plug 'nobe4/gitignore_view/'
+
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
@@ -83,8 +84,8 @@ let g:tmuxline_preset = {
       \}
 " }
 " sjl/gundo.vim {
-Plug 'sjl/gundo.vim', { 'on':  'GundoToggle' }
-nnoremap <leader>u :GundoToggle<CR>
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+nnoremap <leader>u :UndotreeToggle<CR>
 " }
 " matchit {
 Plug 'vim-scripts/matchit.zip'
