@@ -253,6 +253,9 @@ nnoremap <Leader>x :xit
 nnoremap <CR> :
 vnoremap <CR> :
 
+" prevent remapping <CR> for the quickfix window
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+
 " remove the ex mode
 nnoremap Q <NOP>
 
