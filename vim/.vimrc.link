@@ -249,6 +249,10 @@ nnoremap <Leader>q :quit!
 " quit after saving
 nnoremap <Leader>x :xit
 
+" Quickly go to the command line
+nnoremap <CR> :
+vnoremap <CR> :
+
 " remove the ex mode
 nnoremap Q <NOP>
 
