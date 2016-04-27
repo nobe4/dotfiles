@@ -246,8 +246,8 @@ nnoremap <Leader>pp :set paste!<CR>
 nnoremap <Leader>k :e .<CR>
 
 " edit and source .vimrc
-nnoremap <Leader>ev :e ~/.vimrc<CR>
-nnoremap <Leader>sv :so $MYVIMRC
+nnoremap <Leader>ve :e ~/.vimrc<CR>
+nnoremap <Leader>vs :so $MYVIMRC
 
 " save file
 nnoremap <Leader>w :w<CR>
