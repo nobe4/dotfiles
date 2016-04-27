@@ -232,6 +232,8 @@ set showcmd " Show (partial) command keys in the status line
 " Selecting text {
 " }
 " Editing text {
+" Combine comments on joining lines
+set formatoptions+=j
 " }
 " Tabs and indenting {
 set expandtab " Expand <Tab> to spaces in Insert mode
