@@ -239,11 +239,6 @@ set fenc=utf-8 " File encoding
 " Mappings {
 " Replay mapping over visual selection
 vnoremap @ :norm@
-" change paste type
-nnoremap <Leader>pp :set paste!<CR>
-
-" Explore the file system
-nnoremap <Leader>k :e .<CR>
 
 " edit and source .vimrc
 nnoremap <Leader>ve :e ~/.vimrc<CR>
