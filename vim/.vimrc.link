@@ -205,8 +205,6 @@ set foldlevelstart=99 " disable auto folding on open
 " }
 " Diff mode {
 " }
-" Mapping {
-" }
 " Reading and writing files {
 " }
 " The swap file {
@@ -284,6 +282,12 @@ command! -nargs=1 Cmake !cmake "<args>"
 
 " Make gf always work
 nnoremap gf :e <cfile><CR>
+
+" Switch to previous buffer
+nnoremap <Leader>b :b#<CR>
+
+" Open buffer list and prepare a switch
+nnoremap <Leader>l :ls<CR>:buffer<Space>
 
 " Clear the highlight
 nnoremap <silent> <Esc> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
