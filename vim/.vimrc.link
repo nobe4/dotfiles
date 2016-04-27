@@ -235,11 +235,6 @@ set encoding=utf-8 " Character encoding
 set fenc=utf-8 " File encoding
 " }
 " Autocmds {
-augroup reload_vimrc
-    autocmd!
-    autocmd bufwritepost $MYVIMRC nested source $MYVIMRC
-augroup END
-" autocmd! bufwritepre * :%s/\s\+$//e " Strip whitespace
 " }
 " Mappings {
 " Replay mapping over visual selection
