@@ -259,7 +259,7 @@ nnoremap Q <NOP>
 nnoremap <Leader>R :nnoremap <lt>Leader>r :
 
 " force save
-cmap w!! w !sudo tee % >/dev/null
+cnoremap w!! w !sudo tee % >/dev/null
 
 " In insert mode <C-\> remove unwanted <CR> insertion
 inoremap <C-\> <C-o>:left 0<Cr><BS>
@@ -275,8 +275,9 @@ function! CmdPast() abort
   set nopaste
 endfunction
 
-nnoremap <Leader>v :call CmdPast()<CR>
-vnoremap <Leader>c "+y<CR>
+nnoremap <Leader>yp :call CmdPast()<CR>
+vnoremap <Leader>yc "+y
+nnoremap <Leader>yc "+yy
 
 " execute cmake from command line
 command! -nargs=1 Cmake !cmake "<args>"
@@ -285,7 +286,7 @@ command! -nargs=1 Cmake !cmake "<args>"
 nnoremap gf :e <cfile><CR>
 
 " Clear the highlight
-nnoremap <silent> <C-C> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
+nnoremap <silent> <Esc> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
 
 " Make <C-F> insert current path in command line mode
 cnoremap <C-F> <C-R>=expand('%:p:h')<CR>/
