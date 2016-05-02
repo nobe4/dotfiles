@@ -179,8 +179,6 @@ set backspace=indent,eol,start
 " Combine comments on joining lines
 set formatoptions+=j
 set completeopt=menu,preview,noinsert
-
-set matchpairs+=':',":",<:>,{%,%},{{:}}
 " }
 " Tabs and indenting {
 set expandtab " Expand <Tab> to spaces in Insert mode
