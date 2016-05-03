@@ -126,9 +126,6 @@ endif
 " }
 " }
 " Moving around, searching and patterns {
-" My default add all directories inside the paht
-set path+=**
-
 set incsearch "highlight as you type you search phrase
 set ignorecase " ignore case when using a search pattern
 set smartcase  " override 'ignorecase' when pattern has upper case characters
