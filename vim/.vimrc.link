@@ -79,7 +79,8 @@ let g:tmuxline_preset = {
 " }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-nnoremap <leader>u :UndotreeToggle<CR>
+nnoremap <leader>ut :UndotreeToggle<CR>
+nnoremap <leader>uf :UndotreeFocus<CR>
 " }
 " matchit {
 Plug 'vim-scripts/matchit.zip'
