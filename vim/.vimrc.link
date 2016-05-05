@@ -136,10 +136,13 @@ set tag+=.git/tags
 " Displaying text {
 set number
 
-set scrolloff=5 " keep 5 lines up/down the cursor
-set list " Show <Tab> as ^I and end-of-line as $
-set listchars=tab:\|\ ,trail:· " Show tabs and trailing
-set nowrap " long lines wrap
+set list " show invisible characters
+set listchars=tab:\|\ ,trail:·,extends:›,precedes:‹,nbsp:·
+
+set nowrap
+
+" keep 5 lines up/down the cursor
+set scrolloff=5
 
 " scroll 1 column at a time
 set sidescroll=1
