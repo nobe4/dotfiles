@@ -141,6 +141,11 @@ set list " Show <Tab> as ^I and end-of-line as $
 set listchars=tab:\|\ ,trail:· " Show tabs and trailing
 set nowrap " long lines wrap
 
+" scroll 1 column at a time
+set sidescroll=1
+" leave at least 10 column left and right when scrolling horizontally
+set sidescrolloff=10
+
 " do not display while replaying macros
 set lazyredraw
 " }
@@ -214,6 +219,9 @@ set termencoding=utf-8
 " move vertically inside wrapping lines
 nnoremap j gj
 nnoremap k gk
+
+" Select last pasted text
+noremap gp '[v']
 
 " Replay mapping over visual selection
 vnoremap @ :norm@
