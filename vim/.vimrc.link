@@ -52,7 +52,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#branch#format = 2
 set laststatus=2
 " }
 " Colors {
@@ -165,10 +164,6 @@ set switchbuf=usetab,newtab
 " }
 " Messages and info {
 set showcmd " Show (partial) command keys in the status line
-" }
-" Selecting text {
-" * register is used like the " register
-set clipboard=unnamed
 " }
 " Editing text {
 set backspace=indent,eol,start
