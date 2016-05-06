@@ -1,2 +1,10 @@
-export PATH="./bin:/usr/local/bin:/usr/local/sbin:$ZSH/bin:$PATH"
-export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
+PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+# add custom bin directory to path at the end so the priority is given to
+# system bin
+PATH=$PATH:$ZSH/.yada/bin
+
+MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
+
+export PATH
+export MANPATH
