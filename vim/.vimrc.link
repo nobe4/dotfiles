@@ -52,7 +52,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#branch#format = 2
 set laststatus=2
 " }
 " Colors {
@@ -80,7 +79,8 @@ let g:tmuxline_preset = {
 " }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-nnoremap <leader>u :UndotreeToggle<CR>
+nnoremap <leader>ut :UndotreeToggle<CR>
+nnoremap <leader>uf :UndotreeFocus<CR>
 " }
 " matchit {
 Plug 'vim-scripts/matchit.zip'
@@ -126,9 +126,6 @@ endif
 " }
 " }
 " Moving around, searching and patterns {
-" My default add all directories inside the paht
-set path+=**
-
 set incsearch "highlight as you type you search phrase
 set ignorecase " ignore case when using a search pattern
 set smartcase  " override 'ignorecase' when pattern has upper case characters
@@ -140,10 +137,18 @@ set tag+=.git/tags
 " Displaying text {
 set number
 
-set scrolloff=5 " keep 5 lines up/down the cursor
-set list " Show <Tab> as ^I and end-of-line as $
-set listchars=tab:\|\ ,trail:· " Show tabs and trailing
-set nowrap " long lines wrap
+set list " show invisible characters
+set listchars=tab:\|\ ,trail:·,extends:›,precedes:‹,nbsp:·
+
+set nowrap
+
+" keep 5 lines up/down the cursor
+set scrolloff=5
+
+" scroll 1 column at a time
+set sidescroll=1
+" leave at least 10 column left and right when scrolling horizontally
+set sidescrolloff=10
 
 " do not display while replaying macros
 set lazyredraw
@@ -168,10 +173,6 @@ set switchbuf=usetab,newtab
 " }
 " Messages and info {
 set showcmd " Show (partial) command keys in the status line
-" }
-" Selecting text {
-" * register is used like the " register
-set clipboard=unnamed
 " }
 " Editing text {
 set backspace=indent,eol,start
@@ -222,6 +223,9 @@ set termencoding=utf-8
 " move vertically inside wrapping lines
 nnoremap j gj
 nnoremap k gk
+
+" Select last pasted text
+noremap gp '[v']
 
 " Replay mapping over visual selection
 vnoremap @ :norm@
