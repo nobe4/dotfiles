@@ -48,6 +48,9 @@ call plug#begin('~/.vim/plugged')
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
 " }
+" statox/vim-compare-lines {
+Plug 'statox/vim-compare-lines'
+" }
 " bling/vim-airline {
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -306,7 +309,8 @@ iabbrev red* * { color: red !important; }
 command! Subl silent execute "!open -a \"Sublime Text 2\" %"
 " }
 " Tests {
-autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window 'vim:" . expand("%:t") . "'")
+autocmd BufReadPost,FileReadPost,BufNewFile * 
+    \ call system("tmux rename-window 'vim:" . expand("%:t") . "'")
 
 " Display the full path of the current file
 function! DisplayFullPath() abort
