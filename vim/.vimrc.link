@@ -182,7 +182,7 @@ set backspace=indent,eol,start
 
 " Combine comments on joining lines
 set formatoptions+=j
-set completeopt=menu,preview,noinsert
+set completeopt=menu,preview
 " }
 " Tabs and indenting {
 set expandtab " Expand <Tab> to spaces in Insert mode
@@ -213,6 +213,7 @@ set undodir=~/.vim/undodir  " list of directories for undo files
 " }
 " Language specific {
 autocmd! bufreadpost *.gs set syntax=javascript " Google script -> Javascript
+autocmd! bufreadpost *.coffee set syntax=javascript
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
 " }
