@@ -7,6 +7,10 @@ then
   export WORKON_HOME=$HOME/.virtualenvs
 fi
 
+# Disable Bytecode (.pyc) Files
+# ref: http://docs.python-guide.org/en/latest/writing/gotchas/#disabling-bytecode-pyc-files
+export PYTHONDONTWRITEBYTECODE=1
+
 alias pyserve='foreman start'
 alias pyservedebug='foreman run python -m pdb manage.py runserver'
 
