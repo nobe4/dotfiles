@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+# Build a tags file inside the .git directory, will be used on hooks
+# Inspired by https://github.com/tpope/tpope/blob/master/.git_template/hooks/ctags
+
+git_dir="`git rev-parse --git-dir`"
+
+trap 'rm -f "$git_dir/tags.$$"' EXIT INT TERM
+
+git ls-files | ctags --tag-relative -L - -f$git_dir/tags.$$
+
+mv $git_dir/tags.$$ $git_dir/tags
