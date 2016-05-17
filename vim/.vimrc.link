@@ -269,6 +269,9 @@ inoremap <C-\> <C-o>:left 0<Cr><BS>
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
+" Create a new tab
+nnoremap <Leader>tn :tabnew 
+
 " Copy/Paste with system clipboard
 function! CmdPast() abort
   set paste
