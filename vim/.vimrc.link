@@ -316,6 +316,24 @@ command! Subl silent execute "!open -a \"Sublime Text 2\" %"
 autocmd BufReadPost,FileReadPost,BufNewFile * 
     \ call system("tmux rename-window 'vim:" . expand("%:t") . "'")
 
+" Simulate the r operator functionnality
+function! ROperator()
+  call inputsave()
+  let l:replace_pattern = input('Replace > ')
+  call inputrestore()
+
+  if len(l:replace_pattern) != 3
+    throw "Bad pattern size (expected 3)"
+  endif
+
+  let l:motion = strpart(replace_pattern, 0, 2)
+  let l:char = strpart(replace_pattern, 2, 2)
+
+  execute "normal! v".l:motion."r".l:char
+endfunction
+
+nnoremap gr :call ROperator()<CR>
+
 " Display the full path of the current file
 function! DisplayFullPath() abort
   echo expand('%:p')
