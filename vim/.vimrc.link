@@ -167,8 +167,10 @@ colorscheme gruvbox
 set t_ut=
 set t_Co=256 " Number of available colors
 set cursorline
-" add subtle background color for 80+ characters line
-set colorcolumn=+1
+
+" add red background color for 81nth characters line
+highlight OverLength ctermbg=red ctermfg=white
+match OverLength /\%81v./
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
