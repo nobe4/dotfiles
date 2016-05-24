@@ -280,7 +280,10 @@ set undofile " save and restore undo history
 set undodir=~/.vim/undodir  " list of directories for undo files
 " }
 " Language specific {
-autocmd! bufreadpost *.gs set syntax=javascript " Google script -> Javascript
+" Enable spell for commit messages
+autocmd! Filetype gitcommit set spell
+" Google script -> Javascript
+autocmd! bufreadpost *.gs set syntax=javascript
 autocmd! bufreadpost *.coffee set syntax=javascript
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
@@ -357,7 +360,7 @@ nnoremap <Leader>b :b#<CR>
 nnoremap <Leader>l :ls<CR>:buffer<Space>
 
 " Clear the highlight
-" nnoremap <silent> <C-l> :<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''
+nnoremap <silent> <Esc> :<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
 
 " Make <C-F> insert current path in command line mode
 cnoremap <C-F> <C-R>=expand('%:p:h')<CR>/
