@@ -49,33 +49,103 @@ call plug#begin('~/.vim/plugged')
 Plug 'editorconfig/editorconfig-vim'
 " }
 " bling/vim-airline {
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-let g:airline_powerline_fonts = 1
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+" let g:airline_powerline_fonts = 1
+
+let g:currentmode={
+    \ 'n'  : 'N',
+    \ 'no' : 'No',
+    \ 'v'  : 'V',
+    \ 'V'  : 'Vl',
+    \ '' : 'Vb',
+    \ 's'  : 'S',
+    \ 'S'  : 'Sl',
+    \ '' : 'Sb',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'Rv' : 'Rv',
+    \ 'c'  : 'Co',
+    \ 'cv' : 'Vx',
+    \ 'ce' : 'Ex',
+    \ 'r'  : 'Pr',
+    \ 'rm' : 'Mo',
+    \ 'r?' : 'Cf',
+    \ '!'  : 'Sh',
+    \ 't'  : 'Tr'
+    \}
+
+function! ChangeStatuslineColor()
+    let l:mode = mode()
+    let l:s_l_color = '8'
+
+   if (l:mode =~? 'v') " visual
+        let l:s_l_color = '2'
+    elseif (l:mode =~? 's') " select
+        let l:s_l_color = '3'
+    elseif (l:mode ==# 'i') " insert
+        let l:s_l_color = '4'
+    elseif (l:mode =~# 'R') " replace
+        let l:s_l_color = '5'
+    elseif (l:mode =~# 'c') " command
+        let l:s_l_color = '6'
+    elseif (l:mode =~# 'r') " hit-enter
+        let l:s_l_color = '7'
+    endif
+
+    exe 'hi! StatusLine ctermfg=00'.l:s_l_color
+    return ''
+endfunction
+
+function! ReadOnly()
+    if &readonly || !&modifiable
+        return ''
+    endif
+    return ''
+endfunction
+
 set laststatus=2
+set statusline=
+set statusline+=%{ChangeStatuslineColor()}
+set statusline+=%0*\ %{g:currentmode[mode()]}\ 
+set statusline+=%1*\ %<%F\ %{ReadOnly()}\ %m\ %w\ 
+set statusline+=%8*\ [%n]
+set statusline+=%2*\ %m
+set statusline+=%2*\ %r
+set statusline+=%2*\ %h
+set statusline+=%2*\ %w
+set statusline+=%*
+set statusline+=%2*\ %y
+set statusline+=%2*\ %q
+set statusline+=%2*\ %=
+set statusline+=%0*\ %l\ 
+
+hi User1 ctermfg=005
+hi User2 ctermfg=008
+hi User8 ctermfg=008
 " }
 " Colors {
 Plug 'morhetz/gruvbox'
 if !has("gui_running")
-  let g:gruvbox_italic=0
+    let g:gruvbox_italic=0
 endif
 " }
 " edkolev/tmuxline.vim {
 Plug 'edkolev/tmuxline.vim'
 let g:tmuxline_preset = {
-      \ 'a': '#S',
-      \ 'win.dim': '#I',
-      \ 'win': '#W',
-      \ 'cwin.dim': '#I',
-      \ 'cwin': '#W',
-      \ 'x': '#(pmset -g batt | egrep "[0-9]+%.*" -o --colour=auto | cut -f1 -d";" | cut -c2-)',
-      \ 'y': ['%m/%d/%y','%H%M'],
-      \ 'z': '#h',
-      \ 'options': {
-      \'status-justify': 'left'},
-      \ 'win_options': {
-      \'window-status-activity-attr-': 'none'}
-      \}
+   \ 'a': '#S',
+   \ 'win.dim': '#I',
+   \ 'win': '#W',
+   \ 'cwin.dim': '#I',
+   \ 'cwin': '#W',
+   \ 'x': '#(pmset -g batt | egrep "[0-9]+%.*" -o --colour=auto | cut -f1 -d";" | cut -c2-)',
+   \ 'y': ['%m/%d/%y','%H%M'],
+   \ 'z': '#h',
+   \ 'options': {
+   \'status-justify': 'left'},
+   \ 'win_options': {
+   \'window-status-activity-attr-': 'none'}
+   \}
 " }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
@@ -149,9 +219,6 @@ set scrolloff=5
 set sidescroll=1
 " leave at least 10 column left and right when scrolling horizontally
 set sidescrolloff=10
-
-" do not display while replaying macros
-set lazyredraw
 " }
 " Syntax, highlighting and spelling {
 syntax on " Activate syntax highlighting
@@ -241,13 +308,6 @@ nnoremap <Leader>q :quit!
 " quit after saving
 nnoremap <Leader>x :xit
 
-" Quickly go to the command line
-nnoremap <CR> :
-vnoremap <CR> :
-
-" prevent remapping <CR> for the quickfix window
-autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-
 " remove the ex mode
 nnoremap Q <NOP>
 
@@ -267,9 +327,9 @@ inoremap <c-w> <c-g>u<c-w>
 
 " Copy/Paste with system clipboard
 function! CmdPast() abort
-  set paste
-  normal! "+p
-  set nopaste
+    set paste
+    normal! "+p
+    set nopaste
 endfunction
 
 nnoremap <Leader>yp :call CmdPast()<CR>
@@ -289,11 +349,11 @@ nnoremap <Leader>b :b#<CR>
 nnoremap <Leader>l :ls<CR>:buffer<Space>
 
 " Clear the highlight
-nnoremap <silent> <Esc> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
+" nnoremap <silent> <C-l> :<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''
 
 " Make <C-F> insert current path in command line mode
 cnoremap <C-F> <C-R>=expand('%:p:h')<CR>/
-"}
+" }
 " Abbreviations {
 iabbrev pydebug import pdb; pdb.set_trace()
 iabbrev red* * { color: red !important; }
@@ -307,28 +367,28 @@ autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window 'v
 
 " Display the full path of the current file
 function! DisplayFullPath() abort
-  echo expand('%:p')
+    echo expand('%:p')
 endfunction
 command! FP call DisplayFullPath()
 
 function! TodoSave()
-  " Get the file title or generate a new file based on the current date
-  " File title is either the first line if it stats with an #
-  " else it is timestamped
-  let l:filename = getline('1')
-  if l:filename =~ "^#"
-    " replace all spaces by `-` and remove the `#\s+`
-    let l:filename = substitute( substitute( substitute(
-                \ l:filename
-                \ , '^#\s\+', '', '')
-                \ , '\s\+$', '', '')
-                \ ,' ', '-', 'g')
-  else
-    let l:filename = "todo-".localtime()
-  endif
+" Get the file title or generate a new file based on the current date
+" File title is either the first line if it stats with an #
+" else it is timestamped
+    let l:filename = getline('1')
+    if l:filename =~ "^#"
+        " replace all spaces by `-` and remove the `#\s+`
+        let l:filename = substitute( substitute( substitute(
+                    \ l:filename
+                    \ , '^#\s\+', '', '')
+                    \ , '\s\+$', '', '')
+                    \ ,' ', '-', 'g')
+    else
+        let l:filename = "todo-".localtime()
+    endif
 
-  " Save the file on the desktop
-  execute "w ~/Desktop/".l:filename.".md"
+    " Save the file on the desktop
+    execute "w ~/Desktop/".l:filename.".md"
 endfunction
 " TS is for Todo Save
 command! TS call TodoSave()
