@@ -40,13 +40,16 @@ let mapleader="\<Space>" " need to set the mapleader before the plugins
 call plug#begin('~/.vim/plugged')
 " }
 " nobe4 {
-" Plug 'nobe4/did-you-vim'
+Plug 'nobe4/did-you-vim'
 " Plug 'nobe4/emmet-show.vim'
 " Plug '~/dev/vim/stackovim/'
- Plug 'nobe4/gitignore_view/'
+Plug 'nobe4/gitignore_view/'
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
+" }
+" statox/vim-compare-lines {
+Plug 'statox/vim-compare-lines'
 " }
 " bling/vim-airline {
 " Plug 'vim-airline/vim-airline'
@@ -231,8 +234,10 @@ colorscheme gruvbox
 set t_ut=
 set t_Co=256 " Number of available colors
 set cursorline
-" add subtle background color for 80+ characters line
-set colorcolumn=+1
+
+" add red background color for 81nth characters line
+highlight OverLength ctermbg=red ctermfg=white
+match OverLength /\%81v./
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
@@ -246,7 +251,7 @@ set backspace=indent,eol,start
 
 " Combine comments on joining lines
 set formatoptions+=j
-set completeopt=menu,preview,noinsert
+set completeopt=menu,preview
 " }
 " Tabs and indenting {
 set expandtab " Expand <Tab> to spaces in Insert mode
@@ -277,6 +282,7 @@ set undodir=~/.vim/undodir  " list of directories for undo files
 " }
 " Language specific {
 autocmd! bufreadpost *.gs set syntax=javascript " Google script -> Javascript
+autocmd! bufreadpost *.coffee set syntax=javascript
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
 " }
@@ -325,6 +331,9 @@ inoremap <C-\> <C-o>:left 0<Cr><BS>
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
+" Create a new tab
+nnoremap <Leader>tn :tabnew 
+
 " Copy/Paste with system clipboard
 function! CmdPast() abort
     set paste
@@ -353,7 +362,10 @@ nnoremap <Leader>l :ls<CR>:buffer<Space>
 
 " Make <C-F> insert current path in command line mode
 cnoremap <C-F> <C-R>=expand('%:p:h')<CR>/
-" }
+
+" Display a simple help for debugging
+cnoremap <C-H> "cont quit next step interrupt finish backtrace up down<CR>
+"}
 " Abbreviations {
 iabbrev pydebug import pdb; pdb.set_trace()
 iabbrev red* * { color: red !important; }
@@ -363,7 +375,26 @@ iabbrev red* * { color: red !important; }
 command! Subl silent execute "!open -a \"Sublime Text 2\" %"
 " }
 " Tests {
-autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window 'vim:" . expand("%:t") . "'")
+autocmd BufReadPost,FileReadPost,BufNewFile * 
+    \ call system("tmux rename-window 'vim:" . expand("%:t") . "'")
+
+" Simulate the r operator functionnality
+function! ROperator()
+  call inputsave()
+  let l:replace_pattern = input('Replace > ')
+  call inputrestore()
+
+  if len(l:replace_pattern) != 3
+    throw "Bad pattern size (expected 3)"
+  endif
+
+  let l:motion = strpart(replace_pattern, 0, 2)
+  let l:char = strpart(replace_pattern, 2, 2)
+
+  execute "normal! v".l:motion."r".l:char
+endfunction
+
+nnoremap gr :call ROperator()<CR>
 
 " Display the full path of the current file
 function! DisplayFullPath() abort
