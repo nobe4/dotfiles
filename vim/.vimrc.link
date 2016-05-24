@@ -40,7 +40,7 @@ let mapleader="\<Space>" " need to set the mapleader before the plugins
 call plug#begin('~/.vim/plugged')
 " }
 " nobe4 {
-Plug 'nobe4/did-you-vim'
+" Plug 'nobe4/did-you-vim'
 " Plug 'nobe4/emmet-show.vim'
 " Plug '~/dev/vim/stackovim/'
 Plug 'nobe4/gitignore_view/'
@@ -51,89 +51,13 @@ Plug 'editorconfig/editorconfig-vim'
 " statox/vim-compare-lines {
 Plug 'statox/vim-compare-lines'
 " }
-" bling/vim-airline {
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
-" let g:airline_powerline_fonts = 1
-
-let g:currentmode={
-    \ 'n'  : 'N',
-    \ 'no' : 'No',
-    \ 'v'  : 'V',
-    \ 'V'  : 'Vl',
-    \ '' : 'Vb',
-    \ 's'  : 'S',
-    \ 'S'  : 'Sl',
-    \ '' : 'Sb',
-    \ 'i'  : 'I',
-    \ 'R'  : 'R',
-    \ 'Rv' : 'Rv',
-    \ 'c'  : 'Co',
-    \ 'cv' : 'Vx',
-    \ 'ce' : 'Ex',
-    \ 'r'  : 'Pr',
-    \ 'rm' : 'Mo',
-    \ 'r?' : 'Cf',
-    \ '!'  : 'Sh',
-    \ 't'  : 'Tr'
-    \}
-
-function! ChangeStatuslineColor()
-    let l:mode = mode()
-    let l:s_l_color = '8'
-
-   if (l:mode =~? 'v') " visual
-        let l:s_l_color = '2'
-    elseif (l:mode =~? 's') " select
-        let l:s_l_color = '3'
-    elseif (l:mode ==# 'i') " insert
-        let l:s_l_color = '4'
-    elseif (l:mode =~# 'R') " replace
-        let l:s_l_color = '5'
-    elseif (l:mode =~# 'c') " command
-        let l:s_l_color = '6'
-    elseif (l:mode =~# 'r') " hit-enter
-        let l:s_l_color = '7'
-    endif
-
-    exe 'hi! StatusLine ctermfg=00'.l:s_l_color
-    return ''
-endfunction
-
-function! ReadOnly()
-    if &readonly || !&modifiable
-        return ''
-    endif
-    return ''
-endfunction
-
-set laststatus=2
-set statusline=
-set statusline+=%{ChangeStatuslineColor()}
-set statusline+=%0*\ %{g:currentmode[mode()]}\ 
-set statusline+=%1*\ %<%F\ %{ReadOnly()}\ %m\ %w\ 
-set statusline+=%8*\ [%n]
-set statusline+=%2*\ %m
-set statusline+=%2*\ %r
-set statusline+=%2*\ %h
-set statusline+=%2*\ %w
-set statusline+=%*
-set statusline+=%2*\ %y
-set statusline+=%2*\ %q
-set statusline+=%2*\ %=
-set statusline+=%0*\ %l\ 
-
-hi User1 ctermfg=005
-hi User2 ctermfg=008
-hi User8 ctermfg=008
-" }
 " Colors {
 Plug 'morhetz/gruvbox'
 if !has("gui_running")
     let g:gruvbox_italic=0
 endif
 " }
-" edkolev/tmuxline.vim {
+" " edkolev/tmuxline.vim {
 Plug 'edkolev/tmuxline.vim'
 let g:tmuxline_preset = {
    \ 'a': '#S',
@@ -164,8 +88,8 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango EmmetInstall
 let g:user_emmet_leader_key=','
 " }
-" danro/rename.vim {
-Plug 'danro/rename.vim', { 'on': 'Rename' }
+" " danro/rename.vim {
+" Plug 'danro/rename.vim', { 'on': 'Rename' }
 " }
 " scrooloose/nerdcommenter {
 Plug 'scrooloose/nerdcommenter'
@@ -242,6 +166,81 @@ match OverLength /\%81v./
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
 set switchbuf=usetab,newtab
+
+" Status line definition
+" mapping for mode
+let g:currentmode={
+    \ 'n'  : 'N',
+    \ 'no' : 'No',
+    \ 'v'  : 'V',
+    \ 'V'  : 'Vl',
+    \ '' : 'Vb',
+    \ 's'  : 'S',
+    \ 'S'  : 'Sl',
+    \ '' : 'Sb',
+    \ 'i'  : 'I',
+    \ 'R'  : 'R',
+    \ 'Rv' : 'Rv',
+    \ 'c'  : 'Co',
+    \ 'cv' : 'Vx',
+    \ 'ce' : 'Ex',
+    \ 'r'  : 'Pr',
+    \ 'rm' : 'Mo',
+    \ 'r?' : 'Cf',
+    \ '!'  : 'Sh',
+    \ 't'  : 'Tr'
+    \}
+
+" change color based on current mode
+function! ChangeStatuslineColor()
+    let l:mode = mode()
+    let l:s_l_color = '8'
+
+   if (l:mode =~? 'v') " visual
+        let l:s_l_color = '2'
+    elseif (l:mode =~? 's') " select
+        let l:s_l_color = '2'
+    elseif (l:mode ==# 'i') " insert
+        let l:s_l_color = '4'
+    elseif (l:mode =~# 'R') " replace
+        let l:s_l_color = '9'
+    elseif (l:mode =~# 'c') " command
+        let l:s_l_color = '5'
+    elseif (l:mode =~# 'r') " hit-enter
+        let l:s_l_color = '5'
+    endif
+
+    exe 'hi! StatusLine ctermfg=00'.l:s_l_color
+    return ''
+endfunction
+
+function! GitBranch()
+    let l:branch = fugitive#head()
+    if l:branch != ''
+        return ' '.l:branch
+    endif
+    return ''
+endfunction
+
+set laststatus=2
+set statusline=                                     " init the status line
+set statusline+=%{ChangeStatuslineColor()}          " update the line color
+set statusline+=%0*\ %{g:currentmode[mode()]}\      " mode
+set statusline+=%3*%{GitBranch()}                   " git branch
+set statusline+=%1*\ %<%F                           " full path
+set statusline+=%4*\ %m                             " modified/locked
+set statusline+=%4*\ %w                             " preview
+set statusline+=%2*\ %=                             " separator
+set statusline+=%2*\ %q                             " quickfix/location
+set statusline+=%4*\ %y\                            " filetype
+set statusline+=%0*\ %3p%%\ %l\                     " position in file
+
+" Custom highlight
+hi! User0 ctermfg=001 ctermbg=000
+hi! User1 ctermfg=008 ctermbg=000
+hi! User2 ctermfg=001 ctermbg=000
+hi! User3 ctermfg=003 ctermbg=000
+hi! User4 ctermfg=004 ctermbg=000
 " }
 " Messages and info {
 set showcmd " Show (partial) command keys in the status line
@@ -423,4 +422,5 @@ function! TodoSave()
 endfunction
 " TS is for Todo Save
 command! TS call TodoSave()
+
 " }
