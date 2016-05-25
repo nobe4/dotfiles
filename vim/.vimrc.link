@@ -191,48 +191,24 @@ let g:currentmode={
     \ 't'  : 'Tr'
     \}
 
-" change color based on current mode
-function! ChangeStatuslineColor()
-    let l:mode = mode()
-    let l:s_l_color = '8'
-
-   if (l:mode =~? 'v') " visual
-        let l:s_l_color = '2'
-    elseif (l:mode =~? 's') " select
-        let l:s_l_color = '2'
-    elseif (l:mode ==# 'i') " insert
-        let l:s_l_color = '4'
-    elseif (l:mode =~# 'R') " replace
-        let l:s_l_color = '9'
-    elseif (l:mode =~# 'c') " command
-        let l:s_l_color = '5'
-    elseif (l:mode =~# 'r') " hit-enter
-        let l:s_l_color = '5'
-    endif
-
-    exe 'hi! StatusLine ctermfg=00'.l:s_l_color
-    return ''
-endfunction
-
 function! GitBranch()
     let l:branch = fugitive#head()
     if l:branch != ''
-        return ' '.l:branch
+        return l:branch.' '
     endif
     return ''
 endfunction
 
 set laststatus=2
 set statusline=                                     " init the status line
-set statusline+=%{ChangeStatuslineColor()}          " update the line color
 set statusline+=%0*\ %{g:currentmode[mode()]}\      " mode
-set statusline+=%3*%{GitBranch()}                   " git branch
 set statusline+=%1*\ %<%F                           " full path
 set statusline+=%4*\ %m                             " modified/locked
 set statusline+=%4*\ %w                             " preview
 set statusline+=%2*\ %=                             " separator
 set statusline+=%2*\ %q                             " quickfix/location
 set statusline+=%4*\ %y\                            " filetype
+set statusline+=%3*%{GitBranch()}                   " git branch
 set statusline+=%0*\ %3p%%\ %l\                     " position in file
 
 " Custom highlight
