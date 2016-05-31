@@ -191,6 +191,14 @@ let g:currentmode={
     \ 't'  : 'Tr'
     \}
 
+function! VirtualEnv()
+    let l:env = $VIRTUAL_ENV
+    if l:env != ''
+        return split(l:env,'/')[-1].' '
+    endif
+    return ''
+endfunction
+
 function! GitBranch()
     let l:branch = fugitive#head()
     if l:branch != ''
@@ -209,6 +217,7 @@ set statusline+=%2*\ %=                             " separator
 set statusline+=%2*\ %q                             " quickfix/location
 set statusline+=%4*\ %y\                            " filetype
 set statusline+=%3*%{GitBranch()}                   " git branch
+set statusline+=%5*%{VirtualEnv()}                   " git branch
 set statusline+=%0*\ %3p%%\ %l\                     " position in file
 
 " Custom highlight
@@ -217,6 +226,7 @@ hi! User1 ctermfg=008 ctermbg=000
 hi! User2 ctermfg=001 ctermbg=000
 hi! User3 ctermfg=003 ctermbg=000
 hi! User4 ctermfg=004 ctermbg=000
+hi! User5 ctermfg=006 ctermbg=000
 " }
 " Messages and info {
 set showcmd " Show (partial) command keys in the status line
