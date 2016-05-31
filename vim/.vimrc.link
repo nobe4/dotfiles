@@ -170,25 +170,14 @@ set switchbuf=usetab,newtab
 " Status line definition
 " mapping for mode
 let g:currentmode={
-    \ 'n'  : 'N',
-    \ 'no' : 'No',
-    \ 'v'  : 'V',
-    \ 'V'  : 'Vl',
-    \ '' : 'Vb',
-    \ 's'  : 'S',
-    \ 'S'  : 'Sl',
-    \ '' : 'Sb',
+    \ 'n'  : 'N', 'no' : 'No',
+    \ 'v'  : 'V', 'V'  : 'Vl', '' : 'Vb',
+    \ 's'  : 'S', 'S'  : 'Sl', '' : 'Sb',
     \ 'i'  : 'I',
-    \ 'R'  : 'R',
-    \ 'Rv' : 'Rv',
-    \ 'c'  : 'Co',
-    \ 'cv' : 'Vx',
-    \ 'ce' : 'Ex',
-    \ 'r'  : 'Pr',
-    \ 'rm' : 'Mo',
-    \ 'r?' : 'Cf',
-    \ '!'  : 'Sh',
-    \ 't'  : 'Tr'
+    \ 'R'  : 'R', 'Rv' : 'Rv',
+    \ 'c'  : 'Co', 'cv' : 'Vx', 'ce' : 'Ex',
+    \ 'r'  : 'Pr', 'rm' : 'Mo', 'r?' : 'Cf',
+    \ '!'  : 'Sh', 't'  : 'Tr'
     \}
 
 function! VirtualEnv()
