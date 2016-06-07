@@ -206,8 +206,8 @@ set statusline+=%2*\ %=                             " separator
 set statusline+=%2*\ %q                             " quickfix/location
 set statusline+=%4*\ %y\                            " filetype
 set statusline+=%3*%{GitBranch()}                   " git branch
-set statusline+=%5*%{VirtualEnv()}                   " git branch
-set statusline+=%0*\ %3p%%\ %l\                     " position in file
+set statusline+=%5*%{VirtualEnv()}                  " git branch
+set statusline+=%0*\ %3p%%\ %l:%c\                  " position in file
 
 " Custom highlight
 hi! User0 ctermfg=001 ctermbg=000
