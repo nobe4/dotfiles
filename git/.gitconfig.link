@@ -15,3 +15,5 @@
   me = !git-me
 [push]
   default = current
+[github]
+	user = nobe4

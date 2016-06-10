@@ -51,6 +51,10 @@ Plug 'editorconfig/editorconfig-vim'
 " statox/vim-compare-lines {
 Plug 'statox/vim-compare-lines'
 " }
+" mattn/gist-vim {
+Plug 'mattn/webapi-vim'
+Plug 'mattn/gist-vim'
+" }
 " Colors {
 Plug 'morhetz/gruvbox'
 if !has("gui_running")
