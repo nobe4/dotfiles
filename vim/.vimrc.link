@@ -115,6 +115,7 @@ Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
+Plug 'tpope/vim-dispatch'
 " }
 " Vim-plug end of Initialisation {
 call plug#end()

@@ -4,3 +4,5 @@ alias vst='vim +Gstatus now'
 # Jump to vim help
 alias vih='vim +help\'
 
+# Vim without config
+alias vin='vim -Nu NONE'
