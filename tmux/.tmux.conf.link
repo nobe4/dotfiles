@@ -42,3 +42,18 @@ set -g @tpm_plugins ' \
 run-shell '~/.tmux/plugins/tpm/tpm'
 
 set-option -g default-command "reattach-to-user-namespace -l zsh"
+
+# set color for status bar
+set-option -g status-bg colour235
+set-option -g status-fg yellow
+set-option -g status-attr dim 
+
+set-window-option -g window-status-fg green
+set-window-option -g window-status-current-fg blue
+
+set -g status-justify centre
+
+set -g status-left-length 70
+set -g status-left "#[fg=yellow] #{host_short} "
+set -g status-right-length 60
+set -g status-right "#[fg=red]#{session_name} #[fg=yellow]#(date +'%m/%d %H:%m:%S') "
