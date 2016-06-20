@@ -55,5 +55,10 @@ set -g status-justify centre
 
 set -g status-left-length 70
 set -g status-left "#[fg=yellow] #{host_short} "
+
 set -g status-right-length 60
-set -g status-right "#[fg=red]#{session_name} #[fg=green]#(pmset -g batt | egrep \"[0-9]+%.*\" -o --colour=auto | cut -f1 -d\";\" | cut -c2-) #[fg=yellow]#(date +'%m/%d %H:%m:%S') "
+set -g status-right "#[fg=red]#{session_name} "
+# battery status
+set -ga status-right "#[fg=green]#(pmset -g batt | egrep \"[0-9]+%.*\" -o --colour=auto | cut -f1 -d\";\" | cut -c2-) "
+# date and time
+set -ga status-right "#[fg=yellow]#(date +'%m/%d %H:%m:%S') "
