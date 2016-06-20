@@ -13,6 +13,7 @@
   passport = !~/dev/git-passport.sh/git-passport.sh
   ticket = !git-time
   me = !git-me
+  standup = !git-standup
 [push]
   default = current
 [github]
