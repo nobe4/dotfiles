@@ -1,3 +1,6 @@
+#!/bin/sh
+
+# http://stackoverflow.com/questions/6547199/git-log-since-yesterday-for-working-days-only
 function yesterworkday() {
     if [[ "1" == "$(date +%u)" ]]
     then
