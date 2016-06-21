@@ -61,4 +61,4 @@ set -g status-right "#[fg=red]#{session_name} "
 # battery status
 set -ga status-right "#[fg=green]#(pmset -g batt | egrep \"[0-9]+%.*\" -o --colour=auto | cut -f1 -d\";\" | cut -c2-) "
 # date and time
-set -ga status-right "#[fg=yellow]#(date +'%m/%d %H:%m:%S') "
+set -ga status-right "#[fg=yellow]#(date +'%m/%d %H:%M:%S') "
