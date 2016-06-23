@@ -14,7 +14,9 @@
   ticket = !git-time
   me = !git-me
   standup = !git-standup
+[pull]
+  default = current
 [push]
   default = current
 [github]
-	user = nobe4
+  user = nobe4
