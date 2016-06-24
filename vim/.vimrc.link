@@ -44,6 +44,7 @@ call plug#begin('~/.vim/plugged')
 " Plug 'nobe4/emmet-show.vim'
 " Plug '~/dev/vim/stackovim/'
 Plug 'nobe4/gitignore_view/'
+Plug 'nobe4/vimcorrect'
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
@@ -61,23 +62,6 @@ if !has("gui_running")
     let g:gruvbox_italic=0
 endif
 " }
-" " edkolev/tmuxline.vim {
-Plug 'edkolev/tmuxline.vim'
-let g:tmuxline_preset = {
-   \ 'a': '#S',
-   \ 'win.dim': '#I',
-   \ 'win': '#W',
-   \ 'cwin.dim': '#I',
-   \ 'cwin': '#W',
-   \ 'x': '#(pmset -g batt | egrep "[0-9]+%.*" -o --colour=auto | cut -f1 -d";" | cut -c2-)',
-   \ 'y': ['%m/%d/%y','%H%M'],
-   \ 'z': '#h',
-   \ 'options': {
-   \'status-justify': 'left'},
-   \ 'win_options': {
-   \'window-status-activity-attr-': 'none'}
-   \}
-" }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 nnoremap <leader>ut :UndotreeToggle<CR>
@@ -92,8 +76,8 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango EmmetInstall
 let g:user_emmet_leader_key=','
 " }
-" " danro/rename.vim {
-" Plug 'danro/rename.vim', { 'on': 'Rename' }
+" danro/rename.vim {
+Plug 'danro/rename.vim', { 'on': 'Rename' }
 " }
 " scrooloose/nerdcommenter {
 Plug 'scrooloose/nerdcommenter'
@@ -133,7 +117,7 @@ set ignorecase " ignore case when using a search pattern
 set smartcase  " override 'ignorecase' when pattern has upper case characters
 " }
 " Tags {
-" store tags file under the git directory to exclude from versionning
+" store tags file under the git directory to exclude from versioning
 set tag+=.git/tags
 " }
 " Displaying text {
@@ -360,7 +344,7 @@ command! Subl silent execute "!open -a \"Sublime Text 2\" %"
 autocmd BufReadPost,FileReadPost,BufNewFile * 
     \ call system("tmux rename-window 'vim:" . expand("%:t") . "'")
 
-" Simulate the r operator functionnality
+" Simulate the r operator functionality
 function! ROperator()
   call inputsave()
   let l:replace_pattern = input('Replace > ')
