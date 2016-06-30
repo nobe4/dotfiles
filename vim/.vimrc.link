@@ -45,6 +45,8 @@ call plug#begin('~/.vim/plugged')
 " Plug '~/dev/vim/stackovim/'
 Plug 'nobe4/gitignore_view/'
 Plug 'nobe4/vimcorrect'
+" Use the plugin instead of the default behaviour
+nnoremap z= :Correct<CR>
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
