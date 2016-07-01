@@ -43,6 +43,14 @@ run-shell '~/.tmux/plugins/tpm/tpm'
 
 set-option -g default-command "reattach-to-user-namespace -l zsh"
 
+# rebind pane tiling
+bind V split-window -h
+bind H split-window
+
+
+# Listen to any activity
+set -g bell-action any
+
 # set color for status bar
 set-option -g status-bg colour235
 set-option -g status-fg yellow
