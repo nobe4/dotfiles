@@ -1,0 +1,2 @@
+brew install macvim --HEAD --override-system-vim --with-cscope --with-lua
+brew install renameutils

@@ -1,7 +1,3 @@
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-	export EDITOR='vim'
-else
-	export EDITOR='mvim'
-fi
+# Locally vim is linked to macvim, always use it anyway
+export EDITOR='vim'
 
