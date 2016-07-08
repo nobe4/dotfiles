@@ -40,10 +40,6 @@ let mapleader="\<Space>" " need to set the mapleader before the plugins
 call plug#begin('~/.vim/plugged')
 " }
 " nobe4 {
-" Plug 'nobe4/did-you-vim'
-" Plug 'nobe4/emmet-show.vim'
-" Plug '~/dev/vim/stackovim/'
-Plug 'nobe4/gitignore_view/'
 Plug 'nobe4/vimcorrect'
 " Use the plugin instead of the default behaviour
 nnoremap z= :Correct<CR>
@@ -55,14 +51,10 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'statox/vim-compare-lines'
 " }
 " mattn/gist-vim {
-Plug 'mattn/webapi-vim'
-Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 " }
-" Colors {
+" Colorscheme {
 Plug 'morhetz/gruvbox'
-if !has("gui_running")
-    let g:gruvbox_italic=0
-endif
 " }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
@@ -75,8 +67,8 @@ Plug 'vim-scripts/matchit.zip'
 " mattn/emmet-vim {
 Plug 'mattn/emmet-vim'
 let g:user_emmet_install_global = 0
-autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango EmmetInstall
 let g:user_emmet_leader_key=','
+autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango EmmetInstall
 " }
 " danro/rename.vim {
 Plug 'danro/rename.vim', { 'on': 'Rename' }
@@ -87,9 +79,6 @@ let NERDSpaceDelims=1
 " }
 " christoomey/vim-tmux-navigator {
 Plug 'christoomey/vim-tmux-navigator'
-" }
-" plasticboy/vim-markdown {
-Plug 'plasticboy/vim-markdown', { 'for' : ['md', 'markdown']}
 " }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
@@ -207,9 +196,6 @@ hi! User2 ctermfg=001 ctermbg=000
 hi! User3 ctermfg=003 ctermbg=000
 hi! User4 ctermfg=004 ctermbg=000
 hi! User5 ctermfg=006 ctermbg=000
-" }
-" Messages and info {
-set showcmd " Show (partial) command keys in the status line
 " }
 " Editing text {
 set backspace=indent,eol,start
