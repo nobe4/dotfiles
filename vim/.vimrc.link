@@ -41,8 +41,7 @@ call plug#begin('~/.vim/plugged')
 " }
 " nobe4 {
 Plug 'nobe4/vimcorrect'
-" Use the plugin instead of the default behaviour
-nnoremap z= :Correct<CR>
+nnoremap Z= :Correct<CR>
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
@@ -63,6 +62,9 @@ nnoremap <leader>uf :UndotreeFocus<CR>
 " }
 " matchit {
 Plug 'vim-scripts/matchit.zip'
+" }
+" tweekmonster/django-plus.vim {
+Plug 'tweekmonster/django-plus.vim'
 " }
 " mattn/emmet-vim {
 Plug 'mattn/emmet-vim'
