@@ -118,6 +118,7 @@ set number
 
 set list " show invisible characters
 set listchars=tab:\|\ ,trail:·,extends:›,precedes:‹,nbsp:·
+set fillchars+=vert:\ 
 
 set nowrap
 
