@@ -1,3 +1,6 @@
+# Bypass docker
+return;
+
 # Check if docker exist before adding the env and aliases
 if ! hash docker 2>/dev/null; then
   alias dk="echo 'Please install docker first'"
