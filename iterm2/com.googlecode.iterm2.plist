@@ -614,13 +614,15 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>363 566 606 456 0 0 1680 1027 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>282 1818 620 392 -688 1050 2560 1417 </string>
+	<string>530 477 620 392 0 0 1680 1027 </string>
+	<key>NSWindow Frame SharedPreferences</key>
+	<string>181 314 918 452 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>841 4 838 1023 0 0 1680 1027 </string>
+	<string>1 700 490 327 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>2 4 1276 1023 0 0 1680 1027 </string>
+	<string>841 10 838 1012 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>841 4 838 1023 0 0 1680 1027 </string>
+	<string>841 10 838 1012 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>254 55 490 327 0 0 1680 1027 </string>
 	<key>New Bookmarks</key>
@@ -782,12 +784,16 @@
 			<true/>
 			<key>Background Color</key>
 			<dict>
+				<key>Alpha Component</key>
+				<real>1</real>
 				<key>Blue Component</key>
-				<real>0.15686275064945221</real>
+				<real>0.084170147776603699</real>
+				<key>Color Space</key>
+				<string>Calibrated</string>
 				<key>Green Component</key>
-				<real>0.15686275064945221</real>
+				<real>0.084168717265129089</real>
 				<key>Red Component</key>
-				<real>0.15686275064945221</real>
+				<real>0.084171228110790253</real>
 			</dict>
 			<key>Background Image Is Tiled</key>
 			<false/>
@@ -820,6 +826,8 @@
 			<integer>80</integer>
 			<key>Command</key>
 			<string>/bin/zsh</string>
+			<key>Cursor Boost</key>
+			<real>0.0</real>
 			<key>Cursor Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -1341,14 +1349,18 @@
 			<false/>
 			<key>Use Canonical Parser</key>
 			<false/>
+			<key>Use Cursor Guide</key>
+			<false/>
 			<key>Use Italic Font</key>
 			<true/>
+			<key>Use Tab Color</key>
+			<false/>
 			<key>Vertical Spacing</key>
 			<real>1</real>
 			<key>Visual Bell</key>
 			<true/>
 			<key>Window Type</key>
-			<integer>0</integer>
+			<integer>12</integer>
 			<key>Working Directory</key>
 			<string>/Users/victor</string>
 		</dict>
@@ -1449,7 +1461,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-07-26T07:52:17Z</date>
+	<date>2016-07-27T15:00:03Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -1501,7 +1513,7 @@
 	<key>iTerm Version</key>
 	<string>3.0.4</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
 	<false/>
 </dict>
