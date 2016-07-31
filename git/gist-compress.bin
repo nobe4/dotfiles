@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Compress a folder/file, encode in base 64, copy to clipboard and open the gist page
+zip -r - "$1" -q | base64 | pbcopy
+open https://gist.github.com/
