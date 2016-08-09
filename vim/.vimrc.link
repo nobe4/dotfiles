@@ -387,4 +387,15 @@ endfunction
 " TS is for Todo Save
 command! TS call TodoSave()
 
+" Create a centered column to write stuff more easily
+function! CenterColumn()
+    vnew
+    vnew
+    wincmd L
+    wincmd =
+    wincmd h
+endfunction
+
+command! CenterColumn call CenterColumn()
+
 " }
