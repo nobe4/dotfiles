@@ -326,6 +326,8 @@ cnoremap <C-H> "cont quit next step interrupt finish backtrace up down<CR>
 " Enhance the register pasting
 nnoremap "p :reg <bar> exec 'normal! "'.input('>').'p'<CR>
 
+nnoremap <C-W>z :resize <bar> vertical resize<CR>
+
 "}
 " Abbreviations {
 iabbrev pydebug import pdb; pdb.set_trace()
