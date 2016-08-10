@@ -63,6 +63,20 @@ nnoremap <leader>uf :UndotreeFocus<CR>
 " matchit {
 Plug 'vim-scripts/matchit.zip'
 " }
+" janko-m/vim-test {
+Plug 'janko-m/vim-test'
+let test#strategy = "dispatch"
+" Allow debug while running single test
+let test#python#pytest#options = {
+            \ 'nearest': '-n 0 --driver Firefox',
+            \}
+let test#python#runner = 'pytest'
+let g:test#runner_commands = ['PyTest']
+nmap <silent> <leader>tt :TestNearest
+nmap <silent> <leader>tf :TestFile
+nmap <silent> <leader>ts :TestSuite
+nmap <silent> <leader>tl :TestLast
+" }
 " tweekmonster/django-plus.vim {
 Plug 'tweekmonster/django-plus.vim'
 " }
