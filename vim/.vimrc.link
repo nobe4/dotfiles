@@ -78,7 +78,7 @@ nmap <silent> <leader>ts :TestSuite
 nmap <silent> <leader>tl :TestLast
 " }
 " tweekmonster/django-plus.vim {
-Plug 'tweekmonster/django-plus.vim'
+" Plug 'tweekmonster/django-plus.vim'
 " }
 " mattn/emmet-vim {
 Plug 'mattn/emmet-vim'
@@ -344,7 +344,7 @@ nnoremap <C-W>z :resize <bar> vertical resize<CR>
 
 "}
 " Abbreviations {
-iabbrev pydebug import pdb; pdb.set_trace()
+iabbrev pydebug import ipdb; ipdb.set_trace()
 iabbrev red* * { color: red !important; }
 "}
 " Various {
