@@ -1,5 +1,8 @@
 #!/bin/sh
 
-# Compress a folder/file, encode in base 64, copy to clipboard and open the gist page
-zip -r - "$1" -q | base64 | pbcopy
+# Compress a folder/file, encode in base 64, save to file and open the gist page
 open https://gist.github.com/
+
+filename="/tmp/`date +%s`.compress"
+zip -r - "$1" -q | base64 > $filename
+open "/tmp"
