@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+#
+#   Convert from and to binary
+#
+#   Usage: see the help (-h flag)
+#
+
+import argparse
+import binascii
+
+# ref http://stackoverflow.com/a/7397689/2558252
+def text_to_bits(text, encoding='utf-8'):
+    bits = bin(int(binascii.hexlify(text.encode(encoding)), 16))[2:]
+    return bits.zfill(8 * ((len(bits) + 7) // 8))
+
+def text_from_bits(bits, encoding='utf-8'):
+    n = int(bits, 2)
+    return int2bytes(n).decode(encoding)
+
+def int2bytes(i):
+    hex_string = '%x' % i
+    n = len(hex_string)
+    return binascii.unhexlify(hex_string.zfill(n + (n & 1)))
+
+parser = argparse.ArgumentParser(description='binutils - simple binary conversion tool')
+
+parser.add_argument('input', type=str, help='the input to convert')
+parser.add_argument('-b', dest='to_binary', action='store_true', help='convert to binary')
+
+args = parser.parse_args()
+
+if args.to_binary:
+    output = text_to_bits(args.input)
+else:
+    output = text_from_bits(args.input)
+
+print output
