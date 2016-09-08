@@ -68,7 +68,7 @@ Plug 'janko-m/vim-test'
 let test#strategy = "dispatch"
 " Allow debug while running single test
 let test#python#pytest#options = {
-            \ 'nearest': '-n 0 --driver Firefox',
+            \ 'nearest': '-n 0 --driver Firefox -s',
             \}
 let test#python#runner = 'pytest'
 let g:test#runner_commands = ['PyTest']
@@ -107,6 +107,8 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-dispatch'
+" metakirby5/codi.vim {
+Plug 'metakirby5/codi.vim'
 " }
 " Vim-plug end of Initialisation {
 call plug#end()
@@ -298,6 +300,9 @@ cnoremap w!! w !sudo tee % >/dev/null
 
 " In insert mode <C-\> remove unwanted <CR> insertion
 inoremap <C-\> <C-o>:left 0<Cr><BS>
+
+" In normal mode <C-\> grep for the word under the cursor
+nnoremap <C-\> :grep <C-R><C-W>
 
 " Before deleting from insert mode, create a new change
 inoremap <c-u> <c-g>u<c-u>
