@@ -8,7 +8,7 @@
 "    | | | | (_) | |_) |  __/\___  |
 "    |_| |_|\___/|_.__/ \___|    |_/
 "
-"    Personnal vimrc of Victor Haffreingue
+"    Personal vimrc of Victor Haffreingue
 "    Use it and share it as you like.
 "
 "    Copyright (C) 2015-2016, Victor Haffreingue
@@ -44,7 +44,7 @@ Plug 'nobe4/vimcorrect'
 nnoremap Z= :Correct<CR>
 " }
 " editorconfig/editorconfig-vim {
-Plug 'editorconfig/editorconfig-vim'
+" Plug 'editorconfig/editorconfig-vim'
 " }
 " statox/vim-compare-lines {
 Plug 'statox/vim-compare-lines'
@@ -78,7 +78,7 @@ nmap <silent> <leader>ts :TestSuite
 nmap <silent> <leader>tl :TestLast
 " }
 " tweekmonster/django-plus.vim {
-" Plug 'tweekmonster/django-plus.vim'
+Plug 'tweekmonster/django-plus.vim'
 " }
 " mattn/emmet-vim {
 Plug 'mattn/emmet-vim'
@@ -107,6 +107,8 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-dispatch'
+" }
+
 " metakirby5/codi.vim {
 Plug 'metakirby5/codi.vim'
 " }
@@ -302,7 +304,13 @@ cnoremap w!! w !sudo tee % >/dev/null
 inoremap <C-\> <C-o>:left 0<Cr><BS>
 
 " In normal mode <C-\> grep for the word under the cursor
-nnoremap <C-\> :grep <C-R><C-W>
+" inspiration: https://robots.thoughtbot.com/faster-grepping-in-vim
+nnoremap <C-\> :grep!<SPACE>
+" nnoremap <C-\> :grep! --word-regexp "<C-R><C-W>"<CR>:cw<CR>
+
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
 
 " Before deleting from insert mode, create a new change
 inoremap <c-u> <c-g>u<c-u>
