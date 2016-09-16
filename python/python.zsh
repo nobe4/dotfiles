@@ -16,3 +16,13 @@ alias pyservedebug='foreman run python -m pdb manage.py runserver'
 
 alias pyman='python manage.py'
 alias fopyman='foreman run python manage.py'
+
+# Sometimes we need the framework python
+# http://matplotlib.org/faq/virtualenv_faq.html
+function frameworkpython {
+    if [[ ! -z "$VIRTUAL_ENV" ]]; then
+        PYTHONHOME=$VIRTUAL_ENV /usr/local/bin/python "$@"
+    else
+        /usr/local/bin/python "$@"
+    fi
+}

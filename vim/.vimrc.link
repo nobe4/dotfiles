@@ -8,7 +8,7 @@
 "    | | | | (_) | |_) |  __/\___  |
 "    |_| |_|\___/|_.__/ \___|    |_/
 "
-"    Personnal vimrc of Victor Haffreingue
+"    Personal vimrc of Victor Haffreingue
 "    Use it and share it as you like.
 "
 "    Copyright (C) 2015-2016, Victor Haffreingue
@@ -44,7 +44,7 @@ Plug 'nobe4/vimcorrect'
 nnoremap Z= :Correct<CR>
 " }
 " editorconfig/editorconfig-vim {
-Plug 'editorconfig/editorconfig-vim'
+" Plug 'editorconfig/editorconfig-vim'
 " }
 " statox/vim-compare-lines {
 Plug 'statox/vim-compare-lines'
@@ -62,6 +62,20 @@ nnoremap <leader>uf :UndotreeFocus<CR>
 " }
 " matchit {
 Plug 'vim-scripts/matchit.zip'
+" }
+" janko-m/vim-test {
+Plug 'janko-m/vim-test'
+let test#strategy = "dispatch"
+" Allow debug while running single test
+let test#python#pytest#options = {
+            \ 'nearest': '-n 0 --driver Firefox -s',
+            \}
+let test#python#runner = 'pytest'
+let g:test#runner_commands = ['PyTest']
+nmap <silent> <leader>tt :TestNearest
+nmap <silent> <leader>tf :TestFile
+nmap <silent> <leader>ts :TestSuite
+nmap <silent> <leader>tl :TestLast
 " }
 " tweekmonster/django-plus.vim {
 Plug 'tweekmonster/django-plus.vim'
@@ -93,6 +107,10 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-dispatch'
+" }
+
+" metakirby5/codi.vim {
+Plug 'metakirby5/codi.vim'
 " }
 " Vim-plug end of Initialisation {
 call plug#end()
@@ -285,6 +303,15 @@ cnoremap w!! w !sudo tee % >/dev/null
 " In insert mode <C-\> remove unwanted <CR> insertion
 inoremap <C-\> <C-o>:left 0<Cr><BS>
 
+" In normal mode <C-\> grep for the word under the cursor
+" inspiration: https://robots.thoughtbot.com/faster-grepping-in-vim
+nnoremap <C-\> :grep!<SPACE>
+" nnoremap <C-\> :grep! --word-regexp "<C-R><C-W>"<CR>:cw<CR>
+
+" bind \ (backward slash) to grep shortcut
+command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Ag<SPACE>
+
 " Before deleting from insert mode, create a new change
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
@@ -327,9 +354,11 @@ cnoremap <C-H> "cont quit next step interrupt finish backtrace up down<CR>
 " Enhance the register pasting
 nnoremap "p :reg <bar> exec 'normal! "'.input('>').'p'<CR>
 
+nnoremap <C-W>z :resize <bar> vertical resize<CR>
+
 "}
 " Abbreviations {
-iabbrev pydebug import pdb; pdb.set_trace()
+iabbrev pydebug import ipdb; ipdb.set_trace()
 iabbrev red* * { color: red !important; }
 "}
 " Various {
@@ -396,5 +425,19 @@ function! CenterColumn()
 endfunction
 
 command! CenterColumn call CenterColumn()
+
+function! ScreenCapture()
+    let array=[]
+    for i in range(1,&lines)
+        let row=''
+        for j in range(1,&columns)
+            let row.=nr2char(screenchar(i,j))
+        endfor
+        call add(array, row)
+    endfor
+    tabnew
+    call setline(1,array)
+endfu
+command! ScreenCapture :call ScreenCapture()
 
 " }
