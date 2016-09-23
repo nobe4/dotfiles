@@ -6,8 +6,9 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # manual sourcing z
 . `brew --prefix`/etc/profile.d/z.sh
 
-# You may need to manually set your language environment
+# manually set the language environment
 export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
 
 # History config
 # Do not share history accross sessions
