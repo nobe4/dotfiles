@@ -440,4 +440,16 @@ function! ScreenCapture()
 endfu
 command! ScreenCapture :call ScreenCapture()
 
+function! FollowCursor(follow)
+    if a:follow
+        nnoremap j jzz
+        nnoremap k kzz
+    else
+        unmap j
+        unmap k
+    endif
+endfunction
+command! FollowCursor :call FollowCursor(1)
+command! UnfollowCursor :call FollowCursor(0)
+
 " }
