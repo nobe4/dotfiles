@@ -11,11 +11,10 @@ fi
 # ref: http://docs.python-guide.org/en/latest/writing/gotchas/#disabling-bytecode-pyc-files
 export PYTHONDONTWRITEBYTECODE=1
 
-alias pyserve='foreman start'
-alias pyservedebug='foreman run python -m pdb manage.py runserver'
+alias pys='foreman start'
+alias pysd='foreman run python -m pdb manage.py runserver'
 
-alias pyman='python manage.py'
-alias fopyman='foreman run python manage.py'
+alias pm='python manage.py'
 
 # Sometimes we need the framework python
 # http://matplotlib.org/faq/virtualenv_faq.html
