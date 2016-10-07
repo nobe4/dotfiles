@@ -15,6 +15,10 @@ alias pys='foreman start'
 alias pysd='foreman run python -m pdb manage.py runserver'
 
 alias pm='python manage.py'
+alias pmmm='python manage.py makemigrations'
+alias pmmg='python manage.py migrate'
+alias pmsh='python manage.py shell'
+alias pmdb='python manage.py dbshell'
 
 # Sometimes we need the framework python
 # http://matplotlib.org/faq/virtualenv_faq.html
