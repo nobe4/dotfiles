@@ -55,6 +55,11 @@ Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 " Colorscheme {
 Plug 'morhetz/gruvbox'
 " }
+" Raimondi/delimitMate {
+Plug 'Raimondi/delimitMate'
+let delimitMate_expand_cr = 1
+let delimitMate_expand_space = 1
+" }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 nnoremap <leader>ut :UndotreeToggle<CR>
@@ -309,7 +314,7 @@ nnoremap <C-\> :grep!<SPACE>
 " nnoremap <C-\> :grep! --word-regexp "<C-R><C-W>"<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
-command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
 
 " Before deleting from insert mode, create a new change
@@ -355,6 +360,8 @@ cnoremap <C-H> "cont quit next step interrupt finish backtrace up down<CR>
 nnoremap "p :reg <bar> exec 'normal! "'.input('>').'p'<CR>
 
 nnoremap <C-W>z :resize <bar> vertical resize<CR>
+
+nnoremap g<C-o> :!open .<CR><CR>
 
 "}
 " Abbreviations {
