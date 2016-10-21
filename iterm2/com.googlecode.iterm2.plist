@@ -5,7 +5,7 @@
 	<key>AdjustWindowForFontSizeChange</key>
 	<true/>
 	<key>AllowClipboardAccess</key>
-	<false/>
+	<true/>
 	<key>AnimateDimming</key>
 	<false/>
 	<key>AppleAntiAliasingThreshold</key>
@@ -27,7 +27,7 @@
 	<key>CopyLastNewline</key>
 	<false/>
 	<key>CopySelection</key>
-	<false/>
+	<true/>
 	<key>Custom Color Presets</key>
 	<dict>
 		<key>base16-ocean</key>
@@ -582,18 +582,12 @@
 	<true/>
 	<key>MaxVertically</key>
 	<false/>
-	<key>NSColorPanelMode</key>
-	<string>7</string>
 	<key>NSFontPanelAttributes</key>
 	<string>1, 0</string>
 	<key>NSNavLastRootDirectory</key>
 	<string>~</string>
 	<key>NSNavPanelExpandedSizeForOpenMode</key>
-	<string>{1375, 613}</string>
-	<key>NSNavPanelExpandedSizeForSaveMode</key>
-	<string>{712, 565}</string>
-	<key>NSNavPanelExpandedStateForSaveMode</key>
-	<true/>
+	<string>{712, 459}</string>
 	<key>NSQuotedKeystrokeBinding</key>
 	<string></string>
 	<key>NSRepeatCountBinding</key>
@@ -619,36 +613,25 @@
 	<array/>
 	<key>NSTableView Sort Ordering KeyBingingTable</key>
 	<array/>
-	<key>NSToolbar Configuration Terminal Toolbar</key>
-	<dict>
-		<key>TB Display Mode</key>
-		<integer>1</integer>
-		<key>TB Icon Size Mode</key>
-		<integer>1</integer>
-		<key>TB Is Shown</key>
-		<integer>0</integer>
-		<key>TB Size Mode</key>
-		<integer>1</integer>
-	</dict>
 	<key>NSToolbar Configuration com.apple.NSColorPanel</key>
 	<dict>
 		<key>TB Is Shown</key>
 		<integer>1</integer>
 	</dict>
 	<key>NSWindow Frame NSFontPanel</key>
-	<string>613 217 684 261 0 0 1440 900 </string>
+	<string>651 562 445 77 0 0 1680 1027 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>516 301 924 485 0 0 1440 900 </string>
+	<string>363 566 606 456 0 0 1680 1027 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>530 494 620 392 0 0 1680 1050 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>216 173 937 466 0 0 1440 877 </string>
+	<string>719 1699 796 473 -420 1050 2560 1440 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 0 1680 1050 0 0 1680 1027 </string>
+	<string>1680 250 1280 1024 1680 250 1280 1001 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>-686 1440 1258 1023 0 0 1680 1027 </string>
+	<string>-420 1768 1408 699 -420 1050 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>719 213 490 326 0 0 1440 877 </string>
+	<string>611 389 394 304 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>191 386 490 304 0 0 1680 1027 </string>
 	<key>New Bookmarks</key>
@@ -1381,22 +1364,32 @@
 			<string>/Users/victor</string>
 		</dict>
 	</array>
-	<key>NoSyncDisablePromotions</key>
+	<key>NoSyncConfirmBeta</key>
 	<true/>
-	<key>NoSyncHaveShownPromoWithId_4</key>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
 	<true/>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
+	<integer>1</integer>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt</key>
+	<true/>
+	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt_selection</key>
+	<integer>1</integer>
 	<key>NoSyncInstallationId</key>
-	<string>AFD9EE1D-6592-41C3-B1E7-91ED6422A9F6</string>
+	<string>96943FD7-60B6-40D6-9C69-942A7862B2B0</string>
 	<key>NoSyncLastTipTime</key>
-	<real>493195058.720514</real>
+	<real>487779936.13736397</real>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
+	<true/>
+	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
+	<integer>0</integer>
 	<key>NoSyncPermissionToShowTip</key>
 	<true/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
-	<real>491863388.38592601</real>
+	<real>486992548.61998802</real>
 	<key>NoSyncTimeOfLastPromo</key>
-	<real>477740726.41042602</real>
+	<real>478807670.63539302</real>
 	<key>NoSyncTimeOfLastPromoDownload</key>
-	<real>477740701.39569998</real>
+	<real>486893630.47905898</real>
 	<key>NoSyncTipsDisabled</key>
 	<true/>
 	<key>NoSyncTipsToNotShow</key>
@@ -1404,8 +1397,6 @@
 		<string>000</string>
 		<string>0000</string>
 		<string>0001</string>
-		<string>0002</string>
-		<string>0003</string>
 	</array>
 	<key>OnlyWhenMoreTabs</key>
 	<true/>
@@ -1455,7 +1446,7 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>/Users/n4/.dot/iterm2/</string>
+	<string>~/.dot/iterm2</string>
 	<key>PromptOnQuit</key>
 	<true/>
 	<key>QuitWhenAllWindowsClosed</key>
@@ -1469,19 +1460,19 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/final.xml?shard=29</string>
+	<string>https://iterm2.com/appcasts/final.xml?shard=31</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-08-04T17:17:50Z</date>
+	<date>2016-10-20T10:07:15Z</date>
 	<key>SUSkippedVersion</key>
-	<string>3.0.5</string>
+	<string>3.0.10</string>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
 	<false/>
 	<key>ShowFullScreenTabBar</key>
-	<true/>
+	<false/>
 	<key>ShowPaneTitles</key>
 	<true/>
 	<key>SmartPlacement</key>
