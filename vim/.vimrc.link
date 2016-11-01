@@ -257,6 +257,10 @@ set wildmenu " Command-line completion shows a list of matches
 set undofile " save and restore undo history
 set undodir=~/.vim/undodir  " list of directories for undo files
 " }
+" running make and jumping to errors {
+" Fix dispatch, ref https://github.com/tpope/vim-dispatch/issues/192
+set shellpipe+=\ 
+" }
 " Language specific {
 " Enable spell for commit messages
 autocmd! Filetype gitcommit set spell
