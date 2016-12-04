@@ -44,7 +44,7 @@ Plug 'nobe4/vimcorrect'
 nnoremap Z= :Correct<CR>
 " }
 " editorconfig/editorconfig-vim {
-" Plug 'editorconfig/editorconfig-vim'
+Plug 'editorconfig/editorconfig-vim'
 " }
 " statox/vim-compare-lines {
 Plug 'statox/vim-compare-lines'
@@ -289,7 +289,7 @@ noremap gp '[v']
 vnoremap @ :norm@
 
 " edit and source .vimrc
-nnoremap <Leader>ve :e ~/.vimrc<CR>
+nnoremap <Leader>ve :e $MYVIMRC<CR>
 nnoremap <Leader>vs :so $MYVIMRC
 
 " save file
@@ -328,15 +328,15 @@ inoremap <c-w> <c-g>u<c-w>
 nnoremap <Leader>tn :tabnew 
 
 " Copy/Paste with system clipboard
-function! CmdPast() abort
+function! CmdPaste() abort
     set paste
     normal! "+p
     set nopaste
 endfunction
 
-nnoremap <Leader>yp :call CmdPast()<CR>
-vnoremap <Leader>yc "+y
+nnoremap <Leader>yp :call CmdPaste()<CR>
 nnoremap <Leader>yc "+yy
+vnoremap <Leader>yc "+y
 
 " execute cmake from command line
 command! -nargs=1 Cmake !cmake "<args>"
@@ -424,7 +424,7 @@ function! TodoSave()
     execute "w ~/Desktop/".l:filename.".md"
 endfunction
 " TS is for Todo Save
-command! TS call TodoSave()
+command! TS :call TodoSave()
 
 " Create a centered column to write stuff more easily
 function! CenterColumn()
@@ -435,7 +435,7 @@ function! CenterColumn()
     wincmd h
 endfunction
 
-command! CenterColumn call CenterColumn()
+command! CenterColumn :call CenterColumn()
 
 function! ScreenCapture()
     let array=[]
