@@ -327,6 +327,9 @@ inoremap <c-w> <c-g>u<c-w>
 " Create a new tab
 nnoremap <Leader>tn :tabnew 
 
+" Quick make
+nnoremap <Leader>ma :make<CR>
+
 " Copy/Paste with system clipboard
 function! CmdPaste() abort
     set paste
