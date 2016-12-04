@@ -73,7 +73,7 @@ Plug 'janko-m/vim-test'
 let test#strategy = "dispatch"
 " Allow debug while running single test
 let test#python#pytest#options = {
-            \ 'nearest': '-n 0 --driver Firefox -s',
+            \ 'nearest': '-n 0 --driver Chrome -s',
             \}
 let test#python#runner = 'pytest'
 let g:test#runner_commands = ['PyTest']
@@ -314,8 +314,7 @@ inoremap <C-\> <C-o>:left 0<Cr><BS>
 
 " In normal mode <C-\> grep for the word under the cursor
 " inspiration: https://robots.thoughtbot.com/faster-grepping-in-vim
-nnoremap <C-\> :grep!<SPACE>
-" nnoremap <C-\> :grep! --word-regexp "<C-R><C-W>"<CR>:cw<CR>
+nnoremap <C-\> :grep! --word-regexp '<C-R><C-W>'<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
@@ -371,6 +370,7 @@ nnoremap g<C-o> :!open .<CR><CR>
 " Abbreviations {
 iabbrev pydebug import ipdb; ipdb.set_trace()
 iabbrev red* * { color: red !important; }
+iabbrev :shrug: ¯\_(ツ)_/¯
 "}
 " Various {
 " Open current file in sublime text
