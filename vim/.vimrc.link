@@ -163,7 +163,6 @@ colorscheme gruvbox
 " Clearing uses the current background color
 set t_ut=
 set t_Co=256 " Number of available colors
-set cursorline
 
 " add red background color for 81nth characters line
 highlight OverLength ctermbg=red ctermfg=white
@@ -320,6 +319,8 @@ nnoremap <C-\> :grep!<SPACE>
 " bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
+
+inoremap <CR> <C-G>u<CR>
 
 " Before deleting from insert mode, create a new change
 inoremap <c-u> <c-g>u<c-u>
