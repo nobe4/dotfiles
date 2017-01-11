@@ -6,3 +6,6 @@ alias vih='vim +help\'
 
 # Vim without config
 alias vin='vim -Nu NONE'
+
+# Jump to tag
+alias vit='vim +tj\'

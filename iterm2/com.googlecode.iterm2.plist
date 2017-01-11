@@ -623,15 +623,17 @@
 	<key>NSWindow Frame Preferences</key>
 	<string>363 566 606 456 0 0 1680 1027 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>530 494 620 392 0 0 1680 1050 </string>
+	<string>550 1836 620 392 -420 1050 2560 1440 </string>
+	<key>NSWindow Frame SessionsPreferences</key>
+	<string>269 139 606 456 0 0 1680 1027 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>719 1699 796 473 -420 1050 2560 1440 </string>
+	<string>414 1351 796 473 -420 1050 2560 1440 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>1680 250 1280 1024 1680 250 1280 1001 </string>
+	<string>-420 1050 2560 1440 -420 1050 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>-420 1768 1408 699 -420 1050 2560 1417 </string>
+	<string>410 1421 490 327 -420 1050 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>611 389 394 304 0 0 1680 1027 </string>
+	<string>697 1790 490 327 -420 1050 2560 1417 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>191 386 490 304 0 0 1680 1027 </string>
 	<key>New Bookmarks</key>
@@ -815,7 +817,7 @@
 			<key>Blur</key>
 			<true/>
 			<key>Blur Radius</key>
-			<real>15</real>
+			<real>30</real>
 			<key>Bold Color</key>
 			<dict>
 				<key>Blue Component</key>
@@ -1190,6 +1192,8 @@
 			<true/>
 			<key>Normal Font</key>
 			<string>Hack-Regular 10</string>
+			<key>Open Toolbelt</key>
+			<false/>
 			<key>Option Key Sends</key>
 			<integer>0</integer>
 			<key>Prompt Before Closing 2</key>
@@ -1464,9 +1468,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-10-20T10:07:15Z</date>
-	<key>SUSkippedVersion</key>
-	<string>3.0.10</string>
+	<date>2016-12-15T09:24:05Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -1476,7 +1478,7 @@
 	<key>ShowPaneTitles</key>
 	<true/>
 	<key>SmartPlacement</key>
-	<false/>
+	<true/>
 	<key>SplitPaneDimmingAmount</key>
 	<real>0.53882712125778198</real>
 	<key>SwitchTabModifier</key>
@@ -1516,7 +1518,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.7</string>
+	<string>3.0.12</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>1</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
