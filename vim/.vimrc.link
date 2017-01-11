@@ -55,11 +55,6 @@ Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 " Colorscheme {
 Plug 'morhetz/gruvbox'
 " }
-" Raimondi/delimitMate {
-Plug 'Raimondi/delimitMate'
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
-" }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 nnoremap <leader>ut :UndotreeToggle<CR>
@@ -113,7 +108,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-dispatch'
 " }
-
 " metakirby5/codi.vim {
 Plug 'metakirby5/codi.vim'
 " }
@@ -280,6 +274,8 @@ set termencoding=utf-8
 " move vertically inside wrapping lines
 nnoremap j gj
 nnoremap k gk
+vnoremap j gj
+vnoremap k gk
 
 " Select last pasted text
 noremap gp '[v']
