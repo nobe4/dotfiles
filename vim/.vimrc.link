@@ -108,7 +108,6 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-dispatch'
 " }
-
 " metakirby5/codi.vim {
 Plug 'metakirby5/codi.vim'
 " }
@@ -276,6 +275,8 @@ set termencoding=utf-8
 " move vertically inside wrapping lines
 nnoremap j gj
 nnoremap k gk
+vnoremap j gj
+vnoremap k gk
 
 " Select last pasted text
 noremap gp '[v']
@@ -314,6 +315,8 @@ nnoremap <C-\> :grep! --word-regexp '<C-R><C-W>'<CR>:cw<CR>
 " bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Ag<SPACE>
+
+inoremap <CR> <C-G>u<CR>
 
 " Before deleting from insert mode, create a new change
 inoremap <c-u> <c-g>u<c-u>
