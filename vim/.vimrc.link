@@ -55,11 +55,6 @@ Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 " Colorscheme {
 Plug 'morhetz/gruvbox'
 " }
-" Raimondi/delimitMate {
-Plug 'Raimondi/delimitMate'
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
-" }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 nnoremap <leader>ut :UndotreeToggle<CR>
@@ -255,6 +250,7 @@ set wildmode=longest,list,full
 set wildmenu " Command-line completion shows a list of matches
 set undofile " save and restore undo history
 set undodir=~/.vim/undodir  " list of directories for undo files
+set wildignore+=*.pyc
 " }
 " running make and jumping to errors {
 " Fix dispatch, ref https://github.com/tpope/vim-dispatch/issues/192
@@ -370,7 +366,7 @@ nnoremap g<C-o> :!open .<CR><CR>
 
 "}
 " Abbreviations {
-iabbrev pydebug import ipdb; ipdb.set_trace()
+iabbrev pydebug import pdb; pdb.set_trace()
 iabbrev red* * { color: red !important; }
 iabbrev :shrug: ¯\_(ツ)_/¯
 "}
