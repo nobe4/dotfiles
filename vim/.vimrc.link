@@ -99,7 +99,7 @@ Plug 'christoomey/vim-tmux-navigator'
 " tpope/* {
 Plug 'tpope/vim-fugitive'
 nnoremap <Leader>gs :Gstatus<CR>
-nnoremap <Leader>gp :Gpush
+nnoremap <Leader>gp :Gpush -u
 nnoremap <Leader>gl :Gpull
 
 Plug 'tpope/vim-projectionist'
