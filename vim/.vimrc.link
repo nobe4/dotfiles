@@ -157,10 +157,6 @@ colorscheme gruvbox
 " Clearing uses the current background color
 set t_ut=
 set t_Co=256 " Number of available colors
-
-" add red background color for 81nth characters line
-highlight OverLength ctermbg=red ctermfg=white
-match OverLength /\%81v./
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
