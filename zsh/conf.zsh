@@ -18,6 +18,9 @@ setopt nosharehistory
 fpath=($ZSH/functions $fpath)
 autoload -U $ZSH/functions/*(:t)
 
+# Preserve the default man pager
+unset MANPAGER
+
 # SSH Config
 
 # Complete ssh
