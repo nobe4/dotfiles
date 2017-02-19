@@ -1,3 +1,6 @@
+# use vim , not vi
+alias vi="vim"
+
 # Run Gstatus at vim startup
 alias vst='vim +Gstatus now'
 

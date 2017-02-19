@@ -6,7 +6,7 @@
   email = haffreinguev@gmail.com
 [core]
   # use vim, damn
-  editor = /usr/local/bin/vi
+  editor = vim
   excludesFile = $HOME/.gitignore_global
 [alias]
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
