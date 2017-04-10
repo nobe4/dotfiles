@@ -348,7 +348,7 @@ nnoremap <Leader>b :b#<CR>
 nnoremap <Leader>l :ls<CR>:buffer<Space>
 
 " Clear the highlight
-nnoremap <silent> <Esc> :<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
+nnoremap <silent> <CR> :<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><CR>
 
 " Make <C-F> insert current path in command line mode
 cnoremap <C-F> <C-R>=expand('%:p:h')<CR>/
