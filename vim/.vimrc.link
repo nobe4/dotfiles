@@ -42,6 +42,7 @@ call plug#begin('~/.vim/plugged')
 " nobe4 {
 Plug 'nobe4/vimcorrect'
 nnoremap Z= :Correct<CR>
+Plug 'nobe4/exchange.vim/'
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
