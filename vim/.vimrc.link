@@ -53,7 +53,7 @@ Plug 'statox/vim-compare-lines'
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 " }
 " Colorscheme {
-Plug 'morhetz/gruvbox'
+Plug 'nobe4/mnml.vim'
 " }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
@@ -62,9 +62,6 @@ nnoremap <leader>uf :UndotreeFocus<CR>
 " }
 " matchit {
 Plug 'vim-scripts/matchit.zip'
-" }
-" tweekmonster/django-plus.vim {
-Plug 'tweekmonster/django-plus.vim'
 " }
 " mattn/emmet-vim {
 Plug 'mattn/emmet-vim'
@@ -138,7 +135,8 @@ syntax on " Activate syntax highlighting
 set hlsearch
 
 set background=dark
-colorscheme gruvbox
+colorscheme mnml
+set colorcolumn=
 
 " Clearing uses the current background color
 set t_ut=
@@ -147,56 +145,6 @@ set t_Co=256 " Number of available colors
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
 set switchbuf=usetab,newtab
-
-" Status line definition
-" mapping for mode
-let g:currentmode={
-    \ 'n'  : 'N', 'no' : 'No',
-    \ 'v'  : 'V', 'V'  : 'Vl', '' : 'Vb',
-    \ 's'  : 'S', 'S'  : 'Sl', '' : 'Sb',
-    \ 'i'  : 'I',
-    \ 'R'  : 'R', 'Rv' : 'Rv',
-    \ 'c'  : 'Co', 'cv' : 'Vx', 'ce' : 'Ex',
-    \ 'r'  : 'Pr', 'rm' : 'Mo', 'r?' : 'Cf',
-    \ '!'  : 'Sh', 't'  : 'Tr'
-    \}
-
-function! VirtualEnv()
-    let l:env = $VIRTUAL_ENV
-    if l:env != ''
-        return split(l:env,'/')[-1].' '
-    endif
-    return ''
-endfunction
-
-function! GitBranch()
-    let l:branch = fugitive#head()
-    if l:branch != ''
-        return l:branch.' '
-    endif
-    return ''
-endfunction
-
-set laststatus=2
-set statusline=                                     " init the status line
-set statusline+=%0*\ %{g:currentmode[mode()]}\      " mode
-set statusline+=%1*\ %<%F                           " full path
-set statusline+=%4*\ %m                             " modified/locked
-set statusline+=%4*\ %w                             " preview
-set statusline+=%2*\ %=                             " separator
-set statusline+=%2*\ %q                             " quickfix/location
-set statusline+=%4*\ %y\                            " filetype
-set statusline+=%3*%{GitBranch()}                   " git branch
-set statusline+=%5*%{VirtualEnv()}                  " git branch
-set statusline+=%0*\ %3p%%\ %l:%c\                  " position in file
-
-" Custom highlight
-hi! User0 ctermfg=001 ctermbg=000
-hi! User1 ctermfg=008 ctermbg=000
-hi! User2 ctermfg=001 ctermbg=000
-hi! User3 ctermfg=003 ctermbg=000
-hi! User4 ctermfg=004 ctermbg=000
-hi! User5 ctermfg=006 ctermbg=000
 " }
 " Editing text {
 set backspace=indent,eol,start
@@ -334,7 +282,7 @@ nnoremap <Leader>b :b#<CR>
 nnoremap <Leader>l :ls<CR>:buffer<Space>
 
 " Clear the highlight
-nnoremap <silent> <CR> :<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><CR>
+nnoremap <silent> <Leader><Leader> :<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
 
 " Make <C-F> insert current path in command line mode
 cnoremap <C-F> <C-R>=expand('%:p:h')<CR>/
