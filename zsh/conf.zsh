@@ -29,7 +29,3 @@ unset MANPAGER
 zstyle -s ':completion:*:(ssh|scp|sftp):*' hosts _ssh_config
 [[ -r ~/.ssh/config ]] && _ssh_config+=($(cat ~/.ssh/config | sed -ne 's/Host[=\t ]//p'))
 zstyle ':completion:*:(ssh|scp|sftp):*' hosts $_ssh_config
-
-# CUSTOM CONFIG
-# Add gruvbox support for osx
-source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette_osx.sh"

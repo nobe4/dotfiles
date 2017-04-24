@@ -87,6 +87,7 @@ nnoremap <Leader>gp :Gpush -u
 nnoremap <Leader>gl :Gpull
 
 Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
