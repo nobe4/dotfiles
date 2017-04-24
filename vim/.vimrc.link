@@ -98,10 +98,10 @@ Plug 'metakirby5/codi.vim'
 " Vim-plug end of Initialisation {
 call plug#end()
 " }
-" The Silver Searcher {
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor\ --column
-  set grepformat=%f:%l:%c%m
+" ripgrep {
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --no-heading
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 " }
 " }
@@ -244,8 +244,8 @@ inoremap <C-\> <C-o>:left 0<Cr><BS>
 nnoremap <C-\> :grep! --word-regexp '<C-R><C-W>'<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
-command! -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-nnoremap \ :Ag<SPACE>
+command! -nargs=+ -complete=file -bar Rg :silent! grep! <args>|cwindow|redraw!
+nnoremap \ :Rg<Space>
 
 inoremap <CR> <C-G>u<CR>
 

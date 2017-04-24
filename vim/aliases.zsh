@@ -12,7 +12,3 @@ alias vin='vim -Nu NONE'
 
 # Jump to tag
 alias vit='vim +tj\'
-
-function agvi {
-  vi $(agf $1)
-}
