@@ -11,7 +11,7 @@
 "    Personal vimrc of Victor Haffreingue
 "    Use it and share it as you like.
 "
-"    Copyright (C) 2015-2016, Victor Haffreingue
+"    Copyright (C) 2015-2017, Victor Haffreingue
 "
 "    Permission is hereby granted, free of charge, to any person obtaining a
 "    copy of this software and associated documentation files (the "Software"),
@@ -47,11 +47,9 @@ Plug 'nobe4/exchange.vim/'
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
 " }
-" statox/vim-compare-lines {
-Plug 'statox/vim-compare-lines'
-" }
 " mattn/gist-vim {
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
+let g:gist_post_private = 1
 " }
 " Colorscheme {
 Plug 'nobe4/mnml.vim'
@@ -88,10 +86,8 @@ nnoremap <Leader>gl :Gpull
 
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
-Plug 'tpope/vim-dispatch'
 " }
 " metakirby5/codi.vim {
 Plug 'metakirby5/codi.vim'
@@ -138,7 +134,6 @@ set hlsearch
 
 set background=dark
 colorscheme mnml
-set colorcolumn=
 
 " Clearing uses the current background color
 set t_ut=
@@ -165,7 +160,7 @@ set smarttab " A <Tab> in an indent inserts 'shiftwidth' spaces
 " Folding {
 set foldenable " Turn on folding
 set foldmethod=indent
-set foldopen=search,block,hor,mark,percent,quickfix,tag " what movements
+set foldopen=block,hor,mark,percent,quickfix,tag " what movements
 set foldlevelstart=99 " disable auto folding on open
 " }
 " Reading and writing files {
@@ -182,10 +177,6 @@ set wildmenu " Command-line completion shows a list of matches
 set undofile " save and restore undo history
 set undodir=~/.vim/undodir  " list of directories for undo files
 set wildignore+=*.pyc
-" }
-" running make and jumping to errors {
-" Fix dispatch, ref https://github.com/tpope/vim-dispatch/issues/192
-set shellpipe+=\ 
 " }
 " Language specific {
 " Enable spell for commit messages
@@ -209,6 +200,23 @@ nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
+
+" I only use those mapping in tpope/vim-unimpaired...
+" Inspired by https://git.io/vHtuc
+function! s:MapNextFamily(map,cmd)
+  execute 'nnoremap <silent> '.        a:map .' :<C-U>exe "'.a:cmd.'previous<CR>"'
+  execute 'nnoremap <silent> '.        a:map .' :<C-U>exe "'.a:cmd.'next<CR>"'
+  execute 'nnoremap <silent> '.toupper(a:map).' :<C-U>exe "'.a:cmd.'first<CR>"'
+  execute 'nnoremap <silent> '.toupper(a:map).' :<C-U>exe "'.a:cmd.'last<CR>"'
+endfunction
+
+call s:MapNextFamily('q','c')
+call s:MapNextFamily('t','t')
+
+nnoremap <silent> [q :cprevious<CR>
+nnoremap <silent> ]q :cnext<CR>
+nnoremap <silent> [Q :cfirst<CR>
+nnoremap <silent> ]Q :clast<CR>
 
 " Select last pasted text
 noremap gp '[v']
