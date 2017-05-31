@@ -43,6 +43,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'nobe4/vimcorrect'
 nnoremap Z= :Correct<CR>
 Plug 'nobe4/exchange.vim/'
+
+Plug 'nobe4/curl.vim/'
+nnoremap <leader>c :call curl#Process()
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
@@ -156,11 +159,10 @@ set formatoptions+=j
 set completeopt=menu,preview
 " }
 " Tabs and indenting {
-set expandtab " Expand <Tab> to spaces in Insert mode
+set noexpandtab " Insert tab
+set autoindent " Use the same indent as the previous line
 set tabstop=2 " Number of spaces a <Tab> in the text stands for
 set shiftwidth=2 " Number of spaces used for each step of (auto)indent
-set softtabstop=2 " If non-zero, number of spaces to insert for a <Tab>
-set smarttab " A <Tab> in an indent inserts 'shiftwidth' spaces
 " }
 " Folding {
 set foldenable " Turn on folding
