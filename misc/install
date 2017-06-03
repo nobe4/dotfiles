@@ -1,0 +1,8 @@
+# See http://www.nongnu.org/renameutils/
+brew install renameutils
+
+# https://github.com/PhrozenByte/rmtrash
+brew install rmtrash
+
+# https://github.com/rupa/z
+brew install z
