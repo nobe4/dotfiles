@@ -8,6 +8,6 @@ git_dir="`git rev-parse --git-dir`"
 
 trap 'rm -f "$git_dir/tags.$$"' EXIT INT TERM
 
-git ls-files | ctags --tag-relative -L - -f$git_dir/tags.$$
+ctags --tag-relative=yes -f$git_dir/tags.$$ $(git ls-files)
 
 mv $git_dir/tags.$$ $git_dir/tags

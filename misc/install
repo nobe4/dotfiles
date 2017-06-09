@@ -6,3 +6,7 @@ brew install rmtrash
 
 # https://github.com/rupa/z
 brew install z
+
+# https://github.com/universal-ctags/ctags
+brew tap universal-ctags/universal-ctags
+brew install --HEAD universal-ctags
