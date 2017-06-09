@@ -206,19 +206,14 @@ vnoremap k gk
 " I only use those mapping in tpope/vim-unimpaired...
 " Inspired by https://git.io/vHtuc
 function! s:MapNextFamily(map,cmd)
-  execute 'nnoremap <silent> '.        a:map .' :<C-U>exe "'.a:cmd.'previous<CR>"'
-  execute 'nnoremap <silent> '.        a:map .' :<C-U>exe "'.a:cmd.'next<CR>"'
-  execute 'nnoremap <silent> '.toupper(a:map).' :<C-U>exe "'.a:cmd.'first<CR>"'
-  execute 'nnoremap <silent> '.toupper(a:map).' :<C-U>exe "'.a:cmd.'last<CR>"'
+  execute 'nnoremap <silent> ['.        a:map .' :<C-U>'.a:cmd.'previous<CR>"'
+  execute 'nnoremap <silent> ]'.        a:map .' :<C-U>'.a:cmd.'next<CR>"'
+  execute 'nnoremap <silent> ['.toupper(a:map).' :<C-U>'.a:cmd.'first<CR>"'
+  execute 'nnoremap <silent> ]'.toupper(a:map).' :<C-U>'.a:cmd.'last<CR>"'
 endfunction
 
 call s:MapNextFamily('q','c')
 call s:MapNextFamily('t','t')
-
-nnoremap <silent> [q :cprevious<CR>
-nnoremap <silent> ]q :cnext<CR>
-nnoremap <silent> [Q :cfirst<CR>
-nnoremap <silent> ]Q :clast<CR>
 
 " Select last pasted text
 noremap gp '[v']
