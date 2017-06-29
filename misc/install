@@ -10,3 +10,6 @@ brew install z
 # https://github.com/universal-ctags/ctags
 brew tap universal-ctags/universal-ctags
 brew install --HEAD universal-ctags
+
+# https://rentes.github.io/unix/utilities/2015/07/27/moreutils-package/
+brew install moreutil
