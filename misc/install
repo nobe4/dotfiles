@@ -13,3 +13,6 @@ brew install --HEAD universal-ctags
 
 # https://rentes.github.io/unix/utilities/2015/07/27/moreutils-package/
 brew install moreutil
+
+# Install ngrock manually here
+open https://github.com/inconshreveable/ngrok/releases
