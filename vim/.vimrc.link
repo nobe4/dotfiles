@@ -310,6 +310,10 @@ iabbrev pydebug import pdb; pdb.set_trace()
 iabbrev red* * { color: red !important; }
 iabbrev :shrug: ¯\_(ツ)_/¯
 "}
+" GUI {
+" Remove every bit of GUI option
+set guioptions=
+" }
 " Various {
 " Open current file in sublime text
 command! Subl silent execute "!open -a \"Sublime Text 2\" %"
