@@ -74,6 +74,10 @@ autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango EmmetInstall
 " danro/rename.vim {
 Plug 'danro/rename.vim', { 'on': 'Rename' }
 " }
+" w0rp/ale {
+Plug 'w0rp/ale'
+let g:ale_lint_on_text_changed="never" " Don't distract me, only lint on save
+" }
 " scrooloose/nerdcommenter {
 Plug 'scrooloose/nerdcommenter'
 let NERDSpaceDelims=1
