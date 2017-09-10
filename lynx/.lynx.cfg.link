@@ -1,0 +1,50 @@
+# Custom
+# Default homepage
+STARTFILE:http://duckduckgo.com/
+
+# Save/restore session (browsing)
+AUTO_SESSION:TRUE
+SESSION_FILE:.lynx_session
+
+# Display page as it's downloaded
+PARTIAL:TRUE
+PARTIAL_THRES:10
+
+# UI
+USE_SELECT_POPUPS:TRUE
+SHOW_CURSOR:TRUE
+
+UNDERLINE_LINKS:TRUE
+BOLD_HEADERS:TRUE
+BOLD_H1:FALSE
+
+# No cookies
+SET_COOKIES:FALSE
+ACCEPT_ALL_COOKIES:FALSE
+PERSISTENT_COOKIES:FALSE
+
+VI_KEYS_ALWAYS_ON:TRUE
+
+DEFAULT_USER_MODE:NOVICE
+
+
+DEFAULT_EDITOR:vi
+POSITIONABLE_EDITOR:vi
+
+# Display link to image instead of alt
+VERBOSE_IMAGES:TRUE
+
+# Don't quit by default
+QUIT_DEFAULT_YES:FALSE
+
+COLOR_STYLE:~/.lynx.lss
+
+CHARACTER_SET:utf-8
+
+JUSTIFY:TRUE
+
+
+PRETTYSRC:TRUE
+
+# Press enter to activate input
+TEXTFIELDS_NEED_ACTIVATION:TRUE
