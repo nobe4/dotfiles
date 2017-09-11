@@ -238,6 +238,9 @@ nnoremap <Leader>q :quit!
 " quit after saving
 nnoremap <Leader>x :xit
 
+" Duplicate and comment line
+nmap <Leader>dc yy<Space>c<Space>p
+
 " remove the ex mode
 nnoremap Q <NOP>
 
