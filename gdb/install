@@ -1,0 +1,2 @@
+brew install gdb
+open https://sourceware.org/gdb/wiki/BuildingOnDarwin
