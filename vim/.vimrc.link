@@ -113,6 +113,7 @@ endif
 set incsearch "highlight as you type you search phrase
 set ignorecase " ignore case when using a search pattern
 set smartcase  " override 'ignorecase' when pattern has upper case characters
+set autochdir  " change to directory of file in buffer
 " }
 " Tags {
 " store tags file under the git directory to exclude from versioning
