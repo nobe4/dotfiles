@@ -295,6 +295,9 @@ nnoremap gf :e <cfile><CR>
 " Switch to previous buffer
 nnoremap <Leader>b :b#<CR>
 
+" Switch to alternate file, thanks to projectionist
+nnoremap <Leader>a :A<CR>
+
 " Open buffer list and prepare a switch
 nnoremap <Leader>l :ls<CR>:buffer<Space>
 
