@@ -165,7 +165,7 @@ set shiftwidth=2 " Number of spaces used for each step of (auto)indent
 " }
 " Folding {
 set foldenable " Turn on folding
-set foldmethod=indent
+set foldmethod=syntax " Most of the code will be syntax-indented
 set foldopen=block,hor,mark,percent,quickfix,tag " what movements
 set foldlevelstart=99 " disable auto folding on open
 " }
@@ -192,9 +192,9 @@ autocmd! bufreadpost *.gs set syntax=javascript
 autocmd! bufreadpost *.coffee set syntax=javascript
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
-autocmd Filetype markdown set linebreak wrap
 autocmd Filetype haskell setlocal ts=4 sw=4 sts=0 expandtab
-autocmd Filetype markdown setlocal ts=4 sw=4 sts=0 expandtab
+autocmd Filetype markdown setlocal ts=4 sw=4 sts=0 expandtab linebreak wrap
+autocmd Filetype python setlocal foldmethod=indent
 " }
 " Multi-byte characters {
 scriptencoding=utf-8
