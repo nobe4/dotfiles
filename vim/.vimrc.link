@@ -238,8 +238,8 @@ nnoremap <Leader>q :quit!
 " quit after saving
 nnoremap <Leader>x :xit
 
-" quick make
-nnoremap <Leader>m :make
+" Quick make (note the space at the end of the command)
+nnoremap <Leader>m :make 
 
 " Duplicate and comment line
 nmap <Leader>dc yy<Space>c<Space>p
@@ -273,9 +273,6 @@ inoremap <c-w> <c-g>u<c-w>
 
 " Create a new tab
 nnoremap <Leader>tn :tabnew 
-
-" Quick make
-nnoremap <Leader>ma :make<CR>
 
 " Copy/Paste with system clipboard
 function! CmdPaste() abort
