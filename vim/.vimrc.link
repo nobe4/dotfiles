@@ -238,6 +238,9 @@ nnoremap <Leader>q :quit!
 " quit after saving
 nnoremap <Leader>x :xit
 
+" quick make
+nnoremap <Leader>m :make
+
 " Duplicate and comment line
 nmap <Leader>dc yy<Space>c<Space>p
 
