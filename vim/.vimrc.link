@@ -195,6 +195,8 @@ autocmd BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
 autocmd Filetype haskell setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype markdown setlocal ts=4 sw=4 sts=0 expandtab linebreak wrap
 autocmd Filetype python setlocal foldmethod=indent
+" Format go file after saving
+autocmd! BufWritePost *.go :silent exec "!gofmt -w -s %"
 " }
 " Multi-byte characters {
 scriptencoding=utf-8
