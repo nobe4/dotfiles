@@ -196,7 +196,7 @@ autocmd Filetype haskell setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype markdown setlocal ts=4 sw=4 sts=0 expandtab linebreak wrap
 autocmd Filetype python setlocal foldmethod=indent
 " Format go file after saving
-autocmd! BufWritePost *.go :silent exec "!gofmt -w -s %"
+autocmd! BufWritePost *.go :silent exec "!gofmt -w -s %" | redraw!
 " }
 " Multi-byte characters {
 scriptencoding=utf-8
@@ -253,8 +253,11 @@ nnoremap Q <NOP>
 " http://vi.stackexchange.com/a/3136/1821
 nnoremap <Leader>R :nnoremap <lt>Leader>r :
 
-" force save
+" Force save
 cnoremap w!! w !sudo tee % >/dev/null
+
+" Don't save a filename with name '
+cnoremap w' w
 
 " In insert mode <C-\> remove unwanted <CR> insertion
 inoremap <C-\> <C-o>:left 0<Cr><BS>
