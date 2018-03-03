@@ -1,9 +1,6 @@
 # The original idea (and a couple settings) were grabbed from:
 #   https://github.com/mathiasbynens/dotfiles/blob/master/.osx
 
-# Use AirDrop over every interface.
-defaults write com.apple.NetworkBrowser BrowseAllInterfaces 1
-
 # Default finder view: column
 defaults write com.apple.Finder FXPreferredViewStyle clmv
 
