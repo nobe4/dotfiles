@@ -1,5 +1,14 @@
-alias glo='git lg'
-alias gla='git lg --all'
-
-# Checkout the previous branch
+alias ga='git add'
+alias gb='git branch'
+alias gco='git checkout'
+alias gc='git commit'
+alias gcb='git checkout -b'
+alias gcl='git clone'
 alias gcp='git checkout -'
+alias gd='git diff'
+alias gl='git pull'
+alias gla='git lg --all'
+alias glo='git lg'
+alias gp='git push'
+alias gs='git status'
+alias gst='git stash'
