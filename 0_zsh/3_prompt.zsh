@@ -5,8 +5,8 @@ function virtualenv_info {
 }
 
 function prompt_char {
-	git branch >/dev/null 2>/dev/null && IS_GIT="1" && echo '±' && return
-	echo '$'
+	git branch >/dev/null 2>/dev/null && IS_GIT="1" && echo '± ' && return
+	echo '$ '
 }
 
 function parse_git_branch() {
@@ -26,12 +26,11 @@ function parse_git_stash {
 }
 
 function git_prompt {
-	git branch >/dev/null 2>/dev/null &&  echo "$(parse_git_branch)$(parse_git_stash)$(parse_git_dirty)"
+	git branch >/dev/null 2>/dev/null &&  echo "$(parse_git_branch)$(parse_git_stash)$(parse_git_dirty) "
 }
 
 PROMPT='\
-${PR_YELLOW}%n%{$reset_color%}\
- ${PR_GREEN}%c%{$reset_color%}\
- ${PR_BLUE}$(prompt_char)%{$reset_color%}\
- ${PR_RED}$(git_prompt)%{$reset_color%}\
- '
+${PR_YELLOW}%n%{$reset_color%} \
+${PR_GREEN}%c%{$reset_color%} \
+${PR_BLUE}$(prompt_char)%{$reset_color%}\
+${PR_RED}$(git_prompt)%{$reset_color%}'
