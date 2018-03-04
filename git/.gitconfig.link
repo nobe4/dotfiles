@@ -2,8 +2,8 @@
 
 [user]
   # default user
-  name = XXX
-  email = XXX
+  name = nobe4
+  email = haffreinguev@gmail.com
 [core]
   # use vim, damn
   editor = vim
@@ -18,4 +18,4 @@
 [push]
   default = current
 [github]
-  user = XXX
+  user = nobe4

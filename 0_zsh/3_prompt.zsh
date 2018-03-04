@@ -32,5 +32,5 @@ function git_prompt {
 PROMPT='\
 ${PR_YELLOW}%n%{$reset_color%} \
 ${PR_GREEN}%c%{$reset_color%} \
-${PR_BLUE}$(prompt_char)%{$reset_color%}\
-${PR_RED}$(git_prompt)%{$reset_color%}'
+${PR_RED}$(git_prompt)%{$reset_color%}\
+${PR_BLUE}$(prompt_char)%{$reset_color%}'
