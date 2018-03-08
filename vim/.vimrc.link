@@ -85,6 +85,10 @@ let NERDSpaceDelims=1
 " christoomey/vim-tmux-navigator {
 Plug 'christoomey/vim-tmux-navigator'
 " }
+" junegunn/fzf {
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+nnoremap <leader>f :FZF<CR>
+" }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
 nnoremap <Leader>gs :Gstatus<CR>

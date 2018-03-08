@@ -20,8 +20,3 @@ setopt NO_BEEP
 setopt NO_MENU_COMPLETE
 setopt PUSHD_IGNORE_DUPS
 setopt PROMPT_SUBST
-
-# History size
-HISTSIZE=10000
-SAVEHIST=9000
-HISTFILE=~/.zsh_history
