@@ -13,6 +13,7 @@
   me = !git-me
   standup = !git-standup
   oops = rebase -i HEAD~2
+  safe-pull = !git-safe-pull
 [pull]
   default = current
 [push]

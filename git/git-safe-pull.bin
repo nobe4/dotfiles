@@ -1,0 +1,6 @@
+#!/bin/sh
+# Pull but keep the current changes
+
+git stash
+git pull
+git stash pop
