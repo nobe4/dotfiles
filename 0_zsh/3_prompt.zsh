@@ -14,11 +14,11 @@ function parse_git_branch() {
 }
 
 function parse_git_dirty {
-	 ! git diff-index --quiet HEAD -- && echo "*"
+	(! git diff-index --quiet HEAD -- 2> /dev/null) && echo "*"
 }
 
 function parse_git_stash {
-  local stash=`expr $(git stash list 2>/dev/null| wc -l)`
+  local stash=`expr $(git stash list 2> /dev/null | wc -l)`
   if [ "$stash" != "0" ]
   then
     echo " $stash"
