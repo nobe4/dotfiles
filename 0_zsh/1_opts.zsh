@@ -5,7 +5,6 @@ setopt APPEND_HISTORY
 setopt AUTO_CD
 setopt AUTO_LIST
 setopt AUTO_MENU
-setopt MENU_COMPLETE
 setopt AUTO_PUSHD
 setopt COMPLETE_IN_WORD
 setopt EXTENDED_HISTORY
