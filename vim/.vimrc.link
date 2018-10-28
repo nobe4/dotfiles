@@ -11,7 +11,7 @@
 "    Personal vimrc of Victor Haffreingue
 "    Use it and share it as you like.
 "
-"    Copyright (C) 2015-2017, Victor Haffreingue
+"    Copyright (C) 2015-2018, Victor Haffreingue
 "
 "    Permission is hereby granted, free of charge, to any person obtaining a
 "    copy of this software and associated documentation files (the "Software"),
@@ -77,6 +77,13 @@ Plug 'danro/rename.vim', { 'on': 'Rename' }
 " w0rp/ale {
 Plug 'w0rp/ale'
 let g:ale_lint_on_text_changed="never" " Don't distract me, only lint on save
+let g:ale_linter = {
+\   'go': ['golint', 'govet'],
+\}
+let g:ale_fixers = {
+\   'go': ['goimports'],
+\}
+let g:ale_fix_on_save = 1
 " }
 " scrooloose/nerdcommenter {
 Plug 'scrooloose/nerdcommenter'
@@ -88,6 +95,12 @@ Plug 'christoomey/vim-tmux-navigator'
 " junegunn/fzf {
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 nnoremap <leader>f :FZF<CR>
+Plug 'junegunn/fzf.vim'
+" }
+" junegunn/vim-easy-align {
+Plug 'junegunn/vim-easy-align'
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 " }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
@@ -188,19 +201,26 @@ set undofile " save and restore undo history
 set undodir=~/.vim/undodir  " list of directories for undo files
 set wildignore+=*.pyc
 " }
+" executing external commands {
+set shell=/bin/bash
+" }
 " Language specific {
 " Enable spell for commit messages
 autocmd! Filetype gitcommit set spell
 " Google script -> Javascript
 autocmd! bufreadpost *.gs set syntax=javascript
 autocmd! bufreadpost *.coffee set syntax=javascript
+autocmd! BufRead,BufNewFile COMMIT_EDITMSG :g/\v^# On branch (\u+-\d+).+/t0|s//[\1]
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
+autocmd BufNewFile,BufFilePre,BufRead *.sls set filetype=yaml
 autocmd Filetype haskell setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype markdown setlocal ts=4 sw=4 sts=0 expandtab linebreak wrap
 autocmd Filetype python setlocal foldmethod=indent
 " Format go file after saving
 autocmd! BufWritePost *.go :silent exec "!~/go/bin/goimports -w % && gofmt -w -s %" | redraw!
+" Format python file after saving with black
+autocmd! BufWritePost *.py :silent exec "!black %" | redraw!
 " }
 " Multi-byte characters {
 scriptencoding=utf-8
