@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# looping through a command
+# http://stackoverflow.com/a/1289029/2558252
+# http://stackoverflow.com/a/3179059/2558252
+
+loop() {
+	while true; do
+		echo "$(date '+%S') : $@"
+		eval $(printf "%q " "$@")
+		sleep 1;
+	done
+}
+

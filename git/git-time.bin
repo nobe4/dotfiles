@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Custom git log with information on tickets and time spent
+# Usage:
+#   ./git-tickets.sh
+#
+# Output:
+#     commit_ticket commit_time commit_info
+
+# Break in case of error
+set -e
+
+# Grep the commit time info
+# the time is referenced by @xx
+commit_time() {
+  git log -n 1 "$rev" |
+  grep "@" |
+  grep -v "Author" |
+  sed -E 's/.*@(([^ ]+)).*/\1/'
+}
+
+# Grep the commit ticket info
+# the ticket is referenced by #xx
+commit_ticket() {
+  git log -n 1 "$rev" |
+  grep "#\d" |
+  sed -E 's/.*#([0-9]+).*/\1/'
+}
+
+# Basic commit info
+# Can be any git log command, that log the current $rev (so add a -1 to log only
+# one commit)
+commit_info() {
+  git log -1 --oneline "$rev"
+  # fancy example
+  # git log -1 --pretty=format:'%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(blue)<%an>%Creset' --abbrev-commit --date=relative $rev
+}
+
+list_revs() {
+  git rev-list HEAD --reverse
+}
+
+# Entry point
+main() {
+  for rev in $(list_revs); do
+    echo "$(commit_ticket)	$(commit_time)	$(commit_info)"
+  done
+}
+
+# Run it
+main

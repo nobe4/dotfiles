@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Fetch the content of the gist, decode the base 64, and extract it
+curl "$1" | base64 -D > temp.zip
+unzip temp.zip
+rm temp.zip
