@@ -1,1 +1,2 @@
-export PYTHONHOME="/usr/local/Frameworks/Python.framework/Versions/Current/"
+unset PYTHONHOME
+unset PYTHONPATH

@@ -1,1 +1,9 @@
-open https://golang.org/doc/install
+#!/usr/bin/env zsh
+
+if [ -n "$IS_MACOS" ]; then
+	open https://golang.org/doc/install
+fi
+
+if [ -n "$IS_LINUX" ]; then
+	echo "open https://golang.org/doc/install"
+fi

@@ -1,7 +1,17 @@
-brew install tmux
+#!/usr/bin/env zsh
+
+if [ -n "$IS_MACOS" ]; then
+	brew install tmux
+	# https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
+	brew install reattach-to-user-namespace
+fi
+
+if [ -n "$IS_LINUX" ]; then
+	sudo apt-get install tmux
+fi
 
 # Install tmux plugin manager
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
-# https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
-brew install reattach-to-user-namespace
+if [ ! -d ~/.tmux/plugins/tpm/ ]; then
+	echo "FLDER IS MISSING"
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi

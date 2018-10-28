@@ -1,3 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env zsh
 
-brew install ripgrep
+if [ -n "$IS_MACOS" ]; then
+	brew install ripgrep
+fi
+
+if [ -n "$IS_LINUX" ]; then
+	sudo apt-get install ripgrep
+fi

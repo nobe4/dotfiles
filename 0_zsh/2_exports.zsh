@@ -1,3 +1,12 @@
+#!/usr/bin/env zsh
+
+unameOut="$(uname -s)"
+case "${unameOut}" in
+	Linux*) export IS_LINUX="1";;
+	Darwin*) export IS_MACOS="1";;
+	*) exit 1
+esac
+
 PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$ZSH/.yada/bin"
 export PATH
 
@@ -19,4 +28,10 @@ fpath=($ZSH/functions $fpath)
 autoload -U $ZSH/functions/*(:t)
 
 # manual sourcing z
-. `brew --prefix`/etc/profile.d/z.sh
+if [ -n "$IS_MACOS" ]; then
+	. `brew --prefix`/etc/profile.d/z.sh
+fi
+
+if [ -n "$IS_LINUX" ]; then
+	. $ZSH/misc/z.sh
+fi

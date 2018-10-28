@@ -1,5 +1,16 @@
-# https://github.com/PhrozenByte/rmtrash
-brew install rmtrash
+#!/usr/bin/env zsh
 
+# https://github.com/PhrozenByte/rmtrash
 # https://github.com/rupa/z
-brew install z
+
+if [ -n "$IS_MACOS" ]; then
+	brew install rmtrash
+	brew install z
+fi
+
+if [ -n "$IS_LINUX" ]; then
+	curl https://raw.githubusercontent.com/rupa/z/master/z.sh -o ./z.sh
+	curl https://raw.githubusercontent.com/PhrozenByte/rmtrash/master/rmtrash -o ./rmtrash.bin
+	chmod +x rmtrash.bin
+fi
+
