@@ -5,7 +5,7 @@ export ZSH=$HOME/.dot
 
 # List configuration file
 list(){
-  find -s -H "$ZSH" -type f -name $1 -not -path '*.yada*'
+  find -H "$ZSH" -type f -name $1 -not -path '*.yada*'
 }
 
 # Run the path files

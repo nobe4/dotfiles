@@ -5,5 +5,5 @@ if [ -n "$IS_MACOS" ]; then
 fi
 
 if [ -n "$IS_LINUX" ]; then
-	curl -o /usr/local/share/fonts/Hack-Regular.ttf https://raw.githubusercontent.com/chrissimpkins/Hack/master/build/ttf/Hack-Regular.ttf
+	sudo curl -o /usr/local/share/fonts/Hack-Regular.ttf https://raw.githubusercontent.com/chrissimpkins/Hack/master/build/ttf/Hack-Regular.ttf
 fi
