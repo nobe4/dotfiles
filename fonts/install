@@ -1,1 +1,9 @@
-curl -o /Library/Fonts/Hack-Regular.ttf https://raw.githubusercontent.com/chrissimpkins/Hack/master/build/ttf/Hack-Regular.ttf
+#!/usr/bin/env zsh
+
+if [ -n "$IS_MACOS" ]; then
+	curl -o /Library/Fonts/Hack-Regular.ttf https://raw.githubusercontent.com/chrissimpkins/Hack/master/build/ttf/Hack-Regular.ttf
+fi
+
+if [ -n "$IS_LINUX" ]; then
+	curl -o /usr/local/share/fonts/Hack-Regular.ttf https://raw.githubusercontent.com/chrissimpkins/Hack/master/build/ttf/Hack-Regular.ttf
+fi

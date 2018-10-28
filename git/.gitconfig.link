@@ -10,11 +10,10 @@
   excludesFile = $HOME/.gitignore_global
 [alias]
   lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-  passport = !~/dev/git-passport.sh/git-passport.sh
-  ticket = !git-time
   me = !git-me
   standup = !git-standup
   oops = rebase -i HEAD~2
+  safe-pull = !git-safe-pull
 [pull]
   default = current
 [push]

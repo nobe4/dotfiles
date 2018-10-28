@@ -5,7 +5,7 @@ export ZSH=$HOME/.dot
 
 # List configuration file
 list(){
-  find -H "$ZSH" -type f -name $1 -not -path '*.yada*'
+  find -s -H "$ZSH" -type f -name $1 -not -path '*.yada*'
 }
 
 # Run the path files
@@ -19,3 +19,5 @@ for zsh_file in $(list '*.zsh')
 do
   source $zsh_file
 done
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -85,6 +85,10 @@ let NERDSpaceDelims=1
 " christoomey/vim-tmux-navigator {
 Plug 'christoomey/vim-tmux-navigator'
 " }
+" junegunn/fzf {
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+nnoremap <leader>f :FZF<CR>
+" }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
 nnoremap <Leader>gs :Gstatus<CR>
@@ -196,7 +200,7 @@ autocmd Filetype haskell setlocal ts=4 sw=4 sts=0 expandtab
 autocmd Filetype markdown setlocal ts=4 sw=4 sts=0 expandtab linebreak wrap
 autocmd Filetype python setlocal foldmethod=indent
 " Format go file after saving
-autocmd! BufWritePost *.go :silent exec "!gofmt -w -s %" | redraw!
+autocmd! BufWritePost *.go :silent exec "!~/go/bin/goimports -w % && gofmt -w -s %" | redraw!
 " }
 " Multi-byte characters {
 scriptencoding=utf-8

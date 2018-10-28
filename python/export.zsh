@@ -1,0 +1,2 @@
+unset PYTHONHOME
+unset PYTHONPATH

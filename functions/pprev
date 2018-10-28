@@ -1,5 +1,0 @@
-#!/bin/sh
-
-# Pipe the result of a command to the OSX's preview app
-# e.g.: pprev curl http://i.imgur.com/lE7qRw2.jpg
-eval "$@ | open -f -a /Applications/Preview.app"

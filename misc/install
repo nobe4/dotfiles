@@ -1,18 +1,16 @@
-# See http://www.nongnu.org/renameutils/
-brew install renameutils
+#!/usr/bin/env zsh
 
 # https://github.com/PhrozenByte/rmtrash
-brew install rmtrash
-
 # https://github.com/rupa/z
-brew install z
 
-# https://github.com/universal-ctags/ctags
-brew tap universal-ctags/universal-ctags
-brew install --HEAD universal-ctags
+if [ -n "$IS_MACOS" ]; then
+	brew install rmtrash
+	brew install z
+fi
 
-# https://rentes.github.io/unix/utilities/2015/07/27/moreutils-package/
-brew install moreutil
+if [ -n "$IS_LINUX" ]; then
+	curl https://raw.githubusercontent.com/rupa/z/master/z.sh -o ./z.sh
+	curl https://raw.githubusercontent.com/PhrozenByte/rmtrash/master/rmtrash -o ./rmtrash.bin
+	chmod +x rmtrash.bin
+fi
 
-# Install ngrock manually here
-open https://github.com/inconshreveable/ngrok/releases

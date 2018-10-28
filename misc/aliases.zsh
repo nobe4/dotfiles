@@ -1,1 +1,0 @@
-alias grc="gnuradio-companion"

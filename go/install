@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 
 if [ -n "$IS_MACOS" ]; then
-	brew install ripgrep
+	open https://golang.org/doc/install
 fi
 
 if [ -n "$IS_LINUX" ]; then
-	sudo apt-get install ripgrep
+	echo "open https://golang.org/doc/install"
 fi
