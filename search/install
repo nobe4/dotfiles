@@ -7,5 +7,7 @@ if [ -n "$IS_MACOS" ]; then
 fi
 
 if [ -n "$IS_LINUX" ]; then
-	sudo apt-get install ripgrep
+	curl -L https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb -o ./search/ripgrep.deb
+	sudo dpkg -i ./search/ripgrep.deb
+	rm ./search/ripgrep.deb
 fi

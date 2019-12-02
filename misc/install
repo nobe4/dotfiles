@@ -9,8 +9,9 @@ if [ -n "$IS_MACOS" ]; then
 fi
 
 if [ -n "$IS_LINUX" ]; then
-	curl https://raw.githubusercontent.com/rupa/z/master/z.sh -o ./z.sh
-	curl https://raw.githubusercontent.com/PhrozenByte/rmtrash/master/rmtrash -o ./rmtrash.bin
-	chmod +x rmtrash.bin
+	curl https://raw.githubusercontent.com/rupa/z/master/z.sh -o ./misc/z.sh
+	curl https://raw.githubusercontent.com/PhrozenByte/rmtrash/master/rmtrash -o ./misc/rmtrash.bin
+	chmod +x ./misc/rmtrash.bin
 fi
 
+mkdir ~/.z
