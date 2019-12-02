@@ -11,3 +11,7 @@ alias kk='killall'
 # don't use rm unless you know what you're doing
 # to force rm, use full path : /bin/rm
 alias rm='rmtrash'
+
+# Mac Catalina is breaking everything, thanks Tim Apple.
+# from https://www.kvraudio.com/forum/viewtopic.php?t=530824&start=15
+alias unlockvst='xattr -d com.apple.quarantine'

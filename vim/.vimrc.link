@@ -79,9 +79,11 @@ Plug 'w0rp/ale'
 let g:ale_lint_on_text_changed="never" " Don't distract me, only lint on save
 let g:ale_linter = {
 \   'go': ['golint', 'govet'],
+\   'yaml': ['prettier'],
 \}
 let g:ale_fixers = {
 \   'go': ['goimports'],
+\   'yaml': ['prettier'],
 \}
 let g:ale_fix_on_save = 1
 " }
@@ -210,7 +212,7 @@ autocmd! Filetype gitcommit set spell
 " Google script -> Javascript
 autocmd! bufreadpost *.gs set syntax=javascript
 autocmd! bufreadpost *.coffee set syntax=javascript
-autocmd! BufRead,BufNewFile COMMIT_EDITMSG :g/\v^# On branch (\u+-\d+).+/t0|s//[\1]
+autocmd! BufRead,BufNewFile COMMIT_EDITMSG :silent :g/\v^# On branch (\u+-\d+).+/t0|s//[\1]
 autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 autocmd BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
 autocmd BufNewFile,BufFilePre,BufRead *.sls set filetype=yaml
