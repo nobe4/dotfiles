@@ -12,3 +12,6 @@ alias vin='vim -Nu NONE'
 
 # Jump to tag
 alias vit='vim +tj\'
+
+# Run Notational
+alias n='vim +Notational'

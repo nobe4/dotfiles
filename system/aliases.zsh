@@ -17,3 +17,7 @@ if [ -n "$IS_MACOS" ]; then
 	# from https://www.kvraudio.com/forum/viewtopic.php?t=530824&start=15
 	alias unlockvst='xattr -d com.apple.quarantine'
 fi
+
+function portscan(){
+	lsof -nP -i4TCP:$1
+}

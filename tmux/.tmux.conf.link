@@ -1,37 +1,50 @@
-# set Ctrl-Space as the default prefix key combination
-# and unbind C-b to free it up
+# Set Ctrl-Space as the default prefix key combination.
+# And unbind C-b to free it up.
 set -g prefix C-Space
 unbind C-b
 
-# use send-prefix to pass C-Space through to application
+# Use send-prefix to pass C-Space through to application
 bind Space send-prefix
 
-# reload ~/.tmux.conf using PREFIX r
-bind r source-file ~/.tmux.conf \; display "Reloaded!"
+# Reload ~/.tmux.conf using PREFIX r
+unbind r
+bind r \
+	display "Reloading, hold on..." \;\
+	source-file ~/.tmux.conf \;\
+	display "Reloaded!"
 
-# Mouse mode
+# Mouse mode on by default
 set -g mouse on
 
-# Toggle mouse on
+# Toggle mouse mode
+unbind m
 bind m \
-    set -g mouse on \;\
-    display 'Mouse: ON'
+	set-option -g mouse \;\
+	display 'Mouse: #{?mouse,ON,OFF}'
 
-# Toggle mouse off
-bind M \
-    set -g mouse off \;\
-    display 'Mouse: OFF'
+
+unbind z
+# Toggle pane synv on
+bind z \
+	set-window-option synchronize-panes \;\
+	display 'Sync: #{?pane_synchronized,ON,OFF}'
+
+# Kill the current ssh session if hanging
+unbind k
+bind k send-keys Enter ~ .
 
 # List of plugins
 # Supports `github_username/repo` or full git repo URLs
 set -g @tpm_plugins '\
 		tmux-plugins/tpm \
-		tmux-plugins/tmux-sensible \
 		tmux-plugins/tmux-resurrect \
-		tmux-plugins/tmux-sessionist\
 		tmux-plugins/tmux-continuum \
+		# tmux-plugins/tmux-sessionist\
 		christoomey/vim-tmux-navigator\
 '
+
+# Set continuum to work
+set -g @continuum-restore 'on'
 
 # Remeber to git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 run-shell '~/.tmux/plugins/tpm/tpm'
@@ -40,14 +53,30 @@ run-shell '~/.tmux/plugins/tpm/tpm'
 if-shell "uname | grep Darwin" \
 	"set-option -g default-command \"reattach-to-user-namespace -l zsh\""
 
-# rebind pane tiling
-bind V split-window -h
-bind H split-window
+# Set terminal color
+set-option -s default-terminal "screen-256color"
+
+# Set emacs-style key bindings
+set-option -g status-keys emacs
 
 # Listen to any activity
 set -g bell-action any
+# Focus events enabled for terminals that support them
+set-option -g focus-events on
 
-# set color for status bar
+# Rebind pane tiling
+bind V split-window -h
+bind H split-window
+
+# Fix vim mode switching: http://superuser.com/a/252717/65504
+set-option -s escape-time 0
+# Display messages for 5 seconds
+set-option -g display-time 5000
+# Update statuses every 30 seconds
+set-option -g status-interval 30
+
+# Display
+# Set color for status bar
 set-option -g status-bg colour235
 set-option -g status-fg yellow
 set-option -g status-attr dim
@@ -55,15 +84,19 @@ set-option -g status-attr dim
 set-window-option -g window-status-fg green
 set-window-option -g window-status-current-fg blue
 
+# Center the status
 set -g status-justify centre
 
+# Status Bar Left is only the user name
 set -g status-left-length 70
 set -g status-left "#[fg=yellow] #{host_short} "
 
+# Status Bar Right is: Session name / Battery / Time
+# battery_percent bin is in the misc folder
 set -g status-right-length 60
 set -g status-right "#[fg=red]#{session_name} "
-# battery status
-# the battery_percent bin is in the misc folder
 set -ga status-right "#[fg=green]#(battery_percent) "
-# date and time
 set -ga status-right "#[fg=yellow]#(date +'%m/%d %H:%M:%S') "
+
+# Automatically rename windows
+set-window-option -g automatic-rename on
