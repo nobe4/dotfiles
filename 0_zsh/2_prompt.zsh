@@ -26,7 +26,7 @@ function git_prompt {
 }
 
 PROMPT='\
-$fg[yellow]%n%{$reset_color%} \
-$fg[green]%c%{$reset_color%} \
-$fg[red]$(git_prompt)%{$reset_color%}\
-$fg[blue]$(prompt_char)%{$reset_color%}'
+%{$fg_no_bold[yellow]%}n%{$reset_color%} \
+%{$fg_no_bold[green]%}%c%{$reset_color%} \
+%{$fg_no_bold[red]%}$(git_prompt)%{$reset_color%}\
+%{$fg_no_bold[blue]%}$(prompt_char)%{$reset_color%}'
