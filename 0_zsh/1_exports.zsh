@@ -7,7 +7,7 @@ case "${unameOut}" in
 	*) exit 1
 esac
 
-PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$ZSH/.yada/bin"
+PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$ZSH/.yada/bin:/Applications:~/Applications"
 export PATH
 
 MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"

@@ -1,9 +1,5 @@
 autoload -U colors && colors
 
-function virtualenv_info {
-	[ $VIRTUAL_ENV ] && echo '('`basename $VIRTUAL_ENV`') '
-}
-
 function prompt_char {
 	git branch >/dev/null 2>/dev/null && IS_GIT="1" && echo '± ' && return
 	echo '$ '
@@ -30,7 +26,7 @@ function git_prompt {
 }
 
 PROMPT='\
-${PR_YELLOW}%n%{$reset_color%} \
-${PR_GREEN}%c%{$reset_color%} \
-${PR_RED}$(git_prompt)%{$reset_color%}\
-${PR_BLUE}$(prompt_char)%{$reset_color%}'
+$fg[yellow]%n%{$reset_color%} \
+$fg[green]%c%{$reset_color%} \
+$fg[red]$(git_prompt)%{$reset_color%}\
+$fg[blue]$(prompt_char)%{$reset_color%}'
