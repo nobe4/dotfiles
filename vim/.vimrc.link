@@ -76,16 +76,17 @@ Plug 'danro/rename.vim', { 'on': 'Rename' }
 " }
 " w0rp/ale {
 Plug 'w0rp/ale'
-let g:ale_lint_on_text_changed="never" " Don't distract me, only lint on save
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+let g:ale_fix_on_save = 1
 let g:ale_linter = {
-\   'go': ['golint', 'govet'],
 \   'yaml': ['prettier'],
+\   'go': ['golint', 'govet'],
 \}
 let g:ale_fixers = {
-\   'go': ['goimports'],
 \   'yaml': ['prettier'],
 \}
-let g:ale_fix_on_save = 1
 " }
 " scrooloose/nerdcommenter {
 Plug 'scrooloose/nerdcommenter'
@@ -167,7 +168,7 @@ set t_Co=256 " Number of available colors
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
-set switchbuf=usetab,newtab
+set switchbuf=split
 " }
 " Editing text {
 set backspace=indent,eol,start
@@ -334,8 +335,7 @@ nnoremap <Leader>l :ls<CR>:buffer<Space>
 " Clear the highlight
 nnoremap <silent> <Leader><Leader> :<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
 
-" Make <C-F> insert current path in command line mode
-cnoremap <C-F> <C-R>=expand('%:p:h')<CR>/
+nnoremap <Leader>e :e <C-R>=expand('%:p:h')<CR>/
 
 " Display a simple help for debugging
 cnoremap <C-H> "cont quit next step interrupt finish backtrace up down<CR>
@@ -343,7 +343,20 @@ cnoremap <C-H> "cont quit next step interrupt finish backtrace up down<CR>
 " Enhance the register pasting
 nnoremap "p :reg <bar> exec 'normal! "'.input('>').'p'<CR>
 
-nnoremap <C-W>z :resize <bar> vertical resize<CR>
+" helper to zoom in the current pane
+let g:zoomed=1
+function! Zoom()
+    echo g:zoomed
+    if g:zoomed
+        resize
+        vertical resize
+        let g:zoomed=0
+    else
+        execute "normal \<C-w>="
+        let g:zoomed=1
+    endif
+endfunction
+nnoremap <Leader>z :call Zoom()<CR>
 
 nnoremap g<C-o> :!open .<CR><CR>
 
