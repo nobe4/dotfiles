@@ -14,4 +14,4 @@ if [ -n "$IS_LINUX" ]; then
 	chmod +x ./misc/rmtrash.bin
 fi
 
-mkdir ~/.z
+touch ~/.z
