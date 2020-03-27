@@ -2,7 +2,7 @@
 if ! hash rg 2>/dev/null; then; return; fi
 
 function rgf {
-  rg --files -g "*$1*"
+  rg --files -L -g "*$1*"
 }
 
 alias todo="rg -i todo"

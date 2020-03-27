@@ -74,18 +74,32 @@ autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango EmmetInstall
 " danro/rename.vim {
 Plug 'danro/rename.vim', { 'on': 'Rename' }
 " }
-" w0rp/ale {
-Plug 'w0rp/ale'
-let g:ale_lint_on_text_changed = 'never'
+" romainl/vim-qf {
+Plug 'romainl/vim-qf'
+" }
+" 'dense-analysis/ale' {
+Plug 'dense-analysis/ale'
 let g:ale_lint_on_insert_leave = 0
-let g:ale_lint_on_enter = 0
-let g:ale_fix_on_save = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_set_signs = 0
 let g:ale_linter = {
+\   'go': ['goimports', 'go vet', 'golint',  'golangci-lint'],
+\   'graphql': ['prettier'],
+\   'python': ['black'],
+\   'ruby': ['rubocop'],
+\   'scss': ['prettier'],
+\   'terraform': ['terraform'],
 \   'yaml': ['prettier'],
-\   'go': ['golint', 'govet', 'golangci-lint'],
 \}
 let g:ale_fixers = {
+\   'go': ['goimports', 'gofmt'],
+\   'graphql': ['prettier'],
 \   'yaml': ['prettier'],
+\   'terraform': ['terraform'],
+\   'scss': ['prettier'],
+\   'ruby': ['rubocop'],
+\   'python': ['black'],
 \}
 " }
 " scrooloose/nerdcommenter {
@@ -97,9 +111,10 @@ Plug 'christoomey/vim-tmux-navigator'
 " }
 " junegunn/fzf {
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-nnoremap <leader>f :FZF<CR>
 Plug 'junegunn/fzf.vim'
-" }
+nnoremap <leader>f :FZF<CR>
+nnoremap <leader>t :Tags<CR>
+let g:fzf_buffers_jump = 1
 " junegunn/vim-easy-align {
 Plug 'junegunn/vim-easy-align'
 xmap ga <Plug>(EasyAlign)
@@ -113,11 +128,9 @@ nnoremap <Leader>gl :Gpull
 
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-rhubarb'
+" Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
-" }
-" metakirby5/codi.vim {
-Plug 'metakirby5/codi.vim'
 " }
 " Vim-plug end of Initialisation {
 call plug#end()
@@ -208,22 +221,31 @@ set wildignore+=*.pyc
 set shell=/bin/bash
 " }
 " Language specific {
-" Enable spell for commit messages
-autocmd! Filetype gitcommit set spell
-" Google script -> Javascript
-autocmd! bufreadpost *.gs set syntax=javascript
+" Misc {
+autocmd! BufNewFile,BufFilePre,BufRead *.coffee set syntax=javascript
+autocmd! BufNewFile,BufFilePre,BufRead *.graphql set filetype=graphql
+autocmd! BufNewFile,BufFilePre,BufRead *.gs set syntax=javascript
+autocmd! BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
+autocmd! BufNewFile,BufFilePre,BufRead *.sls set filetype=yaml
+autocmd! BufNewFile,BufFilePre,BufRead Vagrantfile set filetype=ruby
+autocmd! Filetype haskell setlocal ts=4 sw=4 sts=0 expandtab
+autocmd! Filetype python setlocal foldmethod=indent
 autocmd! bufreadpost *.coffee set syntax=javascript
-autocmd! BufRead,BufNewFile COMMIT_EDITMSG :silent :g/\v^# On branch (\u+-\d+).+/t0|s//[\1]
-autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
-autocmd BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
-autocmd BufNewFile,BufFilePre,BufRead *.sls set filetype=yaml
-autocmd Filetype haskell setlocal ts=4 sw=4 sts=0 expandtab
-autocmd Filetype markdown setlocal ts=4 sw=4 sts=0 expandtab linebreak wrap
-autocmd Filetype python setlocal foldmethod=indent
-" Format go file after saving
-autocmd! BufWritePost *.go :silent exec "!~/go/bin/goimports -w % && gofmt -w -s %" | redraw!
-" Format python file after saving with black
-autocmd! BufWritePost *.py :silent exec "!black %" | redraw!
+autocmd! bufreadpost *.gs set syntax=javascript
+" }
+" Markdown {
+autocmd! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+autocmd! Filetype markdown setlocal ts=4 sw=4 sts=0 expandtab linebreak wrap
+" }
+" Terraform {
+autocmd BufNewFile,BufFilePre,BufRead *.tfstate set filetype=json
+autocmd BufNewFile,BufFilePre,BufRead *.tfvars set filetype=terraform
+autocmd Filetype tf setlocal foldmethod=indent filetype=terraform
+" }
+" Commit {
+autocmd! BufNewFile,BufFilePre,BufRead COMMIT_EDITMSG :silent :g/\v^# On branch (\u+-\d+).+/t0|s//[\1]
+autocmd! Filetype gitcommit set spell
+" }
 " }
 " Multi-byte characters {
 scriptencoding=utf-8
@@ -262,9 +284,17 @@ noremap gp '[v']
 " Replay mapping over visual selection
 vnoremap @ :norm@
 
+" Deal with errors/warnings, in the location list.
+nnoremap <Leader>eo :lopen<CR>
+nnoremap <Leader>en :lnext<CR>
+nnoremap <Leader>ep :lprev<CR>
+
 " edit and source .vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
 nnoremap <Leader>vs :so $MYVIMRC
+" Reload Vimrc
+command! ReloadVimrc :source $MYVIMRC
+command! EditVimrc :e $MYVIMRC
 
 " save file
 nnoremap <Leader>w :w<CR>
@@ -279,10 +309,10 @@ nnoremap <Leader>m :make
 " Duplicate and comment line
 nmap <Leader>dc yy<Space>c<Space>p
 
-" remove the ex mode
+" Remove the ex mode
 nnoremap Q <NOP>
 
-" prepare a quick command
+" Prepare a quick command
 " http://vi.stackexchange.com/a/3136/1821
 nnoremap <Leader>R :nnoremap <lt>Leader>r :
 " Repeat the last command
@@ -291,15 +321,16 @@ nnoremap <Leader>r :<UP>
 " Force save
 cnoremap w!! w !sudo tee % >/dev/null
 
-" Don't save a filename with name '
+" Don't save a filename with name ' or ;
 cnoremap w' w
+cnoremap w; w
 
 " In insert mode <C-\> remove unwanted <CR> insertion
-inoremap <C-\> <C-o>:left 0<Cr><BS>
+" inoremap <C-\> <C-o>:left 0<Cr><BS>
 
 " In normal mode <C-\> grep for the word under the cursor
 " inspiration: https://robots.thoughtbot.com/faster-grepping-in-vim
-nnoremap <C-\> :grep! --word-regexp '<C-R><C-W>'<CR>:cw<CR>
+" nnoremap <C-\> :grep! --word-regexp '<C-R><C-W>'<CR>:cw<CR>
 
 " bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Rg :silent! grep! <args>|cwindow|redraw!
@@ -311,7 +342,7 @@ inoremap <CR> <C-G>u<CR>
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
-" Create a new tab
+" Create a new tab (not the space at the end)
 nnoremap <Leader>tn :tabnew 
 
 " Copy/Paste with system clipboard
@@ -367,24 +398,27 @@ endfunction
 nnoremap <Leader>z :call Zoom()<CR>
 
 nnoremap g<C-o> :!open .<CR><CR>
-
 "}
 " Abbreviations {
 iabbrev pydebug import pdb; pdb.set_trace()
 iabbrev red* * { color: red !important; }
 iabbrev :shrug: ¯\_(ツ)_/¯
+iabbrev ttt (t *testing.T)
+iabbrev forhook for _, e := range hooks.Entries { t.Logf("=> %v", e) }
 "}
 " GUI {
 " Remove every bit of GUI option
 set guioptions=
+" Disable audio bell
+autocmd! GUIEnter * set vb t_vb=
 " }
 " Various {
-" Open current file in sublime text
-command! Subl silent execute "!open -a \"Sublime Text 2\" %"
 " }
 " Tests {
-autocmd BufReadPost,FileReadPost,BufNewFile * 
+autocmd BufReadPost,FileReadPost,BufNewFile *
     \ call system("tmux rename-window 'vim:" . expand("%:t") . "'")
+autocmd VimLeave *
+    \ call system("tmux setw automatic-rename")
 
 " Simulate the r operator functionality
 function! ROperator()
@@ -403,6 +437,8 @@ function! ROperator()
 endfunction
 
 nnoremap gr :call ROperator()<CR>
+
+command! Date :r!date '+\%Y/\%m/\%d'
 
 " Display the full path of the current file
 function! DisplayFullPath() abort
@@ -439,8 +475,10 @@ function! CenterColumn()
     wincmd L
     wincmd =
     wincmd h
+    set nonumber
+    set wrap
+    set linebreak
 endfunction
-
 command! CenterColumn :call CenterColumn()
 
 function! ScreenCapture()
@@ -468,5 +506,128 @@ function! FollowCursor(follow)
 endfunction
 command! FollowCursor :call FollowCursor(1)
 command! UnfollowCursor :call FollowCursor(0)
+
+let s:NotesPath = "~/Desktop/notes/"
+
+function! s:GetNotes(A, L, P)
+    " Move to the note folder
+    execute "cd " . s:NotesPath
+
+    " Build the list command, simple find with regex and the argument from
+    " completion, so you can do some tab tab tab
+    let l:ListCommand = "find . -type f -regex '.*" . a:A . ".*'"
+
+    let l:notesRaw = systemlist(l:ListCommand)
+
+    " Remove the './' prefix
+    let l:notes = map(l:notesRaw, {key, val -> strpart(val, 2)})
+
+    " Go back to the previous dir
+    execute "cd -"
+    return l:notes
+endfunction
+
+function! s:HandleNote(...)
+    " TODO : If the file doesnt exist create a new one
+    if a:0 == 0
+        new
+    else
+        execute "edit ".fnameescape(s:NotesPath . a:1)
+    endif
+endfunction
+
+command! -complete=customlist,s:GetNotes -nargs=? Note :call s:HandleNote(<f-args>)
+
+command! JSONPretty :%!jq '.'
+
+
+function! s:QFixEdit()
+    " Copy the content into a new buffer
+    %y
+    " TODO: Create a named buffer bound to a file
+    let l:tmp_file =system('mktemp')
+    execute 'split ' . l:tmp_file
+    normal P
+    cclose
+    " Catch the save and exit events
+    autocmd BufWritePre <buffer> :call s:QFixEditSave()
+    autocmd BufHidden <buffer> :call s:QFixEditClean()
+endfunction
+
+function! s:QFixEditSave()
+    let l:i = line("$")
+    while i > 1
+        let l:i -= 1
+        let l:line = split(getline(l:i), '|')
+
+        let l:filename = l:line[0]
+        let l:line_number = split(l:line[1], " ")[0]
+        let l:content = l:line[2][1:]
+
+        call system('sed -i ".bak" "2'. l:line_number . '/.*/' . l:content . '/" ' . l:filename)
+    endwhile
+    " Loop through all the lines
+    " Parse the file
+    " Modify in the files at the lines specified
+endfunction
+
+function! s:QFixEditClean()
+    echomsg "Cleaning"
+endfunction
+
+command! QFixEdit :call s:QFixEdit()
+
+command! Writing :setlocal wrap linebreak spell filetype=markdown
+
+" Notational
+" Works by doing a big  `rg 'pattern' 'paths'` +fzf +preview and open the note
+" in vim once it's found. Custom handler is used for creating a new note if
+" none was found.
+" Variables
+let g:notational_search_paths = ['~/Documents/docs', '~/.dot', '*.md']
+let g:notational_default_save_path = '~/Documents/docs'
+let s:create_note_key = 'ctrl-n'
+
+" Sources
+let s:source_command='command rg --follow --smart-case --color=always --colors="match:none" --line-number --no-messages --no-heading --with-filename "\S" ' . join(g:notational_search_paths)
+let s:preview_command=shellescape('rg --color=always --colors="match:fg:blue" -C4 {3} --fixed-strings {1}')
+
+" Plugin
+" Handle fzf results
+function! s:handler(results) abort
+    try
+        " Edit either the query, or the matched file
+        if len(a:results) == 2  || a:results[1] == s:create_note_key
+            execute 'edit ' . fnameescape(g:notational_default_save_path  . '/' . substitute(a:results[0], ' ', '_', 'g') . '.md')
+        else
+            let lineinfo = split(a:results[2], ":")
+            execute 'edit +' . lineinfo[1] . ' ' . fnameescape(lineinfo[0])
+        endif
+    catch
+        echomsg "Notational Error: " . v:exception
+    endtry
+endfunction
+
+command! Notational
+    \ call fzf#run(
+    \ fzf#wrap({
+        \ 'sink*': function('<sid>handler'),
+        \ 'source': s:source_command,
+        \ 'options': join([
+            \ '--print-query',
+            \ '--ansi',
+            \ '--exact',
+            \ '--inline-info',
+            \ '--delimiter=":"',
+            \ '--color=16,hl+:4,hl:4,fg+:-1',
+            \ '--with-nth=' . '1..',
+            \ '--tiebreak=length,begin',
+            \ '--expect=' . s:create_note_key,
+            \ '--preview=' . s:preview_command,
+            \ '--preview-window=40%:wrap'
+            \ ]),
+    \ },<bang>0))
+
+nnoremap <silent> <Leader>n :Notational<CR>
 
 " }
