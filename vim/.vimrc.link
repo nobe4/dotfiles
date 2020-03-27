@@ -82,7 +82,7 @@ let g:ale_lint_on_enter = 0
 let g:ale_fix_on_save = 1
 let g:ale_linter = {
 \   'yaml': ['prettier'],
-\   'go': ['golint', 'govet'],
+\   'go': ['golint', 'govet', 'golangci-lint'],
 \}
 let g:ale_fixers = {
 \   'yaml': ['prettier'],
@@ -168,7 +168,7 @@ set t_Co=256 " Number of available colors
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
-set switchbuf=split
+" set switchbuf=split
 " }
 " Editing text {
 set backspace=indent,eol,start
@@ -241,10 +241,16 @@ vnoremap k gk
 " I only use those mapping in tpope/vim-unimpaired...
 " Inspired by https://git.io/vHtuc
 function! s:MapNextFamily(map,cmd)
-  execute 'nnoremap <silent> ['.        a:map .' :<C-U>'.a:cmd.'previous<CR>"'
-  execute 'nnoremap <silent> ]'.        a:map .' :<C-U>'.a:cmd.'next<CR>"'
-  execute 'nnoremap <silent> ['.toupper(a:map).' :<C-U>'.a:cmd.'first<CR>"'
-  execute 'nnoremap <silent> ]'.toupper(a:map).' :<C-U>'.a:cmd.'last<CR>"'
+  let map = '<Plug>unimpaired'.toupper(a:map)
+  let end = '"<CR>'.(a:cmd == 'c' ? 'zv' : '')
+  execute 'nnoremap <silent> '.map.'Previous :<C-U>exe "'.a:cmd.'previous'.end
+  execute 'nnoremap <silent> '.map.'Next     :<C-U>exe "'.a:cmd.'next'.end
+  execute 'nnoremap <silent> '.map.'First    :<C-U>exe "'.a:cmd.'first'.end
+  execute 'nnoremap <silent> '.map.'Last     :<C-U>exe "'.a:cmd.'last'.end
+  execute 'nmap <silent> ['.        a:map .' '.map.'Previous'
+  execute 'nmap <silent> ]'.        a:map .' '.map.'Next'
+  execute 'nmap <silent> ['.toupper(a:map).' '.map.'First'
+  execute 'nmap <silent> ]'.toupper(a:map).' '.map.'Last'
 endfunction
 
 call s:MapNextFamily('q','c')
@@ -279,6 +285,8 @@ nnoremap Q <NOP>
 " prepare a quick command
 " http://vi.stackexchange.com/a/3136/1821
 nnoremap <Leader>R :nnoremap <lt>Leader>r :
+" Repeat the last command
+nnoremap <Leader>r :<UP>
 
 " Force save
 cnoremap w!! w !sudo tee % >/dev/null

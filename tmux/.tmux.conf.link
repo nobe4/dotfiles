@@ -48,12 +48,10 @@ bind H split-window
 set -g bell-action any
 
 # set color for status bar
-set-option -g status-bg colour235
-set-option -g status-fg yellow
-set-option -g status-attr dim
+set-option -g status-style bg=colour235,fg=yellow,dim
 
-set-window-option -g window-status-fg green
-set-window-option -g window-status-current-fg blue
+set-window-option -g window-status-style fg=green
+set-window-option -g window-status-current-style fg=blue
 
 set -g status-justify centre
 
