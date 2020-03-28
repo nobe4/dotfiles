@@ -1,4 +1,6 @@
+PATH="$PATH:/usr/local/go/bin"
+
 GOBINARY=$(which go)
 export GOPATH=$($GOBINARY env GOPATH)
 export GOBIN=$GOPATH/bin
-export PATH="$PATH:/usr/local/go/bin:$GOPATH:$GOBIN"
+export PATH="$PATH:$GOPATH:$GOBIN"
