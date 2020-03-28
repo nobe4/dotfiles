@@ -79,12 +79,11 @@ Plug 'romainl/vim-qf'
 " }
 " 'dense-analysis/ale' {
 Plug 'dense-analysis/ale'
-let g:ale_lint_on_insert_leave = 0
+let g:ale_fix_on_save = 1
 let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 'never'
 let g:ale_set_signs = 0
 let g:ale_linter = {
-\   'go': ['goimports', 'go vet', 'golint',  'golangci-lint'],
+\   'go': ['goimports', 'govet', 'golint',  'golangci-lint', 'gofmt'],
 \   'graphql': ['prettier'],
 \   'python': ['black'],
 \   'ruby': ['rubocop'],
@@ -156,7 +155,7 @@ set number
 
 set list " show invisible characters
 set listchars=tab:\|\ ,trail:·,extends:›,precedes:‹,nbsp:·
-set fillchars+=vert:\ 
+set fillchars+=vert:\
 
 set nowrap
 
@@ -285,9 +284,9 @@ noremap gp '[v']
 vnoremap @ :norm@
 
 " Deal with errors/warnings, in the location list.
-nnoremap <Leader>eo :lopen<CR>
-nnoremap <Leader>en :lnext<CR>
-nnoremap <Leader>ep :lprev<CR>
+nnoremap <Leader>lo :lopen<CR>
+nnoremap <Leader>ln :lnext<CR>
+nnoremap <Leader>lp :lprev<CR>
 
 " edit and source .vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
@@ -342,7 +341,7 @@ inoremap <CR> <C-G>u<CR>
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
-" Create a new tab (not the space at the end)
+" Create a new tab (note the space at the end)
 nnoremap <Leader>tn :tabnew 
 
 " Copy/Paste with system clipboard
@@ -374,6 +373,9 @@ nnoremap <Leader>l :ls<CR>:buffer<Space>
 " Clear the highlight
 nnoremap <silent> <Leader><Leader> :<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>
 
+" Make <C-F> insert current path in command line mode
+cnoremap <C-F> <C-R>=expand('%:p:h')<CR>/
+" and <leader>e to edit current file
 nnoremap <Leader>e :e <C-R>=expand('%:p:h')<CR>/
 
 " Display a simple help for debugging
@@ -435,38 +437,9 @@ function! ROperator()
 
   execute "normal! v".l:motion."r".l:char
 endfunction
-
 nnoremap gr :call ROperator()<CR>
 
 command! Date :r!date '+\%Y/\%m/\%d'
-
-" Display the full path of the current file
-function! DisplayFullPath() abort
-    echo expand('%:p')
-endfunction
-command! FP call DisplayFullPath()
-
-function! TodoSave()
-" Get the file title or generate a new file based on the current date
-" File title is either the first line if it stats with an #
-" else it is timestamped
-    let l:filename = getline('1')
-    if l:filename =~ "^#"
-        " replace all spaces by `-` and remove the `#\s+`
-        let l:filename = substitute( substitute( substitute(
-                    \ l:filename
-                    \ , '^#\s\+', '', '')
-                    \ , '\s\+$', '', '')
-                    \ ,' ', '-', 'g')
-    else
-        let l:filename = "todo-".localtime()
-    endif
-
-    " Save the file on the desktop
-    execute "w ~/Desktop/".l:filename.".md"
-endfunction
-" TS is for Todo Save
-command! TS :call TodoSave()
 
 " Create a centered column to write stuff more easily
 function! CenterColumn()
@@ -507,39 +480,7 @@ endfunction
 command! FollowCursor :call FollowCursor(1)
 command! UnfollowCursor :call FollowCursor(0)
 
-let s:NotesPath = "~/Desktop/notes/"
-
-function! s:GetNotes(A, L, P)
-    " Move to the note folder
-    execute "cd " . s:NotesPath
-
-    " Build the list command, simple find with regex and the argument from
-    " completion, so you can do some tab tab tab
-    let l:ListCommand = "find . -type f -regex '.*" . a:A . ".*'"
-
-    let l:notesRaw = systemlist(l:ListCommand)
-
-    " Remove the './' prefix
-    let l:notes = map(l:notesRaw, {key, val -> strpart(val, 2)})
-
-    " Go back to the previous dir
-    execute "cd -"
-    return l:notes
-endfunction
-
-function! s:HandleNote(...)
-    " TODO : If the file doesnt exist create a new one
-    if a:0 == 0
-        new
-    else
-        execute "edit ".fnameescape(s:NotesPath . a:1)
-    endif
-endfunction
-
-command! -complete=customlist,s:GetNotes -nargs=? Note :call s:HandleNote(<f-args>)
-
 command! JSONPretty :%!jq '.'
-
 
 function! s:QFixEdit()
     " Copy the content into a new buffer
@@ -579,7 +520,7 @@ command! QFixEdit :call s:QFixEdit()
 
 command! Writing :setlocal wrap linebreak spell filetype=markdown
 
-" Notational
+" Notational {
 " Works by doing a big  `rg 'pattern' 'paths'` +fzf +preview and open the note
 " in vim once it's found. Custom handler is used for creating a new note if
 " none was found.
@@ -629,5 +570,5 @@ command! Notational
     \ },<bang>0))
 
 nnoremap <silent> <Leader>n :Notational<CR>
-
+" }
 " }
