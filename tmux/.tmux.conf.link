@@ -77,7 +77,7 @@ set-option -g status-interval 30
 
 # Display
 # Set color for status bar
-set-option -g status-style bg=colour235,fg=yellow,dim
+set-option -g status-style bg=default,fg=yellow
 
 set-window-option -g window-status-style fg=green
 set-window-option -g window-status-current-style fg=blue
