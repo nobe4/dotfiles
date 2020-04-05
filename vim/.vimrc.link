@@ -153,9 +153,11 @@ set tag+=.git/tags
 " Displaying text {
 set number
 
-set list " show invisible characters
+" Show invisible characters
+set list
 set listchars=tab:\|\ ,trail:·,extends:›,precedes:‹,nbsp:·
-set fillchars+=vert:\
+" Remove the filling char between panes (note the extra space)
+set fillchars+=vert:\ ,fold:\ 
 
 set nowrap
 
@@ -180,7 +182,7 @@ set t_Co=256 " Number of available colors
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
-" set switchbuf=split
+set switchbuf=split
 " }
 " Editing text {
 set backspace=indent,eol,start
@@ -465,7 +467,7 @@ function! ScreenCapture()
     endfor
     tabnew
     call setline(1,array)
-endfu
+endfunction
 command! ScreenCapture :call ScreenCapture()
 
 function! FollowCursor(follow)
@@ -518,7 +520,7 @@ endfunction
 
 command! QFixEdit :call s:QFixEdit()
 
-command! Writing :setlocal wrap linebreak spell filetype=markdown
+command! Writing :setlocal wrap linebreak spell spellcapcheck= filetype=markdown
 
 " Notational {
 " Works by doing a big  `rg 'pattern' 'paths'` +fzf +preview and open the note
