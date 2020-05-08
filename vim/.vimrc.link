@@ -45,7 +45,6 @@ nnoremap Z= :Correct<CR>
 Plug 'nobe4/exchange.vim/'
 
 Plug 'nobe4/curl.vim/'
-nnoremap <leader>c :call curl#Process()
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
@@ -82,28 +81,37 @@ Plug 'dense-analysis/ale'
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_save = 1
 let g:ale_set_signs = 0
-let g:ale_linter = {
+let g:ale_linters = {
 \   'go': ['goimports', 'govet', 'golint',  'golangci-lint', 'gofmt'],
 \   'graphql': ['prettier'],
+\   'html': ['prettier'],
+\   'javascript': ['standard'],
 \   'python': ['black'],
 \   'ruby': ['rubocop'],
 \   'scss': ['prettier'],
 \   'terraform': ['terraform'],
-\   'yaml': ['prettier'],
+\   'vue': ['prettier'],
+\   'yaml': ['prettier']
 \}
 let g:ale_fixers = {
 \   'go': ['goimports', 'gofmt'],
 \   'graphql': ['prettier'],
-\   'yaml': ['prettier'],
-\   'terraform': ['terraform'],
-\   'scss': ['prettier'],
-\   'ruby': ['rubocop'],
+\   'html': ['prettier'],
+\   'javascript': ['standard'],
 \   'python': ['black'],
+\   'ruby': ['rubocop'],
+\   'scss': ['prettier'],
+\   'terraform': ['terraform'],
+\   'vue': ['prettier'],
+\   'yaml': ['prettier']
 \}
 " }
 " scrooloose/nerdcommenter {
 Plug 'scrooloose/nerdcommenter'
 let NERDSpaceDelims=1
+let NERDCreateDefaultMappings=0
+nmap <leader>c <plug>NERDCommenterToggle
+vmap <leader>c <plug>NERDCommenterToggle
 " }
 " christoomey/vim-tmux-navigator {
 Plug 'christoomey/vim-tmux-navigator'
@@ -127,7 +135,7 @@ nnoremap <Leader>gl :Gpull
 
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-rhubarb'
-" Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-scriptease'
 " }
@@ -192,10 +200,11 @@ set formatoptions+=j
 set completeopt=menu,preview
 " }
 " Tabs and indenting {
-set noexpandtab " Insert tab
-set autoindent " Use the same indent as the previous line
+" Using tpope/vim-sleuth
+" set noexpandtab " Insert tab
+" set autoindent " Use the same indent as the previous line
 set tabstop=2 " Number of spaces a <Tab> in the text stands for
-set shiftwidth=2 " Number of spaces used for each step of (auto)indent
+" set shiftwidth=2 " Number of spaces used for each step of (auto)indent
 " }
 " Folding {
 set foldenable " Turn on folding
@@ -229,8 +238,8 @@ autocmd! BufNewFile,BufFilePre,BufRead *.gs set syntax=javascript
 autocmd! BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
 autocmd! BufNewFile,BufFilePre,BufRead *.sls set filetype=yaml
 autocmd! BufNewFile,BufFilePre,BufRead Vagrantfile set filetype=ruby
-autocmd! Filetype haskell setlocal ts=4 sw=4 sts=0 expandtab
 autocmd! Filetype python setlocal foldmethod=indent
+autocmd! Filetype javascript setlocal foldmethod=indent
 autocmd! bufreadpost *.coffee set syntax=javascript
 autocmd! bufreadpost *.gs set syntax=javascript
 " }
@@ -297,6 +306,9 @@ nnoremap <Leader>vs :so $MYVIMRC
 command! ReloadVimrc :source $MYVIMRC
 command! EditVimrc :e $MYVIMRC
 
+" Change content of check box
+nnoremap <Leader>d ?\[.\]<CR>:nohlsearch<CR><right>s
+
 " save file
 nnoremap <Leader>w :w<CR>
 " quit without saving
@@ -306,9 +318,6 @@ nnoremap <Leader>x :xit
 
 " Quick make (note the space at the end of the command)
 nnoremap <Leader>m :make 
-
-" Duplicate and comment line
-nmap <Leader>dc yy<Space>c<Space>p
 
 " Remove the ex mode
 nnoremap Q <NOP>
@@ -527,8 +536,8 @@ command! Writing :setlocal wrap linebreak spell spellcapcheck= filetype=markdown
 " in vim once it's found. Custom handler is used for creating a new note if
 " none was found.
 " Variables
-let g:notational_search_paths = ['~/Documents/docs', '~/.dot', '*.md']
-let g:notational_default_save_path = '~/Documents/docs'
+let g:notational_search_paths = ['~/Documents/docs', '~/docs', '~/.dot', '*.md', '~/shelf']
+let g:notational_default_save_path = '~/shelf'
 let s:create_note_key = 'ctrl-n'
 
 " Sources
