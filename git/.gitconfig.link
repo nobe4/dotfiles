@@ -3,6 +3,7 @@
   # default user
   name = nobe4
   email = haffreinguev@gmail.com
+  signingKey = A4EAFCF8BCEF0D15
 [core]
   # use vim, damn
   editor = vim
@@ -13,9 +14,15 @@
   standup = !git-standup
   oops = !git commit -a --fixup=HEAD && GIT_EDITOR=true git rebase -i --autosquash HEAD~2
   safe-pull = !git-safe-pull
+  clean-branches = !git-clean-branches
 [pull]
   default = current
 [push]
   default = current
 [github]
   user = nobe4
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true

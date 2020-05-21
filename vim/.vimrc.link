@@ -126,6 +126,7 @@ let g:fzf_buffers_jump = 1
 Plug 'junegunn/vim-easy-align'
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+let g:easy_align_ignore_groups = []
 " }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
@@ -200,11 +201,11 @@ set formatoptions+=j
 set completeopt=menu,preview
 " }
 " Tabs and indenting {
-" Using tpope/vim-sleuth
-" set noexpandtab " Insert tab
-" set autoindent " Use the same indent as the previous line
+" Using tpope/vim-sleuth as well.
+set noexpandtab " Insert tab
+set autoindent " Use the same indent as the previous line
 set tabstop=2 " Number of spaces a <Tab> in the text stands for
-" set shiftwidth=2 " Number of spaces used for each step of (auto)indent
+set shiftwidth=2 " Number of spaces used for each step of (auto)indent
 " }
 " Folding {
 set foldenable " Turn on folding
@@ -307,7 +308,7 @@ command! ReloadVimrc :source $MYVIMRC
 command! EditVimrc :e $MYVIMRC
 
 " Change content of check box
-nnoremap <Leader>d ?\[.\]<CR>:nohlsearch<CR><right>s
+nnoremap <Leader>d 0/\[.\]<CR>:nohlsearch<CR><right>s
 
 " save file
 nnoremap <Leader>w :w<CR>
@@ -417,7 +418,7 @@ iabbrev pydebug import pdb; pdb.set_trace()
 iabbrev red* * { color: red !important; }
 iabbrev :shrug: ¯\_(ツ)_/¯
 iabbrev ttt (t *testing.T)
-iabbrev forhook for _, e := range hooks.Entries { t.Logf("=> %v", e) }
+iabbrev forhook for _, e := range hook.Entries { t.Logf("=> %v", e) }
 "}
 " GUI {
 " Remove every bit of GUI option

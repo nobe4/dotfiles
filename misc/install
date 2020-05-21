@@ -2,16 +2,19 @@
 
 # https://github.com/PhrozenByte/rmtrash
 # https://github.com/rupa/z
+# https://github.com/koalaman/shellcheck
 
 if [ -n "$IS_MACOS" ]; then
 	brew install rmtrash
 	brew install z
+	brew install shellcheck
 fi
 
 if [ -n "$IS_LINUX" ]; then
 	curl https://raw.githubusercontent.com/rupa/z/master/z.sh -o ./misc/z.sh
 	curl https://raw.githubusercontent.com/PhrozenByte/rmtrash/master/rmtrash -o ./misc/rmtrash.bin
 	chmod +x ./misc/rmtrash.bin
+	apt install shellcheck
 fi
 
 touch ~/.z
