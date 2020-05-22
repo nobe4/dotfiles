@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+if [ -n "$IS_MACOS" ]; then
+	# https://docs.brew.sh/Homebrew-and-Python
+	brew install python
+fi
+
+if [ -n "$IS_LINUX" ]; then
+	# Nothing to do
+fi
+
+sudo pip3 install black
+

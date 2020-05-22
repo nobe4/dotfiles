@@ -10,3 +10,5 @@ if [ -n "$IS_LINUX" ]; then
 	sudo apt update
 	sudo apt install golang-go
 fi
+
+go get golang.org/x/tools/cmd/goimports

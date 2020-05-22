@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+if [ -n "$IS_MACOS" ]; then
+	brew install node
+fi
+
+if [ -n "$IS_LINUX" ]; then
+	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+	sudo apt-get install -y nodejs
+fi
+
+npm install --global prettier standard
