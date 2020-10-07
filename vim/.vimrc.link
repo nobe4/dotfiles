@@ -89,6 +89,7 @@ let g:ale_linters = {
 \   'python': ['black'],
 \   'ruby': ['rubocop'],
 \   'scss': ['prettier'],
+\   'css': ['prettier'],
 \   'terraform': ['terraform'],
 \   'vue': ['prettier'],
 \   'yaml': ['prettier']
@@ -101,6 +102,7 @@ let g:ale_fixers = {
 \   'python': ['black'],
 \   'ruby': ['rubocop'],
 \   'scss': ['prettier'],
+\   'css': ['prettier'],
 \   'terraform': ['terraform'],
 \   'vue': ['prettier'],
 \   'yaml': ['prettier']
