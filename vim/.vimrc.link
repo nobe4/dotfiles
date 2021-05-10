@@ -42,9 +42,8 @@ call plug#begin('~/.vim/plugged')
 " nobe4 {
 Plug 'nobe4/vimcorrect'
 nnoremap Z= :Correct<CR>
-Plug 'nobe4/exchange.vim/'
-
-Plug 'nobe4/curl.vim/'
+Plug 'nobe4/exchange.vim'
+Plug 'nobe4/curl.vim'
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
@@ -540,8 +539,8 @@ command! Writing :setlocal wrap linebreak spell spellcapcheck= filetype=markdown
 " in vim once it's found. Custom handler is used for creating a new note if
 " none was found.
 " Variables
-let g:notational_search_paths = ['~/Documents/docs', '~/docs', '~/.dot', '*.md', '~/shelf']
-let g:notational_default_save_path = '~/shelf'
+let g:notational_search_paths = ['~/Documents/docs', '~/.dot', '*.md', ]
+let g:notational_default_save_path = '~/Documents/docs'
 let s:create_note_key = 'ctrl-n'
 
 " Sources
