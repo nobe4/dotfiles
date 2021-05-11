@@ -17,7 +17,7 @@ export LC_ALL=en_US.UTF-8
 
 export TERM=xterm-256color
 export CLICOLOR=1
-export LSCOLORS=Gxfxcxdxbxegedabagacad
+export LSCOLORS=exfxcxdxbxegedabagacad
 
 export EDITOR='vim'
 
