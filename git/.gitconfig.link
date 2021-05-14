@@ -1,28 +1,29 @@
 # vi:ft=gitconfig
 [user]
-  # default user
-  name = nobe4
-  email = nobe4@users.noreply.github.com
-  signingKey = A4EAFCF8BCEF0D15
+	# default user
+	name = nobe4
+	email = nobe4@users.noreply.github.com
+	signingKey = A4EAFCF8BCEF0D15
 [core]
-  # use vim, damn
-  editor = vim
-  excludesFile = $HOME/.gitignore_global
+	# use vim, damn
+	editor = vim
+	excludesFile = $HOME/.gitignore_global
 [alias]
-  lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
-  me = !git-me
-  standup = !git-standup
-  oops = !git commit -a --fixup=HEAD && GIT_EDITOR=true git rebase -i --autosquash HEAD~2
-  safe-pull = !git-safe-pull
-  clean-branches = !git-clean-branches
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	me = !git-me
+	standup = !git-standup
+	oops = !git commit -a --fixup=HEAD && GIT_EDITOR=true git rebase -i --autosquash HEAD~2
+	safe-pull = !git-safe-pull
+	clean-branches = !git-clean-branches
+	recent = branch --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)"
 [pull]
-  default = current
+	default = current
 [push]
-  default = current
+	default = current
 [github]
-  user = nobe4
+	user = nobe4
 [filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
