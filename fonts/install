@@ -8,5 +8,5 @@ if [ -n "$IS_MACOS" ]; then
 fi
 
 if [ -n "$IS_LINUX" ]; then
-	mv /tmp/source-code-pro-release/TTF/* /usr/local/share/fonts/
+	sudo mv /tmp/source-code-pro-release/TTF/* /usr/local/share/fonts/
 fi
