@@ -3,7 +3,7 @@
 if [ -n "$IS_MACOS" ]; then
 	brew install ripgrep
 	brew install fzf
-	$(brew --prefix)/opt/fzf/install --bin key-bindings
+	$(brew --prefix)/opt/fzf/install --bin --key-bindings
 fi
 
 if [ -n "$IS_LINUX" ]; then
@@ -13,5 +13,5 @@ if [ -n "$IS_LINUX" ]; then
 	# Install fzf from git
 	# ref: https://github.com/junegunn/fzf#using-git
 	git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/fzf
-	/tmp/fzf/install --bin key-bindings
+	/tmp/fzf/install --bin --key-bindings
 fi
