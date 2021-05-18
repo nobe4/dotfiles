@@ -1,1 +1,1 @@
-alias tel="$ZSH/telegram/telegram.sh"
+alias tel="$DOTFILE_FOLDER/telegram/telegram.sh"

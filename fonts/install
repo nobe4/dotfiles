@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 curl -L https://github.com/adobe-fonts/source-code-pro/archive/refs/heads/release.zip -o /tmp/source-code-pro.zip
-unzip /tmp/source-code-pro.zip -d /tmp/
+unzip -q /tmp/source-code-pro.zip -d /tmp/
 
 if [ -n "$IS_MACOS" ]; then
 	mv /tmp/source-code-pro-release/TTF/* /Library/Fonts/

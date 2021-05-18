@@ -6,8 +6,7 @@ Kittens and stuff.
 
 ```
 git clone git@github.com:nobe4/dotfiles.git
-git submodule update --init
-chsh -s $(which zsh)
+./install.sh
 ```
 
 In case of `zsh compinit: insecure directories, run compaudit for list.`:

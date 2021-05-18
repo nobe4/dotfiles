@@ -7,7 +7,7 @@ case "${unameOut}" in
 	*) exit 1
 esac
 
-PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$ZSH/.yada/bin"
+PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$DOTFILE_FOLDER/.yada/bin"
 
 MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 
@@ -22,8 +22,8 @@ export LSCOLORS=exfxcxdxbxegedabagacad
 export EDITOR='vim'
 
 # Access the functions/* files
-fpath=($ZSH/functions $fpath)
-autoload -U $ZSH/functions/*(:t)
+fpath=($DOTFILE_FOLDER/functions $fpath)
+autoload -U $DOTFILE_FOLDER/functions/*(:t)
 
 if [ -n "$IS_MACOS" ]; then
 	PATH="$PATH:/Applications:~/Applications"
@@ -31,7 +31,7 @@ if [ -n "$IS_MACOS" ]; then
 fi
 
 if [ -n "$IS_LINUX" ]; then
-	. $ZSH/misc/z.sh
+	. $DOTFILE_FOLDER/misc/z.sh
 fi
 
 export PATH

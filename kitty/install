@@ -7,5 +7,5 @@ open https://github.com/kovidgoyal/kitty/releases
 mkdir -p ~/.config/kitty/
 cat << EOF > ~/.config/kitty/kitty.conf
 #press gf on here
-include $ZSH/kitty/kitty.conf
+include $DOTFILE_FOLDER/kitty/kitty.conf
 EOF

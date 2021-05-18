@@ -4,7 +4,7 @@ function rgf {
 }
 
 alias todo="rg -i todo"
-alias rg='rg --ignore-file $ZSH/search/.ignore'
+alias rg='rg --ignore-file $DOTFILE_FOLDER/search/.ignore'
 
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
   export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
@@ -17,4 +17,4 @@ fi
 # Key bindings
 source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
-export FZF_DEFAULT_COMMAND='rg --files --follow --ignore-file $ZSH/search/.ignore'
+export FZF_DEFAULT_COMMAND='rg --files --follow --ignore-file $DOTFILE_FOLDER/search/.ignore'

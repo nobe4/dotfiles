@@ -1,4 +1,4 @@
-list_file=${ZSH}/links/list
+list_file=${DOTFILE_FOLDER}/links/list
 
 function l(){
 	sane_list="$(cat $list_file | sed '/^#/d; /^$/d')"

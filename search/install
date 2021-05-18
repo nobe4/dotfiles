@@ -3,7 +3,7 @@
 if [ -n "$IS_MACOS" ]; then
 	brew install ripgrep
 	brew install fzf
-	$(brew --prefix)/opt/fzf/install
+	$(brew --prefix)/opt/fzf/install --bin
 fi
 
 if [ -n "$IS_LINUX" ]; then
