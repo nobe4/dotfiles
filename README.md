@@ -6,6 +6,7 @@ Kittens and stuff.
 
 ```
 git clone git@github.com:nobe4/dotfiles.git
+cd dotfiles
 ./install.sh
 ```
 
