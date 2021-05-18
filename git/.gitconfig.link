@@ -15,7 +15,7 @@
 	oops = !git commit -a --fixup=HEAD && GIT_EDITOR=true git rebase -i --autosquash HEAD~2
 	safe-pull = !git-safe-pull
 	clean-branches = !git-clean-branches
-	recent = branch --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)"
+	recent-branches = branch --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)"
 [pull]
 	default = current
 [push]

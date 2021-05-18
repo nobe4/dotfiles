@@ -18,6 +18,8 @@ if [ -n "$IS_MACOS" ]; then
 	alias unlockvst='xattr -d com.apple.quarantine'
 fi
 
-function portscan(){
-	lsof -nP -i4TCP:$1
-}
+if [ -n "$IS_LINUX" ]; then
+	function portscan(){
+		lsof -nP -i4TCP:$1
+	}
+fi
