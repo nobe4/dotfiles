@@ -11,7 +11,7 @@ if [ -n "$IS_MACOS" ]; then
 fi
 
 if [ -n "$IS_LINUX" ]; then
-	sudo apt-get install vim
+	sudo apt-get install -y vim
 fi
 
 # Install vim-plug

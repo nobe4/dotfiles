@@ -7,8 +7,8 @@ fi
 if [ -n "$IS_LINUX" ]; then
 	# https://github.com/golang/go/wiki/Ubuntu
 	sudo add-apt-repository ppa:longsleep/golang-backports
-	sudo apt update
-	sudo apt install golang-go
+	sudo apt update -y
+	sudo apt install -y golang-go
 fi
 
 go get golang.org/x/tools/cmd/goimports
