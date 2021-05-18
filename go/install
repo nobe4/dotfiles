@@ -2,6 +2,8 @@
 
 if [ -n "$IS_MACOS" ]; then
 	open https://golang.org/doc/install
+	read -s -k '?Press enter when golang is installed...'
+	go get golang.org/x/tools/cmd/goimports
 fi
 
 if [ -n "$IS_LINUX" ]; then
@@ -11,4 +13,3 @@ if [ -n "$IS_LINUX" ]; then
 	sudo apt install -y golang-go
 fi
 
-go get golang.org/x/tools/cmd/goimports
