@@ -184,7 +184,12 @@ syntax on " Activate syntax highlighting
 set hlsearch
 
 set background=dark
-colorscheme mnml
+
+try
+    colorscheme mnml
+catch /^Vim\%((\a\+)\)\=:E185/
+    " Ignore
+endtry
 
 set spellcapcheck=
 " Clearing uses the current background color
