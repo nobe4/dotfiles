@@ -14,7 +14,7 @@ if [ -n "$IS_LINUX" ]; then
 	curl https://raw.githubusercontent.com/rupa/z/master/z.sh -o ./misc/z.sh
 	curl https://raw.githubusercontent.com/PhrozenByte/rmtrash/master/rmtrash -o ./misc/trash.bin
 	chmod +x ./misc/trash.bin
-	apt install shellcheck
+	sudo apt install shellcheck
 fi
 
 touch ~/.z
