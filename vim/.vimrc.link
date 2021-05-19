@@ -540,11 +540,11 @@ command! QFixEdit :call s:QFixEdit()
 command! Writing :setlocal wrap linebreak spell spellcapcheck= filetype=markdown
 
 " Notational {
-" Works by doing a big  `rg 'pattern' 'paths'` +fzf +preview and open the note
+" Works by doing a big  `rg 'pattern' 'paths'` + fzf +preview and open the note
 " in vim once it's found. Custom handler is used for creating a new note if
 " none was found.
 " Variables
-let g:notational_search_paths = ['~/Documents/docs', '~/.dot', '*.md', ]
+let g:notational_search_paths = ['~/Documents/docs', '*.md', ]
 let g:notational_default_save_path = '~/Documents/docs'
 let s:create_note_key = 'ctrl-n'
 

@@ -21,3 +21,4 @@ do
 done
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export DOTFILE_FOLDER
