@@ -5,16 +5,16 @@
 # https://github.com/koalaman/shellcheck
 
 if [ -n "$IS_MACOS" ]; then
-	brew install rmtrash
+	brew install trash
 	brew install z
 	brew install shellcheck
 fi
 
 if [ -n "$IS_LINUX" ]; then
 	curl https://raw.githubusercontent.com/rupa/z/master/z.sh -o ./misc/z.sh
-	curl https://raw.githubusercontent.com/PhrozenByte/rmtrash/master/rmtrash -o ./misc/rmtrash.bin
-	chmod +x ./misc/rmtrash.bin
-	apt install shellcheck
+	curl https://raw.githubusercontent.com/PhrozenByte/rmtrash/master/rmtrash -o ./misc/trash.bin
+	chmod +x ./misc/trash.bin
+	sudo apt install -y shellcheck
 fi
 
 touch ~/.z

@@ -3,12 +3,15 @@
 if [ -n "$IS_MACOS" ]; then
 	brew install ripgrep
 	brew install fzf
-	$(brew --prefix)/opt/fzf/install
+	$(brew --prefix)/opt/fzf/install --bin --key-bindings
 fi
 
 if [ -n "$IS_LINUX" ]; then
 	curl -L https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb -o ./search/ripgrep.deb
 	sudo dpkg -i ./search/ripgrep.deb
 	rm ./search/ripgrep.deb
-	sudo apt-get install fzf
+	# Install fzf from git
+	# ref: https://github.com/junegunn/fzf#using-git
+	git clone --depth 1 https://github.com/junegunn/fzf.git /tmp/fzf
+	/tmp/fzf/install --bin --key-bindings
 fi

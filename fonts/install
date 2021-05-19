@@ -1,9 +1,12 @@
 #!/usr/bin/env zsh
 
+curl -L https://github.com/adobe-fonts/source-code-pro/archive/refs/heads/release.zip -o /tmp/source-code-pro.zip
+unzip -q /tmp/source-code-pro.zip -d /tmp/
+
 if [ -n "$IS_MACOS" ]; then
-	curl -o /Library/Fonts/Hack-Regular.ttf https://raw.githubusercontent.com/chrissimpkins/Hack/master/build/ttf/Hack-Regular.ttf
+	mv /tmp/source-code-pro-release/TTF/* /Library/Fonts/
 fi
 
 if [ -n "$IS_LINUX" ]; then
-	sudo curl -o /usr/local/share/fonts/Hack-Regular.ttf https://raw.githubusercontent.com/chrissimpkins/Hack/master/build/ttf/Hack-Regular.ttf
+	sudo mv /tmp/source-code-pro-release/TTF/* /usr/local/share/fonts/
 fi

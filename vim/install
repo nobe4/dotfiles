@@ -1,13 +1,17 @@
 #!/usr/bin/env zsh
 
 # Install Vim
-# Install it manually and the vim.zsh will make sure it's linked correctly
 if [ -n "$IS_MACOS" ]; then
-	open https://github.com/macvim-dev/macvim/releases
+	dwld_link="$(curl -L -s https://github.com/macvim-dev/macvim/releases/latest | grep 'MacVim.dmg"' | cut -d '"' -f 2)"
+	curl -L -s "https://github.com$dwld_link" -o /tmp/MacVim.dmg
+	open /tmp/MacVim.dmg
+	# Move into `/Application` and the link will be done later.
+	# Will be link
+	read -s -k '?Press enter when MacVim is moved to the /Application folder...'
 fi
 
 if [ -n "$IS_LINUX" ]; then
-	sudo apt-get install vim
+	sudo apt-get install -y vim
 fi
 
 # Install vim-plug
@@ -16,3 +20,5 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.c
 # Add the swapfile and undodir folder
 mkdir -p ~/.vim/swapdir/
 mkdir -p ~/.vim/undodir/
+
+vim +PlugInstall +qall!

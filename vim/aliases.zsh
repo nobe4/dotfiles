@@ -2,7 +2,7 @@
 alias vi="vim"
 
 # Run Gstatus at vim startup
-alias vst='vim +Gstatus now'
+alias vst='vim +Git now'
 
 # Jump to vim help
 alias vih='vim +help\'

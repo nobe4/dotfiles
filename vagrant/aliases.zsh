@@ -43,4 +43,3 @@ vsh(){
   vup
   vagrant ssh
 }
-

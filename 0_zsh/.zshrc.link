@@ -1,11 +1,11 @@
 #!/bin/zsh
 
-# shortcut to this dotfiles path is $ZSH
-export ZSH=$HOME/.dot
+# Save the current folder
+DOTFILE_FOLDER="$(dirname $(dirname $(readlink ~/.zshrc)))"
 
 # List configuration file
 list(){
-	find -H "$ZSH" -type f -name $1 -not -path '*.yada*' | sort -u
+	find -H "$DOTFILE_FOLDER" -type f -name $1 -not -path '*.yada*' | sort -u
 }
 
 # Source all zsh files
@@ -21,3 +21,4 @@ do
 done
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export DOTFILE_FOLDER

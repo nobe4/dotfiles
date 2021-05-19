@@ -9,4 +9,4 @@ if [ -n "$IS_LINUX" ]; then
 	# Nothing to do
 fi
 
-python3.6 -m pip install black
+python3 -m pip install black

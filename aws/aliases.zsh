@@ -1,4 +1,4 @@
-alias aws_creds="$ZSH/aws/aws_creds.sh"
+alias aws_creds="$DOTFILE_FOLDER/aws/aws_creds.sh"
 
 function routes() {
 	# Select the aws profile
