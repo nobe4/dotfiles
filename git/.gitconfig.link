@@ -2,7 +2,7 @@
 [user]
   # default user
   name = nobe4
-  email = haffreinguev@gmail.com
+  email = nobe4@users.noreply.github.com
   signingKey = A4EAFCF8BCEF0D15
 [core]
   # use vim, damn

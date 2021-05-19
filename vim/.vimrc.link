@@ -68,7 +68,7 @@ Plug 'vim-scripts/matchit.zip'
 Plug 'mattn/emmet-vim'
 let g:user_emmet_install_global = 0
 let g:user_emmet_leader_key=','
-autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango EmmetInstall
+autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango,vue EmmetInstall
 " }
 " danro/rename.vim {
 Plug 'danro/rename.vim', { 'on': 'Rename' }
@@ -85,7 +85,7 @@ let g:ale_linters = {
 \   'go': ['goimports', 'govet', 'golint',  'golangci-lint', 'gofmt'],
 \   'graphql': ['prettier'],
 \   'html': ['prettier'],
-\   'javascript': ['standard'],
+\   'javascript': ['prettier'],
 \   'python': ['black'],
 \   'ruby': ['rubocop'],
 \   'scss': ['prettier'],
@@ -97,15 +97,15 @@ let g:ale_linters = {
 let g:ale_fixers = {
 \   'go': ['goimports', 'gofmt'],
 \   'graphql': ['prettier'],
-\   'html': ['prettier'],
-\   'javascript': ['standard'],
+\   'javascript': ['prettier'],
 \   'python': ['black'],
 \   'ruby': ['rubocop'],
 \   'scss': ['prettier'],
 \   'css': ['prettier'],
 \   'terraform': ['terraform'],
 \   'vue': ['prettier'],
-\   'yaml': ['prettier']
+\   'yaml': ['prettier'],
+\   'html': ['prettier']
 \}
 " }
 " scrooloose/nerdcommenter {
@@ -240,6 +240,7 @@ autocmd! BufNewFile,BufFilePre,BufRead *.graphql set filetype=graphql
 autocmd! BufNewFile,BufFilePre,BufRead *.gs set syntax=javascript
 autocmd! BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
 autocmd! BufNewFile,BufFilePre,BufRead *.sls set filetype=yaml
+autocmd! BufNewFile,BufFilePre,BufRead *.vue setlocal foldmethod=indent
 autocmd! BufNewFile,BufFilePre,BufRead Vagrantfile set filetype=ruby
 autocmd! Filetype python setlocal foldmethod=indent
 autocmd! Filetype javascript setlocal foldmethod=indent
@@ -453,7 +454,12 @@ function! ROperator()
 endfunction
 nnoremap gr :call ROperator()<CR>
 
-command! Date :r!date '+\%Y/\%m/\%d'
+" Insert date into text
+iabbrev <expr> :date: <SID>InsertDate()
+command! Date r!date '+\%Y/\%m/\%d'
+function! s:InsertDate()
+    return system("printf '%s' $(date '+\%Y/\%m/\%d')")
+endfunction
 
 " Create a centered column to write stuff more easily
 function! CenterColumn()
