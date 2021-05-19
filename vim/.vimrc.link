@@ -308,12 +308,10 @@ nnoremap <Leader>lo :lopen<CR>
 nnoremap <Leader>ln :lnext<CR>
 nnoremap <Leader>lp :lprev<CR>
 
-" edit and source .vimrc
+" edit, source/reload .vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
-nnoremap <Leader>vs :so $MYVIMRC
-" Reload Vimrc
-command! ReloadVimrc :source $MYVIMRC
-command! EditVimrc :e $MYVIMRC
+nnoremap <Leader>vs :so $MYVIMRC<CR>
+nnoremap <Leader>vr :so $MYVIMRC<CR>
 
 " Change content of check box
 nnoremap <Leader>d 0/\[.\]<CR>:nohlsearch<CR><right>s
@@ -460,11 +458,7 @@ endfunction
 nnoremap gr :call ROperator()<CR>
 
 " Insert date into text
-iabbrev <expr> :date: <SID>InsertDate()
-command! Date r!date '+\%Y/\%m/\%d'
-function! s:InsertDate()
-    return system("printf '%s' $(date '+\%Y/\%m/\%d')")
-endfunction
+iabbrev <expr> :date: {-> system("printf '%s' $(date '+\%Y/\%m/\%d')")}()
 
 " Create a centered column to write stuff more easily
 function! CenterColumn()
