@@ -249,8 +249,9 @@ autocmd! BufNewFile,BufFilePre,BufRead *.vue setlocal foldmethod=indent
 autocmd! BufNewFile,BufFilePre,BufRead Vagrantfile set filetype=ruby
 autocmd! Filetype python setlocal foldmethod=indent
 autocmd! Filetype javascript setlocal foldmethod=indent
-autocmd! bufreadpost *.coffee set syntax=javascript
-autocmd! bufreadpost *.gs set syntax=javascript
+autocmd! BufReadPost *.coffee set syntax=javascript
+autocmd! BufReadPost *.gs set syntax=javascript
+autocmd! BufWritePost espanso_config.yml !espanso restart&
 " }
 " Markdown {
 autocmd! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
