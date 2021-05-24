@@ -132,7 +132,7 @@ let g:easy_align_ignore_groups = []
 " tpope/* {
 Plug 'tpope/vim-fugitive'
 nnoremap <Leader>gs :Git<CR>
-nnoremap <Leader>gp :Gpush -u
+nnoremap <Leader>gp :Git push -u
 nnoremap <Leader>gl :Gpull
 
 Plug 'tpope/vim-projectionist'
@@ -165,7 +165,7 @@ set number
 
 " Show invisible characters
 set list
-set listchars=tab:\|\ ,trail:·,extends:›,precedes:‹,nbsp:·
+set listchars=tab:\·\ ,trail:·,extends:›,precedes:‹,nbsp:·
 " Remove the filling char between panes (note the extra space)
 set fillchars+=vert:\ ,fold:\ 
 
@@ -456,9 +456,6 @@ function! ROperator()
   execute "normal! v".l:motion."r".l:char
 endfunction
 nnoremap gr :call ROperator()<CR>
-
-" Insert date into text
-iabbrev <expr> :date: {-> system("printf '%s' $(date '+\%Y/\%m/\%d')")}()
 
 " Create a centered column to write stuff more easily
 function! CenterColumn()

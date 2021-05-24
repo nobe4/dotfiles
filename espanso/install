@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+if [ -n "$IS_MACOS" ]; then
+	brew tap federico-terzi/espanso
+	brew install espanso
+	espanso register
+	read -s -k '?Press enter when espanso is registered...'
+	espanso start
+	espanso install all-emojis
+	espanso install french-accents
+
+	ln -fs "$DOTFILE_FOLDER/espanso/config.yml" "$HOME/Library/Preferences/espanso/default.yml"
+fi

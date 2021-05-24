@@ -1,0 +1,22 @@
+# Use `espanso edit` to auto-reload after change.
+
+auto_restart: true
+show_icon: false
+show_notifications: false
+
+matches:
+  - trigger: ";date"
+    replace: "{{now}}"
+    vars:
+      - name: now
+        type: date
+        params:
+          format: "%d/%m/%Y"
+
+  - triggers: [";et", ";ent"]
+    replace: ".entitlements "
+    word: true
+
+  - triggers: [";ets", ";ents"]
+    replace: ".entitlements status"
+    word: true
