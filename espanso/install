@@ -9,5 +9,5 @@ if [ -n "$IS_MACOS" ]; then
 	espanso install all-emojis
 	espanso install french-accents
 
-	ln -fs "$DOTFILE_FOLDER/espanso/config.yml" "$HOME/Library/Preferences/espanso/default.yml"
+	ln -fs "$DOTFILE_FOLDER/espanso/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
 fi

@@ -1,4 +1,5 @@
 # Use `espanso edit` to auto-reload after change.
+# Alternatively, vim will do `espanso restart` after this file is modified.
 
 auto_restart: true
 show_icon: false
@@ -13,10 +14,14 @@ matches:
         params:
           format: "%d/%m/%Y"
 
-  - triggers: [";et", ";ent"]
-    replace: ".entitlements "
+  - triggers: [";et", ";ent", ";ettt"]
+    replace: "entitlements"
     word: true
 
   - triggers: [";ets", ";ents"]
     replace: ".entitlements status"
+    word: true
+
+  - triggers: [";ettd", ";et train deploy"]
+    replace: ".entitlements entrain --deploy"
     word: true
