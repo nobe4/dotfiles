@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ -n "$IS_MACOS" ]; then
+	brew install rbenv
+	rbenv init
+	rbenv install
+fi

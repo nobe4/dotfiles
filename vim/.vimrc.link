@@ -94,6 +94,7 @@ let g:ale_linters = {
 \   'yaml': ['prettier']
 \}
 let g:ale_fixers = {
+\   '*': ['trim_whitespace'],
 \   'go': ['goimports', 'gofmt'],
 \   'graphql': ['prettier'],
 \   'javascript': ['prettier'],
@@ -167,7 +168,7 @@ set number
 set list
 set listchars=tab:\·\ ,trail:·,extends:›,precedes:‹,nbsp:·
 " Remove the filling char between panes (note the extra space)
-set fillchars+=vert:\ ,fold:\ 
+set fillchars+=vert:\ ,fold:\
 
 set nowrap
 
@@ -324,8 +325,8 @@ nnoremap <Leader>q :quit!
 " quit after saving
 nnoremap <Leader>x :xit
 
-" Quick make (note the space at the end of the command)
-nnoremap <Leader>m :make 
+" Quick make
+nnoremap <Leader>m :make
 
 " Remove the ex mode
 nnoremap Q <NOP>
@@ -360,8 +361,8 @@ inoremap <CR> <C-G>u<CR>
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
-" Create a new tab (note the space at the end)
-nnoremap <Leader>tn :tabnew 
+" Create a new tab
+nnoremap <Leader>tn :tabnew
 
 " Copy/Paste with system clipboard
 function! CmdPaste() abort
