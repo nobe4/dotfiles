@@ -3,7 +3,10 @@
 	# default user
 	name = nobe4
 	email = nobe4@users.noreply.github.com
-	signingKey = A4EAFCF8BCEF0D15
+	# personal key signingKey = A4EAFCF8BCEF0D15
+	signingKey = C8C8AFF2458D2030631E57448C0F8429DFD73959
+[commit]
+	gpgsign = true
 [core]
 	# use vim, damn
 	editor = vim
@@ -27,3 +30,5 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[gpg]
+	program = gpg

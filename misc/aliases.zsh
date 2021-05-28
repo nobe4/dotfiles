@@ -1,4 +1,5 @@
 alias ll='ls -la'
+alias reverse-link='find -L /dir/to/start -samefile'
 
 # Start ssh with root account
 function rssh(){

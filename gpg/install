@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+if [ -n "$IS_MACOS" ]; then
+	brew install gnupg gnupg2 pinentry-mac
+
+	mkdir ~/.gnupg
+	echo 'pinentry-program $(brew --prefix)/bin/pinentry-mac' > ~/.gnupg/gpg-agent.conf
+	echo 'use-agent' > ~/.gnupg/gpg.conf
+	chmod 700 ~/.gnupg
+fi

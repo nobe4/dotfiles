@@ -4,4 +4,6 @@ if [ -n "$IS_MACOS" ]; then
 	brew install rbenv
 	rbenv init
 	rbenv install
+	rbenv global 2.7.3
+	gem install irb
 fi
