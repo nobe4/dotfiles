@@ -113,7 +113,7 @@ is_macos && {
 	cat << EOF > ~/.config/kitty/kitty.conf
 	#press gf on here
 	include $DOTFILE_FOLDER/kitty.conf
-	EOF
+EOF
 }
 # }
 
