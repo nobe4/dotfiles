@@ -1,6 +1,0 @@
-#!/usr/bin/env zsh
-
-if [ -n "$IS_MACOS" ]; then
-	brew install gdb
-	open https://sourceware.org/gdb/wiki/BuildingOnDarwin
-fi

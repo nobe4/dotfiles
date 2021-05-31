@@ -1,3 +1,5 @@
 #!/bin/zsh
 
-alias atopen="open ~/.dot/automator"
+# for l in $(find . -name '*.app'); do
+	# echo "$l $(readlink $l)"
+# done

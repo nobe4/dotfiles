@@ -6,6 +6,27 @@ show_icon: false
 show_notifications: false
 
 matches:
+  - trigger: ";1-1"
+    replace: |-
+      # {{now}}
+      ## Awareness/Visibility
+        Anything that needs to be on management's radar
+
+      ## Challenges/Blockers
+        Anything you need management assistance with
+
+      ## Accomplishments
+        Toot your own horn :-)
+
+      ## Administrative
+        Any HR, performance, organization related questions
+
+    vars:
+      - name: now
+        type: date
+        params:
+          format: "%d/%m/%Y"
+
   - trigger: ";date"
     replace: "{{now}}"
     vars:
@@ -18,7 +39,7 @@ matches:
     replace: "entitlements"
     word: true
 
-  - triggers: [";ets", ";ents"]
+  - triggers: [";ets", ";ents", ";status"]
     replace: ".entitlements status"
     word: true
 
