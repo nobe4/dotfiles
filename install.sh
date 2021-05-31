@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# vim: set foldmarker={,} foldmethod=marker
+# vim: foldmarker={,} foldmethod=marker
 
 # Setup {
 set -x
