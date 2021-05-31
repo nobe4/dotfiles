@@ -1,5 +1,5 @@
 " Introduction and notes {
-" vim: set sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldmethod=marker spell:
+" vim: sw=4 ts=4 sts=4 et tw=78 foldmarker={,} foldmethod=marker spell:
 "
 "                 _             ___
 "                | |           /   |
@@ -167,8 +167,7 @@ set number
 " Show invisible characters
 set list
 set listchars=tab:\·\ ,trail:·,extends:›,precedes:‹,nbsp:·
-" Remove the filling char between panes (note the extra space)
-set fillchars+=vert:\ ,fold:·
+set fillchars+=vert:\ ,fold:-
 
 set nowrap
 
@@ -183,6 +182,9 @@ set sidescrolloff=10
 " Syntax, highlighting and spelling {
 syntax on " Activate syntax highlighting
 set hlsearch
+if has('gui_running')
+  set guifont=Source\ Code\ Pro:h11
+endif
 
 set background=dark
 
@@ -220,12 +222,6 @@ set foldenable " Turn on folding
 set foldmethod=syntax " Most of the code will be syntax-indented
 set foldopen=block,hor,mark,percent,quickfix,tag " what movements
 set foldlevelstart=99 " disable auto folding on open
-function! FoldText()
-    return v:folddashes
-                \ . ' ' . (v:foldend - v:foldstart + 1)
-                \ . ' ' . substitute(getline(v:foldstart),"^ *","",1)
-endfunction
-set foldtext=FoldText()
 " }
 " Reading and writing files {
 set autoread

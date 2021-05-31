@@ -1,43 +1,81 @@
 #!/usr/bin/env zsh
 
-set -e
+# Save the current folder
+DOTFILE_FOLDER="$(dirname $(readlink ~/.zshrc))"
 
 # List of utilities for the installation
 
 # Check if shell is interactive
 case $- in
   *i*) export IS_INTERACTIVE="1";;
-  *) echo IS_SCRIPT="1";;
+  *) export IS_SCRIPT="1";;
 esac
 
 function is_interactive {
-	if [ -n "$IS_INTERACTIVE" ]; then
-		return 0
-	fi
-	return 1
+  if [ -n "$IS_INTERACTIVE" ]; then
+    return 0
+  fi
+  return 1
 }
 
 # Which OS is running
 unameOut="$(uname -s)"
 case "${unameOut}" in
-	Linux*) export IS_LINUX="1";;
-	Darwin*) export IS_MACOS="1";;
-	*) exit 1
+  Linux*) export IS_LINUX="1";;
+  Darwin*) export IS_MACOS="1";;
+  *) exit 1
 esac
 
 function is_macos {
-	if [ -n "$IS_MACOS" ]; then
-		return 0
-	fi
-	return 1
+  if [ -n "$IS_MACOS" ]; then
+    return 0
+  fi
+  return 1
 }
 function is_linux {
-	if [ -n "$IS_LINUX" ]; then
-		return 0
-	fi
-	return 1
+  if [ -n "$IS_LINUX" ]; then
+    return 0
+  fi
+  return 1
+}
+
+function is_missing {
+  if !type "$1" > /dev/null; then
+    return 0
+  fi
+  return 1
 }
 
 function wait_until {
-	read -s -k "?Press enter when $1..."
+  read -s -k "?Press enter when $1..."
 }
+
+# link file and backup if needed
+link(){
+  local src="$1"
+  local dst="$2"
+
+  # Backup the existing link
+  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
+  then
+    # If the existing destination does not link to the current source, backup it
+    if ! [ "$src" = "$(readlink $dst)" ]
+    then
+      mv "$dst" "${dst}.backup.$(date +%s)"
+    fi
+  fi
+
+  # Link the file
+  ln -fs "$src" "$dst"
+}
+
+# List configuration file
+list(){
+  find -H "$DOTFILES_ROOT" -type f -name $1 -not -path '*.yada*'
+}
+
+
+# TODO
+# https://htr3n.github.io/2018/07/faster-zsh/
+# https://github.com/qoomon/zsh-lazyload/blob/master/zsh-lazyload.zsh
+

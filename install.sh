@@ -1,15 +1,11 @@
 #!/usr/bin/env zsh
 # vim: foldmarker={,} foldmethod=marker
 
+# This script installs all requirements.
+
 # Setup {
-set -x
-
-# Save the current folder
-DOTFILE_FOLDER="$(dirname $(dirname $(readlink ~/.zshrc)))"
-
-# Import utilities
+set -ex
 source ./utils.zsh
-
 # }
 
 # ZSH {
@@ -17,6 +13,10 @@ source ./utils.zsh
 is_interactive && {
 	sudo chsh -s $(which zsh)
 }
+
+link "$DOTFILE_FOLDER/.zshrc" "$HOME/.zshrc"
+link "$DOTFILE_FOLDER/.zshenv" "$HOME/.zshenv"
+link "$DOTFILE_FOLDER/.bashrc" "$HOME/.bashrc"
 # }
 
 # Fonts {
@@ -24,27 +24,39 @@ curl -L https://github.com/adobe-fonts/source-code-pro/archive/refs/heads/releas
 unzip -q /tmp/source-code-pro.zip -d /tmp/
 
 is_macos && mv /tmp/source-code-pro-release/TTF/* /Library/Fonts/
+# TODO
 # is_linux && sudo mv /tmp/source-code-pro-release/TTF/* /usr/local/share/fonts/
+rm -rf /tmp/source-code-pro-release
+# }
+
+# Homebrew {
+is_macos && {
+	open "https://brew.sh/"
+	wait_until "Homebrew is installed"
+	brew bundle
+	BREW_PREFIX=$(brew --prefix)
+}
 # }
 
 # Vim {
-is_macos && {
-	dwld_link="$(curl -L -s https://github.com/macvim-dev/macvim/releases/latest | grep 'MacVim.dmg"' | cut -d '"' -f 2)"
-	curl -L -s "https://github.com$dwld_link" -o /tmp/MacVim.dmg
-	open /tmp/MacVim.dmg
-	wait_until "MacVim is moved to /Application"
-}
 is_linux && {
 	sudo apt-get install -y vim
 }
 
+link "$DOTFILE_FOLDER/.vimrc" "$HOME/.vimrc"
+
 # Add the swapfile and undodir folder
-mkdir -p ~/.vim/swapdir/
-mkdir -p ~/.vim/undodir/
+mkdir -p "$HOME/.vim/swapdir/"
+mkdir -p "$HOME/.vim/undodir/"
 
 # Install vim-plug
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim +PlugInstall +qall!
+# }
+
+# Git {
+link "$DOTFILE_FOLDER/.gitconfig" "$HOME/.gitconfig"
+link "$DOTFILE_FOLDER/.gitignore_global" "$HOME/.gitignore_global"
 # }
 
 # Golang {
@@ -53,26 +65,21 @@ is_macos && {
 	wait_until "golang is installed"
 	go get golang.org/x/tools/cmd/goimports
 }
-
-# https://github.com/golang/go/wiki/Ubuntu
 is_linux && {
+	# https://github.com/golang/go/wiki/Ubuntu
 	sudo add-apt-repository -y ppa:longsleep/golang-backports &&\
-	sudo apt update -y &&\
-	sudo apt install -y golang-go
-}
+		sudo apt update -y &&\
+		sudo apt install -y golang-go
+	}
 # }
 
 # Tmux {
-is_macos && {
-	brew install tmux
-	# https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
-	brew install reattach-to-user-namespace
-}
-
-# https://github.com/golang/go/wiki/Ubuntu
 is_linux && {
+	# https://github.com/golang/go/wiki/Ubuntu
 	sudo apt-get install -y tmux
 }
+
+link "$DOTFILE_FOLDER/.tmux.conf" "$HOME/.tmux.conf"
 
 # Install tmux plugin manager
 if [ ! -d "$HOME/.tmux/plugins/tpm/" ]; then
@@ -82,7 +89,6 @@ fi
 
 # Ruby {
 is_macos && {
-	brew install rbenv
 	# TODO understand what this does
 	# rbenv init
 	# rbenv install
@@ -93,62 +99,48 @@ is_macos && {
 # }
 
 # Python {
-is_macos && {
-	# https://docs.brew.sh/Homebrew-and-Python
-	brew install python
-}
-
 # Nothing to do on linux
 
 python3 -m pip install black
 # }
 
 # Kitty {
-# Install manually
-open https://github.com/kovidgoyal/kitty/releases
-
-wait_until "Kitty is installed"
-
 # Add "include other conf" in default conf file
-mkdir -p ~/.config/kitty/
-cat << EOF > ~/.config/kitty/kitty.conf
-#press gf on here
-include $DOTFILE_FOLDER/kitty/kitty.conf
-EOF
-
+is_macos && {
+	open 'https://github.com/kovidgoyal/kitty/releases/latest'
+	wait_until 'kitty is installed'
+	mkdir -p "$HOME/.config/kitty/"
+	cat << EOF > ~/.config/kitty/kitty.conf
+	#press gf on here
+	include $DOTFILE_FOLDER/kitty.conf
+	EOF
+}
 # }
 
 # Espanso {
 is_macos && {
-	brew tap federico-terzi/espanso
-	brew install espanso
-	espanso register
-	wait until "espanso is registered"
+	espanso register || true
+	wait_until "espanso is registered"
 
-	espanso start
+	espanso start || true
 	espanso install all-emojis
 	espanso install french-accents
 
-	ln -fs "$DOTFILE_FOLDER/espanso/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
+	# TODO
+	ln -fs "$DOTFILE_FOLDER/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
 }
 # }
 
-# Gpg {
+# GPG {
 is_macos && {
-	brew install gnupg gnupg2 pinentry-mac
-
-	mkdir ~/.gnupg
-	echo 'pinentry-program $(brew --prefix)/bin/pinentry-mac' > ~/.gnupg/gpg-agent.conf
-	echo 'use-agent' > ~/.gnupg/gpg.conf
-	chmod 700 ~/.gnupg
+	mkdir -p "$HOME/.gnupg"
+	echo "pinentry-program $BREW_PREFIX/bin/pinentry-mac" > "$HOME/.gnupg/gpg-agent.conf"
+	echo 'use-agent' > "$HOME/.gnupg/gpg.conf"
+	chmod 700 "$HOME/.gnupg"
 }
 # }
 
 # Nodejs {
-is_macos && {
-	brew install node
-}
-
 is_linux && {
 	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 	sudo apt-get install -y nodejs
@@ -158,24 +150,22 @@ npm install --global prettier standard
 # }
 
 # OS-Specific {
-is_macos {
+is_macos && {
 	# ref: https://github.com/mathiasbynens/dotfiles/blob/master/.osx
 	# Default finder view: column
 	defaults write com.apple.Finder FXPreferredViewStyle clmv
 
-	# Show the ~/Library folder.
-	chflags nohidden ~/Library
+	# Show the $HOME/Library folder.
+	chflags nohidden "$HOME/Library"
 }
 # }
 
 # Search {
 is_macos && {
-	brew install ripgrep
-	brew install fzf
-	$(brew --prefix)/opt/fzf/install --bin --key-bindings
+	"$BREW_PREFIX/opt/fzf/install" --bin --key-bindings
 }
 
-is_linux {
+is_linux && {
 	# Ripgrep
 	curl -L https://github.com/BurntSushi/ripgrep/releases/download/0.10.0/ripgrep_0.10.0_amd64.deb -o ./search/ripgrep.deb
 	sudo dpkg -i ./search/ripgrep.deb
@@ -190,9 +180,7 @@ is_linux {
 
 # Misc {
 is_macos && {
-	brew install trash z shellcheck
-	brew install --cask rectangle
-	brew install gdb
+	link "$DOTFILE_FOLDER/.gdbinit" "$HOME/.gdbinit"
 	# Don't wait for that
 	open https://sourceware.org/gdb/wiki/BuildingOnDarwin
 }
@@ -205,4 +193,7 @@ is_linux && {
 }
 
 touch "$HOME/.z"
+
+link "$DOTFILE_FOLDER/.lynx.cfg" "$HOME/.lynx.cfg"
+link "$DOTFILE_FOLDER/.lynx.lss" "$HOME/.lynx.lss"
 # }

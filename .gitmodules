@@ -1,4 +1,0 @@
-[submodule ".yada"]
-	path = .yada
-	url = https://github.com/nobe4/yada
-	ignore = dirty
