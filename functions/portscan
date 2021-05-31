@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+is_macos && {
+	echo "not implemented"
+}
+
+is_linux && {
+	lsof -nP -i4TCP:$1
+}

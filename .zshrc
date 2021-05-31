@@ -3,6 +3,11 @@
 
 # This file contains all the configuration necessary for running a zsh shell.
 
+# TODO
+# https://htr3n.github.io/2018/07/faster-zsh/
+# https://github.com/qoomon/zsh-lazyload/blob/master/zsh-lazyload.zsh
+
+
 # Setup {
 export DOTFILE_FOLDER="$(dirname $(readlink ~/.zshrc))"
 source "$DOTFILE_FOLDER/utils.zsh"
@@ -42,6 +47,13 @@ autoload -U colors && colors
 # Misc {
 export EDITOR='vim'
 # }
+# Functions {
+# Access the functions/* files
+# autoload -U compinit && compinit
+# zmodload -i zsh/complist
+fpath=($DOTFILE_FOLDER/functions)
+autoload -U $DOTFILE_FOLDER/functions/*(:t)
+# }
 # Path {
 PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 is_macos && {
@@ -53,40 +65,8 @@ export PATH
 export MANPATH
 # }
 # Prompt {
-function prompt_char {
-  git rev-parse --is-inside-work-tree >/dev/null 2>/dev/null \
-    && echo '± ' \
-    && return
-  echo '$ '
-}
-
-function parse_git_branch() {
-  (git symbolic-ref -q HEAD --short || git name-rev --name-only --no-undefined --always HEAD) 2> /dev/null
-}
-
-function parse_git_dirty {
-  (! git diff-index --quiet HEAD -- 2> /dev/null) && echo "*"
-}
-
-function parse_git_stash {
-  local stash=`expr $(git stash list 2> /dev/null | wc -l)`
-  if [ "$stash" != "0" ]
-  then
-    echo " $stash"
-  fi
-}
-
-function git_prompt {
-  git branch >/dev/null 2>/dev/null && echo "$(parse_git_branch)$(parse_git_stash)$(parse_git_dirty) "
-}
-
-PROMPT='\
-%{$fg_no_bold[yellow]%}n%{$reset_color%} \
-%{$fg_no_bold[green]%}%c%{$reset_color%} \
-%{$fg_no_bold[red]%}$(git_prompt)%{$reset_color%}\
-%{$fg_no_bold[blue]%}$(prompt_char)%{$reset_color%}'
-autoload -U compinit && compinit
-zmodload -i zsh/complist
+# in functions/git_prompt
+PROMPT='%{$fg[yellow]%}n%{$fg[green]%}%c$(prompt_git)%{$reset_color%} '
 # }
 # Completion {
 # Enable completion from partial words
@@ -151,10 +131,6 @@ alias n='vim +Notational'
 # }
 
 # TODO {
-# Access the functions/* files
-# fpath=($DOTFILE_FOLDER/functions $fpath)
-# autoload -U $DOTFILE_FOLDER/functions/*(:t)
-
 
 # Simple reload .zshrc
 alias re='exec zsh'
@@ -164,7 +140,7 @@ alias als='alias | grep'
 
 # z configuration {
 is_macos && {
-  source `brew --prefix`/etc/profile.d/z.sh
+  source "$(brew --prefix)/etc/profile.d/z.sh"
 }
 is_linux && {
   unsetopt BG_NICE
@@ -173,32 +149,13 @@ is_linux && {
 # }
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-for topic_folder ($DOTFILE_FOLDER/*) if [ -d $topic_folder ]; then fpath=($topic_folder $fpath); fi;
-
 alias ll='ls -la'
 alias reverse-link='find -L /dir/to/start -samefile'
 
 # Start ssh with root account
-function rssh(){
-	ssh "$1" -t 'sudo su; exec bash -l'
-}
 alias sshr=rssh
-
 alias coffee="caffeinate -d"
 
-function ups() {
-	curl 'https://www.ups.com/track/api/Track/GetStatus?loc=en_US' \
-		-s \
-		-H 'Accept: application/json, text/plain, */*' \
-		--compressed \
-		-H 'Content-Type: application/json' \
-		--data-raw '{"Locale":"en_US","TrackingNumber":["'$1'"]}' \
-		| jq '.trackDetails[0].shipmentProgressActivities
-		| reverse
-		| .[]
-		| select(.activityScan != null)
-		| .date + " " + .time + " - " + .location + " - " + .activityScan'
-}
 # TODO Move into function file
 # if ! hash vagrant 2>/dev/null; then; return; fi
 
@@ -266,12 +223,6 @@ is_macos && {
   alias unlockvst='xattr -d com.apple.quarantine'
 }
 
-is_linux && {
-  function portscan(){
-    lsof -nP -i4TCP:$1
-  }
-}
-
 alias tel="$DOTFILE_FOLDER/telegram/telegram.sh"
 
 is_macos && {
@@ -286,37 +237,6 @@ alias gccunsafe='gcc -fno-stack-protector -D_FORTIFY_SOURCE=0'
 
 function gccin {
 	curl $1 | gcc -o getenv -xc -
-}
-
-list_file=${DOTFILE_FOLDER}/links/list
-
-function l(){
-	sane_list="$(cat $list_file | sed '/^#/d; /^$/d')"
-	if [ -z "$sane_list" ]; then
-		echo "No links, aborting."
-		return 1
-	fi
-
-	choice="$(echo $sane_list | fzf)"
-	if [ -z "$choice" ]; then
-		echo "No choice, aborting."
-		return 1
-	fi
-
-	if [ "$choice" = "OPEN_LIST" ]; then
-		echo "Opening $list_file in $EDITOR."
-		$EDITOR "$list_file"
-		return 0
-	fi
-
-	url="$(echo $choice | cut -d' ' -f1)"
-	if [ -z "$url" ]; then
-		echo "No url, aborting."
-		return 1
-	fi
-
-	echo "Copying '$url' in the clipboard."
-	printf "$url" | pbcopy
 }
 
 # Git {
@@ -341,45 +261,6 @@ alias grccb='current_branch="$(git rev-parse --abbrev-ref HEAD)" && git stash &&
 
 # AWS {
 alias aws_creds="$DOTFILE_FOLDER/aws/aws_creds.sh"
-
-function routes() {
-	# Select the aws profile
-	profile="$(cat ~/.aws/credentials | grep '\[' | sed 's/^\[\(.*\)]$/\1/' | fzf --select-1)"
-	if [ -z "$profile" ]; then
-		echo "No profile, aborting."
-		return 1
-	fi
-
-	# Fetch the aws hosted zones
-	echo "Fetching the hosted zones, hold on..."
-	hosted_zones="$(aws --cli-connect-timeout 1 --profile $profile route53 list-hosted-zones | jq '.HostedZones[].Id' | sed 's/\"//g' )"
-	if [ -z "$hosted_zones" ]; then
-		echo "No hosted zones, aborting."
-		return 1
-	fi
-
-	# Fetch and concatednate the aws routes from the hosted zones
-	echo "Fetching the routes, hold on..."
-	routes=""
-	echo "$hosted_zones" | while read zone; do
-		routes="$(aws --cli-connect-timeout 1 --profile "$profile" route53 list-resource-record-sets --hosted-zone-id $zone | jq '.ResourceRecordSets | .[].Name' | sed -e 's/\"//g' -e 's/.$//')\n$routes"
-	done
-
-	# Cleaning up the empty lines and removing dupplicates
-	routes="$(echo "$routes" | sed '/^$/d' | sort -u)"
-
-	if [ -z "$routes" ]; then
-		echo "No routes, aborting."
-		return 1
-	fi
-
-	# Select the route we want
-	route="$(echo "$routes" | fzf --select-1 --exit-0)"
-
-	echo "Copying '$route' into the clipboard."
-	printf "%s" "$route" | pbcopy
-}
-
 alias ro=routes
 # }
 
@@ -418,9 +299,6 @@ export PATH="$PATH:~/.local/bin"
 
 eval "$(rbenv init -)"
 
-function rgf {
-  rg --files -L -g "*$1*"
-}
 
 alias todo="rg -i todo"
 alias rg='rg --ignore-file $DOTFILE_FOLDER/search/.ignore'

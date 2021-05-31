@@ -1,0 +1,24 @@
+local tail="$"
+local prompt="%{$fg[red]%}"
+
+branch="$(git branch --show-current 2> /dev/null | xargs)"
+if [ -n "$branch" ]; then
+	local tail="±"
+
+	local dirty=""
+	if (! git diff-index --quiet HEAD -- 2> /dev/null); then
+		dirty="*"
+	fi
+
+	local stash=`expr $(git stash list 2> /dev/null | wc -l)`
+	if [ "$stash" = "0" ]; then
+		stash=""
+	fi
+
+	prompt="$prompt$branch$stash$dirty"
+fi
+
+prompt="$prompt%{$fg[blue]%}$tail"
+prompt="$prompt%{$reset_color%}"
+
+echo "$prompt"

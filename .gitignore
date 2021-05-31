@@ -1,4 +1,7 @@
+# Don't ignore .files by default, as we want to modify them.
+!.*
+
 .DS_Store
 ngrok.bin
-.git/*
-!.*
+.telegram-creds
+.link-list

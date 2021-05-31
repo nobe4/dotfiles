@@ -74,8 +74,3 @@ list(){
   find -H "$DOTFILES_ROOT" -type f -name $1 -not -path '*.yada*'
 }
 
-
-# TODO
-# https://htr3n.github.io/2018/07/faster-zsh/
-# https://github.com/qoomon/zsh-lazyload/blob/master/zsh-lazyload.zsh
-
