@@ -132,9 +132,11 @@ let g:easy_align_ignore_groups = []
 " }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
-nnoremap <Leader>gs :Git<CR>
+nnoremap <Leader>gs :tabnew +Git status<CR>
 nnoremap <Leader>gp :Git push -u
 nnoremap <Leader>gl :Gpull
+nnoremap <Leader>gb :GBrowse<CR>
+vnoremap <Leader>gb :GBrowse<CR>
 
 Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-rhubarb'
