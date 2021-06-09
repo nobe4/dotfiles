@@ -39,10 +39,14 @@ matches:
     replace: "entitlements"
     word: true
 
-  - triggers: [";ets", ";ents", ";status"]
+  - triggers: [";ets", ";ents", ";status", ";stt"]
     replace: ".entitlements status"
     word: true
 
   - triggers: [";ettd", ";et train deploy"]
     replace: ".entitlements entrain --deploy"
+    word: true
+
+  - trigger: ";chrq"
+    replace: "I'm adding the `Changes Requested` label. Feel free to remove it once you're done with your changes."
     word: true
