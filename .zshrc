@@ -35,8 +35,9 @@ setopt PUSHD_IGNORE_DUPS
 setopt PROMPT_SUBST
 # }
 # Lang {
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
+export LANG="en_US.UTF-8"
+export LC_ALL="$LANG"
+export LC_CTYPE="$LANG"
 # }
 # Colors {
 export TERM=xterm-256color
@@ -44,8 +45,9 @@ export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
 # }
-# Misc {
+# Misc Exports {
 export EDITOR='vim'
+export PUPPET_HOME="$HOME/Documents/dev/puppet"
 # }
 # Functions {
 # Access the functions/* files
@@ -76,11 +78,14 @@ PROMPT='%{$fg[yellow]%}n%{$fg[green]%}%c$(prompt_git)%{$reset_color%} '
 # zstyle ':completion:*' list-colors
 # zstyle ':completion:*' menu select
 # }
+#
+zle -N fancy-ctrl-z
+bindkey '^Z' fancy-ctrl-z
 # Key Binding {
 # bindkey "^K"      kill-whole-line                      # ctrl-k
-# bindkey "^R"      history-incremental-search-backward  # ctrl-r
-# bindkey "^A"      beginning-of-line                    # ctrl-a
-# bindkey "^E"      end-of-line                          # ctrl-e
+bindkey "^R"      history-incremental-search-backward  # ctrl-r
+bindkey "^A"      beginning-of-line                    # ctrl-a
+bindkey "^E"      end-of-line                          # ctrl-e
 # bindkey "[B"      history-search-forward               # down arrow
 # bindkey "[A"      history-search-backward              # up arrow
 # bindkey "^D"      delete-char                          # ctrl-d
@@ -92,7 +97,7 @@ PROMPT='%{$fg[yellow]%}n%{$fg[green]%}%c$(prompt_git)%{$reset_color%} '
 # bindkey -M menuselect 'k' vi-up-line-or-history
 # bindkey -M menuselect 'l' vi-forward-char
 # bindkey -M menuselect 'j' vi-down-line-or-history
-# bindkey -v   # Default to standard vi bindings, regardless of editor string
+bindkey -v   # Default to standard vi bindings, regardless of editor string
 # }
 # }
 
@@ -111,135 +116,16 @@ is_macos && {
   export PATH="/Applications/MacVim.app/Contents/bin:$PATH"
 }
 
-# use vim , not vi
-alias vi="vim"
-
-# Run Gstatus at vim startup
-alias vst='vim +Git now'
-
-# Jump to vim help
-alias vih='vim +help\'
-
-# Vim without config
-alias vin='vim -Nu NONE'
-
-# Jump to tag
-alias vit='vim +tj\'
-
-# Run Notational
-alias n='vim +Notational'
+alias vi="vim" # Use vim , not vi
+alias vst='vim +Git now' # Run Gstatus at vim startup
+alias vih='vim +help\' # Jump to vim help
+alias vin='vim -Nu NONE' # Vim without config
+alias vit='vim +tj\' # Jump to tag
+alias n='vim +Notational' # Run Notational
 # }
-
-# TODO {
-
-# Simple reload .zshrc
-alias re='exec zsh'
-
-# search through aliases
-alias als='alias | grep'
-
-# z configuration {
-is_macos && {
-  source "$(brew --prefix)/etc/profile.d/z.sh"
-}
-is_linux && {
-  unsetopt BG_NICE
-}
-
-# }
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-alias ll='ls -la'
-alias reverse-link='find -L /dir/to/start -samefile'
-
-# Start ssh with root account
-alias sshr=rssh
-alias coffee="caffeinate -d"
-
-# TODO Move into function file
-# if ! hash vagrant 2>/dev/null; then; return; fi
-
-# vagrant alias
-alias vre="vagrant halt && tm vagrant up"
-
-# Check if the current folder has a vagrant environment
-_vagrant_check(){
-  vagrantStatus="$(vagrant status 2>&1)"
-  if echo $vagrantStatus | grep -q 'environment' ; then
-    echo 'Not a vagrant environment, exiting ...'
-    return 1
-  else
-    return 0
-  fi
-}
-
-_vagrant_is_up(){
-  vagrantStatus="$(vagrant status 2>&1)"
-  if echo $vagrantStatus | grep -q 'saved\|aborted\|poweroff' ; then
-    return 1
-  else
-    return 0
-  fi
-}
-
-vup(){
-  if ! _vagrant_check; then return; fi
-  if ! _vagrant_is_up; then
-    vagrant up
-  fi
-  notify "Vagrant started"
-}
-
-vhalt(){
-  if ! _vagrant_check; then return; fi
-  if _vagrant_is_up; then
-    vagrant halt
-  fi
-  notify "Vagrant halted"
-}
-
-vsh(){
-  vup
-  vagrant ssh
-}
-
-# Ping 8.8.8.8
-alias p8='ping -v 8.8.8.8'
-
-# ps and grep easily
-alias pg='ps aux | grep'
-
-# quicker kill all
-alias kk='killall'
-
-is_macos && {
-  # RM Replacement
-  # don't use rm unless you know what you're doing
-  # to force rm, use full path : /bin/rm
-  alias rm='echo "use /bin/rm or trash"'
-
-  # Mac Catalina is breaking everything, thanks Tim Apple.
-  # from https://www.kvraudio.com/forum/viewtopic.php?t=530824&start=15
-  alias unlockvst='xattr -d com.apple.quarantine'
-}
-
-alias tel="$DOTFILE_FOLDER/telegram/telegram.sh"
-
-is_macos && {
-  export KITTY_CONFIG_DIRECTORY="$DOTFILE_FOLDER/"
-  alias kitty='/Applications/kitty.app/Contents/MacOS/kitty'
-}
-
-alias gdb='gdb -q'
-
-# ref: http://thexploit.com/secdev/turning-off-buffer-overflow-protections-in-gcc/
-alias gccunsafe='gcc -fno-stack-protector -D_FORTIFY_SOURCE=0'
-
-function gccin {
-	curl $1 | gcc -o getenv -xc -
-}
 
 # Git {
+alias ga='git add'
 alias gb='git branch'
 alias gc='git commit'
 alias gl='git pull'
@@ -253,40 +139,39 @@ alias grbd='git stash && git checkout develop && git pull origin develop && git 
 alias grbm='git stash && git checkout master && git pull origin master && git checkout - && git rebase master && git stash pop'
 alias gs='git status'
 alias gst='git stash'
-alias gcc='git checkout master && git pull origin master && git checkout'
+alias gcpmc='git checkout master && git pull origin master && git checkout'
 
-# git recreate current branch
+# Recreate current branch and drop all changes.
 alias grccb='current_branch="$(git rev-parse --abbrev-ref HEAD)" && git stash && git checkout master && git branch -D "$current_branch" && git checkout -b "$current_branch"'
-# }
-
-# AWS {
-alias aws_creds="$DOTFILE_FOLDER/aws/aws_creds.sh"
-alias ro=routes
 # }
 
 # Docker {
 alias dk="docker"
+alias dkclean="docker system prune --force --all --volumes"
+alias bbox="docker run -it --rm busybox"
+alias dkclean="docker system prune --all --force --volumes"
+alias dksh="docker-ssh"
+
 alias dc="docker-compose"
 alias dcr="docker-compose run"
+alias dcsh="docker-compose-ssh"
+# }
 
-alias dkclean="docker system prune --force --all --volumes"
-
-alias bbox="docker run -it --rm busybox"
-
-alias dkclean="docker system prune --all --force --volumes"
-
-# Spawn a bash inside a running container
-dcsh() {
-  docker-compose exec $1 bash
+# z {
+is_macos && {
+  source "$(brew --prefix)/etc/profile.d/z.sh"
 }
-
-dksh(){
-  docker exec -it $1 bash
+is_linux && {
+  unsetopt BG_NICE
 }
 # }
 
-export LYNX_CFG=~/.lynx.cfg
-export GPG_TTY=$(tty)
+# Kitty {
+is_macos && {
+  export KITTY_CONFIG_DIRECTORY="$DOTFILE_FOLDER/"
+  alias kitty='/Applications/kitty.app/Contents/MacOS/kitty'
+}
+# }
 
 # Python {
 unset PYTHONHOME
@@ -297,24 +182,20 @@ export PYTHONDONTWRITEBYTECODE=1
 export PATH="$PATH:~/.local/bin"
 # }
 
-eval "$(rbenv init -)"
-
-
+# Search {
 alias todo="rg -i todo"
-alias rg='rg --ignore-file $DOTFILE_FOLDER/search/.ignore'
+alias rg='rg --ignore-file $HOME/.gitignore_global'
 
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
   export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
 fi
 
 # FZF
-# Auto-completion
 [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
-
-# Key bindings
 source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
-export FZF_DEFAULT_COMMAND='rg --files --follow --ignore-file $DOTFILE_FOLDER/search/.ignore'
+export FZF_DEFAULT_COMMAND='rg --files --follow --ignore-file $HOME/.gitignore_global'
+# }
 
 # Go {
 export PATH="$PATH:/usr/local/go/bin"
@@ -324,7 +205,66 @@ export GOBIN=$GOPATH/bin
 export PATH="$PATH:$GOPATH:$GOBIN"
 # }
 
+# Alias {
+alias re='exec zsh'                                  # Reload .zshrc
+alias als='alias | grep'                             # Search through aliases
+alias reverse-link='find -L /dir/to/start -samefile' # Find what is linked to a file
+alias sshr="ssh-root"                                # Root ssh
+alias rssh="ssh-root"                                # Root ssh
+alias coffee="caffeinate -d"                         # Keep display on
+alias ll='ls -la'
+alias p8='ping -v 8.8.8.8' # Ping 8.8.8.8
+alias pg='ps aux | grep' # ps and grep easily
+alias kk='killall' # Quicker kill all
+alias tel="telegram-send" # Send a message to a telegram channel
+
+# GDB {
+alias gdb='gdb -q' # Silent GDB
+# ref: http://thexploit.com/secdev/turning-off-buffer-overflow-protections-in-gcc/
+alias gccunsafe='gcc -fno-stack-protector -D_FORTIFY_SOURCE=0'
+# }
+
+# AWS {
+alias aws_creds="$DOTFILE_FOLDER/aws/aws_creds.sh"
+alias ro=routes
+# }
+
+is_macos && {
+  alias rm='echo "use /bin/rm or trash"' # Don't use rm unless you know what you're doing.
+
+  # Mac Catalina is breaking everything, thanks Tim Apple.
+  # from https://www.kvraudio.com/forum/viewtopic.php?t=530824&start=15
+  alias unlockvst='xattr -d com.apple.quarantine'
+}
+# }
+
+# Misc {
+export LYNX_CFG=~/.lynx.cfg
+export GPG_TTY="$(tty)"
+eval "$(rbenv init -)"
+eval "$(nodenv init -)"
+
 # RingZer0Team easy encrypt/decrypt
 alias r0en="openssl enc -aes-256-cbc -in solution.md -out solution.txt"
 alias r0de="openssl enc -aes-256-cbc -d -in solution.txt"
 # }
+
+# Vagrant TODO {
+# if ! hash vagrant 2>/dev/null; then; return; fi
+# vagrant alias
+alias vre="vagrant halt && tm vagrant up"
+alias vup="vagrant-up"
+alias vsh="vup && vagrant ssh"
+
+vhalt(){
+  if ! _vagrant_check; then return; fi
+  if _vagrant_is_up; then
+    vagrant halt
+  fi
+  notify "Vagrant halted"
+}
+
+# Restart espanso
+(&>/dev/null espanso restart &)
+# }
+
