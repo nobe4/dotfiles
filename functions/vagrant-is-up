@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+vagrantStatus="$(vagrant status 2>&1)"
+if echo $vagrantStatus | grep -q 'saved\|aborted\|poweroff' ; then
+	exit 1
+else
+	exit 0
+fi

@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+source "$DOTFILE_FOLDER/utils.zsh"
+
+is_macos && {
+	command="display notification \"$1\" with title \"notify\""
+	osascript -e "$command"
+}
+
+is_linux && {
+	echo "$1"
+}

@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+docker-compose exec $1 sh
+
