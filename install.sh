@@ -89,13 +89,18 @@ fi
 
 # Ruby {
 is_macos && {
-	# TODO understand what this does
-	# rbenv init
-	# rbenv install
-	# rbenv global 2.7.3
-	# gem install irb
+	# Configure ruby with rbenv
+	ruby_latest="$(rbenv install -l | grep -v - | tail -1)"
+	rbenv install --skip-existing "$ruby_latest"
+	rbenv global "$ruby_latest"
 }
+
 # TODO Add Linux
+
+# Install some packages
+gem install irb rubocop
+
+link "$DOTFILE_FOLDER/.pryrc" "$HOME/.pryrc"
 # }
 
 # Python {
@@ -124,7 +129,6 @@ is_macos && {
 
 	espanso start || true
 	espanso install all-emojis
-	espanso install french-accents
 
 	# TODO
 	ln -fs "$DOTFILE_FOLDER/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
@@ -196,4 +200,7 @@ touch "$HOME/.z"
 
 link "$DOTFILE_FOLDER/.lynx.cfg" "$HOME/.lynx.cfg"
 link "$DOTFILE_FOLDER/.lynx.lss" "$HOME/.lynx.lss"
+link "$DOTFILE_FOLDER/.muttrc" "$HOME/.muttrc"
+
+tldr --update
 # }
