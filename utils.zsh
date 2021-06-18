@@ -1,10 +1,5 @@
 #!/usr/bin/env zsh
 
-# Save the current folder
-DOTFILE_FOLDER="$(dirname $(readlink ~/.zshrc))"
-
-# List of utilities for the installation
-
 # Check if shell is interactive
 case $- in
   *i*) export IS_INTERACTIVE="1";;
@@ -73,4 +68,3 @@ link(){
 list(){
   find -H "$DOTFILES_ROOT" -type f -name $1 -not -path '*.yada*'
 }
-

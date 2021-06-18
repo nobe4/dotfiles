@@ -1,15 +1,9 @@
 #!/usr/bin/env zsh
 # vim: foldmarker={,} foldmethod=marker
-
 # This file contains all the configuration necessary for running a zsh shell.
 
-# TODO
-# https://htr3n.github.io/2018/07/faster-zsh/
-# https://github.com/qoomon/zsh-lazyload/blob/master/zsh-lazyload.zsh
-
-
 # Setup {
-export DOTFILE_FOLDER="$(dirname $(readlink ~/.zshrc))"
+export DOTFILE_FOLDER="$HOME/.dot"
 source "$DOTFILE_FOLDER/utils.zsh"
 # }
 
@@ -50,11 +44,18 @@ export EDITOR='vim'
 export PUPPET_HOME="$HOME/Documents/dev/puppet"
 # }
 # Functions {
-# Access the functions/* files
-# autoload -U compinit && compinit
-# zmodload -i zsh/complist
-fpath=($DOTFILE_FOLDER/functions)
+# Loaf compinit and check the cash only once a day
+autoload -Uz compinit
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' "$HOME/.zcompdump") ]; then
+  compinit
+else
+  compinit -C
+fi
+zmodload -i zsh/complist
+FPATH="$DOTFILE_FOLDER/functions:/usr/share/zsh/5.7.1/functions:$FPATH"
+
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
+zmodload zsh/zprof
 # }
 # Path {
 PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
@@ -73,30 +74,24 @@ PROMPT='%{$fg[yellow]%}n%{$fg[green]%}%c$(prompt_git)%{$reset_color%} '
 # Completion {
 # Enable completion from partial words
 # e.g. ~/men<TAB> => ~/Documents
-# zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
-# zstyle ':completion:*' list-colors
-# zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors
+zstyle ':completion:*' menu select
 # }
 #
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
 # Key Binding {
-# bindkey "^K"      kill-whole-line                      # ctrl-k
 bindkey "^R"      history-incremental-search-backward  # ctrl-r
 bindkey "^A"      beginning-of-line                    # ctrl-a
 bindkey "^E"      end-of-line                          # ctrl-e
-# bindkey "[B"      history-search-forward               # down arrow
-# bindkey "[A"      history-search-backward              # up arrow
-# bindkey "^D"      delete-char                          # ctrl-d
-# bindkey "^F"      forward-char                         # ctrl-f
-# bindkey "^B"      backward-char                        # ctrl-b
 
 # Use hjkl to select the completion
-# bindkey -M menuselect 'h' vi-backward-char
-# bindkey -M menuselect 'k' vi-up-line-or-history
-# bindkey -M menuselect 'l' vi-forward-char
-# bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v   # Default to standard vi bindings, regardless of editor string
 # }
 # }
@@ -159,7 +154,8 @@ alias dcsh="docker-compose-ssh"
 
 # z {
 is_macos && {
-  source "$(brew --prefix)/etc/profile.d/z.sh"
+  # brew --prefix == /usr/local
+  source "/usr/local/etc/profile.d/z.sh"
 }
 is_linux && {
   unsetopt BG_NICE
@@ -186,21 +182,26 @@ export PATH="$PATH:~/.local/bin"
 alias todo="rg -i todo"
 alias rg='rg --ignore-file $HOME/.gitignore_global'
 
+# FZF
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-  export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+	export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
 fi
 
-# FZF
 [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
 source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
 export FZF_DEFAULT_COMMAND='rg --files --follow --ignore-file $HOME/.gitignore_global'
+
+# Trigger fzf-completion with **
+export FZF_COMPLETION_TRIGGER='**'
 # }
 
 # Go {
 export PATH="$PATH:/usr/local/go/bin"
-GOBINARY=$(which go)
-export GOPATH=$($GOBINARY env GOPATH)
+# Same as `which go`
+GOBINARY="/usr/local/go/bin/go"
+# Cache of $($GOBINARY env GOPATH)
+export GOPATH='$HOME/go'
 export GOBIN=$GOPATH/bin
 export PATH="$PATH:$GOPATH:$GOBIN"
 # }
@@ -213,10 +214,10 @@ alias sshr="ssh-root"                                # Root ssh
 alias rssh="ssh-root"                                # Root ssh
 alias coffee="caffeinate -d"                         # Keep display on
 alias ll='ls -la'
-alias p8='ping -v 8.8.8.8' # Ping 8.8.8.8
-alias pg='ps aux | grep' # ps and grep easily
-alias kk='killall' # Quicker kill all
-alias tel="telegram-send" # Send a message to a telegram channel
+alias p8='ping -v 8.8.8.8'                           # Ping 8.8.8.8
+alias pg='ps aux | grep'                             # ps and grep easily
+alias kk='killall'                                   # Quicker kill all
+alias tel="telegram-send"                            # Send a message to a telegram channel
 
 # GDB {
 alias gdb='gdb -q' # Silent GDB
@@ -240,31 +241,37 @@ is_macos && {
 
 # Misc {
 export LYNX_CFG=~/.lynx.cfg
-export GPG_TTY="$(tty)"
-eval "$(rbenv init -)"
-eval "$(nodenv init -)"
+
+alias gpg='GPG_TTY="$(tty)" gpg'
+
+# env init {
+# Do manually what eval $(rbenv init -) does.
+export PATH="$HOME/.rbenv/shims:${PATH}"
+export RBENV_SHELL=$shell
+(rbenv rehash &)
+# Replace nodenv with the custom function.
+# Ref: https://github.com/rbenv/rbenv#how-rbenv-hooks-into-your-shell
+alias rbenv=rbenv-function
+
+# Do manually what eval $(nodenv init -) does.
+export PATH="$HOME/.nodenv/shims:${PATH}"
+export NODENV_SHELL=$shell
+(nodenv rehash &)
+# Ref: https://github.com/nodenv/nodenv#how-nodenv-hooks-into-your-shell
+alias nodenv=nodenv-function
+# }
 
 # RingZer0Team easy encrypt/decrypt
 alias r0en="openssl enc -aes-256-cbc -in solution.md -out solution.txt"
 alias r0de="openssl enc -aes-256-cbc -d -in solution.txt"
-# }
-
-# Vagrant TODO {
-# if ! hash vagrant 2>/dev/null; then; return; fi
-# vagrant alias
-alias vre="vagrant halt && tm vagrant up"
-alias vup="vagrant-up"
-alias vsh="vup && vagrant ssh"
-
-vhalt(){
-  if ! _vagrant_check; then return; fi
-  if _vagrant_is_up; then
-    vagrant halt
-  fi
-  notify "Vagrant halted"
-}
 
 # Restart espanso
 (&>/dev/null espanso restart &)
 # }
 
+# Vagrant {
+# vagrant alias
+alias vre="vagrant-halt && vagrant-up"
+alias vup="vagrant-up"
+alias vsh="vup && vagrant ssh"
+# }

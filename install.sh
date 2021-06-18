@@ -4,7 +4,7 @@
 # This script installs all requirements.
 
 # Setup {
-set -ex
+export DOTFILE_FOLDER="$HOME/.dot"
 source ./utils.zsh
 # }
 
