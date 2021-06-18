@@ -427,6 +427,7 @@ nnoremap g<C-o> :!open .<CR><CR>
 "}
 " Abbreviations {
 iabbrev pydebug import pdb; pdb.set_trace()
+iabbrev rbdebug require 'pry';binding.pry
 iabbrev red* * { color: red !important; }
 iabbrev :shrug: ¯\_(ツ)_/¯
 iabbrev ttt (t *testing.T)
