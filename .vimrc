@@ -408,21 +408,8 @@ cnoremap <C-H> "cont quit next step interrupt finish backtrace up down<CR>
 " Enhance the register pasting
 nnoremap "p :reg <bar> exec 'normal! "'.input('>').'p'<CR>
 
-" helper to zoom in the current pane
-let g:zoomed=1
-function! Zoom()
-    echo g:zoomed
-    if g:zoomed
-        resize
-        vertical resize
-        let g:zoomed=0
-    else
-        execute "normal \<C-w>="
-        let g:zoomed=1
-    endif
-endfunction
-nnoremap <Leader>z :call Zoom()<CR>
-
+" Open current file in a new tab, effectively [z]ooming into it
+nnoremap <Leader>z :tabnew %<CR>
 nnoremap g<C-o> :!open .<CR><CR>
 "}
 " Abbreviations {
