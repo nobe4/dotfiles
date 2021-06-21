@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+# Choose an interpreter
+choices="ruby rb
+node js
+python py"
+choice=$(echo $choices | fzf -select-1 -q "$1")
+
+interpreter=$(echo $choice | cut -d' ' -f1)
+extension=$(echo $choice | cut -d' ' -f2)
+
+# Create a temporary script
+tmpfile="$(mktemp -u /tmp/codi-XXXXX).$extension"
+touch "$tmpfile"
+
+# Auto-run
+pane_id=$(
+	tmux split-window -hd \
+		-P -F "#{pane_id}" \
+		"while true; do $interpreter $tmpfile; sleep 1; clear; done"
+)
+
+# Edit
+$EDITOR "$tmpfile"
+
+# Cleanup
+tmux kill-pane -t "$pane_id"
+echo "-> $tmpfile"
