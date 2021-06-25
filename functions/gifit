@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+in_file="${@}"
+
+if [ -z "$in_file" ]; then
+	echo "usage: gifit in_file"
+	return 1
+fi
+
+ffmpeg -i "${in_file}" -vf "fps=10" "${in_file}.gif"
