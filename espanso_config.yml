@@ -6,6 +6,9 @@ show_icon: false
 show_notifications: false
 
 matches:
+  - triggers: ["comitted", "comited", "commited"]
+    replace: "committed"
+
   - trigger: ";1-1"
     replace: |-
       # {{now}}
@@ -49,4 +52,8 @@ matches:
 
   - trigger: ";chrq"
     replace: "I'm adding the `Changes Requested` label. Feel free to remove it once you're done with your changes."
+    word: true
+
+  - trigger: ";aptr"
+    replace: "The PR has been approved and will be deployed in the next train :)"
     word: true

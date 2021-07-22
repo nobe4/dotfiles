@@ -107,6 +107,7 @@ link "$DOTFILE_FOLDER/.pryrc" "$HOME/.pryrc"
 # Nothing to do on linux
 
 python3 -m pip install black
+link "$DOTFILE_FOLDER/.pdbrc" "$HOME/.pdbrc"
 # }
 
 # Kitty {
