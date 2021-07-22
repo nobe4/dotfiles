@@ -103,6 +103,7 @@ alias tmux='tmux -u'
 alias ta='tmux attach -t'
 alias ts='tmux new-session -s'
 alias tw='tmux switch -t'
+alias ettt='tmux switch -t ettt'
 # }
 
 # Vim {
@@ -201,8 +202,8 @@ export PATH="$PATH:/usr/local/go/bin"
 # Same as `which go`
 GOBINARY="/usr/local/go/bin/go"
 # Cache of $($GOBINARY env GOPATH)
-export GOPATH='$HOME/go'
-export GOBIN=$GOPATH/bin
+export GOPATH=~/go # Needs to be absolute and without quote
+export GOBIN="$GOPATH/bin"
 export PATH="$PATH:$GOPATH:$GOBIN"
 # }
 
