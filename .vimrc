@@ -44,6 +44,7 @@ Plug 'nobe4/vimcorrect'
 nnoremap Z= :Correct<CR>
 Plug 'nobe4/exchange.vim'
 Plug 'nobe4/curl.vim'
+Plug 'nobe4/mnml.vim'
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
@@ -51,9 +52,6 @@ Plug 'editorconfig/editorconfig-vim'
 " mattn/gist-vim {
 Plug 'mattn/webapi-vim' | Plug 'mattn/gist-vim'
 let g:gist_post_private = 1
-" }
-" Colorscheme {
-Plug 'nobe4/mnml.vim'
 " }
 " mbbill/undotree {
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
@@ -80,6 +78,7 @@ Plug 'dense-analysis/ale'
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_save = 1
 let g:ale_set_signs = 0
+let g:ale_ruby_rubocop_executable = $HOME . "/.rbenv/shims/bundle"
 let g:ale_linters = {
 \   'go': ['goimports', 'govet', 'golint',  'golangci-lint', 'gofmt'],
 \   'graphql': ['prettier'],
@@ -124,6 +123,7 @@ Plug 'junegunn/fzf.vim'
 nnoremap <leader>f :FZF<CR>
 nnoremap <leader>t :Tags<CR>
 let g:fzf_buffers_jump = 1
+" }
 " junegunn/vim-easy-align {
 Plug 'junegunn/vim-easy-align'
 xmap ga <Plug>(EasyAlign)
@@ -222,8 +222,13 @@ set shiftwidth=2 " Number of spaces used for each step of (auto)indent
 " Folding {
 set foldenable " Turn on folding
 set foldmethod=syntax " Most of the code will be syntax-indented
-set foldopen=block,hor,mark,percent,quickfix,tag " what movements
+" set foldopen=block,hor,mark,percent,quickfix,tag " what movements
 set foldlevelstart=99 " disable auto folding on open
+augroup ft_rb
+    au!
+    " Ruby foldmethod is slow with the regexengine 0
+    au FileType ruby setlocal regexpengine=1 foldmethod=indent foldlevelstart=1 foldnestmax=10
+augroup END
 " }
 " Reading and writing files {
 set autoread
@@ -231,7 +236,7 @@ set autoread
 " The swap file {
 " Store swap files in fixed location, not current directory.
 set directory=~/.vim/swapdir//
-set updatecount=10
+set updatecount=200
 " }
 " Command line editing {
 set wildmode=longest,list,full
@@ -241,7 +246,7 @@ set undodir=~/.vim/undodir  " list of directories for undo files
 set wildignore+=*.pyc
 " }
 " executing external commands {
-set shell=/bin/bash
+set shell=$SHELL
 " }
 " Language specific {
 " Misc {
@@ -252,8 +257,6 @@ autocmd! BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
 autocmd! BufNewFile,BufFilePre,BufRead *.sls set filetype=yaml
 autocmd! BufNewFile,BufFilePre,BufRead *.vue setlocal foldmethod=indent
 autocmd! BufNewFile,BufFilePre,BufRead Vagrantfile set filetype=ruby
-autocmd! Filetype python setlocal foldmethod=indent
-autocmd! Filetype javascript setlocal foldmethod=indent
 autocmd! BufReadPost *.coffee set syntax=javascript
 autocmd! BufReadPost *.gs set syntax=javascript
 autocmd! BufWritePost espanso_config.yml !espanso restart&
@@ -409,7 +412,7 @@ cnoremap <C-H> "cont quit next step interrupt finish backtrace up down<CR>
 nnoremap "p :reg <bar> exec 'normal! "'.input('>').'p'<CR>
 
 " Open current file in a new tab, effectively [z]ooming into it
-nnoremap <Leader>z :tabnew %<CR>
+nnoremap <Leader>z :execute 'tabnew +' . line(".") .' %'<CR>
 nnoremap g<C-o> :!open .<CR><CR>
 "}
 " Abbreviations {
@@ -425,8 +428,6 @@ iabbrev forhook for _, e := range hook.Entries { t.Logf("=> %v", e) }
 set guioptions=
 " Disable audio bell
 autocmd! GUIEnter * set vb t_vb=
-" }
-" Various {
 " }
 " Tests {
 autocmd BufReadPost,FileReadPost,BufNewFile *
@@ -535,15 +536,14 @@ command! Writing :setlocal wrap linebreak spell spellcapcheck= filetype=markdown
 " in vim once it's found. Custom handler is used for creating a new note if
 " none was found.
 " Variables
-let g:notational_search_paths = ['~/Documents/docs', '*.md', ]
 let g:notational_default_save_path = '~/Documents/docs'
+let g:notational_search_paths = g:notational_default_save_path . ' .'
 let s:create_note_key = 'ctrl-n'
 
 " Sources
-let s:source_command='command rg --follow --smart-case --color=always --colors="match:none" --line-number --no-messages --no-heading --with-filename "\S" ' . join(g:notational_search_paths)
+let s:source_command='command rg --follow --smart-case --color=always --colors="match:none" --line-number --no-messages --no-heading --with-filename --glob "*.md" "\S" ' . g:notational_search_paths
 let s:preview_command=shellescape('rg --color=always --colors="match:fg:blue" -C4 {3} --fixed-strings {1}')
 
-" Plugin
 " Handle fzf results
 function! s:handler(results) abort
     try
