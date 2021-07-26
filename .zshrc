@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# shellcheck shell=bash
 # vim: foldmarker={,} foldmethod=marker
 # This file contains all the configuration necessary for running a zsh shell.
 
@@ -60,7 +61,7 @@ zmodload zsh/zprof
 # Path {
 PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 is_macos && {
-  PATH="$PATH:/Applications:~/Applications"
+  PATH="$PATH:/Applications:$HOME/Applications"
 }
 
 MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
@@ -68,8 +69,25 @@ export PATH
 export MANPATH
 # }
 # Prompt {
-# in functions/git_prompt
-PROMPT='%{$fg[yellow]%}n%{$fg[green]%}%c$(prompt_git)%{$reset_color%} '
+# Default prompt is just current dir
+PROMPT='%{$fg[green]%}%c %{$fg[blue]%}$%{$reset_color%} '
+
+# Async madness {
+precmd() {
+  exec {FD}< <(
+    echo -n "$(prompt)"
+  )
+  zle -F $FD prompt_on_load
+}
+
+prompt_on_load() {
+  PROMPT="$(<&"$1")"
+
+  zle reset-prompt
+  zle -F "$1"
+}
+# }
+
 # }
 # Completion {
 # Enable completion from partial words
@@ -79,10 +97,9 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 zstyle ':completion:*' list-colors
 zstyle ':completion:*' menu select
 # }
-#
+# Key Binding {
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
-# Key Binding {
 bindkey "^R"      history-incremental-search-backward  # ctrl-r
 bindkey "^A"      beginning-of-line                    # ctrl-a
 bindkey "^E"      end-of-line                          # ctrl-e
@@ -176,7 +193,7 @@ unset PYTHONPATH
 
 export PYTHONDONTWRITEBYTECODE=1
 # The export doesn't seem to work, use an alias instead
-export PATH="$PATH:~/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
 # }
 
 # Search {
@@ -241,7 +258,7 @@ is_macos && {
 # }
 
 # Misc {
-export LYNX_CFG=~/.lynx.cfg
+export LYNX_CFG=$HOME/.lynx.cfg
 
 alias gpg='GPG_TTY="$(tty)" gpg'
 
