@@ -6,12 +6,21 @@ node js
 python py"
 choice=$(echo $choices | fzf -select-1 -q "$1")
 
+# Templates
+template_js=""
+template_python=""
+template_ruby="puts -> {
+	# Code here
+}.call"
+
 interpreter=$(echo $choice | cut -d' ' -f1)
 extension=$(echo $choice | cut -d' ' -f2)
+template=$(eval echo "\$template_$interpreter")
 
 # Create a temporary script
 tmpfile="$(mktemp -u /tmp/codi-XXXXX).$extension"
-touch "$tmpfile"
+echo "$(echo $template)" > "$tmpfile"
+
 
 # Auto-run
 pane_id=$(
