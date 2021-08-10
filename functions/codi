@@ -9,8 +9,10 @@ choice=$(echo $choices | fzf -select-1 -q "$1")
 # Templates
 template_js=""
 template_python=""
-template_ruby="puts -> {
-	# Code here
+template_ruby="# frozen_string_literal: true
+
+puts lambda {
+  # Code here
 }.call"
 
 interpreter=$(echo $choice | cut -d' ' -f1)
