@@ -53,9 +53,10 @@ else
   compinit -C
 fi
 zmodload -i zsh/complist
-FPATH="$DOTFILE_FOLDER/functions:/usr/share/zsh/5.7.1/functions:$FPATH"
+FPATH="$DOTFILE_FOLDER/functions:$DOTFILE_FOLDER/private_functions:/usr/share/zsh/5.7.1/functions:$FPATH"
 
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
+autoload -U $DOTFILE_FOLDER/private_functions/*(:t)
 zmodload zsh/zprof
 # }
 # Path {
@@ -70,7 +71,7 @@ export MANPATH
 # }
 # Prompt {
 # Default prompt is just current dir
-PROMPT='%{$fg[green]%}%c %{$fg[blue]%}$%{$reset_color%} '
+PROMPT='%{$fg[green]%}%c%{$reset_color%} '
 
 # Async madness {
 precmd() {
