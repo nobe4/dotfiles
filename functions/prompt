@@ -1,5 +1,8 @@
 local prompt="%{$fg[green]%}%c%{$fg[red]%}"
 
+# Add virtual environment processing
+[ -n "$VIRTUAL_ENV" ] && prompt="($(basename $VIRTUAL_ENV)) $prompt"
+
 branch="$((git symbolic-ref -q HEAD --short || git name-rev --name-only --no-undefined --always HEAD) 2> /dev/null | xargs)"
 if [ -n "$branch" ]; then
   local dirty=""
@@ -18,4 +21,3 @@ fi
 prompt="$prompt%{$reset_color%} "
 
 echo "$prompt"
-
