@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+ruby -ryaml -e "puts YAML.dump(YAML.load(STDIN.read))"
