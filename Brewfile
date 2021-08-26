@@ -1,4 +1,4 @@
-brew "macvim"
+cask "macvim"
 brew "tmux"
 # https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
 brew "reattach-to-user-namespace"

@@ -31,6 +31,9 @@
 "    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 "    DEALINGS IN THE SOFTWARE.
 " }
+" TODO {
+" https://vimways.org/2018/from-vimrc-to-vim/
+" }
 " Important {
 set nocompatible " be iMproved, required
 let mapleader="\<Space>" " need to set the mapleader before the plugins
@@ -80,31 +83,32 @@ let g:ale_lint_on_save = 1
 let g:ale_set_signs = 0
 let g:ale_ruby_rubocop_executable = $HOME . "/.rbenv/shims/bundle"
 let g:ale_linters = {
-\   'go': ['goimports', 'govet', 'golint',  'golangci-lint', 'gofmt'],
+\   'css': ['prettier'],
+\   'go': ['goimports', 'govet', 'gofmt'],
 \   'graphql': ['prettier'],
 \   'html': ['prettier'],
 \   'javascript': ['prettier'],
 \   'python': ['black'],
 \   'ruby': ['rubocop'],
 \   'scss': ['prettier'],
-\   'css': ['prettier'],
 \   'terraform': ['terraform'],
 \   'vue': ['prettier'],
-\   'yaml': ['prettier']
+\   'yaml': ['prettier'],
+\   'zsh': ['shellcheck']
 \}
 let g:ale_fixers = {
 \   '*': ['trim_whitespace'],
+\   'css': ['prettier'],
 \   'go': ['goimports', 'gofmt'],
 \   'graphql': ['prettier'],
+\   'html': ['prettier'],
 \   'javascript': ['prettier'],
 \   'python': ['black'],
 \   'ruby': ['rubocop'],
 \   'scss': ['prettier'],
-\   'css': ['prettier'],
 \   'terraform': ['terraform'],
 \   'vue': ['prettier'],
-\   'yaml': ['prettier'],
-\   'html': ['prettier']
+\   'yaml': ['prettier']
 \}
 " }
 " scrooloose/nerdcommenter {
@@ -134,7 +138,7 @@ let g:easy_align_ignore_groups = []
 Plug 'tpope/vim-fugitive'
 nnoremap <Leader>gs :tabnew +Git status<CR>
 nnoremap <Leader>gp :Git push -u
-nnoremap <Leader>gl :Gpull
+nnoremap <Leader>gl :Git pull
 nnoremap <Leader>gb :GBrowse<CR>
 vnoremap <Leader>gb :GBrowse<CR>
 
@@ -271,7 +275,6 @@ autocmd BufNewFile,BufFilePre,BufRead *.tfvars set filetype=terraform
 autocmd Filetype tf setlocal foldmethod=indent filetype=terraform
 " }
 " Commit {
-autocmd! BufNewFile,BufFilePre,BufRead COMMIT_EDITMSG :silent :g/\v^# On branch (\u+-\d+).+/t0|s//[\1]
 autocmd! Filetype gitcommit set spell
 " }
 " }
@@ -423,6 +426,12 @@ iabbrev :shrug: ¯\_(ツ)_/¯
 iabbrev ttt (t *testing.T)
 iabbrev forhook for _, e := range hook.Entries { t.Logf("=> %v", e) }
 "}
+" Tmux {
+autocmd BufReadPost,FileReadPost,BufNewFile *
+    \ call system("tmux rename-window 'vim:" . expand("%:t") . "'")
+autocmd VimLeave *
+    \ call system("tmux setw automatic-rename")
+" }
 " GUI {
 " Remove every bit of GUI option
 set guioptions=
@@ -430,10 +439,6 @@ set guioptions=
 autocmd! GUIEnter * set vb t_vb=
 " }
 " Tests {
-autocmd BufReadPost,FileReadPost,BufNewFile *
-    \ call system("tmux rename-window 'vim:" . expand("%:t") . "'")
-autocmd VimLeave *
-    \ call system("tmux setw automatic-rename")
 
 " Simulate the r operator functionality
 function! ROperator()
@@ -452,33 +457,6 @@ function! ROperator()
 endfunction
 nnoremap gr :call ROperator()<CR>
 
-" Create a centered column to write stuff more easily
-function! CenterColumn()
-    vnew
-    vnew
-    wincmd L
-    wincmd =
-    wincmd h
-    set nonumber
-    set wrap
-    set linebreak
-endfunction
-command! CenterColumn :call CenterColumn()
-
-function! ScreenCapture()
-    let array=[]
-    for i in range(1,&lines)
-        let row=''
-        for j in range(1,&columns)
-            let row.=nr2char(screenchar(i,j))
-        endfor
-        call add(array, row)
-    endfor
-    tabnew
-    call setline(1,array)
-endfunction
-command! ScreenCapture :call ScreenCapture()
-
 function! FollowCursor(follow)
     if a:follow
         nnoremap j jzz
@@ -491,7 +469,6 @@ endfunction
 command! FollowCursor :call FollowCursor(1)
 command! UnfollowCursor :call FollowCursor(0)
 
-command! JSONPretty :%!jq '.'
 
 function! s:QFixEdit()
     " Copy the content into a new buffer
@@ -527,58 +504,11 @@ function! s:QFixEditClean()
     echomsg "Cleaning"
 endfunction
 
+command! JSONPretty :%!jq '.'
 command! QFixEdit :call s:QFixEdit()
-
 command! Writing :setlocal wrap linebreak spell spellcapcheck= filetype=markdown
-
-" Notational {
-" Works by doing a big  `rg 'pattern' 'paths'` + fzf +preview and open the note
-" in vim once it's found. Custom handler is used for creating a new note if
-" none was found.
-" Variables
-let g:notational_default_save_path = '~/Documents/docs'
-let g:notational_search_paths = g:notational_default_save_path . ' .'
-let s:create_note_key = 'ctrl-n'
-
-" Sources
-let s:source_command='command rg --follow --smart-case --color=always --colors="match:none" --line-number --no-messages --no-heading --with-filename --glob "*.md" "\S" ' . g:notational_search_paths
-let s:preview_command=shellescape('rg --color=always --colors="match:fg:blue" -C4 {3} --fixed-strings {1}')
-
-" Handle fzf results
-function! s:handler(results) abort
-    try
-        " Edit either the query, or the matched file
-        if len(a:results) == 2  || a:results[1] == s:create_note_key
-            execute 'edit ' . fnameescape(g:notational_default_save_path  . '/' . substitute(a:results[0], ' ', '_', 'g') . '.md')
-        else
-            let lineinfo = split(a:results[2], ":")
-            execute 'edit +' . lineinfo[1] . ' ' . fnameescape(lineinfo[0])
-        endif
-    catch
-        echomsg "Notational Error: " . v:exception
-    endtry
-endfunction
-
-command! Notational
-    \ call fzf#run(
-    \ fzf#wrap({
-        \ 'sink*': function('<sid>handler'),
-        \ 'source': s:source_command,
-        \ 'options': join([
-            \ '--print-query',
-            \ '--ansi',
-            \ '--exact',
-            \ '--inline-info',
-            \ '--delimiter=":"',
-            \ '--color=16,hl+:4,hl:4,fg+:-1',
-            \ '--with-nth=' . '1..',
-            \ '--tiebreak=length,begin',
-            \ '--expect=' . s:create_note_key,
-            \ '--preview=' . s:preview_command,
-            \ '--preview-window=40%:wrap'
-            \ ]),
-    \ },<bang>0))
+command! CenterColumn :call CenterColumn()
+command! ScreenCapture :call ScreenCapture()
 
 nnoremap <silent> <Leader>n :Notational<CR>
-" }
 " }

@@ -153,7 +153,7 @@ alias grbd='git stash && git checkout develop && git pull origin develop && git 
 alias grbm='git stash && git checkout master && git pull origin master && git checkout - && git rebase master && git stash pop'
 alias gs='git status'
 alias gst='git stash'
-alias gcpmc='git checkout master && git pull origin master && git checkout'
+alias gcmc='git checkout master && git pull origin master && git checkout'
 
 # Recreate current branch and drop all changes.
 alias grccb='current_branch="$(git rev-parse --abbrev-ref HEAD)" && git stash && git checkout master && git branch -D "$current_branch" && git checkout -b "$current_branch"'

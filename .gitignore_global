@@ -38,3 +38,4 @@ Thumbs.db$
 
 # Projectionist.vim plugin
 .projections.json$
+!.github

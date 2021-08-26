@@ -33,7 +33,7 @@ rm -rf /tmp/source-code-pro-release
 is_macos && {
 	open "https://brew.sh/"
 	wait_until "Homebrew is installed"
-	brew bundle
+	brew bundle install
 	BREW_PREFIX=$(brew --prefix)
 }
 # }
@@ -44,13 +44,10 @@ is_linux && {
 }
 
 link "$DOTFILE_FOLDER/.vimrc" "$HOME/.vimrc"
-
-# Add the swapfile and undodir folder
-mkdir -p "$HOME/.vim/swapdir/"
-mkdir -p "$HOME/.vim/undodir/"
+link "$DOTFILE_FOLDER/.vim" "$HOME/.vim"
 
 # Install vim-plug
-curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -fLo "$DOTFILE_FOLDER/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim +PlugInstall +qall!
 # }
 
