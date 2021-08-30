@@ -45,13 +45,22 @@ export EDITOR='vim'
 export PUPPET_HOME="$HOME/Documents/dev/puppet"
 # }
 # Functions {
-# Loaf compinit and check the cash only once a day
+# Load compinit and check the cache only once a day
 autoload -Uz compinit
-if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' "$HOME/.zcompdump") ]; then
-  compinit
-else
-  compinit -C
-fi
+is_macos && {
+  if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' "$HOME/.zcompdump") ]; then
+    compinit
+  else
+    compinit -C
+  fi
+}
+is_linux && {
+  if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
+    compinit
+  else
+    compinit -C
+  fi
+}
 zmodload -i zsh/complist
 FPATH="$DOTFILE_FOLDER/functions:$DOTFILE_FOLDER/private_functions:/usr/share/zsh/5.7.1/functions:$FPATH"
 

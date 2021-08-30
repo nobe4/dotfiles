@@ -101,6 +101,10 @@ link "$DOTFILE_FOLDER/.pryrc" "$HOME/.pryrc"
 # }
 
 # Python {
+is_linux && {
+	sudo apt-get update && sudo apt-get upgrade
+	sudo apt-get install python3.9
+}
 # Nothing to do on linux
 
 python3 -m pip install black
