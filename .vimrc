@@ -228,11 +228,6 @@ set foldenable " Turn on folding
 set foldmethod=syntax " Most of the code will be syntax-indented
 " set foldopen=block,hor,mark,percent,quickfix,tag " what movements
 set foldlevelstart=99 " disable auto folding on open
-augroup ft_rb
-    au!
-    " Ruby foldmethod is slow with the regexengine 0
-    au FileType ruby setlocal regexpengine=1 foldmethod=indent foldlevelstart=1 foldnestmax=10
-augroup END
 " }
 " Reading and writing files {
 set autoread
@@ -267,15 +262,10 @@ autocmd! BufWritePost espanso_config.yml !espanso restart&
 " }
 " Markdown {
 autocmd! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
-autocmd! Filetype markdown setlocal ts=4 sw=4 sts=0 expandtab linebreak wrap
 " }
 " Terraform {
 autocmd BufNewFile,BufFilePre,BufRead *.tfstate set filetype=json
 autocmd BufNewFile,BufFilePre,BufRead *.tfvars set filetype=terraform
-autocmd Filetype tf setlocal foldmethod=indent filetype=terraform
-" }
-" Commit {
-autocmd! Filetype gitcommit set spell
 " }
 " }
 " Multi-byte characters {
