@@ -69,13 +69,7 @@ autoload -U $DOTFILE_FOLDER/private_functions/*(:t)
 zmodload zsh/zprof
 # }
 # Path {
-PATH="/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-is_macos && {
-  PATH="$PATH:/Applications:$HOME/Applications"
-}
-
 MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
-export PATH
 export MANPATH
 # }
 # Prompt {
@@ -134,10 +128,6 @@ alias ettt='tmux switch -t ettt'
 # }
 
 # Vim {
-# Add MacVim to the path
-is_macos && {
-  export PATH="/Applications/MacVim.app/Contents/bin:$PATH"
-}
 
 alias vi="vim" # Use vim , not vi
 alias vst='vim +Git now' # Run Gstatus at vim startup
@@ -202,18 +192,11 @@ unset PYTHONHOME
 unset PYTHONPATH
 
 export PYTHONDONTWRITEBYTECODE=1
-# The export doesn't seem to work, use an alias instead
-export PATH="$PATH:$HOME/.local/bin"
 # }
 
 # Search {
 alias todo="rg -i todo"
 alias rg='rg --ignore-file $HOME/.gitignore_global'
-
-# FZF
-if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-	export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
-fi
 
 [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
 source "/usr/local/opt/fzf/shell/key-bindings.zsh"
@@ -224,15 +207,6 @@ export FZF_DEFAULT_COMMAND='rg --files --follow --ignore-file $HOME/.gitignore_g
 export FZF_COMPLETION_TRIGGER='**'
 # }
 
-# Go {
-export PATH="$PATH:/usr/local/go/bin"
-# Same as `which go`
-GOBINARY="/usr/local/go/bin/go"
-# Cache of $($GOBINARY env GOPATH)
-export GOPATH=~/go # Needs to be absolute and without quote
-export GOBIN="$GOPATH/bin"
-export PATH="$PATH:$GOPATH:$GOBIN"
-# }
 
 # Alias {
 alias re='exec zsh'                                  # Reload .zshrc
@@ -274,7 +248,6 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 
 # env init {
 # Do manually what eval $(rbenv init -) does.
-export PATH="$HOME/.rbenv/shims:${PATH}"
 export RBENV_SHELL=$shell
 (rbenv rehash &)
 # Replace nodenv with the custom function.
@@ -282,7 +255,6 @@ export RBENV_SHELL=$shell
 alias rbenv=rbenv-function
 
 # Do manually what eval $(nodenv init -) does.
-export PATH="$HOME/.nodenv/shims:${PATH}"
 export NODENV_SHELL=$shell
 (nodenv rehash &)
 # Ref: https://github.com/nodenv/nodenv#how-nodenv-hooks-into-your-shell
