@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -ex
+
+echo "Usage: $0 <picture> <audio>"
+
+ffmpeg \
+	-loop 1 \
+	-framerate 1 \
+	-i "$1" \
+	-i "$2" \
+	-c copy \
+	-shortest \
+	out.mkv
