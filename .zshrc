@@ -124,7 +124,6 @@ alias tmux='tmux -u'
 alias ta='tmux attach -t'
 alias ts='tmux new-session -s'
 alias tw='tmux switch -t'
-alias ettt='tmux switch -t ettt'
 # }
 
 # Vim {
@@ -165,9 +164,9 @@ alias bbox="docker run -it --rm busybox"
 alias dkclean="docker system prune --all --force --volumes"
 alias dksh="docker-ssh"
 
-alias dc="docker-compose"
-alias dcr="docker-compose run"
-alias dcsh="docker-compose-ssh"
+alias dc="docker compose"
+alias dcr="docker compose run"
+alias dcsh="docker compose-ssh"
 # }
 
 # z {
@@ -249,14 +248,14 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 # env init {
 # Do manually what eval $(rbenv init -) does.
 export RBENV_SHELL=$shell
-(rbenv rehash &)
+rbenv rehash
 # Replace nodenv with the custom function.
 # Ref: https://github.com/rbenv/rbenv#how-rbenv-hooks-into-your-shell
 alias rbenv=rbenv-function
 
 # Do manually what eval $(nodenv init -) does.
 export NODENV_SHELL=$shell
-(nodenv rehash &)
+nodenv rehash
 # Ref: https://github.com/nodenv/nodenv#how-nodenv-hooks-into-your-shell
 alias nodenv=nodenv-function
 # }

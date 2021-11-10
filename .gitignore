@@ -1,6 +1,8 @@
 # Don't ignore .files by default, as we want to modify them.
 !.*
+.git
 
+zsh_profile
 .DS_Store
 ngrok.bin
 .telegram-creds
