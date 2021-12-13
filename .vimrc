@@ -80,11 +80,30 @@ Plug 'romainl/vim-qf'
 Plug 'dense-analysis/ale'
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_save = 1
-let g:ale_set_signs = 0
+" let g:ale_set_signs = 0
 let g:ale_ruby_rubocop_executable = $HOME . "/.rbenv/shims/bundle"
 let g:ale_linters = {
+\   'coffee': ['prettier'],
 \   'css': ['prettier'],
-\   'go': ['goimports', 'govet', 'gofmt'],
+\   'go': ['gofmt', 'goimports', 'govet'],
+\   'graphql': ['prettier'],
+\   'html': ['prettier'],
+\   'javascript': ['prettier'],
+\   'markdown': ['vale'],
+\   'python': ['black'],
+\   'ruby': ['rubocop'],
+\   'scss': ['prettier'],
+\   'terraform': ['terraform'],
+\   'vue': ['prettier'],
+\   'yaml': ['prettier'],
+\   'yml': ['prettier'],
+\   'zsh': ['shellcheck'],
+\}
+let g:ale_fixers = {
+\   '*': ['trim_whitespace'],
+\   'coffee': ['prettier'],
+\   'css': ['prettier'],
+\   'go': ['gofmt', 'goimports'],
 \   'graphql': ['prettier'],
 \   'html': ['prettier'],
 \   'javascript': ['prettier'],
@@ -94,21 +113,7 @@ let g:ale_linters = {
 \   'terraform': ['terraform'],
 \   'vue': ['prettier'],
 \   'yaml': ['prettier'],
-\   'zsh': ['shellcheck']
-\}
-let g:ale_fixers = {
-\   '*': ['trim_whitespace'],
-\   'css': ['prettier'],
-\   'go': ['goimports', 'gofmt'],
-\   'graphql': ['prettier'],
-\   'html': ['prettier'],
-\   'javascript': ['prettier'],
-\   'python': ['black'],
-\   'ruby': ['rubocop'],
-\   'scss': ['prettier'],
-\   'terraform': ['terraform'],
-\   'vue': ['prettier'],
-\   'yaml': ['prettier']
+\   'yml': ['prettier'],
 \}
 " }
 " scrooloose/nerdcommenter {
@@ -249,26 +254,9 @@ set shell=$SHELL
 " }
 " Language specific {
 " Misc {
-autocmd! BufNewFile,BufFilePre,BufRead *.coffee set syntax=javascript
-autocmd! BufNewFile,BufFilePre,BufRead *.graphql set filetype=graphql
-autocmd! BufNewFile,BufFilePre,BufRead *.gs set syntax=javascript
-autocmd! BufNewFile,BufFilePre,BufRead *.jspf set filetype=jsp
-autocmd! BufNewFile,BufFilePre,BufRead *.sls set filetype=yaml
-autocmd! BufNewFile,BufFilePre,BufRead *.vue setlocal foldmethod=indent
-autocmd! BufNewFile,BufFilePre,BufRead Vagrantfile set filetype=ruby
-autocmd! BufReadPost *.coffee set syntax=javascript
-autocmd! BufReadPost *.gs set syntax=javascript
-autocmd! BufWritePost espanso_config.yml !espanso restart&
+autocmd BufWritePost espanso_config.yml !espanso restart&
 " }
-" Markdown {
-autocmd! BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
-" }
-" Terraform {
-autocmd BufNewFile,BufFilePre,BufRead *.tfstate set filetype=json
-autocmd BufNewFile,BufFilePre,BufRead *.tfvars set filetype=terraform
-" }
-" }
-" Multi-byte characters {
+" Encoding {
 scriptencoding=utf-8
 set encoding=utf-8 " Character encoding
 set fileencoding=utf-8
@@ -281,23 +269,10 @@ nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
-" I only use those mapping in tpope/vim-unimpaired...
-" Inspired by https://git.io/vHtuc
-function! s:MapNextFamily(map,cmd)
-  let map = '<Plug>unimpaired'.toupper(a:map)
-  let end = '"<CR>'.(a:cmd == 'c' ? 'zv' : '')
-  execute 'nnoremap <silent> '.map.'Previous :<C-U>exe "'.a:cmd.'previous'.end
-  execute 'nnoremap <silent> '.map.'Next     :<C-U>exe "'.a:cmd.'next'.end
-  execute 'nnoremap <silent> '.map.'First    :<C-U>exe "'.a:cmd.'first'.end
-  execute 'nnoremap <silent> '.map.'Last     :<C-U>exe "'.a:cmd.'last'.end
-  execute 'nmap <silent> ['.        a:map .' '.map.'Previous'
-  execute 'nmap <silent> ]'.        a:map .' '.map.'Next'
-  execute 'nmap <silent> ['.toupper(a:map).' '.map.'First'
-  execute 'nmap <silent> ]'.toupper(a:map).' '.map.'Last'
-endfunction
+call map_next#Run('q','c')
+call map_next#Run('t','t')
 
-call s:MapNextFamily('q','c')
-call s:MapNextFamily('t','t')
+command! ScreenCapture :call screen_capture#Run()
 
 " Select last pasted text
 noremap gp '[v']
@@ -343,6 +318,10 @@ cnoremap w!! w !sudo tee % >/dev/null
 " Don't save a filename with name ' or ;
 cnoremap w' w
 cnoremap w; w
+
+" Use bash-like shortcuts to go to start/end of command line.
+" C-E already goes to the end.
+cnoremap <C-A> <Home>
 
 " In insert mode <C-\> remove unwanted <CR> insertion
 " inoremap <C-\> <C-o>:left 0<Cr><BS>
@@ -409,18 +388,17 @@ nnoremap <Leader>z :execute 'tabnew +' . line(".") .' %'<CR>
 nnoremap g<C-o> :!open .<CR><CR>
 "}
 " Abbreviations {
-iabbrev pydebug import pdb; pdb.set_trace()
-iabbrev rbdebug require 'pry';binding.pry
-iabbrev red* * { color: red !important; }
 iabbrev :shrug: ¯\_(ツ)_/¯
-iabbrev ttt (t *testing.T)
-iabbrev forhook for _, e := range hook.Entries { t.Logf("=> %v", e) }
 "}
 " Tmux {
 autocmd BufReadPost,FileReadPost,BufNewFile *
     \ call system("tmux rename-window 'vim:" . expand("%:t") . "'")
 autocmd VimLeave *
     \ call system("tmux setw automatic-rename")
+" }
+" Mouse {
+set mouse=a
+set ttymouse=xterm2
 " }
 " GUI {
 " Remove every bit of GUI option
@@ -459,46 +437,10 @@ endfunction
 command! FollowCursor :call FollowCursor(1)
 command! UnfollowCursor :call FollowCursor(0)
 
-
-function! s:QFixEdit()
-    " Copy the content into a new buffer
-    %y
-    " TODO: Create a named buffer bound to a file
-    let l:tmp_file =system('mktemp')
-    execute 'split ' . l:tmp_file
-    normal P
-    cclose
-    " Catch the save and exit events
-    autocmd BufWritePre <buffer> :call s:QFixEditSave()
-    autocmd BufHidden <buffer> :call s:QFixEditClean()
-endfunction
-
-function! s:QFixEditSave()
-    let l:i = line("$")
-    while i > 1
-        let l:i -= 1
-        let l:line = split(getline(l:i), '|')
-
-        let l:filename = l:line[0]
-        let l:line_number = split(l:line[1], " ")[0]
-        let l:content = l:line[2][1:]
-
-        call system('sed -i ".bak" "2'. l:line_number . '/.*/' . l:content . '/" ' . l:filename)
-    endwhile
-    " Loop through all the lines
-    " Parse the file
-    " Modify in the files at the lines specified
-endfunction
-
-function! s:QFixEditClean()
-    echomsg "Cleaning"
-endfunction
-
 command! JSONPretty :%!jq '.'
-command! QFixEdit :call s:QFixEdit()
+command! QFixEdit :call qfix_edit#run()
 command! Writing :setlocal wrap linebreak spell spellcapcheck= filetype=markdown
-command! CenterColumn :call CenterColumn()
-command! ScreenCapture :call ScreenCapture()
-
-nnoremap <silent> <Leader>n :Notational<CR>
+command! CenterColumn :call center_column#run()
+command! ScreenCapture :call screen_capture#Run()
+nnoremap <silent> <Leader>n :call notational#run()<CR>
 " }

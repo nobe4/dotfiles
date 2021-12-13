@@ -1,6 +1,6 @@
 " Capture what vim "sees" and puts it in a new tab.
 
-function! ScreenCapture()
+function screen_capture#Run()
     let array=[]
     for i in range(1,&lines)
         let row=''

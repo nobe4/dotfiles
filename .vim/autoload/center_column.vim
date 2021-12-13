@@ -1,5 +1,5 @@
 " Create a centered column to write stuff more easily
-function! CenterColumn()
+function! center_column#run()
     vnew
     vnew
     wincmd L
