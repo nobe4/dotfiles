@@ -15,6 +15,7 @@ is_interactive && {
 }
 
 link "$DOTFILE_FOLDER/.zshrc" "$HOME/.zshrc"
+link "$DOTFILE_FOLDER/.zprofile" "$HOME/.zprofile"
 link "$DOTFILE_FOLDER/.zshenv" "$HOME/.zshenv"
 link "$DOTFILE_FOLDER/.bashrc" "$HOME/.bashrc"
 # }
@@ -203,6 +204,11 @@ touch "$HOME/.z"
 link "$DOTFILE_FOLDER/.lynx.cfg" "$HOME/.lynx.cfg"
 link "$DOTFILE_FOLDER/.lynx.lss" "$HOME/.lynx.lss"
 link "$DOTFILE_FOLDER/.muttrc" "$HOME/.muttrc"
+link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.vale.ini"
+
+(git clone git@github.com:errata-ai/Google.git /tmp/vale-tmp-google && mv /tmp/vale-tmp-google/Google $DOTFILE_FOLDER/vale-styles) &
+(git clone git@github.com:errata-ai/proselint.git /tmp/vale-tmp-prose && mv /tmp/vale-tmp-prose/proselint $DOTFILE_FOLDER/vale-styles) &
+(git clone git@github.com:testthedocs/Openly.git /tmp/vale-tmp-openly && mv /tmp/vale-tmp-openly/Openly $DOTFILE_FOLDER/vale-styles) &
 
 tldr --update
 # }
