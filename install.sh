@@ -135,6 +135,7 @@ is_macos && {
 
 	# We're going to use the local espanso config so we can track its changes.
 	ln -fs "$DOTFILE_FOLDER/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
+	ln -fs "$DOTFILE_FOLDER/private/espanso_config.yml" "$HOME/Library/Preferences/espanso/user/private.yml"
 }
 # }
 
