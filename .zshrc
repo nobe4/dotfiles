@@ -48,7 +48,7 @@ export PUPPET_HOME="$HOME/Documents/dev/puppet"
 # Load compinit and check the cache only once a day
 autoload -Uz compinit
 is_macos && {
-  if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' "$HOME/.zcompdump") ]; then
+  if [ "$(date +'%j')" != "$(/usr/bin/stat -f '%Sm' -t '%j' "$HOME/.zcompdump")" ]; then
     compinit
   else
     compinit -C
@@ -64,7 +64,9 @@ is_linux && {
 zmodload -i zsh/complist
 FPATH="$DOTFILE_FOLDER/functions:$DOTFILE_FOLDER/private_functions:/usr/share/zsh/5.7.1/functions:$FPATH"
 
+# shellcheck disable=SC2086 # doesn't find the functions if quoted
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
+# shellcheck disable=SC2086 # doesn't find the functions if quoted
 autoload -U $DOTFILE_FOLDER/private_functions/*(:t)
 zmodload zsh/zprof
 # }
@@ -74,7 +76,8 @@ export MANPATH
 # }
 # Prompt {
 # Default prompt is just current dir
-PROMPT='%{$fg[green]%}%c%{$reset_color%} '
+# shellcheck disable=SC2154 # colors are loaded somewhere else
+PROMPT="%{${fg[green]}%}%c%{${reset_color}%} "
 
 # Async madness {
 precmd() {
@@ -85,6 +88,7 @@ precmd() {
 }
 
 prompt_on_load() {
+  # shellcheck disable=SC2034 # no need to export this variable
   PROMPT="$(<&"$1")"
 
   zle reset-prompt
@@ -130,9 +134,9 @@ alias tw='tmux switch -t'
 
 alias vi="vim" # Use vim , not vi
 alias vst='vim +Git now' # Run Gstatus at vim startup
-alias vih='vim +help\' # Jump to vim help
+alias vih='vim +help\ ' # Jump to vim help
 alias vin='vim -Nu NONE' # Vim without config
-alias vit='vim +tj\' # Jump to tag
+alias vit='vim +tj\ ' # Jump to tag
 alias n='vim +Notational' # Run Notational
 # }
 
@@ -152,9 +156,7 @@ alias grbm='git stash && git checkout master && git pull origin master && git ch
 alias gs='git status'
 alias gst='git stash'
 alias gcmc='git checkout master && git pull origin master && git checkout'
-
-# Recreate current branch and drop all changes.
-alias grccb='current_branch="$(git rev-parse --abbrev-ref HEAD)" && git stash && git checkout master && git branch -D "$current_branch" && git checkout -b "$current_branch"'
+alias grccb='git-recreate-current-branch'
 # }
 
 # Docker {
@@ -197,10 +199,12 @@ export PYTHONDONTWRITEBYTECODE=1
 alias todo="rg -i todo"
 alias rg='rg --ignore-file $HOME/.gitignore_global'
 
+# shellcheck disable=SC1094 # this file is fine
 [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+# shellcheck disable=SC1094 # this file is fine
 source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
-export FZF_DEFAULT_COMMAND='rg --files --follow --ignore-file $HOME/.gitignore_global'
+export FZF_DEFAULT_COMMAND="rg --files --follow --ignore-file $HOME/.gitignore_global"
 
 # Trigger fzf-completion with **
 export FZF_COMPLETION_TRIGGER='**'
@@ -227,7 +231,7 @@ alias gccunsafe='gcc -fno-stack-protector -D_FORTIFY_SOURCE=0'
 # }
 
 # AWS {
-alias aws_creds="$DOTFILE_FOLDER/aws/aws_creds.sh"
+alias aws_creds='$DOTFILE_FOLDER/aws/aws_creds.sh'
 alias ro=routes
 # }
 
@@ -247,14 +251,14 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 
 # env init {
 # Do manually what eval $(rbenv init -) does.
-export RBENV_SHELL=$shell
+export RBENV_SHELL="$SHELL"
 rbenv rehash
 # Replace nodenv with the custom function.
 # Ref: https://github.com/rbenv/rbenv#how-rbenv-hooks-into-your-shell
 alias rbenv=rbenv-function
 
 # Do manually what eval $(nodenv init -) does.
-export NODENV_SHELL=$shell
+export NODENV_SHELL="$SHELL"
 nodenv rehash
 # Ref: https://github.com/nodenv/nodenv#how-nodenv-hooks-into-your-shell
 alias nodenv=nodenv-function

@@ -133,7 +133,7 @@ is_macos && {
 	espanso start || true
 	espanso install all-emojis
 
-	# TODO
+	# We're going to use the local espanso config so we can track its changes.
 	ln -fs "$DOTFILE_FOLDER/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
 }
 # }
