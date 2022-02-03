@@ -1,4 +1,3 @@
-" I only use those mapping in tpope/vim-unimpaired...
 " Inspired by https://git.io/vHtuc
 function map_next#Run(map, cmd)
   let map = '<Plug>unimpaired'.toupper(a:map)
