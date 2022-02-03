@@ -212,7 +212,6 @@ set t_Co=256 " Number of available colors
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
-set switchbuf=split
 " }
 " Editing text {
 set backspace=indent,eol,start
@@ -269,6 +268,8 @@ nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
+" [ / ] mappings
+" I only use those mapping in tpope/vim-unimpaired.
 call map_next#Run('q','c')
 call map_next#Run('t','t')
 
@@ -323,22 +324,14 @@ cnoremap w; w
 " C-E already goes to the end.
 cnoremap <C-A> <Home>
 
-" In insert mode <C-\> remove unwanted <CR> insertion
-" inoremap <C-\> <C-o>:left 0<Cr><BS>
-
-" In normal mode <C-\> grep for the word under the cursor
-" inspiration: https://robots.thoughtbot.com/faster-grepping-in-vim
-" nnoremap <C-\> :grep! --word-regexp '<C-R><C-W>'<CR>:cw<CR>
-
 " bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Rg :silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Rg<Space>
 
+" Before CR?deleting from insert mode, create a new change
 inoremap <CR> <C-G>u<CR>
-
-" Before deleting from insert mode, create a new change
-inoremap <c-u> <c-g>u<c-u>
-inoremap <c-w> <c-g>u<c-w>
+inoremap <C-U> <C-G>u<C-U>
+inoremap <C-W> <C-G>u<C-W>
 
 " Create a new tab
 nnoremap <Leader>tn :tabnew
@@ -362,9 +355,6 @@ nnoremap gf :e <cfile><CR>
 
 " Switch to previous buffer
 nnoremap <Leader>b :b#<CR>
-
-" Switch to alternate file, thanks to projectionist
-nnoremap <Leader>a :A<CR>
 
 " Open buffer list and prepare a switch
 nnoremap <Leader>l :ls<CR>:buffer<Space>
@@ -397,7 +387,7 @@ autocmd VimLeave *
     \ call system("tmux setw automatic-rename")
 " }
 " Mouse {
-set mouse=a
+set mouse=
 set ttymouse=xterm2
 " }
 " GUI {
