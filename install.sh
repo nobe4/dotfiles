@@ -61,7 +61,7 @@ link "$DOTFILE_FOLDER/.gitignore_global" "$HOME/.gitignore_global"
 is_macos && {
 	open https://golang.org/doc/install
 	wait_until "golang is installed"
-	go get golang.org/x/tools/cmd/goimports
+	go install golang.org/x/tools/cmd/goimports
 }
 is_linux && {
 	# https://github.com/golang/go/wiki/Ubuntu
