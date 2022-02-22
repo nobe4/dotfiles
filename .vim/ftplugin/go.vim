@@ -1,7 +1,14 @@
-" autocmd FileType go setlocal makeprg=goimports\ -l\ -w
-" autocmd BufWritePost *.go silent make! <afile> | silent redraw!
-" autocmd QuickFixCmdPost [^l]* cwindow
-
 iabbrev ttt func Test(t *testing.T) {t.Skip("TODO")}<ESC>0f(i
 iabbrev ttr t.Run("", func(t *testing.T) {t.Skip("TODO")})<ESC>0f"a
 iabbrev forhook for _, e := range hook.Entries { t.Logf("=> %v", e) }
+
+augroup go_autocmd
+	autocmd!
+	" Fix with gofmt / goimports and then check with go vet.
+	" grep/sed to make go vet output readable by vim
+	autocmd BufWritePost * silent AsyncRun
+				\ -strip
+				\ gofmt -w -s $(VIM_FILEPATH) &&
+				\ goimports -w $(VIM_FILEPATH) &&
+				\ go vet $(VIM_FILEPATH) 2>&1 | grep -v '^\#' | sed 's/vet: //'
+augroup END

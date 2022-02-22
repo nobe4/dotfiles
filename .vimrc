@@ -77,44 +77,43 @@ Plug 'danro/rename.vim', { 'on': 'Rename' }
 Plug 'romainl/vim-qf'
 " }
 " 'dense-analysis/ale' {
-Plug 'dense-analysis/ale'
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_save = 1
-" let g:ale_set_signs = 0
-let g:ale_ruby_rubocop_executable = $HOME . "/.rbenv/shims/bundle"
-let g:ale_linters = {
-\   'coffee': ['prettier'],
-\   'css': ['prettier'],
-\   'go': ['gofmt', 'goimports', 'govet'],
-\   'graphql': ['prettier'],
-\   'html': ['prettier'],
-\   'javascript': ['prettier'],
-\   'markdown': ['vale'],
-\   'python': ['black'],
-\   'ruby': ['rubocop'],
-\   'scss': ['prettier'],
-\   'terraform': ['terraform'],
-\   'vue': ['prettier'],
-\   'yaml': ['prettier'],
-\   'yml': ['prettier'],
-\   'zsh': ['shellcheck'],
-\}
-let g:ale_fixers = {
-\   '*': ['trim_whitespace'],
-\   'coffee': ['prettier'],
-\   'css': ['prettier'],
-\   'go': ['gofmt', 'goimports'],
-\   'graphql': ['prettier'],
-\   'html': ['prettier'],
-\   'javascript': ['prettier'],
-\   'python': ['black'],
-\   'ruby': ['rubocop'],
-\   'scss': ['prettier'],
-\   'terraform': ['terraform'],
-\   'vue': ['prettier'],
-\   'yaml': ['prettier'],
-\   'yml': ['prettier'],
-\}
+" Plug 'dense-analysis/ale'
+" let g:ale_fix_on_save = 1
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_text_changed = 0
+" let g:ale_lint_on_insert_leave = 0
+" let g:ale_lint_on_enter = 0
+" let g:ale_lint_on_filetype_changed = 0
+" let g:ale_set_signs = 1
+" let g:ale_linters = {
+" \   'coffee': ['prettier'],
+" \   'css': ['prettier'],
+" \   'graphql': ['prettier'],
+" \   'html': ['prettier'],
+" \   'javascript': ['prettier'],
+" \   'markdown': ['vale'],
+" \   'python': ['black'],
+" \   'scss': ['prettier'],
+" \   'terraform': ['terraform'],
+" \   'vue': ['prettier'],
+" \   'yaml': ['prettier'],
+" \   'yml': ['prettier'],
+" \   'zsh': ['shellcheck'],
+" \}
+" let g:ale_fixers = {
+" \   '*': ['trim_whitespace'],
+" \   'coffee': ['prettier'],
+" \   'css': ['prettier'],
+" \   'graphql': ['prettier'],
+" \   'html': ['prettier'],
+" \   'javascript': ['prettier'],
+" \   'python': ['black'],
+" \   'scss': ['prettier'],
+" \   'terraform': ['terraform'],
+" \   'vue': ['prettier'],
+" \   'yaml': ['prettier'],
+" \   'yml': ['prettier'],
+" \}
 " }
 " scrooloose/nerdcommenter {
 Plug 'scrooloose/nerdcommenter'
@@ -138,6 +137,11 @@ Plug 'junegunn/vim-easy-align'
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 let g:easy_align_ignore_groups = []
+" }
+" skywind3000/asyncrun.vim {
+Plug 'skywind3000/asyncrun.vim'
+let g:asyncrun_trim = 1
+let g:asyncrun_exit = 'silent checktime'
 " }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
@@ -206,9 +210,21 @@ catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
 set spellcapcheck=
+
 " Clearing uses the current background color
 set t_ut=
 set t_Co=256 " Number of available colors
+
+" Cursor is a vertical line in insert, and a block otherwise.
+" ref: https://stackoverflow.com/a/6489348
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
+" Highlight the cursorline during insertmode.
+autocmd InsertEnter * set cursorline
+autocmd InsertLeave * set nocursorline
+" Open cwindow automatically if there are items in it
+" autocmd QuickFixCmdPost [^l]* cwindow
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
@@ -232,6 +248,8 @@ set foldenable " Turn on folding
 set foldmethod=syntax " Most of the code will be syntax-indented
 " set foldopen=block,hor,mark,percent,quickfix,tag " what movements
 set foldlevelstart=99 " disable auto folding on open
+" Fold "focus" fold all but current one, and center the view
+nnoremap zf zM100zozz
 " }
 " Reading and writing files {
 set autoread
@@ -314,7 +332,7 @@ nnoremap <Leader>R :nnoremap <lt>Leader>r :
 nnoremap <Leader>r :<UP>
 
 " Force save
-cnoremap w!! w !sudo tee % >/dev/null
+cnoremap sudow w !sudo tee % >/dev/null
 
 " Don't save a filename with name ' or ;
 cnoremap w' w
@@ -328,7 +346,7 @@ cnoremap <C-A> <Home>
 command! -nargs=+ -complete=file -bar Rg :silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Rg<Space>
 
-" Before CR?deleting from insert mode, create a new change
+" Before <CR> or deleting from insert mode, create a new change point
 inoremap <CR> <C-G>u<CR>
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
