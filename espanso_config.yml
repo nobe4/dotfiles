@@ -9,6 +9,12 @@ matches:
   - triggers: ["comitted", "comited", "commited"]
     replace: "committed"
 
+  - trigger: "<details>"
+    replace: |
+      <details><summary>$|$</summary>
+
+      </details>
+
   - trigger: ";date"
     replace: "{{now}}"
     vars:
