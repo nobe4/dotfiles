@@ -64,6 +64,9 @@ is_linux && {
 zmodload -i zsh/complist
 FPATH="$DOTFILE_FOLDER/functions:$DOTFILE_FOLDER/private/functions:/usr/share/zsh/5.7.1/functions:$FPATH"
 
+# Load binaries in the path
+PATH="$DOTFILE_FOLDER/bin:$DOTFILE_FOLDER/private/bin:$PATH"
+
 # shellcheck disable=SC2086 # doesn't find the functions if quoted
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
 # shellcheck disable=SC2086 # doesn't find the functions if quoted

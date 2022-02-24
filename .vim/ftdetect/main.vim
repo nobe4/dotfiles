@@ -1,6 +1,8 @@
 " This folder/file is used to determine correctly the filetype of special
 " files
 
+autocmd BufNewFile,BufRead *.zsh    set filetype=sh
+autocmd BufNewFile,BufRead *.bash    set filetype=sh
 autocmd BufNewFile,BufRead *.coffee    set filetype=javascript
 autocmd BufNewFile,BufRead *.gs        set filetype=javascript
 autocmd BufNewFile,BufRead *.graphql   set filetype=graphql

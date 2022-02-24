@@ -6,8 +6,7 @@ augroup go_autocmd
 	autocmd!
 	" Fix with gofmt / goimports and then check with go vet.
 	" grep/sed to make go vet output readable by vim
-	autocmd BufWritePost *.go silent AsyncRun
-				\ -strip
+	autocmd BufWritePost <buffer> silent AsyncRun! -strip
 				\ gofmt -w -s $(VIM_FILEPATH) &&
 				\ goimports -w $(VIM_FILEPATH) &&
 				\ go vet $(VIM_FILEDIR)/* 2>&1 | grep -v '^\#' | sed 's/vet: //'
