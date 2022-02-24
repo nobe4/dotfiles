@@ -140,8 +140,17 @@ let g:easy_align_ignore_groups = []
 " }
 " skywind3000/asyncrun.vim {
 Plug 'skywind3000/asyncrun.vim'
+let g:asyncrun_open = 0
 let g:asyncrun_trim = 1
-let g:asyncrun_exit = 'silent checktime'
+let g:asyncrun_exit = 'silent checktime | call CloseQFIfEmpty()'
+
+" Close quickfix window if it's empty
+function! CloseQFIfEmpty()
+    if len(getqflist()) == 0
+        cclose
+    endif
+endfunction
+
 " }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
@@ -225,6 +234,7 @@ autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
 " Open cwindow automatically if there are items in it
 " autocmd QuickFixCmdPost [^l]* cwindow
+autocmd QuickFixCmdPost * botright copen 8
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
@@ -306,8 +316,9 @@ nnoremap <Leader>lp :lprev<CR>
 
 " edit, source/reload .vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
-nnoremap <Leader>vs :so $MYVIMRC<CR>
-nnoremap <Leader>vr :so $MYVIMRC<CR>
+nnoremap <Leader>vs :silent source $MYVIMRC<CR>
+nnoremap <Leader>vr :silent source $MYVIMRC<CR>
+command! SourceVimrc :silent source $MYVIMRC
 
 " Change content of check box
 nnoremap <Leader>d 0/\[.\]<CR>:nohlsearch<CR><right>s
@@ -447,6 +458,7 @@ command! UnfollowCursor :call FollowCursor(0)
 
 command! JSONPretty :%!jq '.'
 command! QFixEdit :call qfix_edit#run()
+
 command! Writing :setlocal wrap linebreak spell spellcapcheck= filetype=markdown
 command! CenterColumn :call center_column#run()
 command! ScreenCapture :call screen_capture#Run()
