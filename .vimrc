@@ -234,7 +234,7 @@ autocmd InsertEnter * set cursorline
 autocmd InsertLeave * set nocursorline
 " Open cwindow automatically if there are items in it
 " autocmd QuickFixCmdPost [^l]* cwindow
-autocmd QuickFixCmdPost * botright copen 8
+autocmd QuickFixCmdPost * botright copen 5
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
