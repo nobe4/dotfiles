@@ -8,7 +8,7 @@ let s:notational_search_paths = s:notational_default_save_path . ' .'
 let s:create_note_key = 'ctrl-n'
 
 " Sources
-let s:source_command='command rg --follow --smart-case --color=always --colors="match:none" --line-number --no-messages --no-heading --with-filename --glob "*.md" "\S" ' . s:notational_search_paths
+let s:source_command='command rg --max-depth 4 --threads 4 --follow --smart-case --color=always --colors="match:none" --line-number --no-messages --no-heading --with-filename --glob "*.md" "\S" ' . s:notational_search_paths
 let s:preview_command=shellescape('rg --color=always --colors="match:fg:blue" -C4 {3} --fixed-strings {1}')
 
 " Handle fzf results

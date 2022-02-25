@@ -31,5 +31,3 @@ endfunction
 function! qfix_edit#clean()
     echomsg "Cleaning"
 endfunction
-
-

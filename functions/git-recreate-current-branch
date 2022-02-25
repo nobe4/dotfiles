@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+
+current_branch="$(git rev-parse --abbrev-ref HEAD)"
+git stash
+git checkout master
+git branch -D "$current_branch"
+git checkout -b "$current_branch"

@@ -1,5 +1,4 @@
 cask "macvim"
-brew "tmux"
 # https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
 brew "reattach-to-user-namespace"
 # https://docs.brew.sh/Homebrew-and-Python
@@ -24,3 +23,4 @@ brew "tealdeer"
 brew "ffmpeg"
 brew "vale"
 brew "gh"
+brew "moreutils"

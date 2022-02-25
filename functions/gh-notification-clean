@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'json'
+
+def parse(notification)
+  type = notification['subject']['type']
+  name = notification['subject']['title']
+  link = notification['subject']['url']
+         .gsub('https://api.github.com', '')
+  thread = notification['url']
+           .gsub('https://api.github.com', '')
+  [type, name, link, thread]
+end
+
+def open?(link)
+  state = `gh api #{link} -q '.state'`.strip
+  state == 'open'
+end
+
+def handle(notification)
+  begin
+    type, name, link, thread = parse(notification)
+  rescue
+    Thread.exit()
+  end
+
+  case type
+  when 'PullRequest', 'Issue'
+    return if open?(link) && (ARGV[0] != '' && !link.start_with?("/repos/#{ARGV[0]}"))
+  else
+    puts "#{type} not handled: #{link}"
+    # not handled
+    return
+  end
+
+  # Close the thread
+  `gh api -X PATCH #{thread}`
+end
+
+def fetch_notifications(page = 0)
+  notifications_raw = `gh api 'notifications?page=#{page}'`
+  notifications = JSON.parse(notifications_raw)
+
+  return if notifications.empty?
+
+  # Run each in its own thread
+  threads = notifications.map do |notification|
+    Thread.new { handle(notification) }
+  end
+  threads << Thread.new { fetch_notifications(page + 1) }
+
+  threads.each(&:join)
+end
+
+fetch_notifications(0)
+
+`open 'https://github.com/notifications?query=is%3Aread'`

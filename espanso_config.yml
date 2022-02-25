@@ -9,26 +9,11 @@ matches:
   - triggers: ["comitted", "comited", "commited"]
     replace: "committed"
 
-  - trigger: ";1-1"
-    replace: |-
-      # {{now}}
-      ## Awareness/Visibility
-        Anything that needs to be on management's radar
+  - trigger: "<details>"
+    replace: |
+      <details><summary>$|$</summary>
 
-      ## Challenges/Blockers
-        Anything you need management assistance with
-
-      ## Accomplishments
-        Toot your own horn :-)
-
-      ## Administrative
-        Any HR, performance, organization related questions
-
-    vars:
-      - name: now
-        type: date
-        params:
-          format: "%d/%m/%Y"
+      </details>
 
   - trigger: ";date"
     replace: "{{now}}"
@@ -37,23 +22,3 @@ matches:
         type: date
         params:
           format: "%d/%m/%Y"
-
-  - triggers: [";et", ";ent", ";ettt"]
-    replace: "entitlements"
-    word: true
-
-  - triggers: [";ets", ";ents", ";status", ";stt"]
-    replace: ".entitlements status"
-    word: true
-
-  - triggers: [";ettd", ";et train deploy"]
-    replace: ".entitlements entrain --deploy"
-    word: true
-
-  - trigger: ";chrq"
-    replace: "I'm adding the `Changes Requested` label. Feel free to remove it once you're done with your changes."
-    word: true
-
-  - trigger: ";aptr"
-    replace: "The PR has been approved and will be deployed in the next train :)"
-    word: true

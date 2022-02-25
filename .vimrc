@@ -77,44 +77,43 @@ Plug 'danro/rename.vim', { 'on': 'Rename' }
 Plug 'romainl/vim-qf'
 " }
 " 'dense-analysis/ale' {
-Plug 'dense-analysis/ale'
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_save = 1
-" let g:ale_set_signs = 0
-let g:ale_ruby_rubocop_executable = $HOME . "/.rbenv/shims/bundle"
-let g:ale_linters = {
-\   'coffee': ['prettier'],
-\   'css': ['prettier'],
-\   'go': ['gofmt', 'goimports', 'govet'],
-\   'graphql': ['prettier'],
-\   'html': ['prettier'],
-\   'javascript': ['prettier'],
-\   'markdown': ['vale'],
-\   'python': ['black'],
-\   'ruby': ['rubocop'],
-\   'scss': ['prettier'],
-\   'terraform': ['terraform'],
-\   'vue': ['prettier'],
-\   'yaml': ['prettier'],
-\   'yml': ['prettier'],
-\   'zsh': ['shellcheck'],
-\}
-let g:ale_fixers = {
-\   '*': ['trim_whitespace'],
-\   'coffee': ['prettier'],
-\   'css': ['prettier'],
-\   'go': ['gofmt', 'goimports'],
-\   'graphql': ['prettier'],
-\   'html': ['prettier'],
-\   'javascript': ['prettier'],
-\   'python': ['black'],
-\   'ruby': ['rubocop'],
-\   'scss': ['prettier'],
-\   'terraform': ['terraform'],
-\   'vue': ['prettier'],
-\   'yaml': ['prettier'],
-\   'yml': ['prettier'],
-\}
+" Plug 'dense-analysis/ale'
+" let g:ale_fix_on_save = 1
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_text_changed = 0
+" let g:ale_lint_on_insert_leave = 0
+" let g:ale_lint_on_enter = 0
+" let g:ale_lint_on_filetype_changed = 0
+" let g:ale_set_signs = 1
+" let g:ale_linters = {
+" \   'coffee': ['prettier'],
+" \   'css': ['prettier'],
+" \   'graphql': ['prettier'],
+" \   'html': ['prettier'],
+" \   'javascript': ['prettier'],
+" \   'markdown': ['vale'],
+" \   'python': ['black'],
+" \   'scss': ['prettier'],
+" \   'terraform': ['terraform'],
+" \   'vue': ['prettier'],
+" \   'yaml': ['prettier'],
+" \   'yml': ['prettier'],
+" \   'zsh': ['shellcheck'],
+" \}
+" let g:ale_fixers = {
+" \   '*': ['trim_whitespace'],
+" \   'coffee': ['prettier'],
+" \   'css': ['prettier'],
+" \   'graphql': ['prettier'],
+" \   'html': ['prettier'],
+" \   'javascript': ['prettier'],
+" \   'python': ['black'],
+" \   'scss': ['prettier'],
+" \   'terraform': ['terraform'],
+" \   'vue': ['prettier'],
+" \   'yaml': ['prettier'],
+" \   'yml': ['prettier'],
+" \}
 " }
 " scrooloose/nerdcommenter {
 Plug 'scrooloose/nerdcommenter'
@@ -138,6 +137,20 @@ Plug 'junegunn/vim-easy-align'
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 let g:easy_align_ignore_groups = []
+" }
+" skywind3000/asyncrun.vim {
+Plug 'skywind3000/asyncrun.vim'
+let g:asyncrun_open = 0
+let g:asyncrun_trim = 1
+let g:asyncrun_exit = 'silent checktime | call CloseQFIfEmpty()'
+
+" Close quickfix window if it's empty
+function! CloseQFIfEmpty()
+    if len(getqflist()) == 0
+        cclose
+    endif
+endfunction
+
 " }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
@@ -206,13 +219,25 @@ catch /^Vim\%((\a\+)\)\=:E185/
 endtry
 
 set spellcapcheck=
+
 " Clearing uses the current background color
 set t_ut=
 set t_Co=256 " Number of available colors
+
+" Cursor is a vertical line in insert, and a block otherwise.
+" ref: https://stackoverflow.com/a/6489348
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
+" Highlight the cursorline during insertmode.
+autocmd InsertEnter * set cursorline
+autocmd InsertLeave * set nocursorline
+" Open cwindow automatically if there are items in it
+" autocmd QuickFixCmdPost [^l]* cwindow
+autocmd QuickFixCmdPost * botright copen 5
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
-set switchbuf=split
 " }
 " Editing text {
 set backspace=indent,eol,start
@@ -233,6 +258,8 @@ set foldenable " Turn on folding
 set foldmethod=syntax " Most of the code will be syntax-indented
 " set foldopen=block,hor,mark,percent,quickfix,tag " what movements
 set foldlevelstart=99 " disable auto folding on open
+" Fold "focus" fold all but current one, and center the view
+nnoremap zf zM100zozz
 " }
 " Reading and writing files {
 set autoread
@@ -269,6 +296,8 @@ nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
+" [ / ] mappings
+" I only use those mapping in tpope/vim-unimpaired.
 call map_next#Run('q','c')
 call map_next#Run('t','t')
 
@@ -287,8 +316,9 @@ nnoremap <Leader>lp :lprev<CR>
 
 " edit, source/reload .vimrc
 nnoremap <Leader>ve :e $MYVIMRC<CR>
-nnoremap <Leader>vs :so $MYVIMRC<CR>
-nnoremap <Leader>vr :so $MYVIMRC<CR>
+nnoremap <Leader>vs :silent source $MYVIMRC<CR>
+nnoremap <Leader>vr :silent source $MYVIMRC<CR>
+command! SourceVimrc :silent source $MYVIMRC
 
 " Change content of check box
 nnoremap <Leader>d 0/\[.\]<CR>:nohlsearch<CR><right>s
@@ -313,7 +343,7 @@ nnoremap <Leader>R :nnoremap <lt>Leader>r :
 nnoremap <Leader>r :<UP>
 
 " Force save
-cnoremap w!! w !sudo tee % >/dev/null
+cnoremap sudow w !sudo tee % >/dev/null
 
 " Don't save a filename with name ' or ;
 cnoremap w' w
@@ -323,22 +353,14 @@ cnoremap w; w
 " C-E already goes to the end.
 cnoremap <C-A> <Home>
 
-" In insert mode <C-\> remove unwanted <CR> insertion
-" inoremap <C-\> <C-o>:left 0<Cr><BS>
-
-" In normal mode <C-\> grep for the word under the cursor
-" inspiration: https://robots.thoughtbot.com/faster-grepping-in-vim
-" nnoremap <C-\> :grep! --word-regexp '<C-R><C-W>'<CR>:cw<CR>
-
 " bind \ (backward slash) to grep shortcut
 command! -nargs=+ -complete=file -bar Rg :silent! grep! <args>|cwindow|redraw!
 nnoremap \ :Rg<Space>
 
+" Before <CR> or deleting from insert mode, create a new change point
 inoremap <CR> <C-G>u<CR>
-
-" Before deleting from insert mode, create a new change
-inoremap <c-u> <c-g>u<c-u>
-inoremap <c-w> <c-g>u<c-w>
+inoremap <C-U> <C-G>u<C-U>
+inoremap <C-W> <C-G>u<C-W>
 
 " Create a new tab
 nnoremap <Leader>tn :tabnew
@@ -362,9 +384,6 @@ nnoremap gf :e <cfile><CR>
 
 " Switch to previous buffer
 nnoremap <Leader>b :b#<CR>
-
-" Switch to alternate file, thanks to projectionist
-nnoremap <Leader>a :A<CR>
 
 " Open buffer list and prepare a switch
 nnoremap <Leader>l :ls<CR>:buffer<Space>
@@ -397,7 +416,7 @@ autocmd VimLeave *
     \ call system("tmux setw automatic-rename")
 " }
 " Mouse {
-set mouse=a
+set mouse=
 set ttymouse=xterm2
 " }
 " GUI {
@@ -439,6 +458,7 @@ command! UnfollowCursor :call FollowCursor(0)
 
 command! JSONPretty :%!jq '.'
 command! QFixEdit :call qfix_edit#run()
+
 command! Writing :setlocal wrap linebreak spell spellcapcheck= filetype=markdown
 command! CenterColumn :call center_column#run()
 command! ScreenCapture :call screen_capture#Run()
