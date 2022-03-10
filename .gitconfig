@@ -2,9 +2,8 @@
 [user]
 	# default user
 	name = nobe4
-	email = nobe4@github.com
-	signingKey = A4EAFCF8BCEF0D15
-	# Pro signingKey = 58B1CDD15450346A40DF8564DD534FFD2E54CAF3
+	email = nobe4@users.noreply.github.com
+	signingKey = 8EB61429D6C54B9B1787EBA0911FE2A36C3403DD
 [commit]
 	gpgsign = true
 [core]
