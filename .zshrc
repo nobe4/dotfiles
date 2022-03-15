@@ -134,7 +134,6 @@ alias tw='tmux switch -t'
 # }
 
 # Vim {
-
 alias vi="vim" # Use vim , not vi
 alias vst='vim +Git now' # Run Gstatus at vim startup
 alias vih='vim +help\ ' # Jump to vim help
@@ -215,6 +214,7 @@ export FZF_COMPLETION_TRIGGER='**'
 
 
 # Alias {
+alias x509='openssl x509 -text -noout'               # That's what I use all the time
 alias re='exec zsh'                                  # Reload .zshrc
 alias als='alias | grep'                             # Search through aliases
 alias reverse-link='find -L /dir/to/start -samefile' # Find what is linked to a file
@@ -280,4 +280,7 @@ alias r0de="openssl enc -aes-256-cbc -d -in solution.txt"
 alias vre="vagrant-halt && vagrant-up"
 alias vup="vagrant-up"
 alias vsh="vup && vagrant ssh"
+# }
+# Private {
+source "$DOTFILE_FOLDER/private/.zshrc"
 # }
