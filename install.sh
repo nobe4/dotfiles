@@ -1,11 +1,13 @@
 #!/usr/bin/env zsh
 # vim: foldmarker={,} foldmethod=marker
 
+set -ex
+
 # This script installs all requirements.
 
 # Setup {
 export DOTFILE_FOLDER="$HOME/.dot"
-source ./utils.zsh
+source "$DOTFILE_FOLDER/utils.zsh"
 # }
 
 # ZSH {
@@ -212,4 +214,7 @@ link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.vale.ini"
 (git clone git@github.com:testthedocs/Openly.git /tmp/vale-tmp-openly && mv /tmp/vale-tmp-openly/Openly $DOTFILE_FOLDER/vale-styles) &
 
 tldr --update
+# }
+# Private {
+./private/install.sh
 # }
