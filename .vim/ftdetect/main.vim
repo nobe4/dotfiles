@@ -1,8 +1,8 @@
 " This folder/file is used to determine correctly the filetype of special
 " files
 
-autocmd BufNewFile,BufRead *.zsh    set filetype=sh
-autocmd BufNewFile,BufRead *.bash    set filetype=sh
+autocmd BufNewFile,BufRead *.zsh       set filetype=sh
+autocmd BufNewFile,BufRead *.bash      set filetype=sh
 autocmd BufNewFile,BufRead *.coffee    set filetype=javascript
 autocmd BufNewFile,BufRead *.gs        set filetype=javascript
 autocmd BufNewFile,BufRead *.graphql   set filetype=graphql
@@ -12,4 +12,7 @@ autocmd BufNewFile,BufRead *.sls       set filetype=yaml
 autocmd BufNewFile,BufRead *.tfstate   set filetype=json
 autocmd BufNewFile,BufRead *.tfvars    set filetype=terraform
 autocmd BufNewFile,BufRead *.vue       set filetype=vuejs
+autocmd BufNewFile,BufRead *.svelte    set filetype=svelte
+autocmd BufNewFile,BufRead *.scss      set filetype=scss
+autocmd BufNewFile,BufRead *.styl      set filetype=stylus
 autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
