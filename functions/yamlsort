@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+ruby -ryaml -e 'puts YAML.dump(YAML.safe_load(STDIN.read).sort.to_h)'
