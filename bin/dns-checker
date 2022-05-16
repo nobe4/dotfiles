@@ -36,10 +36,8 @@ Bangladesh   | Pabna Cable Vision      | 103.153.154.2   |
 EOF
 )
 
+echo "$0 $@"
 while true; do
-	clear
-	echo "$@"
-
 	echo "$servers" | while IFS= read -r line ; do
 		ip=$(echo "$line" | cut -d'|' -f3 | sed 's/ //g')
 
@@ -52,9 +50,10 @@ while true; do
 			"@$ip" $@ \
 			| paste -sd ", " - \
 		)
-		echo "$line $value"
+		echo "$(date "+%S") | $line $value"
+		sleep 0.2
 	done
-
-	echo "."
-	sleep 5
+	# Go back up 24 lines and rewrite
+	printf "\033[24A"
+	sleep 0.2
 done
