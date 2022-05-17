@@ -99,7 +99,7 @@ is_macos && {
 
 # Install some packages
 gem install irb rubocop
-
+link "$DOTFILE_FOLDER/.rubocop.yml" "$HOME/.rubocop.yml"
 link "$DOTFILE_FOLDER/.pryrc" "$HOME/.pryrc"
 # }
 
