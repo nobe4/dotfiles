@@ -3,4 +3,4 @@ AllCops:
 
 Naming/FileName:
   Exclude:
-    - '/private/tmp/codi*.rb'
+    - '/tmp/codi*.rb'

@@ -11,16 +11,17 @@ template_js=""
 template_python=""
 template_ruby="# frozen_string_literal: true
 
-puts lambda {
-  # Code here
-}.call"
+# rubocop:disable Naming/MethodParameterName, Lint/MissingCopEnableDirective, Metrics/MethodLength
+
+# Code here
+"
 
 interpreter=$(echo $choice | cut -d' ' -f1)
 extension=$(echo $choice | cut -d' ' -f2)
 template=$(eval echo "\$template_$interpreter")
 
 # Create a temporary script
-tmpfile="$(mktemp -u /tmp/codi-XXXXX).$extension"
+tmpfile="$(mktemp -u /tmp/codiXXXXX).$extension"
 echo "$(echo $template)" > "$tmpfile"
 
 
