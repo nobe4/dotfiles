@@ -45,6 +45,7 @@ while true; do
 		# shellcheck disable=SC2068
 		value=$(\
 			dig \
+			+tries=1 \
 			+time=1 \
 			+short \
 			"@$ip" $@ \
@@ -53,6 +54,7 @@ while true; do
 		echo "$(date "+%S") | $line $value"
 		sleep 0.2
 	done
+
 	# Go back up 24 lines and rewrite
 	printf "\033[24A"
 	sleep 0.2
