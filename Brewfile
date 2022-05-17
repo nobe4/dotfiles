@@ -1,9 +1,8 @@
 cask "macvim"
 # https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
 brew "reattach-to-user-namespace"
-# https://docs.brew.sh/Homebrew-and-Python
-brew "python"
 brew "rbenv"
+brew "pyenv"
 brew "nodenv"
 tap "federico-terzi/espanso"
 brew "espanso"
