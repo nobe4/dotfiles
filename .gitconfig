@@ -13,6 +13,7 @@
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	me = !git-me
 	standup = !git-standup
+	amend=commit --amend
 	oops = !git commit -a --fixup=HEAD && GIT_EDITOR=true git rebase -i --autosquash HEAD~2
 	safe-pull = !git-safe-pull
 	clean-branches = "!echo 'use git-clean-branches'"
