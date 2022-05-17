@@ -42,6 +42,7 @@ PATH="$PATH:$GOPATH:$GOBIN"
 # Shims
 PATH="$HOME/.rbenv/shims:$PATH"
 PATH="$HOME/.nodenv/shims:$PATH"
+PATH="$HOME/.pyenv/shims:$PATH"
 
 export PATH
 # }
