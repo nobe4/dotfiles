@@ -2,7 +2,7 @@ setlocal foldmethod=indent
 
 augroup vuejs_autocmd
 	autocmd!
-	autocmd BufWritePost *.vue silent AsyncRun! -strip
+	autocmd BufWritePost <buffer> silent AsyncRun! -strip
 				\ prettier
 				\ --loglevel=silent
 				\ -w --no-color

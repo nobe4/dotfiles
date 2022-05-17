@@ -2,7 +2,7 @@ set foldmethod=indent
 
 augroup html_autocmd
 	autocmd!
-	autocmd BufWritePost *.html silent AsyncRun! -strip
+	autocmd BufWritePost <buffer> silent AsyncRun! -strip
 				\ prettier
 				\ --loglevel=silent
 				\ -w --no-color

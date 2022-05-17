@@ -2,7 +2,7 @@ set foldmethod=indent
 
 augroup javascript_autocmd
 	autocmd!
-	autocmd BufWritePost *.js silent AsyncRun! -strip
+	autocmd BufWritePost <buffer> silent AsyncRun! -strip
 				\ prettier
 				\ --loglevel=silent
 				\ -w --no-color

@@ -2,7 +2,7 @@ set foldmethod=indent
 
 augroup scss_autocmd
 	autocmd!
-	autocmd BufWritePost *.scss silent AsyncRun! -strip
+	autocmd BufWritePost <buffer> silent AsyncRun! -strip
 				\ prettier
 				\ --loglevel=silent
 				\ -w --no-color
