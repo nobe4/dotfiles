@@ -1,0 +1,6 @@
+AllCops:
+  NewCops: enable
+
+Naming/FileName:
+  Exclude:
+    - '/private/tmp/codi*.rb'
