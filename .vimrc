@@ -155,7 +155,7 @@ endfunction
 " tpope/* {
 Plug 'tpope/vim-fugitive'
 nnoremap <Leader>gs :tabnew +Git status<CR>
-nnoremap <Leader>gp :Git push -u
+nnoremap <Leader>gp :Git push -uq
 nnoremap <Leader>gl :Git pull
 nnoremap <Leader>gb :GBrowse<CR>
 vnoremap <Leader>gb :GBrowse<CR>
@@ -281,7 +281,9 @@ set shell=$SHELL
 " }
 " Language specific {
 " Misc {
-autocmd BufWritePost espanso_config.yml !espanso restart&
+autocmd! BufWritePost espanso_config.yml !espanso restart&
+
+autocmd! FocusGained * :redraw!
 " }
 " Encoding {
 scriptencoding=utf-8
@@ -301,7 +303,8 @@ vnoremap k gk
 call map_next#Run('q','c')
 call map_next#Run('t','t')
 
-command! ScreenCapture :call screen_capture#Run()
+" Remove the ex mode
+nnoremap Q <NOP>
 
 " Select last pasted text
 noremap gp '[v']
@@ -323,18 +326,14 @@ command! SourceVimrc :silent source $MYVIMRC
 " Change content of check box
 nnoremap <Leader>d 0/\[.\]<CR>:nohlsearch<CR><right>s
 
-" save file
-nnoremap <Leader>w :w<CR>
-" quit without saving
+" Save file without autocmd
+" I'm saving compulsively my work, but I don't want to be interrupted.
+" Only have the post-save works run on manual :w<CR>
+nnoremap <Leader>w :noautocmd w<CR>
 nnoremap <Leader>q :quit!
-" quit after saving
 nnoremap <Leader>x :xit
-
-" Quick make
 nnoremap <Leader>m :make
 
-" Remove the ex mode
-nnoremap Q <NOP>
 
 " Prepare a quick command
 " http://vi.stackexchange.com/a/3136/1821
@@ -404,7 +403,10 @@ nnoremap "p :reg <bar> exec 'normal! "'.input('>').'p'<CR>
 
 " Open current file in a new tab, effectively [z]ooming into it
 nnoremap <Leader>z :execute 'tabnew +' . line(".") .' %'<CR>
-nnoremap g<C-o> :!open .<CR><CR>
+
+" <C-o> to open
+nnoremap g<Leader>o :AsyncRun open .<CR><CR>
+nnoremap <Leader>o yiW:AsyncRun open <C-R>"<CR><CR>
 "}
 " Abbreviations {
 iabbrev :shrug: ¯\_(ツ)_/¯
