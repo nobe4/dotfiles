@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#
+# Fetch a definition from internet.
+# see  https://dictionaryapi.dev
+#
+# Usage: define <thing to define> [<more words>]
+#
+
+require 'uri'
+require 'net/http'
+require 'json'
+
+# color doesn't have .rb extension, we need to use load instead
+load "#{__dir__}/color"
+
+input = ARGV.join('%20')
+
+res = Net::HTTP.get_response(URI("https://api.dictionaryapi.dev/api/v2/entries/en/#{input}"))
+body = JSON.parse(res.body)
+
+unless res.is_a?(Net::HTTPSuccess)
+  puts body['title'].red
+  puts body['message']
+  puts body['resolution']
+  exit 1
+end
+
+body.each do |result|
+  result['meanings'].each do |meaning|
+    puts "#{result['word'].blue} (#{meaning['partOfSpeech']})"
+    meaning['definitions'].each do |definition|
+      puts "  #{definition['definition']}"
+      puts "  #{definition['examples'].join("\n")}" if definition['examples']
+      puts "  #{definition['synonyms'].join(', ').green}" unless definition['synonyms'].empty?
+      puts "  #{definition['antonyms'].join(', ').red}" unless definition['antonyms'].empty?
+    end
+  end
+end

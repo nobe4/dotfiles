@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+#
+# Spell-check the input file or string
+# Relies on vale for the actual check, it's a gross warpper.
+# See https://github.com/errata-ai/vale
+#
+# Usage: spell <string to check>
+#        spell path/to/file
+#
+
+set -e
+
+INPUT="${1}"
+[[ -z "${INPUT}" ]] && echo "missing input" && exit 1
+
+# If the file doesn't exist, we need to create it with ${INPUT} as its content.
+if [[ ! -f "${INPUT}" ]]; then
+	TMPFILE=$(mktemp)
+	echo "${INPUT}" > "${TMPFILE}"
+	INPUT="${TMPFILE}"
+fi
+
+vale "${INPUT}"
