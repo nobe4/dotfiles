@@ -39,8 +39,8 @@ Thumbs.db$
 # Projectionist.vim plugin
 .projections.json$
 
-# Include .github folder
 !.github
+!.gitattributes
 
 # Nobe4-specifics
 n4_env
