@@ -142,14 +142,11 @@ let g:easy_align_ignore_groups = []
 Plug 'skywind3000/asyncrun.vim'
 let g:asyncrun_open = 0
 let g:asyncrun_trim = 1
-let g:asyncrun_exit = 'silent checktime | call CloseQFIfEmpty()'
+" Auto open/close the quickfix window depending on the content.
+let g:asyncrun_exit = 'silent checktime | exec (len(getqflist())==0?"cclose":"copen 5")'
 
-" Close quickfix window if it's empty
-function! CloseQFIfEmpty()
-    if len(getqflist()) == 0
-        cclose
-    endif
-endfunction
+" Custom prettier format
+set errorformat+=[error]\ %f:\ %m\ (%l:%c)
 
 " }
 " tpope/* {
@@ -192,6 +189,9 @@ set number
 set list
 set listchars=tab:\·\ ,trail:·,extends:›,precedes:‹,nbsp:·
 set fillchars+=vert:\ ,fold:-
+
+" Have all emojis take double-width, so it's possible to work with them.
+set noemoji
 
 set nowrap
 
