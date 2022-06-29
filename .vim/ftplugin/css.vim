@@ -1,11 +1,11 @@
 set foldmethod=indent
 
-augroup javascript_autocmd
+augroup css_autocmd
 	autocmd!
-	autocmd BufWritePost * AsyncRun -strip
+	autocmd BufWritePost * silent AsyncRun! -strip
 				\ prettier
 				\ --loglevel=error
-				\ --parser=babel
+				\ --parser css
 				\ -w --no-color
 				\ $(VIM_FILEPATH)
 augroup END

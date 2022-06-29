@@ -155,8 +155,6 @@ is_linux && {
 	curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 	sudo apt-get install -y nodejs
 }
-
-npm install --global prettier standard
 # }
 
 # OS-Specific {
@@ -214,6 +212,14 @@ link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.vale.ini"
 (git clone git@github.com:testthedocs/Openly.git /tmp/vale-tmp-openly && mv /tmp/vale-tmp-openly/Openly $DOTFILE_FOLDER/vale-styles) &
 
 tldr --update
+# }
+# Haskell {
+ghcup install ghc --set
+ghcup install cabal --set
+ghcup install hls --set
+ghcup install stack --set
+stack config set install-ghc false --global
+stack config set system-ghc  true  --global
 # }
 # Private {
 ./private/install.sh
