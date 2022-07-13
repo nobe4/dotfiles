@@ -82,20 +82,30 @@ export MANPATH
 # shellcheck disable=SC2154 # colors are loaded somewhere else
 PROMPT="%{${fg[green]}%}%c%{${reset_color}%} "
 
-# Async madness {
-precmd() {
+# This precmd will run at PROMPT display time.
+prompt_precmd() {
+  prompt_on_load_callback() {
+    # Gets the new prompt value from the "$(prompt)" call.
+    # shellcheck disable=SC2034 # no need to export this variable
+    PROMPT="$(<&"$1")"
+
+    zle reset-prompt
+    zle -F "$1"
+  }
+
+  # run the slow prompt method
   exec {FD}< <(
     echo -n "$(prompt)"
   )
-  zle -F $FD prompt_on_load
+  # On result, call the callback
+  zle -F $FD prompt_on_load_callback
 }
 
-prompt_on_load() {
-  # shellcheck disable=SC2034 # no need to export this variable
-  PROMPT="$(<&"$1")"
 
-  zle reset-prompt
-  zle -F "$1"
+typeset -a precmd_functions
+# Add the prompt_precmd to the list of precmd_functions
+precmd_functions+=(prompt_precmd)
+# }
 # History stats {
 history_stats_cmd() {
   exec {FD}< <( history_stats "$1" )
