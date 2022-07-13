@@ -76,45 +76,6 @@ Plug 'danro/rename.vim', { 'on': 'Rename' }
 " romainl/vim-qf {
 Plug 'romainl/vim-qf'
 " }
-" 'dense-analysis/ale' {
-" Plug 'dense-analysis/ale'
-" let g:ale_fix_on_save = 1
-" let g:ale_lint_on_save = 1
-" let g:ale_lint_on_text_changed = 0
-" let g:ale_lint_on_insert_leave = 0
-" let g:ale_lint_on_enter = 0
-" let g:ale_lint_on_filetype_changed = 0
-" let g:ale_set_signs = 1
-" let g:ale_linters = {
-" \   'coffee': ['prettier'],
-" \   'css': ['prettier'],
-" \   'graphql': ['prettier'],
-" \   'html': ['prettier'],
-" \   'javascript': ['prettier'],
-" \   'markdown': ['vale'],
-" \   'python': ['black'],
-" \   'scss': ['prettier'],
-" \   'terraform': ['terraform'],
-" \   'vue': ['prettier'],
-" \   'yaml': ['prettier'],
-" \   'yml': ['prettier'],
-" \   'zsh': ['shellcheck'],
-" \}
-" let g:ale_fixers = {
-" \   '*': ['trim_whitespace'],
-" \   'coffee': ['prettier'],
-" \   'css': ['prettier'],
-" \   'graphql': ['prettier'],
-" \   'html': ['prettier'],
-" \   'javascript': ['prettier'],
-" \   'python': ['black'],
-" \   'scss': ['prettier'],
-" \   'terraform': ['terraform'],
-" \   'vue': ['prettier'],
-" \   'yaml': ['prettier'],
-" \   'yml': ['prettier'],
-" \}
-" }
 " scrooloose/nerdcommenter {
 Plug 'scrooloose/nerdcommenter'
 let NERDSpaceDelims=1
