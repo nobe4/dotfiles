@@ -96,7 +96,12 @@ prompt_on_load() {
 
   zle reset-prompt
   zle -F "$1"
+# History stats {
+history_stats_cmd() {
+  exec {FD}< <( history_stats "$1" )
 }
+typeset -a zshaddhistory_functions
+zshaddhistory_functions+=(history_stats_cmd)
 # }
 
 # }
