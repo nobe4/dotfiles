@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # vim: foldmarker={,} foldmethod=marker
 
-set -ex
+set -e
 
 # This script installs all requirements.
 
@@ -13,7 +13,9 @@ source "$DOTFILE_FOLDER/utils.zsh"
 # ZSH {
 # Change to zsh
 is_interactive && {
-	sudo chsh -s $(which zsh)
+	if [[ "$SHELL" != "$(which zsh)" ]]; then
+		sudo chsh -s $(which zsh)
+	fi
 }
 
 link "$DOTFILE_FOLDER/.zshrc" "$HOME/.zshrc"
@@ -34,8 +36,11 @@ rm -rf /tmp/source-code-pro-release
 
 # Homebrew {
 is_macos && {
-	open "https://brew.sh/"
-	wait_until "Homebrew is installed"
+	if ! command -v brew &> /dev/null; then
+		open "https://brew.sh/"
+		wait_until "Homebrew is installed"
+	fi
+
 	brew bundle install
 	BREW_PREFIX=$(brew --prefix)
 }
@@ -53,7 +58,9 @@ link "$DOTFILE_FOLDER/.vim" "$HOME/.vim"
 curl -fLo "$DOTFILE_FOLDER/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim +PlugInstall +qall!
 # }
-
+# Neovim {
+link "$DOTFILE_FOLDER/.nvim" "$HOME/.config/nvim"
+# }
 # Git {
 link "$DOTFILE_FOLDER/.gitconfig" "$HOME/.gitconfig"
 link "$DOTFILE_FOLDER/.gitignore_global" "$HOME/.gitignore_global"
@@ -61,9 +68,7 @@ link "$DOTFILE_FOLDER/.gitignore_global" "$HOME/.gitignore_global"
 
 # Golang {
 is_macos && {
-	open https://golang.org/doc/install
-	wait_until "golang is installed"
-	go install golang.org/x/tools/cmd/goimports
+	go install golang.org/x/tools/cmd/goimports@latest
 }
 is_linux && {
 	# https://github.com/golang/go/wiki/Ubuntu
@@ -79,11 +84,12 @@ is_linux && {
 	sudo apt-get install -y tmux
 }
 
-link "$DOTFILE_FOLDER/.tmux.conf" "$HOME/.tmux.conf"
+mkdir -p "$HOME/.config/tmux"
+link "$DOTFILE_FOLDER/tmux.conf" "$HOME/.config/tmux/tmux.conf"
 
 # Install tmux plugin manager
-if [ ! -d "$HOME/.tmux/plugins/tpm/" ]; then
-	git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+if [ ! -d "$HOME/.config/tmux/plugins/tpm/" ]; then
+	git clone https://github.com/tmux-plugins/tpm "$HOME/.config/tmux/plugins/tpm"
 fi
 # }
 
@@ -94,8 +100,6 @@ is_macos && {
 	rbenv install --skip-existing "$ruby_latest"
 	rbenv global "$ruby_latest"
 }
-
-# TODO Add Linux
 
 # Install some packages
 gem install irb rubocop
@@ -108,8 +112,6 @@ is_linux && {
 	sudo apt-get update && sudo apt-get upgrade
 	sudo apt-get install python3.9
 }
-# Nothing to do on linux
-
 python3 -m pip install black
 link "$DOTFILE_FOLDER/.pdbrc" "$HOME/.pdbrc"
 # }
@@ -117,8 +119,6 @@ link "$DOTFILE_FOLDER/.pdbrc" "$HOME/.pdbrc"
 # Kitty {
 # Add "include other conf" in default conf file
 is_macos && {
-	open 'https://github.com/kovidgoyal/kitty/releases/latest'
-	wait_until 'kitty is installed'
 	mkdir -p "$HOME/.config/kitty/"
 	cat << EOF > ~/.config/kitty/kitty.conf
 	#press gf on here
@@ -133,7 +133,6 @@ is_macos && {
 	wait_until "espanso is registered"
 
 	espanso start || true
-	espanso install all-emojis
 
 	# We're going to use the local espanso config so we can track its changes.
 	ln -fs "$DOTFILE_FOLDER/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
