@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#
+# Usage: history_stats [COMMAND]
+#
+# - If COMMAND is defined, it increment the count for this command in
+#   ~/.history_stats.
+#
+# - If COMMAND is not defined, it display the statistics.
+#
+# e.g.:
+#   history_stats       => display the stats
+#   history_stats ls    => increment the count for ls
+#
+#
+# For automatic calling, you can use the following in zsh:
+#
+#  history_stats_cmd() {
+#    exec {FD}< <( history_stats "$1" )
+#  }
+#  typeset -a zshaddhistory_functions
+#  zshaddhistory_functions+=(history_stats_cmd)
+#
+
+INPUT = ARGV.join(' ').strip
+FILE_PATH = File.join(ENV['HOME'], '.history_stats')
+
+# Get the entries from the file
+entries = begin
+  # This will fail if the file doesn't exist, default to an empty hash.
+  File.readlines(FILE_PATH).map do |l|
+    l.strip.split(',', 2).reverse
+  end.to_h
+rescue StandardError
+  {}
+end
+
+# If there's no input, display the stats and exit.
+if INPUT.empty?
+  count_width = 2 + entries.values.max.to_s.length
+  entries.each do |k, v|
+    puts "#{v.to_s.ljust(count_width)} #{k}"
+  end
+
+  return
+end
+
+entries[INPUT] = (entries[INPUT].to_i || 0) + 1
+
+File.write(
+  FILE_PATH,
+  entries
+    .sort_by { |_, v| v.to_i }.reverse
+    .map { |k, v| "#{v},#{k}" }
+    .join("\n")
+)

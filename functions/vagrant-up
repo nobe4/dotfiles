@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+if ! vagrant-check-folder; then return; fi
+if ! vagrant-is-up; then
+	vagrant up
+fi
+notify "Vagrant started"

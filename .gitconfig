@@ -1,0 +1,40 @@
+# vi:ft=gitconfig
+[user]
+	# default user
+	name = nobe4
+	email = nobe4@users.noreply.github.com
+	signingKey = 8EB61429D6C54B9B1787EBA0911FE2A36C3403DD
+[commit]
+	gpgsign = true
+[core]
+	editor = vim
+	excludesFile = $HOME/.gitignore_global
+[alias]
+	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+	me = !git-me
+	standup = !git-standup
+	amend=commit --amend
+	oops = !git commit -a --fixup=HEAD && GIT_EDITOR=true git rebase -i --autosquash HEAD~2
+	safe-pull = !git-safe-pull
+	clean-branches = "!echo 'use git-clean-branches'"
+	recent-branches = branch --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)"
+[pull]
+	default = current
+	rebase = false
+[push]
+	default = current
+[github]
+	user = nobe4
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[gpg]
+	program = gpg
+[submodule]
+	recurse = true
+[url "git@github.com:"]
+	insteadOf = "https://github.com/"
+[init]
+	defaultBranch = main

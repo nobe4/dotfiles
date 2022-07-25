@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+rg --files -L -g "*$1*"

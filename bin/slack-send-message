@@ -1,0 +1,33 @@
+#!/usr/bin/env osascript
+# Usage: osascript slack-send-message "#channel" "message"
+#
+# Sends a message on a channel. Assumes you have access to the channel.
+
+on run argv
+  set channel to item 1 of argv
+  set message to item 2 of argv
+  set delay_time to 0.5
+
+  tell application "Slack"
+      activate
+      tell application "System Events"
+
+      # Go to channel
+      keystroke "k" using {command down}
+      delay delay_time
+
+      keystroke channel
+      delay delay_time
+
+      key code 36
+      delay delay_time
+
+      # Send message
+      keystroke message
+      delay delay_time
+
+      key code 36
+      delay delay_time
+      end tell
+  end tell
+end run

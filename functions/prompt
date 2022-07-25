@@ -1,0 +1,23 @@
+local prompt="%{$fg[green]%}%c%{$fg[red]%}"
+
+# Add virtual environment processing
+[ -n "$VIRTUAL_ENV" ] && prompt="($(basename $VIRTUAL_ENV)) $prompt"
+
+branch="$((git symbolic-ref -q HEAD --short || git name-rev --name-only --no-undefined --always HEAD) 2> /dev/null | xargs)"
+if [ -n "$branch" ]; then
+  local dirty=""
+  if (! git diff-index --quiet HEAD -- 2> /dev/null); then
+    dirty="*"
+  fi
+
+  local stash=`expr $(git stash list 2> /dev/null | wc -l)`
+  if [ "$stash" = "0" ]; then
+    stash=""
+  fi
+
+  prompt="$prompt $branch$stash$dirty"
+fi
+
+prompt="$prompt%{$reset_color%} "
+
+echo "$prompt"

@@ -1,0 +1,24 @@
+# Use `espanso edit` to auto-reload after change.
+# Alternatively, vim will do `espanso restart` after this file is modified.
+
+auto_restart: true
+show_icon: false
+show_notifications: false
+
+matches:
+  - triggers: ["comitted", "comited", "commited"]
+    replace: "committed"
+
+  - trigger: "<details>"
+    replace: |
+      <details><summary>$|$</summary>
+
+      </details>
+
+  - trigger: ";date"
+    replace: "{{now}}"
+    vars:
+      - name: now
+        type: date
+        params:
+          format: "%d/%m/%Y"

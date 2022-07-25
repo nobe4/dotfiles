@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+	echo "Usage: dns-checker <domain> <query>"
+	echo "   eg: dns-checker github.com CNAME"
+	exit 1
+fi
+
+servers=$(cat << EOF
+US           | OpenDNS                 | 208.67.222.220  |
+US           | Google                  | 8.8.8.8         |
+US           | Quad9                   | 9.9.9.9         |
+US           | Verizon F. Bus.         | 98.113.146.9    |
+US           | AT&T Services           | 12.121.117.201  |
+Canada       | Cogecodata              | 66.199.45.225   |
+Russia       | YANDEX LLC              | 77.88.8.8       |
+South Africa | Telkom SA Ltd           | 196.15.170.131  |
+Netherlands  | Methahodos              | 213.125.105.234 |
+France       | Association G.          | 80.67.169.12    |
+Spain        | Prioritytelecom S. S.A. | 212.230.255.1   |
+Switzerland  | Oskar Em.               | 194.209.157.109 |
+Denmark      | Tele Danmark            | 80.196.100.209  |
+Germany      | DNS.WATCH               | 84.200.70.40    |
+Brazil       | Claro S.A               | 200.248.178.54  |
+Malaysia     | Ohana Com. Sdn Bhd      | 103.26.250.4    |
+New Zealand  | ICONZ Ltd               | 210.48.77.68    |
+South Korea  | LG Dacom Co.            | 164.124.101.2   |
+China        | Aliyun C. Co. Ltd       | 223.5.5.5       |
+India        | Kappa I. S. P. Ltd      | 115.178.96.2    |
+Pakistan     | Multinet P. Pvt. Ltd    | 125.209.116.22  |
+Portugal     | CLOUDITY Net.           | 185.83.212.30   |
+Ireland      | Daniel Cid              | 185.228.168.9   |
+Bangladesh   | Pabna Cable Vision      | 103.153.154.2   |
+EOF
+)
+
+echo "$0 $@"
+while true; do
+	echo "$servers" | while IFS= read -r line ; do
+		ip=$(echo "$line" | cut -d'|' -f3 | sed 's/ //g')
+
+		# We want to split `$@`, ignore the error.
+		# shellcheck disable=SC2068
+		value=$(\
+			dig \
+			+tries=1 \
+			+time=1 \
+			+short \
+			"@$ip" $@ \
+			| paste -sd ", " - \
+		)
+		echo "$(date "+%S") | $line $value"
+		sleep 0.2
+	done
+
+	# Go back up 24 lines and rewrite
+	printf "\033[24A"
+	sleep 0.2
+done

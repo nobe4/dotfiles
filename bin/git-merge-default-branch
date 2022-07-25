@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -e
+
+DEFAULT_BRANCH=$(git remote show origin | grep 'HEAD branch' | cut -d' ' -f5)
+
+git checkout "$DEFAULT_BRANCH"
+git pull origin "$DEFAULT_BRANCH"
+git checkout -
+git merge "$DEFAULT_BRANCH"

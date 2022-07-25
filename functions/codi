@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+
+# Choose an interpreter
+choices="ruby rb
+node js
+python py"
+choice=$(echo $choices | fzf -select-1 -q "$1")
+
+# Templates
+template_js=""
+template_python=""
+template_ruby="# frozen_string_literal: true
+
+# rubocop:disable Naming/MethodParameterName, Lint/MissingCopEnableDirective, Metrics/MethodLength
+
+# Code here
+"
+
+interpreter=$(echo $choice | cut -d' ' -f1)
+extension=$(echo $choice | cut -d' ' -f2)
+template=$(eval echo "\$template_$interpreter")
+
+# Create a temporary script
+tmpfile="$(mktemp -u /tmp/codiXXXXX).$extension"
+echo "$(echo $template)" > "$tmpfile"
+
+
+# Auto-run
+pane_id=$(
+	tmux split-window -hd \
+		-P -F "#{pane_id}" \
+		"while true; do $interpreter $tmpfile; sleep 1; clear; done"
+)
+
+# Edit
+$EDITOR "$tmpfile"
+
+# Cleanup
+tmux kill-pane -t "$pane_id"
+echo "-> $tmpfile"

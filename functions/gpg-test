@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+echo "Testing gpg"
+echo "test" | gpg --clearsign
+echo ""
+echo "If this didn't work, run "
+echo "gpgconf --kill all && killall gpg-agent"

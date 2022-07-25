@@ -1,11 +1,10 @@
-# dotfiles
-
-Kittens and stuff.
+.files
+======
 
 # Install
 
 ```
-git clone git@github.com:nobe4/dotfiles.git
+git clone --recurse-submodules git@github.com:nobe4/dotfiles.git
 cd dotfiles
 ./install.sh
 ```

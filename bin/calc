@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+#
+# Computes something
+#
+# Usage: calc <operation>
+#
+# Make sure to quote shell-expandable elements.
+#
+# E.g.
+#   calc '10 * 20' => 200
+#   calc 30% of 120 => 36.0
+#
+
+operation = ARGV.join(' ')
+
+parsed_operation = operation
+                   .gsub('%', '/100.0')
+                   .gsub('one', '1')
+                   .gsub('two', '2')
+                   .gsub('third', '/ 3.0')
+                   .gsub('half', '/ 2.0')
+                   .gsub('of', '*')
+
+puts "=> #{parsed_operation}" if operation != parsed_operation
+
+puts eval(parsed_operation).to_s

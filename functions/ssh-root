@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+ssh "$1" -t 'sudo su; exec bash -l'

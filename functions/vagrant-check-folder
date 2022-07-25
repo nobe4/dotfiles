@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+vagrantStatus="$(vagrant status 2>&1)"
+if echo $vagrantStatus | grep -q 'environment' ; then
+	echo 'Not a vagrant environment, exiting ...'
+	exit 1
+else
+	exit 0
+fi
