@@ -52,14 +52,14 @@ is_linux && {
 }
 
 link "$DOTFILE_FOLDER/.vimrc" "$HOME/.vimrc"
-link "$DOTFILE_FOLDER/.vim" "$HOME/.vim"
+link "$DOTFILE_FOLDER/.vim/" "$HOME/.vim"
 
 # Install vim-plug
 curl -fLo "$DOTFILE_FOLDER/.vim/autoload/plug.vim" --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim +PlugInstall +qall!
 # }
 # Neovim {
-link "$DOTFILE_FOLDER/.nvim" "$HOME/.config/nvim"
+link "$DOTFILE_FOLDER/nvim" "$HOME/.config/nvim"
 # }
 # Git {
 link "$DOTFILE_FOLDER/.gitconfig" "$HOME/.gitconfig"
