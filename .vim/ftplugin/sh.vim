@@ -1,6 +1,6 @@
 augroup sh_autocmd
 	autocmd!
-	autocmd BufWritePost * AsyncRun -strip
+	autocmd BufWritePost <buffer> AsyncRun -strip
 				\ shellcheck
 				\ --shell=bash
 				\ --format=gcc

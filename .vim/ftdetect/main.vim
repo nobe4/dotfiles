@@ -23,3 +23,5 @@ autocmd BufNewFile,BufRead *.vue       set filetype=vuejs
 
 autocmd BufNewFile,BufRead *.scss      set filetype=scss
 autocmd BufNewFile,BufRead *.styl      set filetype=stylus
+autocmd BufNewFile,BufRead *.c         set filetype=cpp
+autocmd BufNewFile,BufRead *.h         set filetype=cpp

@@ -2,7 +2,7 @@ set foldmethod=indent
 
 augroup css_autocmd
 	autocmd!
-	autocmd BufWritePost * silent AsyncRun! -strip
+	autocmd BufWritePost <buffer> silent AsyncRun! -strip
 				\ prettier
 				\ --loglevel=error
 				\ --parser css
