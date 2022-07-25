@@ -186,11 +186,6 @@ is_linux && {
 # }
 
 # Misc {
-is_macos && {
-	link "$DOTFILE_FOLDER/.gdbinit" "$HOME/.gdbinit"
-	# Don't wait for that
-	open https://sourceware.org/gdb/wiki/BuildingOnDarwin
-}
 is_linux && {
 	# TODO redo this
 	# curl https://raw.githubusercontent.com/rupa/z/master/z.sh -o ./misc/z.sh
@@ -201,9 +196,6 @@ is_linux && {
 
 touch "$HOME/.z"
 
-link "$DOTFILE_FOLDER/.lynx.cfg" "$HOME/.lynx.cfg"
-link "$DOTFILE_FOLDER/.lynx.lss" "$HOME/.lynx.lss"
-link "$DOTFILE_FOLDER/.muttrc" "$HOME/.muttrc"
 link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.vale.ini"
 
 (git clone git@github.com:errata-ai/Google.git /tmp/vale-tmp-google && mv /tmp/vale-tmp-google/Google $DOTFILE_FOLDER/vale-styles) &

@@ -24,14 +24,14 @@
 #
 
 INPUT = ARGV.join(' ').strip
-FILE_PATH = File.join(ENV['HOME'], '.history_stats')
+FILE_PATH = File.join(Dir.home, '.config', 'history_stats')
 
 # Get the entries from the file
 entries = begin
   # This will fail if the file doesn't exist, default to an empty hash.
-  File.readlines(FILE_PATH).map do |l|
+  File.readlines(FILE_PATH).to_h do |l|
     l.strip.split(',', 2).reverse
-  end.to_h
+  end
 rescue StandardError
   {}
 end
