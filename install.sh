@@ -115,23 +115,13 @@ is_linux && {
 python3 -m pip install black
 link "$DOTFILE_FOLDER/.pdbrc" "$HOME/.pdbrc"
 # }
-
 # Kitty {
-# Add "include other conf" in default conf file
-is_macos && {
-	mkdir -p "$HOME/.config/kitty/"
-	cat << EOF > ~/.config/kitty/kitty.conf
-	#press gf on here
-	include $DOTFILE_FOLDER/kitty.conf
-EOF
-}
+mkdir -p "$HOME/.config/kitty/"
+link "$DOTFILE_FOLDER/kitty.conf" "$HOME/.config/kitty/kitty.conf"
 # }
-
 # Espanso {
 is_macos && {
 	espanso register || true
-	wait_until "espanso is registered"
-
 	espanso start || true
 
 	# We're going to use the local espanso config so we can track its changes.
@@ -197,6 +187,7 @@ is_linux && {
 touch "$HOME/.z"
 
 link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.vale.ini"
+link "$DOTFILE_FOLDER/gh-config.yml" "$HOME/.config/gh/config.yml"
 
 (git clone git@github.com:errata-ai/Google.git /tmp/vale-tmp-google && mv /tmp/vale-tmp-google/Google $DOTFILE_FOLDER/vale-styles) &
 (git clone git@github.com:errata-ai/proselint.git /tmp/vale-tmp-prose && mv /tmp/vale-tmp-prose/proselint $DOTFILE_FOLDER/vale-styles) &
