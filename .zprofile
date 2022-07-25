@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 # shellcheck shell=bash
+# vim: foldmarker={,} foldmethod=marker
 
 # Setup {
 export DOTFILE_FOLDER="$HOME/.dot"
@@ -7,37 +8,31 @@ source "$DOTFILE_FOLDER/utils.zsh"
 # }
 
 # PATH {
-# The export doesn't seem to work, use an alias instead
-PATH="$DOTFILE_FOLDER/bin:$HOME/.local/bin:$PATH"
+PATH="$DOTFILE_FOLDER/bin:$HOME/.local/bin:$DOTFILE_FOLDER/private/bin:$PATH"
 
 # macos Applications
 is_macos && {
-  PATH="$PATH:/Applications:$HOME/Applications"
+  if [[ ! "$PATH" == *Applications* ]]; then
+    PATH="$PATH:/Applications:$HOME/Applications"
+  fi
 }
 
 # FZF
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-  export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+  PATH="$PATH:/usr/local/opt/fzf/bin"
 fi
-# }
 
 # Macvim
 is_macos && {
   PATH="/Applications/MacVim.app/Contents/bin:$PATH"
 }
 
-# Go {
-PATH="$PATH:/usr/local/go/bin"
-
+# Go
 # Same as `which go`
-# GOBINARY="/usr/local/go/bin/go"
+PATH="$PATH:/usr/local/go/bin:$HOME/go:$HOME/go/bin"
 
-# Cache of $($GOBINARY env GOPATH)
-export GOPATH=~/go # Needs to be absolute and without quote
-export GOBIN="$GOPATH/bin"
-
-PATH="$PATH:$GOPATH:$GOBIN"
-# }
+# Haskell
+PATH="$PATH:$HOME/.cabal/bin:$HOME/.ghcup/bin"
 
 # Shims
 PATH="$HOME/.rbenv/shims:$PATH"
@@ -45,4 +40,10 @@ PATH="$HOME/.nodenv/shims:$PATH"
 PATH="$HOME/.pyenv/shims:$PATH"
 
 export PATH
+# }
+
+# Man PATH {
+MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
+
+export MANPATH
 # }
