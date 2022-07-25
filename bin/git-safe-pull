@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Pull but keep the current changes
+
+set -e
+
+git stash
+git pull
+git stash pop
