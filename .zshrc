@@ -161,11 +161,8 @@ alias gco='git checkout'
 alias gla='git lg --all'
 alias glo='git lg'
 alias grhh='git reset --hard HEAD'
-alias grbd='git stash && git checkout develop && git pull origin develop && git checkout - && git rebase develop && git stash pop'
-alias grbm='git stash && git checkout master && git pull origin master && git checkout - && git rebase master && git stash pop'
 alias gs='git status'
 alias gst='git stash'
-alias gcmc='git checkout master && git pull origin master && git checkout'
 alias grccb='git-recreate-current-branch'
 # }
 
