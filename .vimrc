@@ -31,9 +31,6 @@
 "    FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 "    DEALINGS IN THE SOFTWARE.
 " }
-" TODO {
-" https://vimways.org/2018/from-vimrc-to-vim/
-" }
 " Important {
 set nocompatible " be iMproved, required
 let mapleader="\<Space>" " need to set the mapleader before the plugins
@@ -47,7 +44,8 @@ Plug 'nobe4/vimcorrect'
 nnoremap Z= :Correct<CR>
 Plug 'nobe4/exchange.vim'
 Plug 'nobe4/curl.vim'
-Plug 'nobe4/mnml.vim'
+Plug expand('~/Documents/dev/mnml.vim')
+" Plug 'nobe4/mnml.vim'
 " }
 " editorconfig/editorconfig-vim {
 Plug 'editorconfig/editorconfig-vim'
