@@ -143,7 +143,7 @@ alias tw='tmux switch -t'
 # }
 
 # Vim {
-alias vi="vim" # Use vim , not vi
+alias vi="vim" # Use vim or vi
 alias vst='vim +Git now' # Run Gstatus at vim startup
 alias vih='vim +help\ ' # Jump to vim help
 alias vin='vim -Nu NONE' # Vim without config
