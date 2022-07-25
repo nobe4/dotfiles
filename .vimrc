@@ -68,7 +68,7 @@ Plug 'vim-scripts/matchit.zip'
 Plug 'mattn/emmet-vim'
 let g:user_emmet_install_global = 0
 let g:user_emmet_leader_key=','
-autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango,vue EmmetInstall
+autocmd FileType html,css,less,eruby,jsp,jspf,htmldjango,vue,svelte EmmetInstall
 " }
 " danro/rename.vim {
 Plug 'danro/rename.vim', { 'on': 'Rename' }
@@ -89,9 +89,10 @@ Plug 'christoomey/vim-tmux-navigator'
 " junegunn/fzf {
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-nnoremap <leader>f :FZF<CR>
-nnoremap <leader>t :Tags<CR>
 let g:fzf_buffers_jump = 1
+
+nnoremap <leader>f :FZF<CR>
+nnoremap <leader>t :Tags <C-R><C-W><CR>
 " }
 " junegunn/vim-easy-align {
 Plug 'junegunn/vim-easy-align'
@@ -108,7 +109,6 @@ let g:asyncrun_exit = 'silent checktime | exec (len(getqflist())==0?"cclose":"co
 
 " Custom prettier format
 set errorformat+=[error]\ %f:\ %m\ (%l:%c)
-
 " }
 " tpope/* {
 Plug 'tpope/vim-fugitive'
@@ -133,6 +133,9 @@ if executable('rg')
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif
 " }
+set ttimeout
+set timeoutlen=300
+set ttimeoutlen=300
 " }
 " Moving around, searching and patterns {
 set incsearch "highlight as you type you search phrase
@@ -196,6 +199,7 @@ autocmd InsertLeave * set nocursorline
 " Open cwindow automatically if there are items in it
 " autocmd QuickFixCmdPost [^l]* cwindow
 autocmd QuickFixCmdPost * botright copen 5
+autocmd BufWritePre * :exec 'norm m`' | %s/\s\+$//e | norm g``'
 " }
 " Multiple windows {
 set hidden " Allow hidden non-written buffers
@@ -279,10 +283,10 @@ nnoremap <Leader>ln :lnext<CR>
 nnoremap <Leader>lp :lprev<CR>
 
 " edit, source/reload .vimrc
-nnoremap <Leader>ve :e $MYVIMRC<CR>
-nnoremap <Leader>vs :silent source $MYVIMRC<CR>
-nnoremap <Leader>vr :silent source $MYVIMRC<CR>
 command! SourceVimrc :silent source $MYVIMRC
+command! VimrcSource :silent source $MYVIMRC
+command! EditVimrc :edit $MYVIMRC
+command! VimrcEdit :edit $MYVIMRC
 
 " Change content of check box
 nnoremap <Leader>d 0/\[.\]<CR>:nohlsearch<CR><right>s
@@ -303,7 +307,8 @@ nnoremap <Leader>R :nnoremap <lt>Leader>r :
 nnoremap <Leader>r :<UP>
 
 " Force save
-cnoremap sudow w !sudo tee % >/dev/null
+command! SudoWrite :w !sudo tee % >/dev/null
+command! WriteSudo :w !sudo tee % >/dev/null
 
 " Don't save a filename with name ' or ;
 cnoremap w' w
@@ -321,9 +326,6 @@ nnoremap \ :Rg<Space>
 inoremap <CR> <C-G>u<CR>
 inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
-
-" Create a new tab
-nnoremap <Leader>tn :tabnew
 
 " Copy/Paste with system clipboard
 function! CmdPaste() abort
@@ -380,7 +382,9 @@ autocmd VimLeave *
 " }
 " Mouse {
 set mouse=
-set ttymouse=xterm2
+if !has('nvim')
+    set ttymouse=xterm2
+endif
 " }
 " GUI {
 " Remove every bit of GUI option
