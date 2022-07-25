@@ -41,6 +41,8 @@ Thumbs.db$
 
 !.github
 !.gitattributes
+!.clang*
+!.prettierrc
 
 # Nobe4-specifics
 n4_env
