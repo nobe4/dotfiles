@@ -1,15 +1,8 @@
 #!/usr/bin/env bash
 
 gh api rate_limit -q '.resources | to_entries | .[] | [.key, .value.remaining, .value.limit, (.value.reset | todate)] | @tsv' | column -ts $'	'
-
-
-# Inspired by https://unix.stackexchange.com/a/349839
-days=$(( 20-$(date +%-d) ))
-
-[ $days -lt 0 ] && days=$(( days + $(date +%d -d "$(date +%Y%m01 -d 'next month') yesterday") ))
-
 echo ""
 gh api \
 	/users/nobe4/settings/billing/actions \
-	-q '["Ubuntu", "macOs", "Total", "Allowed Minutes", "Minutes Left", "Days Left"], [.minutes_used_breakdown.UBUNTU, .minutes_used_breakdown.MACOS, .total_minutes_used, .included_minutes, ((.included_minutes - .total_minutes_used) | round), '"${days}"'] | @tsv' \
+	-q '["Ubuntu", "macOs", "Total", "Allowed Minutes", "Minutes Left", "Reset Day"], [.minutes_used_breakdown.UBUNTU, .minutes_used_breakdown.MACOS, .total_minutes_used, .included_minutes, ((.included_minutes - .total_minutes_used) | round), "on the 20th"] | @tsv' \
 	| column -ts $'	'
