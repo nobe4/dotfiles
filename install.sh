@@ -59,7 +59,7 @@ curl -fLo "$DOTFILE_FOLDER/.vim/autoload/plug.vim" --create-dirs https://raw.git
 vim +PlugInstall +qall!
 # }
 # Neovim {
-link "$DOTFILE_FOLDER/nvim" "$HOME/.config/nvim"
+link "$DOTFILE_FOLDER/nvim/" "$HOME/.config/nvim"
 # }
 # Git {
 link "$DOTFILE_FOLDER/.gitconfig" "$HOME/.gitconfig"

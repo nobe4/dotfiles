@@ -142,12 +142,13 @@ alias ts='tmux new-session -s'
 alias tw='tmux switch -t'
 # }
 
-# Vim {
-alias vi="vim" # Use vim or vi
-alias vst='vim +Git now' # Run Gstatus at vim startup
-alias vih='vim +help\ ' # Jump to vim help
-alias vin='vim -Nu NONE' # Vim without config
-alias vit='vim +tj\ ' # Jump to tag
+# Neovim {
+alias vi="nvim"
+alias vim="nvim"
+alias vst='nvim +Git now' # Run Gstatus at vim startup
+alias vih='nvim +help\ ' # Jump to vim help
+alias vin='nvim -Nu NONE' # Vim without config
+alias vit='nvim +tj\ ' # Jump to tag
 # }
 
 # Git {
