@@ -35,13 +35,13 @@ export LC_ALL="$LANG"
 export LC_CTYPE="$LANG"
 # }
 # Colors {
-export TERM=screen-256color
+export TERM=xterm-kitty
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
 # }
 # Misc Exports {
-export EDITOR='vim'
+export EDITOR='nvim'
 export PUPPET_HOME="$HOME/Documents/dev/puppet"
 # }
 # Functions {
