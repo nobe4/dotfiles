@@ -43,6 +43,8 @@ Thumbs.db$
 !.gitattributes
 !.clang*
 !.prettierrc
+!.rubocop*
+!.ruby-version
 
 # Nobe4-specifics
 n4_env

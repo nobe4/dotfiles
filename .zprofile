@@ -39,6 +39,9 @@ PATH="$HOME/.rbenv/shims:$PATH"
 PATH="$HOME/.nodenv/shims:$PATH"
 PATH="$HOME/.pyenv/shims:$PATH"
 
+# LLVM
+PATH="/usr/local/opt/llvm/bin:$PATH"
+
 export PATH
 # }
 
