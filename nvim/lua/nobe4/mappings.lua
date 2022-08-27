@@ -3,8 +3,8 @@ local map = vim.keymap.set
 
 -- Space is the Leader key
 map("", "<Space>" , "<Nop>", options)
-vim.g.mapLeader = " "
-vim.g.maplocalLeader = " "
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 map("n", "zf", "zM100zozz", options) -- Fold to current level
 
