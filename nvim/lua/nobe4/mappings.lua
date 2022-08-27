@@ -1,66 +1,58 @@
 local options = { noremap = true, silent = false }
-local map = vim.api.nvim_set_keymap
+local map = vim.keymap.set
 
--- Space is the leader key
+-- Space is the Leader key
 map("", "<Space>" , "<Nop>", options)
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.mapLeader = " "
+vim.g.maplocalLeader = " "
 
-map("n", "Q", "<NOP>", options)
-
-map("n", "zf", "zM100zozz", options)
+map("n", "zf", "zM100zozz", options) -- Fold to current level
 
 -- Move vertically
 map("n", "j", "gj", options)
 map("n", "k", "gk", options)
 map("v", "j", "gj", options)
 map("v", "k", "gk", options)
+
 map("n", "gp", "'[v']", options) -- Select last pasted zone
 map("v", "@", ":norm@", options) -- Replay mapping over visual
-
-map("n", "<Leader>lo", ":lopen<CR>", options)
-map("n", "<Leader>ln", ":lnext<CR>", options)
-map("n", "<Leader>lp", ":lprev<CR>", options)
 
 map("n", "<Leader>d", [[0/\[.\]<CR>:nohlsearch<CR><right>s]], options)
 map("n", "<Leader>w", ":noautocmd w<CR>", options) -- Save file without autocmd
 map("n", "<Leader>q", ":quit!", options)
 map("n", "<Leader>x", ":xit", options)
 map("n", "<Leader>m", ":make", options)
+map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options) -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
+map("n", "<Leader>r", ":<UP>", options) -- repeat last command
+map("n", [[\]], ":Rg<Space>", options) -- prepare a search
 
--- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
-map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options)
-map("n", "<Leader>r", ":<UP>", options)
-map("n", "\\", ":Rg<Space>", options)
+map("n", "<Leader>o", ":call system('open ' . expand('<cWORD>'))<CR>", options) -- open WORD under cursor
+map("n", "gf", ":e <cfile><CR>", options) -- open file under cursor
 
-map("n", "<Leader>o", ":call system('open ' . expand('<cWORD>'))<CR>", options)
-map("n", "gf", ":e <cfile><CR>", options)
+map("n", "<Leader>b", ":b#<CR>", options) -- show buffer list
+map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options) -- show buffers and wait for a selection
+map("n", "<Leader><Leader>", ":<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>", options) -- clear highlight
+map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]], options) -- show registers value before pasting
 
-map("n", "<Leader>yc", '"+yy', options)
-map("v", "<Leader>yc", '"+y', options)
+map("c", "<C-A>", "<Home>", options) -- Go to the start of the command line
 
-map("n", "<Leader>b", ":b#<CR>", options)
-map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options)
-map("n", "<Leader><Leader>", ":<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>", options)
-
--- Visualisation of the register before pasting
-map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]], options)
-
-map("c", "w'", "w", options)
-map("c", "w;", "w", options)
-map("c", "<C-A>", "<Home>", options)
-
+-- Add edition breakpoint on different keypress
 map("i", "<CR>", "<C-G>u<CR>", options)
 map("i", "<C-U>", "<C-G>u<C-U>", options)
 map("i", "<C-W>", "<C-G>u<C-W>", options)
-map("c", "<C-F>", "<C-R>=expand('%:p:h')<CR>/", options)
-map("n", "<Leader>e", ":e <C-R>=expand('%:p:h')<CR>/", options)
 
--- Zoom in current buffer
-map("n", "<Leader>z",  [[:execute 'tabnew +' . line(".") .' %'<CR>]], options)
-map("n", "<Leader>yp", [[execute 'set paste | normal! "+p | set nopaste']], options)
+map("c", "<C-F>", "<C-R>=expand('%:p:h')<CR>/", options) -- Insert path to current file
+map("n", "<Leader>e", ":edit <C-R>=expand('%:p:h')<CR>/", options) -- Prepare to edit a file in the same folder as the current one
+map("n", "<Leader>z", ":execute 'tabnew +' . line('.') .' %'<CR>", options) -- Zoom in current buffer
+map("t", "<Esc>", [[<C-\><C-n>]], options) -- Escape in terminal
 
-map("t", "<Esc>", [[<C-\><C-n>]], options)
+-- /!\ Not working
+-- map("n", "<Leader>yp", function()
+--   vim.o.paste = true
+--   vim.api.nvim_paste(vim.fn.getreg('"'))
+--   vim.o.paste = false
+-- end, options)
+
 
 -- Fugitive
 map("n", "<Leader>gs", ":tabnew +Git status<CR>", options)
@@ -70,8 +62,8 @@ map("n", "<Leader>gb", ":GBrowse<CR>", options)
 map("v", "<Leader>gb", ":GBrowse<CR>", options)
 
 -- Fzf
-map("n", "<leader>f",  ":FZF<CR>", options)
-map("n", "<leader>t",  ":Tags <C-R><C-W><CR>", options)
+map("n", "<Leader>f",  ":FZF<CR>", options)
+map("n", "<Leader>t",  ":Tags <C-R><C-W><CR>", options)
 
 -- VimCorrect
 map("n", "Z=",  ":Correct<CR>", options)
@@ -79,8 +71,8 @@ map("n", "Z=",  ":Correct<CR>", options)
 -- EasyAlign
 map("x", "ga", "<Plug>(EasyAlign)", options)
 map("n", "ga", "<Plug>(EasyAlign)", options)
-map("n", "<leader>ut", ":UndotreeToggle<CR>", options)
-map("n", "<leader>uf", ":UndotreeFocus<CR>", options)
+map("n", "<Leader>ut", ":UndotreeToggle<CR>", options)
+map("n", "<Leader>uf", ":UndotreeFocus<CR>", options)
 
 -- Notational
 map("n", "<Leader>n", ":call notational#run()<CR>", options)
@@ -96,3 +88,4 @@ end
 
 map_next('q','c') -- jump between errors
 map_next('t','t') -- jump between matching tags
+map_next('l','l') -- jump between lines in the location list
