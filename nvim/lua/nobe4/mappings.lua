@@ -53,7 +53,6 @@ map("t", "<Esc>", [[<C-\><C-n>]], options) -- Escape in terminal
 --   vim.o.paste = false
 -- end, options)
 
-
 -- Fugitive
 map("n", "<Leader>gs", ":tabnew +Git status<CR>", options)
 map("n", "<Leader>gp", ":Git push -uq", options)

@@ -26,6 +26,7 @@ vim.opt.autoread = true
 vim.opt.updatecount = 200
 vim.opt.fileencoding = "utf-8"
 vim.opt.iskeyword:append "-"
+vim.opt.clipboard = "unnamedplus"
 -- vim.opt.timeoutlen = 300
 -- vim.opt.ttimeoutlen = 300
 
