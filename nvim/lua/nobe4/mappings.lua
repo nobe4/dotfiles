@@ -29,7 +29,7 @@ map("n", "<Leader>x", ":xit", options)
 map("n", "<Leader>m", ":make", options)
 
 -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
-map("n", "<Leader>R", ":nnoremap <lt>Leader>r", options)
+map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options)
 map("n", "<Leader>r", ":<UP>", options)
 map("n", "\\", ":Rg<Space>", options)
 
@@ -84,3 +84,15 @@ map("n", "<leader>uf", ":UndotreeFocus<CR>", options)
 
 -- Notational
 map("n", "<Leader>n", ":call notational#run()<CR>", options)
+
+-- unimpaired-like
+-- Inspired by https://git.io/vHtuc
+local function map_next(map_key, cmd)
+  map("n", "[" .. map_key,         "<C-U>execute " .. cmd .. "previous<CR>", options)
+  map("n", "]" .. map_key,         "<C-U>execute " .. cmd .. "next<CR>",     options)
+  map("n", "[" .. map_key:upper(), "<C-U>execute " .. cmd .. "first<CR>",    options)
+  map("n", "]" .. map_key:upper(), "<C-U>execute " .. cmd .. "last<CR>",     options)
+end
+
+map_next('q','c') -- jump between errors
+map_next('t','t') -- jump between matching tags

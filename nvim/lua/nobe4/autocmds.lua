@@ -1,20 +1,16 @@
-vim.cmd [[
-  autocmd InsertEnter * set cursorline
-  autocmd InsertLeave * set nocursorline
+local autocmd = vim.api.nvim_create_autocmd
 
-  " Open cwindow automatically if there are items in it
-  " autocmd QuickFixCmdPost [^l]* cwindow
-  autocmd QuickFixCmdPost * botright copen 5
+autocmd("InsertEnter",     { pattern = "*", command = "set cursorline" })
+autocmd("InsertLeave",     { pattern = "*", command = "set nocursorline" })
 
-  autocmd BufWritePre * :exec 'norm m`' | %s/\s\+$//e | norm g``'
+autocmd("QuickFixCmdPost", { pattern = "*", command = "botright copen 5" })
 
-  autocmd! BufWritePost espanso_config.yml !espanso restart&
+autocmd("BufWritePre",     { pattern = "*", command = [[exec 'norm m`' | %s/\s\+$//e | norm g``']] })
+autocmd("FocusGained",     { pattern = "*", command = "redraw!" })
 
-  autocmd! FocusGained * :redraw!
-
-  autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window 'vim:" . expand("%:t") . "'")
-  autocmd VimLeave * call system("tmux setw automatic-rename")
-
-  autocmd! GUIEnter * set vb t_vb=
-]]
-
+-- Update tmux
+autocmd({
+  "BufReadPost",
+  "FileReadPost",
+  "BufNewFile" },          { pattern = "*", command = [[call system("tmux rename-window 'vim:" . expand("%:t") . "'")]] })
+autocmd("VimLeave",        { pattern = "*", command = "call system('tmux setw automatic-rename')" })

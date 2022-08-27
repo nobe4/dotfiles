@@ -72,102 +72,102 @@ _G.packer_plugins = {
   ["Comment.nvim"] = {
     config = { "\27LJ\2\n£\1\0\0\4\0\b\0\v6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\0025\3\6\0=\3\a\2B\0\2\1K\0\1\0\ropleader\1\0\2\tline\14<Leader>c\nblock\14<Leader>b\ftoggler\1\0\0\1\0\2\tline\15<leader>cc\nblock\15<leader>bc\nsetup\fComment\frequire\0" },
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/Comment.nvim",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/Comment.nvim",
     url = "https://github.com/numToStr/Comment.nvim"
   },
   ["asyncrun.vim"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/asyncrun.vim",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/asyncrun.vim",
     url = "https://github.com/skywind3000/asyncrun.vim"
   },
   ["curl.vim"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/curl.vim",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/curl.vim",
     url = "https://github.com/nobe4/curl.vim"
   },
   ["editorconfig-vim"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/editorconfig-vim",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/editorconfig-vim",
     url = "https://github.com/editorconfig/editorconfig-vim"
   },
   ["exchange.vim"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/exchange.vim",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/exchange.vim",
     url = "https://github.com/nobe4/exchange.vim"
   },
   fzf = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/fzf",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/fzf",
     url = "https://github.com/junegunn/fzf"
   },
   ["fzf.vim"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/fzf.vim",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/fzf.vim",
     url = "https://github.com/junegunn/fzf.vim"
   },
   ["packer.nvim"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/packer.nvim",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
   },
   ["rename.vim"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/rename.vim",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/rename.vim",
     url = "https://github.com/danro/rename.vim"
   },
   undotree = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/undotree",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/undotree",
     url = "https://github.com/mbbill/undotree"
   },
   ["vim-easy-align"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vim-easy-align",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vim-easy-align",
     url = "https://github.com/junegunn/vim-easy-align"
   },
   ["vim-fugitive"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vim-fugitive",
     url = "https://github.com/tpope/vim-fugitive"
   },
   ["vim-projectionist"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vim-projectionist",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vim-projectionist",
     url = "https://github.com/tpope/vim-projectionist"
   },
   ["vim-qf"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vim-qf",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vim-qf",
     url = "https://github.com/romainl/vim-qf"
   },
   ["vim-rhubarb"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vim-rhubarb",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vim-rhubarb",
     url = "https://github.com/tpope/vim-rhubarb"
   },
   ["vim-scriptease"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vim-scriptease",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vim-scriptease",
     url = "https://github.com/tpope/vim-scriptease"
   },
   ["vim-sleuth"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vim-sleuth",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vim-sleuth",
     url = "https://github.com/tpope/vim-sleuth"
   },
   ["vim-surround"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vim-surround",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
   },
   ["vim-tmux-navigator"] = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vim-tmux-navigator",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vim-tmux-navigator",
     url = "https://github.com/christoomey/vim-tmux-navigator"
   },
   vimcorrect = {
     loaded = true,
-    path = "/Users/n/.local/share/nvim/site/pack/packer/start/vimcorrect",
+    path = "/Users/n/.config/nvim/site/pack/packer/start/vimcorrect",
     url = "https://github.com/nobe4/vimcorrect"
   }
 }
