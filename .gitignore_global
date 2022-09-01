@@ -39,6 +39,9 @@ Thumbs.db$
 # Projectionist.vim plugin
 .projections.json$
 
+n4_env
+tags
+
 !.github
 !.gitattributes
 !.clang*
@@ -46,5 +49,3 @@ Thumbs.db$
 !.rubocop*
 !.ruby-version
 
-# Nobe4-specifics
-n4_env

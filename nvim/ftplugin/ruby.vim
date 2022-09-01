@@ -14,7 +14,7 @@ augroup ruby_autocmd
 	" { ... || true; } is needed because grep will exit 1 if there's no match.
 	autocmd BufWritePost <buffer> silent AsyncRun! -strip
 				\ $HOME/.rbenv/shims/bundle exec rubocop
-				\ --format emacs -a -A
+				\ --format emacs -A
 				\ $(VIM_FILEPATH)
 				\ | { grep -v 'Corrected' || true; }
 augroup END

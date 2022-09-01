@@ -1,6 +1,6 @@
 local groups = {
   -- Vim UI
-  { group  = "ColorColumn",             ef = "NONE",      fg = "NONE",   bg = "lred"   },
+  { group  = "ColorColumn",             ef = "NONE",      fg = "NONE",   bg = "red"    },
   { group  = "Conceal",                 ef = "NONE",      fg = "lwhite", bg = "black"  },
   { group  = "Cursor",                  ef = "NONE",      fg = "black",  bg = "lwhite" },
   { group  = "CursorColumn",            ef = "reverse",   fg = "lwhite", bg = "black"  },
@@ -116,35 +116,27 @@ local groups = {
 }
 
 -- Base16 color definition
-local index  = { "black",   "red",     "green",   "yellow",  "blue",    "magenta", "cyan",    "white",   "lblack",  "lred",    "lgreen",  "lyellow", "lblue",   "lmagenta", "lcyan",   "lwhite",  }
+
+local index = { black = 1, red = 2, green = 3, yellow = 4, blue = 5, magenta = 6, cyan = 7, white = 8, lblack = 9, lred = 10, lgreen = 11, lyellow = 12, lblue = 13, lmagenta = 14, lcyan = 15, lwhite = 16 }
 local colors = { "#1d1f21", "#cc342b", "#14b363", "#fba922", "#3971ed", "#cc342b", "#3971ed", "#c5c8c6", "#878988", "#cc342b", "#14b363", "#fba922", "#3971ed", "#cc342b",  "#3971ed", "#ffffff", }
 
 -- name to color
 local n_to_c = function(name)
   if name == 'NONE' then return 'NONE' end
-
-  for i, v in ipairs(index) do
-    if v == name then return colors[i] end
-  end
-  return nil
+  return colors[index[name]]
 end
 
 -- name to index
 local n_to_i = function(name)
   if name == 'NONE' then return 'NONE' end
-
-  for i, v in ipairs(index) do
-    if v == name then return i end
-  end
-  return nil
+  return index[name]
 end
 
 -- highlight wrapper
 local h = function(args)
-  if args.ef == nil then args.ef = 'NONE' end
-  if args.fg == nil then args.fg = 'NONE' end
-  if args.bg == nil then args.bg = 'NONE' end
-
+  -- if args.ef == nil then args.ef = 'NONE' end
+  -- if args.fg == nil then args.fg = 'NONE' end
+  -- if args.bg == nil then args.bg = 'NONE' end
   vim.cmd(
     "highlight " .. args.group ..
     " term="     .. args.ef ..

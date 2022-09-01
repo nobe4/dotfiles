@@ -251,6 +251,9 @@ export LYNX_CFG=$HOME/.lynx.cfg
 
 alias gpg='GPG_TTY="$(tty)" gpg'
 
+# Limit how many files can be used by the current session
+ulimit -S -n 10240
+
 # env init {
 # paths are setup in .zprofile
 # Do manually what eval $(rbenv init -) does.

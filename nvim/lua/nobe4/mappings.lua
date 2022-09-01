@@ -24,7 +24,6 @@ map("n", "<Leader>x", ":xit", options)
 map("n", "<Leader>m", ":make", options)
 map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options) -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
 map("n", "<Leader>r", ":<UP>", options) -- repeat last command
-map("n", [[\]], ":Rg<Space>", options) -- prepare a search
 
 map("n", "<Leader>o", ":call system('open ' . expand('<cWORD>'))<CR>", options) -- open WORD under cursor
 map("n", "gf", ":e <cfile><CR>", options) -- open file under cursor
@@ -61,8 +60,9 @@ map("n", "<Leader>gb", ":GBrowse<CR>", options)
 map("v", "<Leader>gb", ":GBrowse<CR>", options)
 
 -- Fzf
-map("n", "<Leader>f",  ":FZF<CR>", options)
-map("n", "<Leader>t",  ":Tags <C-R><C-W><CR>", options)
+map("n", "<Leader>f",  function() require('telescope.builtin').find_files() end, options)
+map("n", "<Leader>t",  function() require('telescope.builtin').tags() end, options)
+map("n", [[\]], function() require('telescope.builtin').live_grep() end, options)
 
 -- VimCorrect
 map("n", "Z=",  ":Correct<CR>", options)
@@ -74,17 +74,46 @@ map("n", "<Leader>ut", ":UndotreeToggle<CR>", options)
 map("n", "<Leader>uf", ":UndotreeFocus<CR>", options)
 
 -- Notational
-map("n", "<Leader>n", ":call notational#run()<CR>", options)
+-- TODO: find a way to search for the filename as well
+map("n", "<Leader>n", function()
+  require('telescope.builtin').live_grep({
+    cwd = "~/Documents/docs",
+    glob_pattern = { '*.md', '*.txt' },
+  })
+end, options)
 
 -- unimpaired-like
 -- Inspired by https://git.io/vHtuc
 local function map_next(map_key, cmd)
-  map("n", "[" .. map_key,         "<C-U>execute " .. cmd .. "previous<CR>", options)
-  map("n", "]" .. map_key,         "<C-U>execute " .. cmd .. "next<CR>",     options)
-  map("n", "[" .. map_key:upper(), "<C-U>execute " .. cmd .. "first<CR>",    options)
-  map("n", "]" .. map_key:upper(), "<C-U>execute " .. cmd .. "last<CR>",     options)
+  map("n", "]" .. map_key,         ":" .. cmd .. "next<CR>",     options)
+  map("n", "[" .. map_key,         ":" .. cmd .. "previous<CR>", options)
+  map("n", "]" .. map_key:upper(), ":" .. cmd .. "last<CR>",     options)
+  map("n", "[" .. map_key:upper(), ":" .. cmd .. "first<CR>",    options)
 end
 
-map_next('q','c') -- jump between errors
-map_next('t','t') -- jump between matching tags
-map_next('l','l') -- jump between lines in the location list
+map_next('q','c') -- jump between items in the (q)uickfix list
+map_next('t','t') -- jump between matching (t)ags
+map_next('l','l') -- jump between lines in the (l)ocation list
+
+-- LuaSnip
+local ls = require("luasnip")
+
+map({ "i", "s" }, "<C-K>", function()
+  if ls.expand_or_jumpable() then
+    ls.expand_or_jump()
+  else
+    print("NOP")
+  end
+end, { silent = true })
+
+map({ "i", "s" }, "<C-J>", function()
+  if ls.jumpable(-1) then
+    ls.jump(-1)
+  end
+end, { silent = true })
+
+map({ "i", "s" }, "<C-L>", function()
+  if ls.choice_active() then
+    ls.change_choice(1)
+  end
+end)

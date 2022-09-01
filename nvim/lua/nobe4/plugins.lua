@@ -1,7 +1,7 @@
 -- Bootstrap
-local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local install_path = vim.fn.stdpath("data").."/site/pack/packer/start/packer.nvim"
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  packer_bootstrap = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  packer_bootstrap = vim.fn.system({"git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path})
   vim.cmd [[packadd packer.nvim]]
 end
 
@@ -26,53 +26,68 @@ packer.init {
 }
 
 return packer.startup(function(use)
-  use 'wbthomason/packer.nvim' -- Packer can manage itself
+  use "wbthomason/packer.nvim" -- Packer can manage itself
 
-  use 'nobe4/exchange.vim'
-  use 'nobe4/curl.vim'
-  use 'nobe4/vimcorrect'
+  use "nobe4/exchange.vim"
+  use "nobe4/curl.vim"
+  use "nobe4/vimcorrect"
 
-  use 'christoomey/vim-tmux-navigator'
-  use 'editorconfig/editorconfig-vim'
-  use 'mbbill/undotree'
-  use 'romainl/vim-qf'
-  use 'danro/rename.vim'
+  use "tpope/vim-fugitive"
+  use "tpope/vim-projectionist"
+  use "tpope/vim-rhubarb"
+  use "tpope/vim-sleuth"
+  use "tpope/vim-surround"
+  use "tpope/vim-scriptease"
+
+  use "christoomey/vim-tmux-navigator"
+  use "danro/rename.vim"
+  use "editorconfig/editorconfig-vim"
+  use "junegunn/vim-easy-align"
+  use "mbbill/undotree"
+  use "romainl/vim-qf"
 
   use {
-    'numToStr/Comment.nvim',
+    -- breaking changes listed here
+    -- https://github.com/L3MON4D3/LuaSnip/issues/81
+    "L3MON4D3/LuaSnip",
     config = function()
-      require('Comment').setup({
+      require("luasnip").config.setup({
+        history = true,
+        updateevents = "TextChanged,TextChangedI",
+        enable_autosnippets = true,
+      })
+    end
+  }
+
+  use {
+    "numToStr/Comment.nvim",
+    config = function()
+      require("Comment").setup({
         toggler = {
-          line = '<leader>cc',
-          block = '<leader>bc',
+          line = "<leader>cc",
+          block = "<leader>bc",
         },
         opleader = {
-          line = '<Leader>c',
-          block = '<Leader>b',
+          line = "<Leader>c",
+          block = "<Leader>b",
         }
       })
     end
   }
 
-  use 'junegunn/vim-easy-align'
-  use 'junegunn/fzf'
-  use 'junegunn/fzf.vim'
-  vim.g.fzf_buffers_jump = 1
+  use {
+    "nvim-telescope/telescope.nvim",
+    branch = "0.1.x",
+    requires = { "nvim-lua/plenary.nvim" }
+  }
 
-
-  use 'skywind3000/asyncrun.vim'
+  use "skywind3000/asyncrun.vim"
   vim.g.asyncrun_open = 0
   vim.g.asyncrun_trim = 1
   -- Auto open/close the quickfix window depending on the content.
   vim.g.asyncrun_exit = 'silent checktime | exec (len(getqflist())==0?"cclose":"copen 5")'
 
-  use 'tpope/vim-fugitive'
-  use 'tpope/vim-projectionist'
-  use 'tpope/vim-rhubarb'
-  use 'tpope/vim-sleuth'
-  use 'tpope/vim-surround'
-  use 'tpope/vim-scriptease'
-
+  use "neovim/nvim-lspconfig"
 
   -- https://github.com/TimUntersberger/neogit
   -- mattn/emmet-vim {
@@ -85,8 +100,7 @@ return packer.startup(function(use)
   -- Automatically set up your configuration after cloning packer.nvim.
   -- Put this at the end after all plugins
   if packer_bootstrap then
-    require('packer').sync()
+    require("packer").sync()
   end
 end)
-
 

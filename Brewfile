@@ -39,3 +39,5 @@ cask "macvim"
 cask "rectangle"
 cask "kitty"
 
+# LSP
+brew "solargraph"
