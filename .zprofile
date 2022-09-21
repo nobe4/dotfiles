@@ -22,11 +22,6 @@ if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
   PATH="$PATH:/usr/local/opt/fzf/bin"
 fi
 
-# Macvim
-is_macos && {
-  PATH="/Applications/MacVim.app/Contents/bin:$PATH"
-}
-
 # Go
 # Same as `which go`
 PATH="$PATH:/usr/local/go/bin:$HOME/go:$HOME/go/bin"
@@ -39,6 +34,9 @@ PATH="$HOME/.rbenv/shims:$PATH"
 PATH="$HOME/.nodenv/shims:$PATH"
 PATH="$HOME/.pyenv/shims:$PATH"
 
+# Ruby
+PATH="$HOME/.gem/ruby/3.1.0/bin/:$PATH"
+
 # LLVM
 PATH="/usr/local/opt/llvm/bin:$PATH"
 
@@ -47,6 +45,5 @@ export PATH
 
 # Man PATH {
 MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
-
 export MANPATH
 # }

@@ -7,11 +7,9 @@
 --
 
 require "nobe4.options"
-require "nobe4.plugins"
 require "nobe4.mappings"
+require "nobe4.plugins"
 require "nobe4.autocmds"
 require "nobe4.commands"
 require "nobe4.abbreviations"
-require "nobe4.snippets"
-require "nobe4.lsp"
 require "nobe4.functions"

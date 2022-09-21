@@ -38,6 +38,3 @@ cask "1password-cli"
 cask "macvim"
 cask "rectangle"
 cask "kitty"
-
-# LSP
-brew "solargraph"
