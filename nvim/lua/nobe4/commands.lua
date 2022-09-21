@@ -14,4 +14,4 @@ command("WriteSudo", sudo_write_cmd, opts)
 command("JSONPretty", "%!jq '.'", opts)
 command("Writing", "setlocal wrap linebreak spell spellcapcheck= filetype=markdown", opts)
 
-command("RubyCallToExpect", function() ruby_call_to_expect() end, opts)
+command("Format", vim.lsp.buf.formatting, opts)

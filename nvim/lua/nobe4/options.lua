@@ -9,7 +9,7 @@ vim.opt.scrolloff = 5
 vim.opt.sidescroll = 1
 vim.opt.sidescrolloff = 10
 vim.opt.hlsearch = true
-vim.opt.background=dark
+vim.opt.background = "dark"
 vim.opt.termguicolors = true
 vim.opt.guifont = "Source Code Pro:h11"
 vim.cmd "colorscheme mnml"
@@ -25,7 +25,7 @@ vim.opt.spellcapcheck = ""
 vim.opt.autoread = true
 vim.opt.updatecount = 200
 vim.opt.fileencoding = "utf-8"
-vim.opt.iskeyword:append "-"
+-- vim.opt.iskeyword:append "-"
 -- vim.opt.clipboard = "unnamedplus"
 -- vim.opt.timeoutlen = 300
 -- vim.opt.ttimeoutlen = 300
@@ -47,6 +47,7 @@ vim.opt.wildignore:append [[*.pyc]]
 vim.opt.mouse = ""
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+vim.opt.signcolumn = "number"
 
 -- Misc
 vim.opt.tags:append ".git/tags"

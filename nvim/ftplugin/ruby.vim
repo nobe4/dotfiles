@@ -7,6 +7,9 @@ iabbrev pry; require "pry"; binding.pry
 
 nnoremap <leader>m :execute 'split term://bundle exec rspec --fail-fast %\:' . (line(".") + 1)<CR>
 
+command! RubyCallToExpect :lua ruby_call_to_expect()
+command! RubyLibToSepc :lua ruby_lib_to_spec()
+
 augroup ruby_autocmd
 	autocmd! * <buffer>
 
@@ -18,3 +21,4 @@ augroup ruby_autocmd
 				\ $(VIM_FILEPATH)
 				\ | { grep -v 'Corrected' || true; }
 augroup END
+
