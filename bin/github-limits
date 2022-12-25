@@ -4,5 +4,5 @@ gh api rate_limit -q '.resources | to_entries | .[] | [.key, .value.remaining, .
 echo ""
 gh api \
 	/users/nobe4/settings/billing/actions \
-	-q '["Ubuntu", "macOs", "Total", "Allowed Minutes", "Minutes Left", "Reset Day"], [.minutes_used_breakdown.UBUNTU, .minutes_used_breakdown.MACOS, .total_minutes_used, .included_minutes, ((.included_minutes - .total_minutes_used) | round), "on the 20th"] | @tsv' \
+	-q '["Ubuntu", "Windows", "macOs", "Total", "Allowed Minutes", "Minutes Left", "Reset Day"], [.minutes_used_breakdown.UBUNTU, .minutes_used_breakdown.WINDOWS, .minutes_used_breakdown.MACOS, .total_minutes_used, .included_minutes, ((.included_minutes - .total_minutes_used) | round), "on the 20th"] | @tsv' \
 	| column -ts $'	'
