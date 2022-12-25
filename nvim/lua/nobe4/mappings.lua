@@ -2,7 +2,7 @@ local options = { noremap = true, silent = false }
 local map = vim.keymap.set
 
 -- Space is the Leader key
-map("", "<Space>" , "<Nop>", options)
+map("", "<Space>", "<Nop>", options)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -14,8 +14,16 @@ map("n", "k", "gk", options)
 map("v", "j", "gj", options)
 map("v", "k", "gk", options)
 
+-- Move block of text
+map("v", "<Up>", ":m '<-2<CR>gv=gv")
+map("v", "<Down>", ":m '>+1<CR>gv=gv")
+
 map("n", "gp", "'[v']", options) -- Select last pasted zone
 map("v", "@", ":norm@", options) -- Replay mapping over visual
+
+map("n", "<Leader>y", '"+y', options)
+map("n", "<Leader>Y", '"+Y', options)
+map("v", "<Leader>y", '"+y', options)
 
 map("n", "<Leader>w", ":noautocmd w<CR>", options) -- Save file without autocmd
 map("n", "<Leader>q", ":quit!", options)
@@ -31,11 +39,6 @@ map("n", "<Leader>b", ":b#<CR>", options) -- show buffer list
 map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options) -- show buffers and wait for a selection
 map("n", "<Leader><Leader>", ":<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>", options) -- clear highlight
 map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]], options) -- show registers value before pasting
-
-map("n", "<Left>", ":resize -1<CR>", options)
-map("n", "<Right>", ":resize +1<CR>", options)
-map("n", "<Down>", ":vertical resize -1<CR>", options)
-map("n", "<Up>", ":vertical resize +1<CR>", options)
 
 map("c", "<C-A>", "<Home>", options) -- Go to the start of the command line
 
@@ -57,21 +60,22 @@ map("n", "<Leader>gb", ":GBrowse<CR>", options)
 map("v", "<Leader>gb", ":GBrowse<CR>", options)
 
 -- VimCorrect
-map("n", "Z=",  ":Correct<CR>", options)
+map("n", "Z=", ":Correct<CR>", options)
 
 -- EasyAlign
 map("x", "ga", "<Plug>(EasyAlign)", options)
 map("n", "ga", "<Plug>(EasyAlign)", options)
-map("n", "<Leader>ut", ":UndotreeToggle<CR>", options)
-map("n", "<Leader>uf", ":UndotreeFocus<CR>", options)
+
+map("n", "<Leader>ut", vim.cmd.UndotreeToggle, options)
+map("n", "<Leader>uf", vim.cmd.UndotreeFocus, options)
 
 -- unimpaired-like
 -- Inspired by https://git.io/vHtuc
 local function map_braquet(map_key, cmd)
-  map("n", "]" .. map_key,         ":" .. cmd .. "next<CR>",     options)
-  map("n", "[" .. map_key,         ":" .. cmd .. "previous<CR>", options)
-  map("n", "]" .. map_key:upper(), ":" .. cmd .. "last<CR>",     options)
-  map("n", "[" .. map_key:upper(), ":" .. cmd .. "first<CR>",    options)
+	map("n", "]" .. map_key, ":" .. cmd .. "next<CR>", options)
+	map("n", "[" .. map_key, ":" .. cmd .. "previous<CR>", options)
+	map("n", "]" .. map_key:upper(), ":" .. cmd .. "last<CR>", options)
+	map("n", "[" .. map_key:upper(), ":" .. cmd .. "first<CR>", options)
 end
 
 map_braquet("q", "c") -- jump between items in the (q)uickfix list
