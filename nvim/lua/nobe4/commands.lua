@@ -1,5 +1,5 @@
 local command = vim.api.nvim_create_user_command
-local opts = { bang = true };
+local opts = { bang = true }
 
 -- Source and edit vimrc file
 command("SourceVimrc", "silent source $MYVIMRC", opts)
@@ -15,3 +15,6 @@ command("JSONPretty", "%!jq '.'", opts)
 command("Writing", "setlocal wrap linebreak spell spellcapcheck= filetype=markdown", opts)
 
 command("Format", vim.lsp.buf.formatting, opts)
+command("ColorGroup", function()
+	print(require("nvim-treesitter.ts_utils").get_node_at_cursor())
+end, opts)
