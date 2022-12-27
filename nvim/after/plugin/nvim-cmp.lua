@@ -48,23 +48,36 @@ cmp.setup({
 		{ name = "luasnip" },
 	}, {
 		{ name = "path" },
-		{ name = "buffer" },
+		{
+			name = "buffer",
+			option = {
+				-- Complete from all open buffers
+				get_bufnrs = vim.api.nvim_list_bufs,
+			},
+		},
 	}),
 })
 
-cmp.setup.cmdline({ "/", "?" }, {
-	mapping = cmp.mapping.preset.cmdline(),
-	sources = {
-		{ name = "buffer" },
-	},
-})
-
-cmp.setup.cmdline(":", {
-	mapping = cmp.mapping.preset.cmdline(),
-	sources = cmp.config.sources({
-		{ name = "path" },
-	}, {
-		{ name = "cmdline" },
-		{ name = "buffer" },
-	}),
-})
+-- TODO: Find a way to get back auto-complete on those fields
+-- cmp.setup.cmdline({ "/", "?" }, {
+-- 	completion = {
+-- 		autocomplete = true,
+-- 	},
+-- 	mapping = cmp.mapping.preset.cmdline(),
+-- 	sources = {
+-- 		{ name = "buffer" },
+-- 	},
+-- })
+--
+-- cmp.setup.cmdline(":", {
+-- 	completion = {
+-- 		autocomplete = true,
+-- 	},
+-- 	mapping = cmp.mapping.preset.cmdline(),
+-- 	sources = cmp.config.sources({
+-- 		{ name = "path" },
+-- 	}, {
+-- 		{ name = "cmdline" },
+-- 		{ name = "buffer" },
+-- 	}),
+-- })
