@@ -18,7 +18,7 @@ local packer_group = vim.api.nvim_create_augroup("Packer", { clear = true })
 vim.api.nvim_create_autocmd("BufWritePost", {
 	command = "source <afile> | PackerCompile",
 	group = packer_group,
-	pattern = vim.fn.expand("**/nobe4/plugins/*.lua"),
+	pattern = "<afile>",
 })
 
 local status_ok, packer = pcall(require, "packer")
@@ -39,40 +39,61 @@ packer.init({
 return packer.startup(function(use)
 	use("wbthomason/packer.nvim") -- Packer can manage itself
 
-	-- nobe4
 	use("~/Documents/dev/helldb")
+
+	-- Misc
 	use("nobe4/exchange.vim")
 	use("nobe4/curl.vim")
 	use("nobe4/vimcorrect")
-
-	-- tpope
 	use("tpope/vim-fugitive")
 	-- use("tpope/vim-projectionist")
 	use("tpope/vim-rhubarb")
 	use("tpope/vim-sleuth")
 	use("tpope/vim-surround")
 	-- use("tpope/vim-scriptease")
-
 	use("christoomey/vim-tmux-navigator")
 	use("danro/rename.vim")
 	use("editorconfig/editorconfig-vim")
 	use("junegunn/vim-easy-align")
 	use("mbbill/undotree")
 	use("romainl/vim-qf")
-	use("williamboman/mason.nvim")
-	use("williamboman/mason-lspconfig.nvim")
-	use("nvim-treesitter/nvim-treesitter")
-	use("nvim-treesitter/playground")
-	use("numToStr/Comment.nvim")
-	use("neovim/nvim-lspconfig")
-	use("L3MON4D3/LuaSnip")
-	use({ "jose-elias-alvarez/null-ls.nvim", requires = { "nvim-lua/plenary.nvim" } })
-	use({ "nvim-telescope/telescope.nvim", branch = "0.1.x", requires = { "nvim-lua/plenary.nvim" } })
-	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
 	use("skywind3000/asyncrun.vim")
 	use("mattn/emmet-vim")
+	use("numToStr/Comment.nvim")
+
+	-- Treesitter
+	use("nvim-treesitter/nvim-treesitter")
+	use("nvim-treesitter/playground")
+
+	-- Snippet
+	use("L3MON4D3/LuaSnip")
+
+	-- LSP
+	use("neovim/nvim-lspconfig")
+
+	-- Mason
+	use("williamboman/mason.nvim")
+	use("williamboman/mason-lspconfig.nvim")
+
+	-- Formatter
+	use({ "jose-elias-alvarez/null-ls.nvim", requires = { "nvim-lua/plenary.nvim" } })
+
+	-- Fuzzy finder
+	use({ "nvim-telescope/telescope.nvim", branch = "0.1.x", requires = { "nvim-lua/plenary.nvim" } })
+	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
+
+	-- Completion
+	use("hrsh7th/nvim-cmp")
+	use("hrsh7th/cmp-buffer")
+	use("hrsh7th/cmp-path")
+	use("hrsh7th/cmp-nvim-lsp")
+	use("hrsh7th/cmp-cmdline")
 
 	-- https://github.com/TimUntersberger/neogit
+	--
+	-- TODO: godot lsp, godot treesitter
+	-- Remote config as well from https://devpoga.org/blog/2022-07-23_neovim_godot/
+	--
 
 	if packer_bootstrap then
 		require("packer").sync()
