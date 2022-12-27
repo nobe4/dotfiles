@@ -61,8 +61,9 @@ lspconfig.sumneko_lua.setup({
 		telemetry = { enable = false },
 	},
 })
--- lspconfig.gdscript.setup({
--- 	on_attach = on_attach,
--- 	capabilities = capabilities,
--- 	flags = { debounce_text_changes = 150 },
--- })
+
+lspconfig.gdscript.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	flags = { debounce_text_changes = 150 },
+})

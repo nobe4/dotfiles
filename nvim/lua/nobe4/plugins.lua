@@ -32,6 +32,12 @@ packer.init({
 		open_fn = function()
 			return require("packer.util").float({ border = "single" })
 		end,
+		compact = true,
+		working_sym = ".",
+		error_sym = "!",
+		done_sym = "K",
+		removed_syn = "X",
+		moved_sym = "M",
 	},
 })
 
@@ -60,6 +66,7 @@ return packer.startup(function(use)
 	use("skywind3000/asyncrun.vim")
 	use("mattn/emmet-vim")
 	use("numToStr/Comment.nvim")
+	use("habamax/vim-godot")
 
 	-- Treesitter
 	use("nvim-treesitter/nvim-treesitter")
@@ -88,6 +95,7 @@ return packer.startup(function(use)
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-nvim-lsp")
 	use("hrsh7th/cmp-cmdline")
+	use("hrsh7th/cmp-nvim-lua")
 
 	-- https://github.com/TimUntersberger/neogit
 	--
