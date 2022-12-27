@@ -9,7 +9,6 @@ ls.config.setup({
 
 -- snippets
 ls.add_snippets("ruby", {
-
 	-- spec describe
 	ls.parser.parse_snippet(
 		"describe",
