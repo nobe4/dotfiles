@@ -40,12 +40,16 @@ local on_attach = function(_, bufnr)
 end
 
 local lspconfig = require("lspconfig")
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local default_config = { on_attach = on_attach, capabilities = capabilities }
 
-lspconfig.solargraph.setup({ on_attach = on_attach })
-lspconfig.clangd.setup({ on_attach = on_attach })
-lspconfig.pylsp.setup({ on_attach = on_attach })
+lspconfig.solargraph.setup(default_config)
+lspconfig.clangd.setup(default_config)
+lspconfig.pylsp.setup(default_config)
 lspconfig.sumneko_lua.setup({
 	on_attach = on_attach,
+	capabilities = capabilities,
+
 	settings = {
 		Lua = {
 			diagnostics = { globals = { "vim", "require" } },
@@ -57,3 +61,8 @@ lspconfig.sumneko_lua.setup({
 		telemetry = { enable = false },
 	},
 })
+-- lspconfig.gdscript.setup({
+-- 	on_attach = on_attach,
+-- 	capabilities = capabilities,
+-- 	flags = { debounce_text_changes = 150 },
+-- })

@@ -1,2 +1,7 @@
-require("mason").setup()
+require("mason").setup({
+	ui = {
+		border = "single",
+	},
+})
+
 require("mason-lspconfig").setup()

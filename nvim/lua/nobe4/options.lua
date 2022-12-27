@@ -13,8 +13,8 @@ vim.opt.incsearch = true
 
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
-vim.opt.guifont = "Source Code Pro:h11"
 vim.cmd("colorscheme mnml")
+vim.opt.guifont = "Source Code Pro:h11"
 
 -- Editing
 vim.opt.hidden = true
