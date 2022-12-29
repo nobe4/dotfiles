@@ -98,10 +98,6 @@ return packer.startup(function(use)
 	use("hrsh7th/cmp-nvim-lua")
 
 	-- https://github.com/TimUntersberger/neogit
-	--
-	-- TODO: godot lsp, godot treesitter
-	-- Remote config as well from https://devpoga.org/blog/2022-07-23_neovim_godot/
-	--
 
 	if packer_bootstrap then
 		require("packer").sync()
