@@ -8,7 +8,7 @@
 	gpgsign = true
 [core]
 	editor = nvim
-	excludesFile = $HOME/.gitignore_global
+	excludesFile = ~/.gitignore_global
 [alias]
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 	me = !git-me
