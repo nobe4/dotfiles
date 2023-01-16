@@ -14,6 +14,8 @@ null_ls.setup({
 		-- ruby
 		-- null_ls.builtins.diagnostics.rubocop,
 		-- null_ls.builtins.formatting.rubocop,
+
+		null_ls.builtins.diagnostics.vale,
 	},
 
 	on_attach = function(client, bufnr)

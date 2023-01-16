@@ -4,7 +4,7 @@ local rules = {
 
 	-- Cursor
 	{ group = "Cursor", ef = "reverse" },
-	{ group = "CursorColumn", lk = "cursor" },
+	{ group = "CursorColumn", lk = "Cursor" },
 	{ group = "CursorLine", ef = "bold", fg = "lwhite" },
 	{ group = "CursorLineNr", lk = "CursorLine" },
 
@@ -255,5 +255,3 @@ vim.cmd([[
 ]])
 
 vim.g.colors_name = "mnml"
-
--- see list.lua for complete list of highlights

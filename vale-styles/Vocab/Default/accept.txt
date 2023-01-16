@@ -1,5 +1,11 @@
 GitHub
 Nodejs
 NPM
-codeql
+CodeQL
 Youtube
+[Oo]nboarding
+[Cc]hatops
+JIT
+AAD
+[Hh]ubber
+[Ee]ntitlements

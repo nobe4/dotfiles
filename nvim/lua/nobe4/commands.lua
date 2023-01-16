@@ -18,5 +18,8 @@ command("Format", function()
 	vim.lsp.buf.formatting()
 end, opts)
 command("ColorGroup", function()
+	vim.cmd([[
+		let s = synID(line('.'), col('.'), 1) | echo synIDattr(s, 'name') . ' -> ' . synIDattr(synIDtrans(s), 'name')
+	]])
 	print(require("nvim-treesitter.ts_utils").get_node_at_cursor())
 end, opts)
