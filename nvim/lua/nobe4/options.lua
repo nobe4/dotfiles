@@ -16,6 +16,10 @@ vim.opt.termguicolors = true
 vim.cmd("colorscheme mnml")
 vim.opt.guifont = "Source Code Pro:h11"
 
+if vim.fn.has("gui_vimr") == 1 then
+	vim.cmd("colorscheme desert")
+end
+
 -- Editing
 vim.opt.hidden = true
 vim.opt.backspace = { "indent", "eol", "start" }

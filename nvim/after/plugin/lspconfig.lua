@@ -7,6 +7,10 @@ vim.diagnostic.config({
 	virtual_text = { prefix = "!" },
 })
 
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+	border = "rounded",
+})
+
 vim.api.nvim_create_user_command("LspFix", function()
 	vim.lsp.buf.code_action()
 end, { bang = true })
