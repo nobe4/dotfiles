@@ -153,6 +153,15 @@ local rules = {
 	-- This shows a lot of red somehow :shrug:
 	{ group = "cErrInParen", lk = "Delimiter" },
 	{ group = "cParenError", lk = "Delimiter" },
+
+	-- Fugitive
+	{ group = "fugitiveCount", lk = "n4_default" },
+	{ group = "fugitiveStagedHeading", fg = "lgreen" },
+	{ group = "fugitiveStagedModifier", lk = "fugitiveStagedHeading" },
+	{ group = "fugitiveUnstagedHeading", fg = "lblue" },
+	{ group = "fugitiveUnstagedModifier", lk = "fugitiveUnstagedHeading" },
+	{ group = "fugitiveUntrackedHeading", fg = "lyellow" },
+	{ group = "fugitiveUntrackedModifier", lk = "fugitiveUntrackedHeading" },
 }
 
 -- Base16 color definition
