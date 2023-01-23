@@ -26,7 +26,7 @@ end, opts)
 
 command("Glow", function()
 	local glow_augroup = vim.api.nvim_create_augroup("Glow", { clear = true })
-	local glow_augroup_preview = vim.api.nvim_create_augroup("GlowPreview", { clear = true })
+	local glow_preview_augroup = vim.api.nvim_create_augroup("GlowPreview", { clear = true })
 
 	local markdown_win = vim.api.nvim_get_current_win()
 	local markdown_buf = vim.api.nvim_get_current_buf()
@@ -51,9 +51,9 @@ command("Glow", function()
 		vim.api.nvim_create_autocmd("TermClose", {
 			callback = function()
 				vim.api.nvim_win_set_cursor(preview_win, cursor)
-				vim.api.nvim_clear_autocmds({ group = glow_augroup_preview })
+				vim.api.nvim_clear_autocmds({ group = glow_preview_augroup })
 			end,
-			group = glow_augroup_preview,
+			group = glow_preview_augroup,
 			buffer = preview_buf,
 		})
 
