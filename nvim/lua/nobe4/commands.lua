@@ -26,6 +26,8 @@ end, opts)
 
 command("Glow", function()
 	local glow_augroup = vim.api.nvim_create_augroup("Glow", { clear = true })
+	local glow_augroup_preview = vim.api.nvim_create_augroup("GlowPreview", { clear = true })
+
 	local markdown_win = vim.api.nvim_get_current_win()
 	local markdown_buf = vim.api.nvim_get_current_buf()
 	local markdown_file = vim.api.nvim_buf_get_name(markdown_buf)
@@ -37,9 +39,27 @@ command("Glow", function()
 	-- Switch to preview window, refresh content and go back
 	local preview = function()
 		vim.api.nvim_set_current_win(preview_win)
-		vim.cmd("term glow " .. markdown_file .. "\n")
+
+		-- Save the cursor position
+		local cursor = vim.api.nvim_win_get_cursor(preview_win)
+
+		vim.api.nvim_cmd({ cmd = "term", args = { "glow", markdown_file } }, {})
+
+		local preview_buf = vim.api.nvim_get_current_buf()
+
+		-- When the term command is done, reset the cursor.
+		vim.api.nvim_create_autocmd("TermClose", {
+			callback = function()
+				vim.api.nvim_win_set_cursor(preview_win, cursor)
+				vim.api.nvim_clear_autocmds({ group = glow_augroup_preview })
+			end,
+			group = glow_augroup_preview,
+			buffer = preview_buf,
+		})
+
 		vim.api.nvim_set_current_win(markdown_win)
 	end
+
 	preview()
 
 	local cleanup = function()
