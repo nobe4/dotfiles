@@ -10,3 +10,10 @@ AAD
 [Hh]ubber
 [Ee]ntitlements
 Okta
+[Oo]ffboard(ing)?
+[Rr]unbook
+[Kk]illswitch
+[Dd]eprovision(ing)?
+Moda
+[Ff]ailsafe
+Splunk

@@ -15,6 +15,12 @@ null_ls.setup({
 		-- null_ls.builtins.diagnostics.rubocop,
 		-- null_ls.builtins.formatting.rubocop,
 
+		-- golang
+		null_ls.builtins.diagnostics.golangci_lint,
+		null_ls.builtins.formatting.gofmt,
+		null_ls.builtins.formatting.goimports,
+
+		-- general prose
 		null_ls.builtins.diagnostics.vale,
 	},
 

@@ -14,6 +14,8 @@ command("WriteSudo", sudo_write_cmd, opts)
 command("JSONPretty", "%!jq '.'", opts)
 command("Writing", "setlocal wrap linebreak spell spellcapcheck= filetype=markdown", opts)
 
+command("ValeVocab", "tabnew ~/.dot/vale-styles/Vocab/Default/accept.txt", opts)
+
 command("Format", function()
 	vim.lsp.buf.formatting()
 end, opts)
@@ -76,11 +78,11 @@ command("Glow", function()
 
 	-- Cleanup on close
 	-- FIXME: this prevents closing the markdown buffer, needs to close twice
-	vim.api.nvim_create_autocmd("BufLeave", {
-		callback = cleanup,
-		group = glow_augroup,
-		buffer = markdown_buf,
-	})
+	-- vim.api.nvim_create_autocmd("BufLeave", {
+	-- 	callback = cleanup,
+	-- 	group = glow_augroup,
+	-- 	buffer = markdown_buf,
+	-- })
 
 	command("GlowStop", cleanup, opts)
 end, opts)
