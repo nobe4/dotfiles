@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+PORT="${1:-8080}"
+
+trap ctrl_c INT
+
+function ctrl_c() {
+	exit 0
+}
+
+clear
+echo -e "Listening on :$PORT\n"
+
+while true; do
+	echo -e "HTTP/1.1 200 OK\r\n" | nc -v -l "$PORT"
+	echo -e "\n\n---\n"
+done
+

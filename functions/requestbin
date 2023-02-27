@@ -1,7 +1,0 @@
-#!/bin/sh
-
-while true; do
-	echo "listening on :8080"
-	echo "OK" | nc -v -l 8080
-	sleep 1;
-done
