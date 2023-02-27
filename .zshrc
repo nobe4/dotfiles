@@ -227,8 +227,8 @@ alias ll='ls -la'
 alias p8='ping -v 8.8.8.8'                           # Ping 8.8.8.8
 alias pg='ps aux | grep'                             # ps and grep easily
 alias kk='killall'                                   # Quicker kill all
-alias tel="telegram-send"                            # Send a message to a telegram channel
-
+alias tel='telegram-send'                            # Send a message to a telegram channel
+alias hmac='openssl rand -hex 32'
 alias tmp='cd "$(mktemp -d)"'
 
 # GDB {

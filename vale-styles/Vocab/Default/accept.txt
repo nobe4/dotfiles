@@ -17,3 +17,4 @@ Okta
 Moda
 [Ff]ailsafe
 Splunk
+[Rr]epo(sitor[y(ies)])?

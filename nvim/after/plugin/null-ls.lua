@@ -12,8 +12,11 @@ null_ls.setup({
 		-- null_ls.builtins.diagnostics.selene,
 
 		-- ruby
-		-- null_ls.builtins.diagnostics.rubocop,
+		null_ls.builtins.diagnostics.rubocop,
 		-- null_ls.builtins.formatting.rubocop,
+
+		-- python
+		null_ls.builtins.formatting.black,
 
 		-- golang
 		null_ls.builtins.diagnostics.golangci_lint,
