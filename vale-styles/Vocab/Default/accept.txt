@@ -18,3 +18,7 @@ Moda
 [Ff]ailsafe
 Splunk
 [Rr]epo(sitor[y(ies)])?
+[Cc]ron
+Sinatra
+[Cc]onfig(uration)?
+Docker(file)?
