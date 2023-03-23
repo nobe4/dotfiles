@@ -1,32 +1,38 @@
 local augroup = vim.api.nvim_create_augroup("null_ls_formatting", {})
 
 local null_ls = require("null-ls")
+local diagnostics = null_ls.builtins.diagnostics
+local formatting = null_ls.builtins.formatting
+
+local rubocop = require("nobe4.tool.rubocop")
+
+local sources = {
+	-- c/c++
+	formatting.clang_format,
+
+	-- lua
+	formatting.stylua,
+	-- diagnostics.selene,
+
+	-- ruby
+	diagnostics.rubocop.with({ command = rubocop.command() }),
+	formatting.rubocop.with({ command = rubocop.command() }),
+
+	-- python
+	formatting.black,
+
+	-- golang
+	diagnostics.golangci_lint,
+	formatting.gofmt,
+	formatting.goimports,
+
+	-- general prose
+	diagnostics.vale,
+}
 
 null_ls.setup({
-	sources = {
-		-- c/c++
-		null_ls.builtins.formatting.clang_format,
-
-		-- lua
-		null_ls.builtins.formatting.stylua,
-		-- null_ls.builtins.diagnostics.selene,
-
-		-- ruby
-		null_ls.builtins.diagnostics.rubocop,
-		-- null_ls.builtins.formatting.rubocop,
-
-		-- python
-		null_ls.builtins.formatting.black,
-
-		-- golang
-		null_ls.builtins.diagnostics.golangci_lint,
-		null_ls.builtins.formatting.gofmt,
-		null_ls.builtins.formatting.goimports,
-
-		-- general prose
-		null_ls.builtins.diagnostics.vale,
-	},
-
+	debug = true,
+	sources = sources,
 	on_attach = function(client, bufnr)
 		if client.supports_method("textDocument/formatting") then
 			vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
