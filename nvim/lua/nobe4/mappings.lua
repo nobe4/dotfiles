@@ -14,6 +14,10 @@ map("n", "k", "gk", options)
 map("v", "j", "gj", options)
 map("v", "k", "gk", options)
 
+-- Keep search centered
+map("n", "n", "nzz", options)
+map("n", "N", "Nzz", options)
+
 -- Move block of text
 map("v", "<Up>", ":m '<-2<CR>gv=gv")
 map("v", "<Down>", ":m '>+1<CR>gv=gv")
