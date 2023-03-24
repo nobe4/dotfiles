@@ -5,8 +5,8 @@ editor: nvim
 # When to interactively prompt. This is a global config that cannot be overridden by hostname. Supported values: enabled, disabled
 prompt: enabled
 # A pager program to send command output to, e.g. "less". Set the value to "cat" to disable the pager.
-pager: >
-    nvim -R -c "execute 'write! ' . system('mktemp')" -c "term cat %" -c "set nolist" -
+# pager: >
+#     nvim -R -c "execute 'write! ' . system('mktemp')" -c "term cat %" -c "set nolist" -
 
 aliases:
     co: pr checkout
@@ -19,3 +19,4 @@ aliases:
     clone: repo clone
     open: repo view --web
     limits: '!github-limits'
+    dependabot_combine_pr: combine-prs --query "author:app/dependabot"

@@ -228,6 +228,7 @@ alias kk='killall'                                   # Quicker kill all
 alias tel='telegram-send'                            # Send a message to a telegram channel
 alias hmac='openssl rand -hex 32'
 alias tmp='cd "$(mktemp -d)"'
+alias dotvi='cd $DOTFILE_FOLDER && vi'
 
 # GDB {
 alias gdb='gdb -q' # Silent GDB
