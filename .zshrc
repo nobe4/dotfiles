@@ -62,12 +62,10 @@ is_linux && {
   fi
 }
 zmodload -i zsh/complist
-FPATH="$DOTFILE_FOLDER/functions:$DOTFILE_FOLDER/private/functions:/usr/share/zsh/5.7.1/functions:$FPATH"
+FPATH="$DOTFILE_FOLDER/functions:/usr/share/zsh/5.7.1/functions:$FPATH"
 
 # shellcheck disable=SC2086 # doesn't find the functions if quoted
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
-# shellcheck disable=SC2086 # doesn't find the functions if quoted
-autoload -U $DOTFILE_FOLDER/private/functions/*(:t)
 zmodload zsh/zprof
 # }
 # Path {
