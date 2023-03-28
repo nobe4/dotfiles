@@ -16,6 +16,7 @@ vim.opt.termguicolors = true
 vim.cmd("colorscheme mnml")
 vim.opt.guifont = "Source Code Pro:h11"
 
+-- Vimr doesn't like mnml somehow
 if vim.fn.has("gui_vimr") == 1 then
 	vim.cmd("colorscheme desert")
 end
@@ -41,18 +42,24 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- UI
-vim.opt.completeopt = { "menu", "preview" }
+-- Fold
 vim.opt.foldenable = false
-vim.opt.foldmethod = "indent"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.opt.foldopen = { "insert", "percent", "quickfix", "tag", "search" }
-vim.opt.foldlevelstart = 99
 vim.opt.wildmode = { "longest", "list", "full" }
+
+-- Menu
+vim.opt.completeopt = { "menu", "preview" }
 vim.opt.wildmenu = true
 vim.opt.undofile = true
 vim.opt.wildignore:append([[*.pyc]])
-vim.opt.mouse = ""
+
+-- Split
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+
+vim.opt.mouse = ""
 vim.opt.signcolumn = "number"
 
 -- Misc
