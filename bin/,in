@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+def help
+  puts <<~HELP
+    Usage: in <time> <command>
+
+    E.g.:
+      - in 3s echo "hello"
+      - in 1m curl example.com
+  HELP
+end
+
+def parse_delay(input)
+  unless input
+    puts 'Missing <time>'
+    help
+    exit 1
+  end
+
+  tokens = { 's' => 1, 'm' => 60, 'h' => 60 * 60 }
+  input.scan(/(\d+)(\w)/).sum do |amount, measure|
+    amount.to_i * tokens[measure]
+  end
+end
+
+def parse_argv(argv)
+  delay = parse_delay(argv.shift)
+  command = argv.join(' ').strip
+
+  if command.nil? || command == ''
+    puts 'Missing <command>'
+    help
+    exit 1
+  end
+  [delay, command]
+end
+
+delay, command = parse_argv(ARGV)
+puts delay
+puts '---'
+puts command

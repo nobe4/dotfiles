@@ -101,7 +101,7 @@ precmd_functions+=(prompt_precmd)
 # }
 # History stats {
 history_stats_cmd() {
-  exec {FD}< <( history_stats "$1" )
+  exec {FD}< <( ,history_stats "$1" )
 }
 typeset -a zshaddhistory_functions
 zshaddhistory_functions+=(history_stats_cmd)
@@ -157,12 +157,10 @@ alias gl='git pull'
 alias gp='git push -u'
 alias gcb='git checkout -b'
 alias gco='git checkout'
-alias gla='git lg --all'
 alias glo='git lg'
 alias grhh='git reset --hard HEAD'
-alias gs='git status'
 alias gst='git stash'
-alias grccb='git-recreate-current-branch'
+alias grccb=',git-recreate-current-branch'
 # }
 
 # Docker {
@@ -225,7 +223,7 @@ alias ll='ls -la'
 alias p8='ping -v 8.8.8.8'                           # Ping 8.8.8.8
 alias pg='ps aux | grep'                             # ps and grep easily
 alias kk='killall'                                   # Quicker kill all
-alias tel='telegram-send'                            # Send a message to a telegram channel
+alias tel=',telegram-send'                            # Send a message to a telegram channel
 alias hmac='openssl rand -hex 32'
 alias tmp='cd "$(mktemp -d)"'
 alias dotvi='cd $DOTFILE_FOLDER && vi'
