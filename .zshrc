@@ -94,17 +94,9 @@ prompt_precmd() {
   zle -F $FD prompt_on_load_callback
 }
 
-
 typeset -a precmd_functions
 # Add the prompt_precmd to the list of precmd_functions
 precmd_functions+=(prompt_precmd)
-# }
-# History stats {
-history_stats_cmd() {
-  exec {FD}< <( ,history_stats "$1" )
-}
-typeset -a zshaddhistory_functions
-zshaddhistory_functions+=(history_stats_cmd)
 # }
 # }
 # Completion {
