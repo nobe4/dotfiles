@@ -13,11 +13,9 @@ ls.add_snippets("ruby", {
 	ls.parser.parse_snippet(
 		"describe",
 		[[
-describe $1 do
-  context "#$2" do
-    it "$3" do
-      $4
-    end
+describe "#$1" do
+  it "$2" do
+    $3
   end
 end]]
 	),
@@ -25,7 +23,7 @@ end]]
 	ls.parser.parse_snippet(
 		"before",
 		[[
-before(:each) do
+before do
   $1
 end]]
 	),

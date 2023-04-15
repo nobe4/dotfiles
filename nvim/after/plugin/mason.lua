@@ -9,16 +9,27 @@ mason.setup({
 })
 
 local ensured_installed_packages = {
-	"golangci-lint",
 	"clang-format",
-	"vale",
-	"stylua",
-	"selene",
 	"clangd",
+
 	"goimports",
+	"golangci-lint",
 	"gopls",
+
+	"marksman",
+	"vale",
+
 	"prettier",
+
 	"solargraph",
+
+	"selene",
+	"stylua",
+
+	"css-lsp",
+	"html-lsp",
+	"json-lsp",
+	"shellcheck",
 }
 
 for _, package in ipairs(ensured_installed_packages) do

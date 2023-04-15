@@ -16,6 +16,7 @@ telescope.load_extension("fzf")
 local options = { noremap = true, silent = false }
 vim.keymap.set("n", "<Leader>f", ts_builtin.find_files, options)
 vim.keymap.set("n", "<Leader>t", ts_builtin.tags, options)
+vim.keymap.set("n", "<Leader>:", ts_builtin.commands, options)
 vim.keymap.set("n", [[\]], ts_builtin.live_grep, options)
 
 -- Notational

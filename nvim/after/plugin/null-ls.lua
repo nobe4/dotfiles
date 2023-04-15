@@ -28,6 +28,9 @@ local sources = {
 
 	-- general prose
 	diagnostics.vale,
+
+	-- multipurpose
+	formatting.prettier,
 }
 
 null_ls.setup({

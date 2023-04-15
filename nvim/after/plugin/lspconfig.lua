@@ -26,6 +26,7 @@ local on_attach = function(_, bufnr)
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+	vim.keymap.set("n", "R", vim.lsp.buf.rename, bufopts)
 
 	-- map('n', 'gD', vim.lsp.buf.declaration, bufopts)
 	-- map('n', 'gd', vim.lsp.buf.definition, bufopts)
@@ -37,7 +38,6 @@ local on_attach = function(_, bufnr)
 	--   print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	-- end, bufopts)
 	-- map('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
-	-- map('n', '<space>rn', vim.lsp.buf.rename, bufopts)
 	-- map('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
 	-- map('n', 'gr', vim.lsp.buf.references, bufopts)
 	-- map('n', '<space>f', vim.lsp.buf.formatting, bufopts)
@@ -49,6 +49,8 @@ local default_config = { on_attach = on_attach, capabilities = capabilities }
 
 -- lspconfig.solargraph.setup(default_config)
 lspconfig.clangd.setup(default_config)
+lspconfig.gopls.setup(default_config)
+lspconfig.marksman.setup(default_config)
 lspconfig.pylsp.setup(default_config)
 lspconfig.lua_ls.setup({
 	on_attach = on_attach,

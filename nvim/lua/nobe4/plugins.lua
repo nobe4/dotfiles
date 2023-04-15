@@ -78,6 +78,10 @@ local plugins = {
 	"hrsh7th/cmp-cmdline",
 	"hrsh7th/cmp-nvim-lua",
 
+	"mfussenegger/nvim-dap",
+	"leoluz/nvim-dap-go",
+	"rcarriga/nvim-dap-ui",
+
 	-- https://github.com/TimUntersberger/neogit
 }
 
