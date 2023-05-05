@@ -81,6 +81,13 @@ local rules = {
 	{ group = "DiagnosticWarn", fg = "lyellow" },
 	{ group = "DiagnosticInfo", fg = "lblue" },
 	{ group = "DiagnosticHint", fg = "lgreen" },
+	{ group = "DiagnosticOk", fg = "lgreen" },
+	{ group = "DiagnosticUnnecessary", fg = "lred" },
+	{ group = "DiagnosticUnderlineError", ef = "underline", fg = "lred" },
+	{ group = "DiagnosticUnderlineWarn", ef = "underline", fg = "lyellow" },
+	{ group = "DiagnosticUnderlineInfo", ef = "underline", fg = "lblue" },
+	{ group = "DiagnosticUnderlineHint", ef = "underline", fg = "lgreen" },
+	{ group = "DiagnosticUnderlineOk", ef = "underline", fg = "lgreen" },
 
 	-- Syntax
 	{ group = "Boolean", lk = "n4_default" },
@@ -221,7 +228,7 @@ end
 
 -- highlight wrapper
 for _, rule in pairs(rules) do
-	-- TODO redo with nvim_set_hl
+	-- TODO: redo with nvim_set_hl
 	if rule.ef == nil then
 		rule.ef = "NONE"
 	end
@@ -258,8 +265,8 @@ end
 
 vim.cmd([[
   augroup color_auto_reload
-    autocmd!
-    autocmd BufWritePost mnml.lua source <afile>
+  autocmd!
+  autocmd BufWritePost mnml.lua source <afile>
   augroup end
 ]])
 
