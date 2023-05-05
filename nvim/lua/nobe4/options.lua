@@ -10,6 +10,7 @@ vim.opt.sidescroll = 1
 vim.opt.sidescrolloff = 10
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
+vim.opt.textwidth = 80
 
 vim.opt.background = "dark"
 vim.opt.termguicolors = true
