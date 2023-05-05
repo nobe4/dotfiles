@@ -30,7 +30,9 @@ local sources = {
 	diagnostics.vale,
 
 	-- multipurpose
-	formatting.prettier,
+	formatting.prettier.with({
+		disabled_filetypes = { "markdown" },
+	}),
 }
 
 null_ls.setup({
