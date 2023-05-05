@@ -45,6 +45,11 @@ end]]
 	ls.parser.parse_snippet("debug", [[require "pry-byebug"; binding.pry]]),
 })
 
+ls.add_snippets("go", {
+	ls.parser.parse_snippet("test", "func Test$1(t *testing.T) {$2}"),
+	ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {$2})'),
+})
+
 -- mappings
 vim.keymap.set({ "i", "s" }, "<C-K>", function()
 	if ls.expand_or_jumpable() then
