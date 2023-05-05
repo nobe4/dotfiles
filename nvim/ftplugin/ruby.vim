@@ -5,6 +5,7 @@ iabbrev ;pry; require "pry"; binding.pry
 iabbrev debug; require "pry"; binding.pry
 iabbrev pry; require "pry"; binding.pry
 
+" Test current method
 nnoremap <leader>m :execute 'split term://bundle exec rspec --fail-fast %\:' . (line(".") + 1)<CR>
 
 command! RubyCallToExpect :lua ruby_call_to_expect()

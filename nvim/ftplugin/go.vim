@@ -1,3 +1,2 @@
-iabbrev ttt func Test(t *testing.T) {t.Skip("TODO")}<ESC>0f(i
-iabbrev ttr t.Run("", func(t *testing.T) {t.Skip("TODO")})<ESC>0f"a
-iabbrev forhook for _, e := range hook.Entries { t.Logf("=> %v", e) }
+" Test current package
+nnoremap <leader>m :execute 'split term://go test -race -cover ./%:h'<CR>
