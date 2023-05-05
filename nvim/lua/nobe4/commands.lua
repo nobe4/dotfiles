@@ -16,6 +16,18 @@ command("Writing", "setlocal wrap linebreak spell spellcapcheck= filetype=markdo
 
 command("ValeVocab", "tabnew ~/.dot/vale-styles/Vocab/Default/accept.txt", opts)
 
+command("Mouse", function()
+	vim.cmd([[
+		if &mouse == 'a'
+			set mouse=
+			echo "Mouse is disabled"
+		else
+			set mouse=a
+			echo "Mouse is enabled"
+		endif
+	]])
+end, opts)
+
 command("Format", function()
 	vim.lsp.buf.formatting()
 end, opts)
