@@ -1,4 +1,6 @@
 local ls = require("luasnip")
+local t = ls.text_node
+local i = ls.insert_node
 
 -- config
 ls.config.setup({
@@ -40,14 +42,14 @@ end]]
 
 	-- spec double
 	-- TODO: have a choice between the `let` and the `X =`
+	ls.parser.parse_snippet("let", [[let(:$1) { "$1" }]]),
 	ls.parser.parse_snippet("double", [[let(:$1) { double("$1") }]]),
 	ls.parser.parse_snippet("pry", [[require "pry-byebug"; binding.pry]]),
-	ls.parser.parse_snippet("debug", [[require "pry-byebug"; binding.pry]]),
 })
 
 ls.add_snippets("go", {
-	ls.parser.parse_snippet("test", "func Test$1(t *testing.T) {$2}"),
-	ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {$2})'),
+	ls.parser.parse_snippet("test", 'func Test${1:Name}(t *testing.T) {${2:t.Skip("TODO")}}'),
+	ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {${2:t.Skip("TODO")}})'),
 })
 
 -- mappings
