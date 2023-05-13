@@ -7,12 +7,36 @@ local has_words_before = function()
 	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+local complete_forward = function(fallback)
+	if cmp.visible() then
+		cmp.select_next_item()
+		-- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
+		-- they way you will only jump inside the snippet region
+	elseif luasnip.expand_or_jumpable() then
+		luasnip.expand_or_jump()
+	elseif has_words_before() then
+		cmp.complete()
+	else
+		fallback()
+	end
+end
+
+local complete_backward = function(fallback)
+	if cmp.visible() then
+		cmp.select_prev_item()
+	elseif luasnip.jumpable(-1) then
+		luasnip.jump(-1)
+	else
+		fallback()
+	end
+end
+
 cmp.setup({
 	preselect = cmp.PreselectMode.Item,
 
-	completion = {
-		autocomplete = false,
-	},
+	-- completion = {
+	-- 	autocomplete = false,
+	-- },
 
 	snippet = {
 		expand = function(args)
@@ -26,30 +50,22 @@ cmp.setup({
 	},
 
 	mapping = {
-		-- ["<C-c>"] = cmp.mapping.complete(),
 		["<C-e>"] = cmp.mapping.close(),
 		["<Enter>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-		["<C-p>"] = cmp.mapping.select_prev_item(),
-		-- `C-n` triggers the completion, and goes to the next item
+		-- `C-n`/`Down` triggers the completion, and goes to the next item
 		-- Luasnip uses C-j C-k for jumping
 		-- ref: https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings#luasnip
-		["<C-n>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_next_item()
-			elseif has_words_before() then
-				cmp.complete()
-			else
-				fallback()
-			end
-		end),
+		["<C-n>"] = cmp.mapping(complete_forward, { "i", "s" }),
+		["<DOWN>"] = cmp.mapping(complete_forward, { "i", "s" }),
+
+		["<C-p>"] = cmp.mapping(complete_backward, { "i", "s" }),
+		["<UP>"] = cmp.mapping(complete_backward, { "i", "s" }),
 	},
 
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
-		{ name = "nvim_lua" },
+		{ name = "nvim_lsp_signature_help" },
 		{ name = "luasnip" },
-	}, {
-		{ name = "path" },
 		{
 			name = "buffer",
 			option = {
@@ -57,6 +73,8 @@ cmp.setup({
 				get_bufnrs = vim.api.nvim_list_bufs,
 			},
 		},
+		{ name = "nvim_lua" },
+		{ name = "path" },
 	}),
 })
 

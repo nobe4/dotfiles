@@ -27,3 +27,5 @@ vim.keymap.set("n", "<Leader>n", function()
 		glob_pattern = { "*.md", "*.txt" },
 	})
 end, options)
+
+vim.api.nvim_create_user_command("LSPReferences", ts_builtin.lsp_references, { bang = true })

@@ -57,7 +57,7 @@ local rules = {
 	{ group = "SignColumn", fg = "lblack" },
 	{ group = "SpecialKey", fg = "lblack" },
 	{ group = "FloatBorder", fg = "lblack" },
-	{ group = "Title", lk = "n4_defaul" },
+	{ group = "Title", lk = "n4_default" },
 
 	-- Menu bar
 	{ group = "Menu", fg = "white" },
@@ -71,9 +71,9 @@ local rules = {
 	{ group = "EndOfBuffer", lk = "NonText" },
 
 	-- Popup Menu
-	{ group = "Pmenu", fg = "white" },
+	{ group = "Pmenu", lk = "n4_default" },
 	{ group = "PmenuSbar", lk = "Pmenu" },
-	{ group = "PmenuSel", ef = "bold", fg = "lwhite" },
+	{ group = "PmenuSel", ef = "reverse" },
 	{ group = "PmenuThumb", fg = "black", bg = "lwhite" },
 
 	-- Diagnosis
@@ -169,6 +169,52 @@ local rules = {
 	{ group = "fugitiveUnstagedModifier", lk = "fugitiveUnstagedHeading" },
 	{ group = "fugitiveUntrackedHeading", fg = "lyellow" },
 	{ group = "fugitiveUntrackedModifier", lk = "fugitiveUntrackedHeading" },
+
+	-- nvim-cmp
+	-- ref https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
+	{ group = "CmpItemAbbrDeprecated", fg = "lblack", ef = "strikethrough" },
+	{ group = "CmpItemAbbrMatch", fg = "green" },
+	{ group = "CmpItemAbbrMatchFuzzy", fg = "blue" },
+
+	{ group = "CmpItemKindVariable", fg = "lblue" },
+	{ group = "CmpItemKindInterface", lk = "CmpItemKindVariable" },
+	{ group = "CmpItemKindText", lk = "CmpItemKindVariable" },
+	{ group = "CmpItemKindFunction", fg = "lyellow" },
+	{ group = "CmpItemKindMethod", lk = "CmpItemKindFunction" },
+	{ group = "CmpItemKindKeyword", fg = "lgreen" },
+	{ group = "CmpItemKindProperty", lk = "CmpItemKindKeyword" },
+	{ group = "CmpItemKindUnit", lk = "CmpItemKindKeyword" },
+
+	-- Custom groups
+	-- default
+	{ group = "CmpItemKindText", fg = "white" },
+	{ group = "CmpItemKindSnippet", lk = "CmpItemKindText" },
+	{ group = "CmpItemKindColor", lk = "CmpItemKindText" },
+	{ group = "CmpItemKindFile", lk = "CmpItemKindText" },
+	{ group = "CmpItemKindFolder", lk = "CmpItemKindText" },
+	{ group = "CmpItemKindEvent", lk = "CmpItemKindText" },
+	{ group = "CmpItemKindOperator", lk = "CmpItemKindText" },
+	{ group = "CmpItemKindTypeParameter", lk = "CmpItemKindText" },
+	-- Function - yellow
+	{ group = "CmpItemKindFunction", fg = "lyellow" },
+	{ group = "CmpItemKindMethod", lk = "CmpItemKindFunction" },
+	{ group = "CmpItemKindConstructor", lk = "CmpItemKindFunction" },
+	{ group = "CmpItemKindModule", lk = "CmpItemKindFunction" },
+	-- Simple types - blue
+	{ group = "CmpItemKindVariable", fg = "lblue" },
+	{ group = "CmpItemKindField", lk = "CmpItemKindVariable" },
+	{ group = "CmpItemKindReference", lk = "CmpItemKindVariable" },
+	{ group = "CmpItemKindConstant", lk = "CmpItemKindVariable" },
+	{ group = "CmpItemKindUnit", lk = "CmpItemKindVariable" },
+	{ group = "CmpItemKindValue", lk = "CmpItemKindVariable" },
+	{ group = "CmpItemKindKeyword", lk = "CmpItemKindVariable" },
+	-- Complex types - green
+	{ group = "CmpItemKindClass", fg = "lgreen" },
+	{ group = "CmpItemKindInterface", lk = "CmpItemKindClass" },
+	{ group = "CmpItemKindProperty", lk = "CmpItemKindClass" },
+	{ group = "CmpItemKindEnumMember", lk = "CmpItemKindClass" },
+	{ group = "CmpItemKindEnum", lk = "CmpItemKindClass" },
+	{ group = "CmpItemKindStruct", lk = "CmpItemKindClass" },
 }
 
 -- Base16 color definition

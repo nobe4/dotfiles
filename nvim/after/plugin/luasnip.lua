@@ -1,6 +1,4 @@
 local ls = require("luasnip")
-local t = ls.text_node
-local i = ls.insert_node
 
 -- config
 ls.config.setup({
