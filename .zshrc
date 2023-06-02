@@ -217,7 +217,7 @@ alias pg='ps aux | grep'                             # ps and grep easily
 alias kk='killall'                                   # Quicker kill all
 alias tel=',telegram-send'                            # Send a message to a telegram channel
 alias hmac='openssl rand -hex 32'
-alias tmp='cd "$(mktemp -d)"'
+alias tmp='tmux new-window "cd `mktemp -d` && zsh"'
 alias dotvi='cd $DOTFILE_FOLDER && vi'
 
 # GDB {
