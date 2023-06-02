@@ -31,7 +31,7 @@ end]]
 	ls.parser.parse_snippet(
 		"context",
 		[[
-context "#$1" do
+context "$1" do
   it "$2" do
     $3
   end
