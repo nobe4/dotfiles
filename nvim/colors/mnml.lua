@@ -4,8 +4,7 @@ local rules = {
 
 	-- Cursor
 	{ group = "Cursor", ef = "reverse" },
-	{ group = "CursorColumn", lk = "Cursor" },
-	{ group = "CursorLine", ef = "bold", fg = "lwhite" },
+	{ group = "CursorLine", fg = "white", ef = "bold" },
 	{ group = "CursorLineNr", lk = "CursorLine" },
 
 	-- Diff
@@ -161,7 +160,8 @@ local rules = {
 	{ group = "cErrInParen", lk = "Delimiter" },
 	{ group = "cParenError", lk = "Delimiter" },
 
-	-- Fugitive
+	-- Git/Fugitive
+	{ group = "gitHashAbbrev", fg = "lyellow" },
 	{ group = "fugitiveCount", lk = "n4_default" },
 	{ group = "fugitiveStagedHeading", fg = "lgreen" },
 	{ group = "fugitiveStagedModifier", lk = "fugitiveStagedHeading" },
