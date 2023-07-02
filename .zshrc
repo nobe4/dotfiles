@@ -35,7 +35,9 @@ export LC_ALL="$LANG"
 export LC_CTYPE="$LANG"
 # }
 # Colors {
-export TERM=xterm-kitty
+is_macos && {
+  export TERM=xterm-kitty
+}
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
@@ -200,10 +202,11 @@ export PYTHONDONTWRITEBYTECODE=1
 alias todo="rg -i todo"
 alias rg='rg --ignore-file $HOME/.gitignore_global'
 
+BREW_PREFIX=$(brew --prefix)
 # shellcheck disable=SC1094 # this file is fine
-[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "$BREW_PREFIX/opt/fzf/shell/completion.zsh" 2> /dev/null
 # shellcheck disable=SC1094 # this file is fine
-source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+source "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
 
 export FZF_DEFAULT_COMMAND="rg --files --follow --ignore-file $HOME/.gitignore_global"
 
@@ -242,7 +245,7 @@ is_macos && {
 # }
 
 # Misc {
-export LYNX_CFG=$HOME/.lynx.cfg
+export LYNX_CFG="$HOME/.lynx.cfg"
 
 alias gpg='GPG_TTY="$(tty)" gpg'
 

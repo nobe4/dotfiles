@@ -22,6 +22,7 @@ link "$DOTFILE_FOLDER/.zshrc" "$HOME/.zshrc"
 link "$DOTFILE_FOLDER/.zprofile" "$HOME/.zprofile"
 link "$DOTFILE_FOLDER/.zshenv" "$HOME/.zshenv"
 link "$DOTFILE_FOLDER/.bashrc" "$HOME/.bashrc"
+mkdir -p "$HOME/.local/bin"
 # }
 
 # Fonts {
@@ -29,6 +30,10 @@ curl -L https://github.com/adobe-fonts/source-code-pro/archive/refs/heads/releas
 unzip -q /tmp/source-code-pro.zip -d /tmp/
 
 is_macos && mv /tmp/source-code-pro-release/TTF/* /Library/Fonts/
+is_linux && {
+	mkdir -p ~/.local/share/fonts
+	mv /tmp/source-code-pro-release/TTF/* ~/.local/share/fonts/
+}
 # TODO
 # is_linux && sudo mv /tmp/source-code-pro-release/TTF/* /usr/local/share/fonts/
 rm -rf /tmp/source-code-pro-release
@@ -36,8 +41,8 @@ rm -rf /tmp/source-code-pro-release
 
 # Homebrew {
 if ! command -v brew &> /dev/null; then
-  open "https://brew.sh/"
-  wait_until "Homebrew is installed"
+	open "https://brew.sh/"
+	wait_until "Homebrew is installed"
 fi
 
 brew bundle install
@@ -86,14 +91,22 @@ mkdir -p "$HOME/.config/kitty/"
 link "$DOTFILE_FOLDER/kitty.conf" "$HOME/.config/kitty/kitty.conf"
 # }
 
+# 1password cli {
+is_linux && {
+	curl -o op.deb https://downloads.1password.com/linux/debian/amd64/stable/1password-cli-amd64-latest.deb
+	sudo dpkg --skip-same-version -i op.deb
+	rm op.deb
+}
+# }
+
 # Espanso {
 espanso register || true
 espanso start || true
 
 # We're going to use the local espanso config so we can track its changes.
 is_macos && {
-	ln -fs "$DOTFILE_FOLDER/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
-	ln -fs "$DOTFILE_FOLDER/private/espanso_config.yml" "$HOME/Library/Preferences/espanso/user/private.yml"
+	link "$DOTFILE_FOLDER/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
+	link "$DOTFILE_FOLDER/private/espanso_config.yml" "$HOME/Library/Preferences/espanso/user/private.yml"
 }
 # TODO linux
 
@@ -119,13 +132,14 @@ is_macos && {
 }
 # }
 
-# Search {
+# misc {
 "$BREW_PREFIX/opt/fzf/install" --bin --key-bindings
 
 touch "$HOME/.z"
 tldr --update
 
 link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.vale.ini"
+
 mkdir -p "$HOME/.config/gh"
 link "$DOTFILE_FOLDER/gh-config.yml" "$HOME/.config/gh/config.yml"
 # }
