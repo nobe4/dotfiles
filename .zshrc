@@ -167,6 +167,12 @@ alias dcr="docker compose run"
 alias dcsh="docker compose-ssh"
 # }
 
+# linuxbrew {
+is_linux && {
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+}
+# }
+
 # z {
 is_macos && {
   # brew --prefix == /usr/local
