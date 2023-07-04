@@ -176,19 +176,9 @@ local rules = {
 	{ group = "CmpItemAbbrMatch", fg = "green" },
 	{ group = "CmpItemAbbrMatchFuzzy", fg = "blue" },
 
-	{ group = "CmpItemKindVariable", fg = "lblue" },
-	{ group = "CmpItemKindInterface", lk = "CmpItemKindVariable" },
-	{ group = "CmpItemKindText", lk = "CmpItemKindVariable" },
-	{ group = "CmpItemKindFunction", fg = "lyellow" },
-	{ group = "CmpItemKindMethod", lk = "CmpItemKindFunction" },
-	{ group = "CmpItemKindKeyword", fg = "lgreen" },
-	{ group = "CmpItemKindProperty", lk = "CmpItemKindKeyword" },
-	{ group = "CmpItemKindUnit", lk = "CmpItemKindKeyword" },
-
 	-- Custom groups
 	-- default
 	{ group = "CmpItemKindText", fg = "white" },
-	{ group = "CmpItemKindSnippet", lk = "CmpItemKindText" },
 	{ group = "CmpItemKindColor", lk = "CmpItemKindText" },
 	{ group = "CmpItemKindFile", lk = "CmpItemKindText" },
 	{ group = "CmpItemKindFolder", lk = "CmpItemKindText" },
@@ -200,6 +190,7 @@ local rules = {
 	{ group = "CmpItemKindMethod", lk = "CmpItemKindFunction" },
 	{ group = "CmpItemKindConstructor", lk = "CmpItemKindFunction" },
 	{ group = "CmpItemKindModule", lk = "CmpItemKindFunction" },
+	{ group = "CmpItemKindSnippet", lk = "CmpItemKindFunction" },
 	-- Simple types - blue
 	{ group = "CmpItemKindVariable", fg = "lblue" },
 	{ group = "CmpItemKindField", lk = "CmpItemKindVariable" },

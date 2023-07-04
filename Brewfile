@@ -3,8 +3,8 @@ tap "homebrew/core"
 tap "homebrew/services"
 tap "federico-terzi/espanso"
 tap "1password/tap"
+tap "universal-ctags/universal-ctags"
 
-brew "ctags"
 brew "espanso"
 brew "fd"
 brew "ffmpeg"
@@ -28,6 +28,7 @@ brew "reattach-to-user-namespace" # https://github.com/ChrisJohnsen/tmux-MacOSX-
 brew "ripgrep"
 brew "tealdeer"
 brew "trash"
+brew "universal-ctags"
 brew "xq"
 brew "z"
 

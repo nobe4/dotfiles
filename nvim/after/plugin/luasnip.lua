@@ -50,6 +50,11 @@ ls.add_snippets("go", {
 	ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {${2:t.Skip("TODO")}})'),
 })
 
+ls.add_snippets("gitcommit", {
+	ls.parser.parse_snippet("missing", "Remove missing team"),
+	ls.parser.parse_snippet("empty", "Remove empty team"),
+})
+
 -- mappings
 vim.keymap.set({ "i", "s" }, "<C-K>", function()
 	if ls.expand_or_jumpable() then
