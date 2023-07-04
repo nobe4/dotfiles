@@ -244,24 +244,9 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 ulimit -S -n 10240
 
 # env init {
-# paths are setup in .zprofile
-# Do manually what eval $(rbenv init -) does.
-# export RBENV_SHELL="$SHELL"
-# rbenv rehash 2>/dev/null
-# # Replace nodenv with the custom function.
-# # Ref: https://github.com/rbenv/rbenv#how-rbenv-hooks-into-your-shell
-# alias rbenv=rbenv-function
-
-# # Do manually what eval $(nodenv init -) does.
-# export NODENV_SHELL="$SHELL"
-# nodenv rehash 2>/dev/null
-# # Ref: https://github.com/nodenv/nodenv#how-nodenv-hooks-into-your-shell
-# alias nodenv=nodenv-function
-
-# # Do manually what eval $(pyenv init -) does.
-# export PYENV_SHELL="$SHELL"
-# export PYENV_ROOT="$HOME/.pyenv"
-# pyenv rehash 2>/dev/null
+eval "$(rbenv init -)"
+eval "$(pyenv init -)"
+eval "$(nodenv init -)"
 # }
 
 # Restart espanso
