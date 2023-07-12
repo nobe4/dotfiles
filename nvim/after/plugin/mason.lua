@@ -30,6 +30,8 @@ local ensured_installed_packages = {
 	"html-lsp",
 	"json-lsp",
 	"shellcheck",
+
+	"black",
 }
 
 for _, package in ipairs(ensured_installed_packages) do

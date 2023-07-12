@@ -26,6 +26,7 @@ brew "pyenv"
 brew "rbenv"
 brew "reattach-to-user-namespace" # https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
 brew "ripgrep"
+brew "tmux"
 brew "tealdeer"
 brew "trash"
 brew "universal-ctags"

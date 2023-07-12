@@ -13,12 +13,13 @@ autocmd("BufWritePre", { pattern = "*", command = [[exec 'norm m`' | %s/\s\+$//e
 autocmd("FocusGained", { pattern = "*", command = "redraw!" })
 
 -- Update tmux
-autocmd({
-	"BufReadPost",
-	"FileReadPost",
-	"BufNewFile",
-}, { pattern = "*", command = [[call system("tmux rename-window 'vim:" . expand("%:t") . "'")]] })
-autocmd("VimLeave", { pattern = "*", command = "call system('tmux setw automatic-rename')" })
+-- This causes issues, it doesn't seem to add much value as well
+-- autocmd({
+-- 	"BufReadPost",
+-- 	"FileReadPost",
+-- 	"BufNewFile",
+-- }, { pattern = "*", command = [[call system("tmux rename-window 'vim:" . expand("%:t") . "'")]] })
+-- autocmd("VimLeave", { pattern = "*", command = [[call system("tmux setw automatic-rename")]] })
 
 --Install emmet
 autocmd("FileType", { pattern = "html,css,less,eruby,jsp,jspf,htmldjango,vue,svelte", command = "EmmetInstall" })

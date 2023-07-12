@@ -53,6 +53,7 @@ ls.add_snippets("go", {
 ls.add_snippets("gitcommit", {
 	ls.parser.parse_snippet("missing", "Remove missing team"),
 	ls.parser.parse_snippet("empty", "Remove empty team"),
+	ls.parser.parse_snippet("checksums", "Rebuild checksums"),
 })
 
 -- mappings
