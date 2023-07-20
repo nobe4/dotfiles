@@ -43,6 +43,7 @@ end]]
 	ls.parser.parse_snippet("let", [[let(:$1) { "$1" }]]),
 	ls.parser.parse_snippet("double", [[let(:$1) { double("$1") }]]),
 	ls.parser.parse_snippet("pry", [[require "pry-byebug"; binding.pry]]),
+	ls.parser.parse_snippet("freeze", "# frozen_string_literal: true"),
 })
 
 ls.add_snippets("go", {
