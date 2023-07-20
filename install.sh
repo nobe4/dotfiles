@@ -98,16 +98,13 @@ is_linux && {
 # }
 
 # Espanso {
-espanso register || true
-espanso start || true
+espanso service register
+espanso start
 
-# We're going to use the local espanso config so we can track its changes.
-is_macos && {
-	link "$DOTFILE_FOLDER/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
-	link "$DOTFILE_FOLDER/private/espanso_config.yml" "$HOME/Library/Preferences/espanso/user/private.yml"
-}
-# TODO linux
-
+ESPANSO_CONFIG="$(espanso path config)"
+trash "${ESPANSO_CONFIG}" || true
+link "$DOTFILE_FOLDER/espanso/" "${ESPANSO_CONFIG}"
+link "$DOTFILE_FOLDER/private/espanso/match/private.yml" "${ESPANSO_CONFIG}/match/private.yml"
 # }
 
 # GPG {
