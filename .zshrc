@@ -171,6 +171,7 @@ alias dcsh="docker compose-ssh"
 
 # linuxbrew {
 is_linux && {
+  # brew --prefix == /home/linuxbrew/.linuxbrew
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 }
 # }

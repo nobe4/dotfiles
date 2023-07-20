@@ -98,6 +98,13 @@ is_linux && {
 # }
 
 # Espanso {
+is_linux && {
+	if ! command -v espanso &> /dev/null; then
+		open "https://espanso.org/docs/install/linux/#install-on-x11"
+		wait_until "espanso is installed"
+	end
+}
+
 espanso service register
 espanso start
 
