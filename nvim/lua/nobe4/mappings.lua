@@ -88,3 +88,10 @@ map_braquet("l", "l") -- jump between lines in the (l)ocation list
 
 map("n", "]e", vim.diagnostic.goto_next, options)
 map("n", "[e", vim.diagnostic.goto_prev, options)
+
+-- vim-tmux-navigator
+vim.g.tmux_navigator_no_mappings = 1
+map("", "<C-Left>", ":<C-U>TmuxNavigateLeft<CR>", { noremap = true, silent = true })
+map("", "<C-Right>", ":<C-U>TmuxNavigateRight<CR>", { noremap = true, silent = true })
+map("", "<C-Down>", ":<C-U>TmuxNavigateDown<CR>", { noremap = true, silent = true })
+map("", "<C-Up>", ":<C-U>TmuxNavigateUp<CR>", { noremap = true, silent = true })
