@@ -98,7 +98,13 @@ is_linux && {
 # }
 
 # Espanso {
-espanso register || true
+is_linux && {
+	if ! command -v espanso &> /dev/null; then
+		open "https://espanso.org/docs/install/linux/#install-on-x11"
+		wait_until "espanso is installed"
+	end
+}
+espanso service register || true
 espanso start || true
 
 # We're going to use the local espanso config so we can track its changes.
@@ -106,8 +112,6 @@ is_macos && {
 	link "$DOTFILE_FOLDER/espanso_config.yml" "$HOME/Library/Preferences/espanso/default.yml"
 	link "$DOTFILE_FOLDER/private/espanso_config.yml" "$HOME/Library/Preferences/espanso/user/private.yml"
 }
-# TODO linux
-
 # }
 
 # GPG {
