@@ -1,0 +1,99 @@
+matches:
+  # Special
+  - trigger: ",er"
+    replace: "€"
+
+  - trigger: ",po"
+    replace: "£"
+
+  - triggers: [",ss", ",Ss", ",sS", ",SS"]
+    replace: "ß"
+
+  - trigger: ",cc"
+    replace: "ç"
+  - triggers: [",Cc", ",CC"]
+    replace: "Ç"
+
+  - trigger: ",ae"
+    replace: "æ"
+  - triggers: [",Ae", ",AE"]
+    replace: "Æ"
+
+  - trigger: ",oe"
+    replace: "œ"
+  - triggers: [",Oe", ",OE"]
+    replace: "Œ"
+
+  # [A]igüe
+  - trigger: ",ea"
+    replace: "é"
+  - triggers: [",Ea", ",EA"]
+    replace: "É"
+
+  # [G]rave
+  - trigger: ",ag"
+    replace: "à"
+  - triggers: [",Ag", ",AG"]
+    replace: "À"
+
+  - trigger: ",eg"
+    replace: "è"
+  - triggers: [",Eg", ",EG"]
+    replace: "È"
+
+  - trigger: ",ug"
+    replace: "ù"
+  - triggers: [",Ug", ",UG"]
+    replace: "Ù"
+
+  # [T]riangle (circumflex)
+  - trigger: ",at"
+    replace: "â"
+  - triggers: [",At", ",AT"]
+    replace: "Â"
+
+  - trigger: ",et"
+    replace: "ê"
+  - triggers: [",Et", ",ET"]
+    replace: "Ê"
+
+  - trigger: ",it"
+    replace: "î"
+  - triggers: [",It", ",IT"]
+    replace: "Î"
+
+  - trigger: ",ot"
+    replace: "ô"
+  - triggers: [",Ot", ",OT"]
+    replace: "Ô"
+
+  - trigger: ",ut"
+    replace: "û"
+  - triggers: [",Ut", ",UT"]
+    replace: "Û"
+
+  # [U]mlaut
+  - trigger: ",au"
+    replace: "ä"
+  - triggers: [",Au", ",AU"]
+    replace: "Ä"
+
+  - trigger: ",eu"
+    replace: "ë"
+  - triggers: [",Eu", ",EU"]
+    replace: "Ë"
+
+  - trigger: ",iu"
+    replace: "ï"
+  - triggers: [",Iu", ",IU"]
+    replace: "Ï"
+
+  - trigger: ",ou"
+    replace: "ö"
+  - triggers: [",Ou", ",OU"]
+    replace: "Ö"
+
+  - trigger: ",uu"
+    replace: "ü"
+  - triggers: [",Uu", ",UU"]
+    replace: "Ü"

@@ -1,0 +1,7 @@
+matches:
+  - trigger: ",shrug"
+    replace: "¯\_(ツ)_/¯"
+  - trigger: ",flip"
+    replace: "(╯°□°）╯︵ ┻━┻"
+  - trigger: ",wtf"
+    replace: "ಠ_ಠ"
