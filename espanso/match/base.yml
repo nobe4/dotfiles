@@ -11,7 +11,7 @@ matches:
 
       </details>
 
-  - trigger: ";date"
+  - trigger: ",date"
     replace: "{{now}}"
     vars:
       - name: now
