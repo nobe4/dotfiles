@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#/ Usage: note [FLAGS] [NOTE]
+#/
+#/ Create/update notes for today
+#/
+#/ Flags:
+#/  -r|--root ROOT        sets the root (default: ~/.notes)
+#/  -s|--search SEARCH    searches the notes
+
+set -e
+
+if [ -t 1 ]; then
+  # In a terminal, use colors.
+  NC='\033[0m' # No Color
+  RED='\033[0;31m'
+  GREEN='\033[0;32m'
+  PURPLE='\033[0;35m'
+else
+  # Not a terminal, skip colors.
+  NC=''
+  RED=''
+  GREEN=''
+  PURPLE=''
+fi
+
+ROOT="$HOME/.notes"
+
+function usage {
+  if [ -n "$1" ]; then
+    echo -e "${RED}$1${NC}\n";
+  fi
+  grep ^#/ <"$0" |cut -c4-
+}
+
+function search {
+  rg "$@" "$ROOT"
+}
+
+function create {
+  FILE="$ROOT/$(date +%F)"
+  touch "$FILE"
+  echo "$@" >> "$FILE"
+  $EDITOR "$FILE"
+}
+
+while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+        -h|--help) usage; exit 0;;
+        -r|--root) ROOT="$2"; shift;;
+        -s|--search) search "$@"; exit 0;;
+        *) create "$@"; exit 0;;
+      esac
+    shift
+done
+
+create
