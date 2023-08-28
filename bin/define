@@ -13,7 +13,7 @@ require 'net/http'
 require 'json'
 
 # color doesn't have .rb extension, we need to use load instead
-load "#{__dir__}/,color"
+load "#{__dir__}/color"
 
 input = ARGV.join('%20')
 
