@@ -1,6 +1,9 @@
 # Use `espanso edit` to auto-reload after change.
 # Alternatively, vim will do `espanso restart` after this file is modified.
 
+imports:
+  - "../../private/espanso_config.yml"
+
 matches:
   - triggers: ["comitted", "comited", "commited"]
     replace: "committed"

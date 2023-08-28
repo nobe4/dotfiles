@@ -111,7 +111,6 @@ espanso start
 ESPANSO_CONFIG="$(espanso path config)"
 trash "${ESPANSO_CONFIG}" || true
 link "$DOTFILE_FOLDER/espanso/" "${ESPANSO_CONFIG}"
-link "$DOTFILE_FOLDER/private/espanso/match/private.yml" "${ESPANSO_CONFIG}/match/private.yml"
 # }
 
 # GPG {
