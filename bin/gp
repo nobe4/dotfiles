@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Made into a bin to be accessible from vim
+
+auto-pr-open git push -u

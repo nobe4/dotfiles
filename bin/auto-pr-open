@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+tmpfile="$(mktemp)"
+touch "$tmpfile"
+
+# In the background launch a process that looks at the output, match the fido URLs and open them.
+# the s/\x1b.*//g replaces the escape character that git can insert on tty.
+(
+	tail -f "$tmpfile" \
+		| sed -uE 's/remote:[ ]*//' \
+		| grep --line-buffered 'https://github.com/.*' \
+		| sed -l 's/\x1b.*//g' \
+		| xargs -L1 -I{} bash -c "open '{}'"
+) &
+
+command="$*"
+
+script -qt1 "$tmpfile" bash -c "$command"
+
+sleep 1
+# Kill background processes (i.e. the tail -f ...).
+jobs -p | xargs kill

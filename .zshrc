@@ -148,7 +148,8 @@ alias ga='git add'
 alias gb='git branch'
 alias gc='git commit'
 alias gl='git pull'
-alias gp='git push -u'
+alias gs='git status'
+# alias gp is now in bin/gp
 alias gcb='git checkout -b'
 alias gco='git checkout'
 alias glo='git lg'
@@ -167,6 +168,11 @@ alias dksh="docker-ssh"
 alias dc="docker compose"
 alias dcr="docker compose run"
 alias dcsh="docker compose-ssh"
+# }
+
+# Ruby {
+alias bd="bundle"
+alias bde="bundle exec"
 # }
 
 # linuxbrew {
@@ -225,7 +231,7 @@ alias ll='ls -la'
 alias p8='ping -v 8.8.8.8'                           # Ping 8.8.8.8
 alias pg='ps aux | grep'                             # ps and grep easily
 alias kk='killall'                                   # Quicker kill all
-alias tel=',telegram-send'                            # Send a message to a telegram channel
+alias tel='telegram-send'                            # Send a message to a telegram channel
 alias hmac='openssl rand -hex 32'
 alias tmp='tmux new-window "cd `mktemp -d` && zsh"'
 alias dotvi='cd $DOTFILE_FOLDER && vi'
