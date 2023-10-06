@@ -58,7 +58,7 @@ map("t", "<Esc>", [[<C-\><C-n>]], options) -- Escape in terminal
 
 -- Fugitive
 map("n", "<Leader>gs", ":tabnew +Git status<CR>", options)
-map("n", "<Leader>gp", ":Git push -uq", options)
+map("n", "<Leader>gp", ":!gp", options)
 map("n", "<Leader>gl", ":Git pull", options)
 map("n", "<Leader>gb", ":GBrowse<CR>", options)
 map("v", "<Leader>gb", ":GBrowse<CR>", options)

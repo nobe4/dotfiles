@@ -11,6 +11,7 @@ autocmd BufNewFile,BufRead *.md        set filetype=markdown
 autocmd BufNewFile,BufRead *.sls       set filetype=yaml
 
 autocmd BufNewFile,BufRead Vagrantfile set filetype=ruby
+autocmd BufNewFile,BufRead *.ru        set filetype=ruby
 
 autocmd BufNewFile,BufRead *.coffee    set filetype=javascript
 autocmd BufNewFile,BufRead *.gs        set filetype=javascript
