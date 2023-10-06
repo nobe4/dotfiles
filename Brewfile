@@ -35,7 +35,5 @@ brew "z"
 cask_args appdir: "~/Applications", require_sha: true
 cask "1password-cli"
 cask "vimr"
-cask "rectangle"
 cask "kitty"
-cask "shortcat"
 cask "espanso"
