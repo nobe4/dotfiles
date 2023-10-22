@@ -20,6 +20,3 @@ autocmd("FocusGained", { pattern = "*", command = "redraw!" })
 -- 	"BufNewFile",
 -- }, { pattern = "*", command = [[call system("tmux rename-window 'vim:" . expand("%:t") . "'")]] })
 -- autocmd("VimLeave", { pattern = "*", command = [[call system("tmux setw automatic-rename")]] })
-
---Install emmet
-autocmd("FileType", { pattern = "html,css,less,eruby,jsp,jspf,htmldjango,vue,svelte", command = "EmmetInstall" })

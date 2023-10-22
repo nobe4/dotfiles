@@ -1,3 +1,5 @@
+local M = {}
+
 local options = { noremap = true, silent = false }
 local map = vim.keymap.set
 
@@ -70,8 +72,9 @@ map("n", "Z=", ":Correct<CR>", options)
 map("x", "ga", "<Plug>(EasyAlign)", options)
 map("n", "ga", "<Plug>(EasyAlign)", options)
 
-map("n", "<Leader>ut", vim.cmd.UndotreeToggle, options)
-map("n", "<Leader>uf", vim.cmd.UndotreeFocus, options)
+map("n", "<Leader>ut", function()
+	print("Use :UndotreeToggle")
+end, options)
 
 -- unimpaired-like
 -- Inspired by https://git.io/vHtuc
@@ -95,3 +98,38 @@ map("", "<C-Left>", ":<C-U>TmuxNavigateLeft<CR>", { noremap = true, silent = tru
 map("", "<C-Right>", ":<C-U>TmuxNavigateRight<CR>", { noremap = true, silent = true })
 map("", "<C-Down>", ":<C-U>TmuxNavigateDown<CR>", { noremap = true, silent = true })
 map("", "<C-Up>", ":<C-U>TmuxNavigateUp<CR>", { noremap = true, silent = true })
+
+-- LSP
+map("n", "gD", vim.diagnostic.open_float, { noremap = true, silent = true })
+M.lsp_mappings = function(bufnr)
+	-- Mappings.
+	-- See `:help vim.lsp.*` for documentation on any of the below functions
+	local bufopts = { noremap = true, silent = true, buffer = bufnr }
+	map("n", "K", vim.lsp.buf.hover, bufopts)
+	map("n", "gr", vim.lsp.buf.rename, bufopts)
+	map("n", "gd", vim.lsp.buf.definition, bufopts)
+
+	-- map('n', 'gr', vim.lsp.buf.references, bufopts)
+end
+
+print("define mappings")
+
+-- Telescope
+M.telescope = function(ts_builtin)
+	map("n", "<Leader>f", ts_builtin.find_files, options)
+	map("n", "<Leader>t", ts_builtin.tags, options)
+	map("n", "<Leader>:", ts_builtin.commands, options)
+	map("n", "<Leader>?", ts_builtin.help_tags, options)
+	map("n", [[\]], ts_builtin.live_grep, options)
+
+	-- Notational
+	-- TODO: find a way to search for the filename as well
+	map("n", "<Leader>n", function()
+		ts_builtin.live_grep({
+			cwd = "~/Documents/docs",
+			glob_pattern = { "*.md", "*.txt" },
+		})
+	end, options)
+end
+
+return M

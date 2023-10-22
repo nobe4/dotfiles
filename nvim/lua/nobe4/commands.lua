@@ -1,5 +1,6 @@
 local command = vim.api.nvim_create_user_command
 local opts = { bang = true }
+local M = {}
 
 -- Source and edit vimrc file
 command("SourceVimrc", "silent source $MYVIMRC", opts)
@@ -98,3 +99,9 @@ command("Glow", function()
 
 	command("GlowStop", cleanup, opts)
 end, opts)
+
+M.telescope = function(ts_builtin)
+	vim.api.nvim_create_user_command("LSPReferences", ts_builtin.lsp_references, { bang = true })
+end
+
+return M

@@ -39,7 +39,6 @@ local plugins = {
 	"mbbill/undotree",
 	"romainl/vim-qf",
 	"skywind3000/asyncrun.vim",
-	"mattn/emmet-vim",
 	"numToStr/Comment.nvim",
 	"habamax/vim-godot",
 
