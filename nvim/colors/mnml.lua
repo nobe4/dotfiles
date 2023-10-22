@@ -4,8 +4,8 @@ local rules = {
 
 	-- Cursor
 	{ group = "Cursor", ef = "reverse" },
-	{ group = "CursorLine", fg = "white", ef = "bold" },
-	{ group = "CursorLineNr", lk = "CursorLine" },
+	{ group = "CursorLine", ef = "bold" },
+	{ group = "CursorLineNr", fg = "lwhite", ef = "bold" },
 
 	-- Diff
 	{ group = "DiffAdd", fg = "green" },

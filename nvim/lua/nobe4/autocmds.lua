@@ -1,16 +1,12 @@
 local autocmd = vim.api.nvim_create_autocmd
 
-autocmd("InsertEnter", { pattern = "*", command = "set cursorline" })
-autocmd("InsertLeave", { pattern = "*", command = "set nocursorline" })
-
 -- Auto change the cwd in insert so C-X C-F works relative to the current file
 autocmd("InsertEnter", { pattern = "*", command = [[let save_cwd = getcwd() | set autochdir]] })
 autocmd("InsertLeave", { pattern = "*", command = [[set noautochdir | execute 'cd' fnameescape(save_cwd)]] })
 
 autocmd("QuickFixCmdPost", { pattern = "*", command = "botright copen 5" })
 
-autocmd("BufWritePre", { pattern = "*", command = [[exec 'norm m`' | %s/\s\+$//e | norm g``']] })
-autocmd("FocusGained", { pattern = "*", command = "redraw!" })
+-- autocmd("FocusGained", { pattern = "*", command = "redraw!" })
 
 -- Update tmux
 -- This causes issues, it doesn't seem to add much value as well
