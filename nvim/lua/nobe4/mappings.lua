@@ -89,18 +89,19 @@ map_braquet("q", "c") -- jump between items in the (q)uickfix list
 map_braquet("t", "t") -- jump between matching (t)ags
 map_braquet("l", "l") -- jump between lines in the (l)ocation list
 
+-- Goto next/prev "Error"
 map("n", "]e", vim.diagnostic.goto_next, options)
 map("n", "[e", vim.diagnostic.goto_prev, options)
+map("n", "[o", vim.diagnostic.open_float, options)
 
 -- vim-tmux-navigator
 vim.g.tmux_navigator_no_mappings = 1
-map("", "<C-Left>", ":<C-U>TmuxNavigateLeft<CR>", { noremap = true, silent = true })
-map("", "<C-Right>", ":<C-U>TmuxNavigateRight<CR>", { noremap = true, silent = true })
-map("", "<C-Down>", ":<C-U>TmuxNavigateDown<CR>", { noremap = true, silent = true })
-map("", "<C-Up>", ":<C-U>TmuxNavigateUp<CR>", { noremap = true, silent = true })
+map("", "<C-Left>", ":<C-U>TmuxNavigateLeft<CR>", options)
+map("", "<C-Right>", ":<C-U>TmuxNavigateRight<CR>", options)
+map("", "<C-Down>", ":<C-U>TmuxNavigateDown<CR>", options)
+map("", "<C-Up>", ":<C-U>TmuxNavigateUp<CR>", options)
 
 -- LSP
-map("n", "gD", vim.diagnostic.open_float, { noremap = true, silent = true })
 M.lsp_mappings = function(bufnr)
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
@@ -108,11 +109,8 @@ M.lsp_mappings = function(bufnr)
 	map("n", "K", vim.lsp.buf.hover, bufopts)
 	map("n", "gr", vim.lsp.buf.rename, bufopts)
 	map("n", "gd", vim.lsp.buf.definition, bufopts)
-
-	-- map('n', 'gr', vim.lsp.buf.references, bufopts)
+	map("n", "gR", vim.lsp.buf.references, bufopts)
 end
-
-print("define mappings")
 
 -- Telescope
 M.telescope = function(ts_builtin)
@@ -124,12 +122,12 @@ M.telescope = function(ts_builtin)
 
 	-- Notational
 	-- TODO: find a way to search for the filename as well
-	map("n", "<Leader>n", function()
-		ts_builtin.live_grep({
-			cwd = "~/Documents/docs",
-			glob_pattern = { "*.md", "*.txt" },
-		})
-	end, options)
+	-- map("n", "<Leader>n", function()
+	-- 	ts_builtin.live_grep({
+	-- 		cwd = "~/Documents/docs",
+	-- 		glob_pattern = { "*.md", "*.txt" },
+	-- 	})
+	-- end, options)
 end
 
 return M
