@@ -170,6 +170,9 @@ local rules = {
 	{ group = "fugitiveUntrackedHeading", fg = "lyellow" },
 	{ group = "fugitiveUntrackedModifier", lk = "fugitiveUntrackedHeading" },
 
+	-- Telescope
+	{ group = "TelescopeMatching", lk = "Search" },
+
 	-- nvim-cmp
 	-- ref https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
 	{ group = "CmpItemAbbrDeprecated", fg = "lblack", ef = "strikethrough" },
