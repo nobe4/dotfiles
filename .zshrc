@@ -175,6 +175,10 @@ alias bd="bundle"
 alias bde="bundle exec"
 # }
 
+# CTAGS {
+alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
+# }
+
 # linuxbrew {
 is_linux && {
   # brew --prefix == /home/linuxbrew/.linuxbrew

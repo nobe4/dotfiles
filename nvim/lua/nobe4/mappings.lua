@@ -35,28 +35,28 @@ map("n", "<Leader>w", ":noautocmd w<CR>", options) -- Save file without autocmd
 map("n", "<Leader>q", ":quit!", options)
 map("n", "<Leader>x", ":xit", options)
 map("n", "<Leader>m", ":make", options)
-map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options) -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
-map("n", "<Leader>r", ":<UP>", options) -- repeat last command
+map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options)                                              -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
+map("n", "<Leader>r", ":<UP>", options)                                                                 -- repeat last command
 
-map("n", "go", ":call system('open ' . expand('<cWORD>'))<CR>", options) -- open WORD under cursor
-map("n", "gf", ":e <cfile><CR>", options) -- open file under cursor
+map("n", "go", ":call system('open ' . expand('<cWORD>'))<CR>", options)                                -- open WORD under cursor
+map("n", "gf", ":e <cfile><CR>", options)                                                               -- open file under cursor
 
-map("n", "<Leader>b", ":b#<CR>", options) -- show buffer list
-map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options) -- show buffers and wait for a selection
+map("n", "<Leader>b", ":b#<CR>", options)                                                               -- show buffer list
+map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options)                                                 -- show buffers and wait for a selection
 map("n", "<Leader><Leader>", ":<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>", options) -- clear highlight
-map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]], options) -- show registers value before pasting
+map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]], options)                              -- show registers value before pasting
 
-map("c", "<C-A>", "<Home>", options) -- Go to the start of the command line
+map("c", "<C-A>", "<Home>", options)                                                                    -- Go to the start of the command line
 
 -- Add edition breakpoint on different keypress
 map("i", "<CR>", "<C-G>u<CR>", options)
 map("i", "<C-U>", "<C-G>u<C-U>", options)
 map("i", "<C-W>", "<C-G>u<C-W>", options)
 
-map("c", "<C-F>", "<C-R>=expand('%:p:h')<CR>/", options) -- Insert path to current file
-map("n", "<Leader>e", ":edit <C-R>=expand('%:p:h')<CR>/", options) -- Prepare to edit a file in the same folder as the current one
+map("c", "<C-F>", "<C-R>=expand('%:p:h')<CR>/", options)                    -- Insert path to current file
+map("n", "<Leader>e", ":edit <C-R>=expand('%:p:h')<CR>/", options)          -- Prepare to edit a file in the same folder as the current one
 map("n", "<Leader>z", ":execute 'tabnew +' . line('.') .' %'<CR>", options) -- Zoom in current buffer
-map("t", "<Esc>", [[<C-\><C-n>]], options) -- Escape in terminal
+map("t", "<Esc>", [[<C-\><C-n>]], options)                                  -- Escape in terminal
 
 -- Fugitive
 map("n", "<Leader>gs", ":tabnew +Git status<CR>", options)
@@ -110,6 +110,7 @@ M.lsp_mappings = function(bufnr)
 	map("n", "gr", vim.lsp.buf.rename, bufopts)
 	map("n", "gd", vim.lsp.buf.definition, bufopts)
 	map("n", "gR", vim.lsp.buf.references, bufopts)
+	map("n", "gc", vim.lsp.buf.code_action, bufopts)
 end
 
 -- Telescope
@@ -118,7 +119,7 @@ M.telescope = function(ts_builtin)
 	map("n", "<Leader>t", ts_builtin.tags, options)
 	map("n", "<Leader>:", ts_builtin.commands, options)
 	map("n", "<Leader>?", ts_builtin.help_tags, options)
-	map("n", [[<leader>/]], ts_builtin.live_grep, options)
+	map("n", [[<leader>\]], ts_builtin.live_grep, options)
 	map("n", [[\]], ts_builtin.grep_string, options)
 
 	-- Notational
