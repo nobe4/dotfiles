@@ -3,9 +3,15 @@
 #/
 #/ Usage: pr [FLAGS] [QUERY]
 #/
+#/ Select a local or remote project to jump to.
+#/ Local projects are folders in the base folder.
+#/ Remote projects are repositories you contributed to.
+#/
 #/ Flags:
 #/   -h|--help         display this help
-#/   -u|--update-cache update the cache if needed before
+#/   -b|--base PATH    specify where the base should be
+#/   -c|--cache PATH   specify where should the cache be
+#/   -u|--update-cache update the cache
 #/
 #/ Requirements:
 #/   - tmux
@@ -15,19 +21,16 @@
 set -e
 
 # TODO: ensures works outside of tmux as well
-# TODO: make sure all the variables have correct name
 # TODO: clone .dot into dev/nobe4/dotfiles
 
-# TODO: read from arguments
-base_folder="$HOME/dev"
-
-PREFIX_LOCAL="d"
-PREFIX_REMOTE="r"
+PREFIX_LOCAL="D"
+PREFIX_REMOTE="R"
 PROJECT_DELIMITER=" "
 
 CACHE_TTL_DAYS=1
-cache_folder='/tmp/pr'
-cache_file="$cache_folder/cache"
+CACHE='/tmp/pr/cache'
+
+BASE="$HOME/dev"
 
 # shellcheck disable=SC2016
 REPO_QUERY='
@@ -64,14 +67,14 @@ get_repo_contributed_to(){
 }
 
 is_cache_fresh(){
-  if [ ! -f "$cache_file" ]; then
-    echo "Cache is missing"
+  if [ ! -f "$CACHE" ]; then
+    echo "Cache file '$CACHE' is missing"
     return 1
   fi
 
-  days_since_last_cache_update="$(( ( $(date +%s) - $(date -r "$cache_file" +%s) ) / 86400))"
+  days_since_last_cache_update="$(( ( $(date +%s) - $(date -r "$CACHE" +%s) ) / 86400))"
   if [ "$days_since_last_cache_update" -gt "$CACHE_TTL_DAYS" ]; then
-    echo "Cache is $days_since_last_cache_update days old"
+    echo "Cache file '$CACHE' is $days_since_last_cache_update days old"
     return 1
   fi
 
@@ -85,24 +88,24 @@ update_cache(){
     return
   fi
 
-  echo "Writing to cache"
-  mkdir -p "$cache_folder"
-  get_repo_contributed_to | sort > "$cache_file"
+  echo "Writing to cache '$CACHE'"
+  mkdir -p "$(dirname "$CACHE")"
+  get_repo_contributed_to | sort > "$CACHE"
 }
 
 get_local_projects(){
-  find "$base_folder" -type d -maxdepth 2 -mindepth 2 \
+  find "$BASE" -type d -maxdepth 2 -mindepth 2 \
     | sed "s/^/$PREFIX_LOCAL$PROJECT_DELIMITER/"
 }
 
 exclude_local_projects(){
   while read -r repo; do
-    [ ! -d "$base_folder/$repo" ] && echo "$repo"
+    [ ! -d "$BASE/$repo" ] && echo "$repo"
   done
 }
 
 get_remote_projects(){
-  exclude_local_projects < "$cache_file" | sed "s/^/$PREFIX_REMOTE$PROJECT_DELIMITER/"
+  exclude_local_projects < "$CACHE" | sed "s/^/$PREFIX_REMOTE$PROJECT_DELIMITER/"
 }
 
 select_project(){
@@ -119,7 +122,7 @@ select_project(){
 }
 
 clone_repo(){
-  project="$base_folder/$1"
+  project="$BASE/$1"
   gh repo clone "$1" "$project"
 }
 
@@ -139,6 +142,12 @@ force_cache_update=0
 while [ $# -gt 0 ]; do
   case "$1" in
     -h|--help) show_usage && exit 0 ;;
+    -b|--base)
+      shift 1
+      BASE="$1" ;;
+    -c|--cache)
+      shift 1
+      CACHE="$1" ;;
     -u|--update-cache) force_cache_update=1 ;;
     *) initial_query="$1" ;;
   esac
