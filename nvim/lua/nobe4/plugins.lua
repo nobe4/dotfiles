@@ -57,7 +57,7 @@ local plugins = {
 	"williamboman/mason-lspconfig.nvim",
 
 	-- Formatter
-	{ "jose-elias-alvarez/null-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+	{ "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 
 	-- Fuzzy finder
 	{
