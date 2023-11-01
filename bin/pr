@@ -1,0 +1,160 @@
+#!/usr/bin/env bash
+#/ pr - project interface for tmux
+#/
+#/ Usage: pr [FLAGS] [QUERY]
+#/
+#/ Flags:
+#/   -h|--help         display this help
+#/   -u|--update-cache update the cache if needed before
+#/
+#/ Requirements:
+#/   - tmux
+#/   - fzf
+#/   - gh
+
+set -e
+
+# TODO: ensures works outside of tmux as well
+# TODO: make sure all the variables have correct name
+# TODO: clone .dot into dev/nobe4/dotfiles
+
+# TODO: read from arguments
+base_folder="$HOME/dev"
+
+PREFIX_LOCAL="d"
+PREFIX_REMOTE="r"
+PROJECT_DELIMITER=" "
+
+CACHE_TTL_DAYS=1
+cache_folder='/tmp/pr'
+cache_file="$cache_folder/cache"
+
+# shellcheck disable=SC2016
+REPO_QUERY='
+  query($endCursor: String) {
+    viewer {
+      repositoriesContributedTo(
+        first: 100
+        isLocked: false
+        includeUserRepositories: true
+        after: $endCursor
+      ) {
+        nodes {
+          nameWithOwner
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+'
+REPO_EXTRACT='.[].viewer.repositoriesContributedTo.nodes[].nameWithOwner'
+
+show_usage() {
+  grep ^#/ <"$0" | cut -c4-
+}
+
+get_repo_contributed_to(){
+  gh api graphql \
+    --paginate \
+    -f query="$REPO_QUERY" \
+    --jq "$REPO_EXTRACT"
+}
+
+is_cache_fresh(){
+  if [ ! -f "$cache_file" ]; then
+    echo "Cache is missing"
+    return 1
+  fi
+
+  days_since_last_cache_update="$(( ( $(date +%s) - $(date -r "$cache_file" +%s) ) / 86400))"
+  if [ "$days_since_last_cache_update" -gt "$CACHE_TTL_DAYS" ]; then
+    echo "Cache is $days_since_last_cache_update days old"
+    return 1
+  fi
+
+  return 0
+}
+
+update_cache(){
+  force_update="$1"
+
+  if [ "$force_update" == "0" ] && is_cache_fresh; then
+    return
+  fi
+
+  echo "Writing to cache"
+  mkdir -p "$cache_folder"
+  get_repo_contributed_to | sort > "$cache_file"
+}
+
+get_local_projects(){
+  find "$base_folder" -type d -maxdepth 2 -mindepth 2 \
+    | sed "s/^/$PREFIX_LOCAL$PROJECT_DELIMITER/"
+}
+
+exclude_local_projects(){
+  while read -r repo; do
+    [ ! -d "$base_folder/$repo" ] && echo "$repo"
+  done
+}
+
+get_remote_projects(){
+  exclude_local_projects < "$cache_file" | sed "s/^/$PREFIX_REMOTE$PROJECT_DELIMITER/"
+}
+
+select_project(){
+  # shellcheck disable=SC2016
+  echo -e "$(get_local_projects)\n$(get_remote_projects)" \
+    | fzf \
+      --select-1 \
+      --nth=2 \
+      --delimiter="$PROJECT_DELIMITER" \
+      --query="$1" \
+      --header "Select project" \
+      --preview 'tmux capture-pane -p -e -t "$(basename {})"' \
+    || true # prevent fzf from failing on exit
+}
+
+clone_repo(){
+  project="$base_folder/$1"
+  gh repo clone "$1" "$project"
+}
+
+switch_session(){
+  project_name="$(basename "$1")"
+  project_session="$(echo "$project_name" | tr '.' '_')"
+
+  if ! tmux has-session -t "$project_session" 2> /dev/null; then
+    tmux new-session -d -s "$project_session" -c "$1"
+  fi
+  tmux switch-client -t "$project_session"
+}
+
+initial_query=""
+force_cache_update=0
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -h|--help) show_usage && exit 0 ;;
+    -u|--update-cache) force_cache_update=1 ;;
+    *) initial_query="$1" ;;
+  esac
+
+  shift 1
+done
+
+update_cache "$force_cache_update"
+
+project=$(select_project "$initial_query")
+
+type="$(echo "$project" |cut -d"$PROJECT_DELIMITER" -f1 | sed 's/ \+//')"
+project="$(echo "$project" |cut -d"$PROJECT_DELIMITER" -f2 | sed 's/ \+//')"
+
+if [ "$type" == "$PREFIX_REMOTE" ]; then
+  clone_repo "$project"
+fi
+
+switch_session "$project"
