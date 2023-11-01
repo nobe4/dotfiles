@@ -20,4 +20,4 @@ matches:
       - name: now
         type: date
         params:
-          format: "%d/%m/%Y"
+          format: "%Y-%m-%d"
