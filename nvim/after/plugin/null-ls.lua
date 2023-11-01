@@ -29,6 +29,9 @@ local sources = {
 	-- general prose
 	diagnostics.vale,
 
+	-- shell
+	diagnostics.shellcheck,
+
 	-- multipurpose
 	formatting.prettier.with({
 		disabled_filetypes = { "markdown" },
