@@ -57,6 +57,10 @@ ls.add_snippets("gitcommit", {
 	ls.parser.parse_snippet("checksums", "Rebuild checksums"),
 })
 
+ls.add_snippets("sh", {
+	ls.parser.parse_snippet("shellcheck ignore", "# shellcheck disable=$1"),
+})
+
 -- mappings
 vim.keymap.set({ "i", "s" }, "<C-K>", function()
 	if ls.expand_or_jumpable() then
