@@ -24,7 +24,7 @@ local rules = {
   { group = "IncSearch",                 fg = "blue" },
 
   -- Spelling
-  { group = "SpellBad",                  ef = "underline",               fg = "red" },
+  { group = "SpellBad",                  ef = "underline",               fg = "lred" },
   { group = "SpellCap",                  lk = "SpellBad" },
   { group = "SpellLocal",                lk = "SpellBad" },
   { group = "SpellRare",                 lk = "SpellBad" },
@@ -43,8 +43,8 @@ local rules = {
   { group = "VertSplit",                 fg = "black",                   bg = "white" },
 
   -- Errors
-  { group = "WarningMsg",                fg = "yellow" },
-  { group = "Error",                     fg = "red" },
+  { group = "WarningMsg",                fg = "lyellow" },
+  { group = "Error",                     fg = "lred" },
   { group = "ErrorMsg",                  lk = "Error" },
 
   -- Misc
@@ -123,7 +123,7 @@ local rules = {
   { group = "String",                    fg = "lgreen" },
   { group = "Structure",                 lk = "n4_default" },
   { group = "Tag",                       lk = "n4_default" },
-  { group = "Todo",                      fg = "yellow" },
+  { group = "Todo",                      fg = "lyellow" },
   { group = "Type",                      lk = "n4_default" },
   { group = "Typedef",                   lk = "n4_default" },
   { group = "Underlined",                lk = "n4_default" },
@@ -209,12 +209,12 @@ local rules = {
   { group = "CmpItemKindEnumMember",     lk = "CmpItemKindClass" },
   { group = "CmpItemKindEnum",           lk = "CmpItemKindClass" },
   { group = "CmpItemKindStruct",         lk = "CmpItemKindClass" },
-
+  -- Comments
   { group = "@text.note",                lk = "Todo" },
-  { group = "@text.todo",                lk = "Todo" },
-  { group = "@text.danger",              lk = "Error" },
-  { group = "@text.warning",             lk = "Todo" },
-  { group = "@text.debug",               lk = "Todo" },
+  { group = "@text.todo",                lk = "@text.note" },
+  { group = "@text.danger",              lk = "@text.note" },
+  { group = "@text.warning",             lk = "@text.note" },
+  { group = "@text.debug",               lk = "@text.note" },
 }
 
 -- Base16 color definition
