@@ -5,6 +5,12 @@ autocmd("InsertEnter", { pattern = "*", command = [[let save_cwd = getcwd() | se
 autocmd("InsertLeave", { pattern = "*", command = [[set noautochdir | execute 'cd' fnameescape(save_cwd)]] })
 
 autocmd("QuickFixCmdPost", { pattern = "*", command = "botright copen 5" })
+autocmd("TextYankPost", {
+	pattern = "*",
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+})
 
 -- autocmd("FocusGained", { pattern = "*", command = "redraw!" })
 
