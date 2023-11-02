@@ -303,6 +303,8 @@ for _, rule in pairs(rules) do
       .. n_to_c(rule.fg)
       .. " guibg="
       .. n_to_c(rule.bg)
+      .. " guisp="
+      .. n_to_c(rule.fg)
     )
   else
     vim.cmd("highlight! link " .. rule.group .. " " .. rule.lk)
