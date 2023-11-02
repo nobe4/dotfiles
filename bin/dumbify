@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+puts $stdin
+  .read
+  .chars
+  .map { |c| [c.upcase, c].sample }
+  .join
