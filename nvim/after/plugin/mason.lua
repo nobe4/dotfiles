@@ -29,9 +29,16 @@ local ensured_installed_packages = {
 	"css-lsp",
 	"html-lsp",
 	"json-lsp",
+	"emmet-ls",
+
 	"shellcheck",
+	"bash-language-server",
 
 	"black",
+
+	"yaml-language-server",
+	"yamlfmt",
+	"yamllint",
 }
 
 for _, package in ipairs(ensured_installed_packages) do

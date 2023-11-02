@@ -31,10 +31,13 @@ local sources = {
 
 	-- shell
 	diagnostics.shellcheck,
+	formatting.yamlfmt.with({
+		extra_args = { "--formatter", "indentless_arrays=true,retain_line_breaks=true" },
+	}),
 
 	-- multipurpose
 	formatting.prettier.with({
-		disabled_filetypes = { "markdown" },
+		disabled_filetypes = { "markdown", "yaml" },
 	}),
 }
 
