@@ -22,6 +22,12 @@ set -e
 
 # TODO: ensures works outside of tmux as well
 # TODO: clone .dot into dev/nobe4/dotfiles
+# TODO: create a new untouched project via owner/org or url
+#  - `-n|--new`
+#  - use `gh repo` to get the info from the args
+# TODO: add a flag to remove local projects
+#  - `-d|--delete`
+#  - use a specific fzf title (Select project to remove)
 
 PREFIX_LOCAL="D"
 PREFIX_REMOTE="R"
@@ -95,7 +101,7 @@ update_cache(){
 
 get_local_projects(){
   find "$BASE" -type d -maxdepth 2 -mindepth 2 \
-    | sed "s/^/$PREFIX_LOCAL$PROJECT_DELIMITER/"
+    | sed "s|^$BASE/|$PREFIX_LOCAL$PROJECT_DELIMITER|"
 }
 
 exclude_local_projects(){
@@ -127,13 +133,12 @@ clone_repo(){
 }
 
 switch_session(){
-  project_name="$(basename "$1")"
-  project_session="$(echo "$project_name" | tr '.' '_')"
+  project="$1"
 
-  if ! tmux has-session -t "$project_session" 2> /dev/null; then
-    tmux new-session -d -s "$project_session" -c "$1"
+  if ! tmux has-session -t "$project" 2> /dev/null; then
+    tmux new-session -d -s "$project" -c "$BASE/$project"
   fi
-  tmux switch-client -t "$project_session"
+  tmux switch-client -t "$project"
 }
 
 initial_query=""
@@ -159,8 +164,8 @@ update_cache "$force_cache_update"
 
 project=$(select_project "$initial_query")
 
-type="$(echo "$project" |cut -d"$PROJECT_DELIMITER" -f1 | sed 's/ \+//')"
-project="$(echo "$project" |cut -d"$PROJECT_DELIMITER" -f2 | sed 's/ \+//')"
+type="$(echo "$project" | cut -d"$PROJECT_DELIMITER" -f1 | sed 's/ \+//')"
+project="$(echo "$project" | cut -d"$PROJECT_DELIMITER" -f2 | sed 's/ \+//')"
 
 if [ "$type" == "$PREFIX_REMOTE" ]; then
   clone_repo "$project"
