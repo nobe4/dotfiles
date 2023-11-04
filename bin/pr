@@ -30,7 +30,6 @@
 #  - add a flag to ask before cloning
 #    `-a|--ask-before-clonig`
 # - cache the `gh repo view` result
-# - use `tmux new-session -A` flag
 
 set -e
 
