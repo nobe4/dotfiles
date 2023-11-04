@@ -17,17 +17,25 @@
 #/   - tmux
 #/   - fzf
 #/   - gh
+# TODO:
+# - ensures works outside of tmux as well
+# - clone .dot into dev/nobe4/dotfiles
+# - create a new untouched project via owner/org or url
+#   - `-n|--new`
+#   - use `gh repo` to get the info from the args
+# - add a flag to remove local projects
+#   - `-d|--delete`
+#   - use a specific fzf title (Select project to remove)
+# - use $FZF_DEFAULT_OPTS to allow configuration to be set
+# - remove prefixes
+#    - remove --nth
+#    - check later if want to clone
+#    - maybe add a flag to ask before cloning
+#    `-a|--ask-before-clonig`
+# - cache the `gh repo view` result
+# - use `tmux new-session -A` flag
 
 set -e
-
-# TODO: ensures works outside of tmux as well
-# TODO: clone .dot into dev/nobe4/dotfiles
-# TODO: create a new untouched project via owner/org or url
-#  - `-n|--new`
-#  - use `gh repo` to get the info from the args
-# TODO: add a flag to remove local projects
-#  - `-d|--delete`
-#  - use a specific fzf title (Select project to remove)
 
 PREFIX_LOCAL="D"
 PREFIX_REMOTE="R"
@@ -60,6 +68,12 @@ REPO_QUERY='
   }
 '
 REPO_EXTRACT='.[].viewer.repositoriesContributedTo.nodes[].nameWithOwner'
+
+# shellcheck disable=SC2016
+PREVIEW_COMMAND='
+GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS \
+  gh repo view {2}
+'
 
 show_usage() {
   grep ^#/ <"$0" | cut -c4-
@@ -115,7 +129,6 @@ get_remote_projects(){
 }
 
 select_project(){
-  # shellcheck disable=SC2016
   echo -e "$(get_local_projects)\n$(get_remote_projects)" \
     | fzf \
       --select-1 \
@@ -123,7 +136,8 @@ select_project(){
       --delimiter="$PROJECT_DELIMITER" \
       --query="$1" \
       --header "Select project" \
-      --preview 'tmux capture-pane -p -e -t "$(basename {})"' \
+      --preview-window=up:85%:border-bottom \
+      --preview "$PREVIEW_COMMAND" \
     || true # prevent fzf from failing on exit
 }
 
