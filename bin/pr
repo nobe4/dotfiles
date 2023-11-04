@@ -7,9 +7,13 @@
 #/ Local projects are folders in the base folder.
 #/ Remote projects are repositories you contributed to.
 #/
+#/ Requirements:
+#/   - tmux
+#/   - fzf
+#/   - gh
+#/
 #/ Flags:
 #/   -h|--help         display this help
-#/   -u|--update-cache update the cache
 #/
 #/ Environment variables:
 #/   PR_BASE_PATH       path to the base folder
@@ -20,12 +24,7 @@
 #/   PR_CACHE_PATH      path to the cache file
 #/                      value: '$CACHE_PATH'
 #/   PR_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
-#/                      value: $PREVIEW_COMMAND
-#/
-#/ Requirements:
-#/   - tmux
-#/   - fzf
-#/   - gh
+#/                      value: '$PREVIEW_COMMAND'
 # TODO:
 # - ensures works outside of tmux as well
 # - clone .dot into dev/nobe4/dotfiles
@@ -38,7 +37,6 @@
 # - use $FZF_DEFAULT_OPTS to allow configuration to be set
 #  - add a flag to ask before cloning
 #    `-a|--ask-before-clonig`
-# - remove `--force-cache`
 # - writing cache should clear the whole cache folder
 
 set -e
@@ -112,9 +110,7 @@ is_cache_fresh(){
 }
 
 update_cache(){
-  force_update="$1"
-
-  if [ "$force_update" == "0" ] && is_cache_fresh; then
+  if is_cache_fresh; then
     return
   fi
 
@@ -166,20 +162,17 @@ switch_session(){
 }
 
 initial_query=""
-force_cache_update=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
     -h|--help) show_help && exit 0 ;;
-    -u|--update-cache) force_cache_update=1 ;;
     *) initial_query="$1" ;;
   esac
 
   shift 1
 done
 
-update_cache "$force_cache_update"
-
+update_cache
 project=$(select_project "$initial_query")
 clone_repo "$project"
 switch_session "$project"
