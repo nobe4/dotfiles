@@ -17,14 +17,15 @@
 #/
 #/ Environment variables:
 #/   PR_BASE_PATH       path to the base folder
-#/                      value: '$BASE_PATH'
+#/                      Value: '$BASE_PATH'
 #/   PR_CACHE_TTL_DAYS  number of days after which the cache needs to update
-#/                      value: '$CACHE_TTL_DAYS'
-#/                      Set to -1 to always refresh
+#/                      Set to -1 to always refresh.
+#/                      Value: '$CACHE_TTL_DAYS'
 #/   PR_CACHE_PATH      path to the cache file
 #/                      value: '$CACHE_PATH'
 #/   PR_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
-#/                      value: '$PREVIEW_COMMAND'
+#/                      Set to ' ' to disable.
+#/                      Value: '$PREVIEW_COMMAND'
 # TODO:
 # - ensures works outside of tmux as well
 # - clone .dot into dev/nobe4/dotfiles
@@ -37,7 +38,8 @@
 # - use $FZF_DEFAULT_OPTS to allow configuration to be set
 #  - add a flag to ask before cloning
 #    `-a|--ask-before-clonig`
-# - writing cache should clear the whole cache folder
+# - check if using a global variable is better than passing arguments for all
+#   the project=$1
 
 set -e
 
@@ -46,6 +48,7 @@ export BASE_PATH="${PR_BASE_PATH:-$HOME/dev}"
 export CACHE_TTL_DAYS="${PR_CACHE_TTL_DAYS:-1}"
 export CACHE_PATH="${PR_CACHE_PATH:-/tmp/pr}"
 REPOS_CACHE_PATH="$CACHE_PATH/_repos"
+
 # Indent to look nice in the help
 # shellcheck disable=SC2016
 DEFAULT_PREVIEW_COMMAND='
@@ -70,13 +73,8 @@ REPO_QUERY='
         includeUserRepositories: true
         after: $endCursor
       ) {
-        nodes {
-          nameWithOwner
-        }
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
+        nodes { nameWithOwner }
+        pageInfo { hasNextPage endCursor }
       }
     }
   }
@@ -110,12 +108,12 @@ is_cache_fresh(){
 }
 
 update_cache(){
-  if is_cache_fresh; then
-    return
-  fi
+  if is_cache_fresh; then return; fi
 
-  echo "Writing to cache '$REPOS_CACHE_PATH'"
-  mkdir -p "$(dirname "$REPOS_CACHE_PATH")"
+  mkdir -p "$CACHE_PATH"
+  rm -rf "${CACHE_PATH:?}/*"
+
+  echo "Writing repo list to cache '$REPOS_CACHE_PATH'"
   get_repo_contributed_to | sort > "$REPOS_CACHE_PATH"
 }
 
