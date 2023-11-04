@@ -27,19 +27,12 @@
 #   - `-d|--delete`
 #   - use a specific fzf title (Select project to remove)
 # - use $FZF_DEFAULT_OPTS to allow configuration to be set
-# - remove prefixes
-#    - remove --nth
-#    - check later if want to clone
-#    - maybe add a flag to ask before cloning
+#  - add a flag to ask before cloning
 #    `-a|--ask-before-clonig`
 # - cache the `gh repo view` result
 # - use `tmux new-session -A` flag
 
 set -e
-
-PREFIX_LOCAL="D"
-PREFIX_REMOTE="R"
-PROJECT_DELIMITER=" "
 
 CACHE_TTL_DAYS=1
 CACHE='/tmp/pr/cache'
@@ -115,7 +108,7 @@ update_cache(){
 
 get_local_projects(){
   find "$BASE" -type d -maxdepth 2 -mindepth 2 \
-    | sed "s|^$BASE/|$PREFIX_LOCAL$PROJECT_DELIMITER|"
+    | sed "s|^$BASE/||"
 }
 
 exclude_local_projects(){
@@ -125,15 +118,13 @@ exclude_local_projects(){
 }
 
 get_remote_projects(){
-  exclude_local_projects < "$CACHE" | sed "s/^/$PREFIX_REMOTE$PROJECT_DELIMITER/"
+  exclude_local_projects < "$CACHE"
 }
 
 select_project(){
   echo -e "$(get_local_projects)\n$(get_remote_projects)" \
     | fzf \
       --select-1 \
-      --nth=2 \
-      --delimiter="$PROJECT_DELIMITER" \
       --query="$1" \
       --header "Select project" \
       --preview-window=up:85%:border-bottom \
@@ -142,8 +133,10 @@ select_project(){
 }
 
 clone_repo(){
-  project="$BASE/$1"
-  gh repo clone "$1" "$project"
+  project_path="$BASE/$1"
+  if [ ! -d "$project_path" ]; then
+    gh repo clone "$1" "$project_path"
+  fi
 }
 
 switch_session(){
@@ -177,12 +170,5 @@ done
 update_cache "$force_cache_update"
 
 project=$(select_project "$initial_query")
-
-type="$(echo "$project" | cut -d"$PROJECT_DELIMITER" -f1 | sed 's/ \+//')"
-project="$(echo "$project" | cut -d"$PROJECT_DELIMITER" -f2 | sed 's/ \+//')"
-
-if [ "$type" == "$PREFIX_REMOTE" ]; then
-  clone_repo "$project"
-fi
-
+clone_repo "$project"
 switch_session "$project"
