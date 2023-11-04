@@ -9,9 +9,18 @@
 #/
 #/ Flags:
 #/   -h|--help         display this help
-#/   -b|--base PATH    specify where the base should be
-#/   -c|--cache PATH   specify where should the cache be
 #/   -u|--update-cache update the cache
+#/
+#/ Environment variables:
+#/   PR_BASE_PATH       path to the base folder
+#/                      value: '$BASE_PATH'
+#/   PR_CACHE_TTL_DAYS  number of days after which the cache needs to update
+#/                      value: '$CACHE_TTL_DAYS'
+#/                      Set to -1 to always refresh
+#/   PR_CACHE_PATH      path to the cache file
+#/                      value: '$CACHE_PATH'
+#/   PR_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
+#/                      value: $PREVIEW_COMMAND
 #/
 #/ Requirements:
 #/   - tmux
@@ -29,14 +38,29 @@
 # - use $FZF_DEFAULT_OPTS to allow configuration to be set
 #  - add a flag to ask before cloning
 #    `-a|--ask-before-clonig`
-# - cache the `gh repo view` result
+# - remove `--force-cache`
+# - writing cache should clear the whole cache folder
 
 set -e
 
-CACHE_TTL_DAYS=1
-CACHE='/tmp/pr/cache'
-
-BASE="$HOME/dev"
+# Exporting is required for envsubst
+export BASE_PATH="${PR_BASE_PATH:-$HOME/dev}"
+export CACHE_TTL_DAYS="${PR_CACHE_TTL_DAYS:-1}"
+export CACHE_PATH="${PR_CACHE_PATH:-/tmp/pr}"
+REPOS_CACHE_PATH="$CACHE_PATH/_repos"
+# Indent to look nice in the help
+# shellcheck disable=SC2016
+DEFAULT_PREVIEW_COMMAND='
+    # cache the command output
+    if [ -f "$CACHE_PATH/{}" ]; then
+      cat "$CACHE_PATH/{}"
+    else
+      mkdir -p "$(dirname "$CACHE_PATH/{}")"
+      GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS \
+         gh repo view {} | tee "$CACHE_PATH/{}"
+    fi
+'
+export PREVIEW_COMMAND="${PR_PREVIEW_COMMAND:-$DEFAULT_PREVIEW_COMMAND}"
 
 # shellcheck disable=SC2016
 REPO_QUERY='
@@ -61,14 +85,8 @@ REPO_QUERY='
 '
 REPO_EXTRACT='.[].viewer.repositoriesContributedTo.nodes[].nameWithOwner'
 
-# shellcheck disable=SC2016
-PREVIEW_COMMAND='
-GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS \
-  gh repo view {2}
-'
-
-show_usage() {
-  grep ^#/ <"$0" | cut -c4-
+show_help() {
+  grep ^#/ <"$0" | cut -c4- | envsubst
 }
 
 get_repo_contributed_to(){
@@ -79,14 +97,14 @@ get_repo_contributed_to(){
 }
 
 is_cache_fresh(){
-  if [ ! -f "$CACHE" ]; then
-    echo "Cache file '$CACHE' is missing"
+  if [ ! -f "$REPOS_CACHE_PATH" ]; then
+    echo "Cache file '$REPOS_CACHE_PATH' is missing"
     return 1
   fi
 
-  days_since_last_cache_update="$(( ( $(date +%s) - $(date -r "$CACHE" +%s) ) / 86400))"
+  days_since_last_cache_update="$(( ( $(date +%s) - $(date -r "$REPOS_CACHE_PATH" +%s) ) / 86400))"
   if [ "$days_since_last_cache_update" -gt "$CACHE_TTL_DAYS" ]; then
-    echo "Cache file '$CACHE' is $days_since_last_cache_update days old"
+    echo "Cache file '$REPOS_CACHE_PATH' is $days_since_last_cache_update days old"
     return 1
   fi
 
@@ -100,24 +118,24 @@ update_cache(){
     return
   fi
 
-  echo "Writing to cache '$CACHE'"
-  mkdir -p "$(dirname "$CACHE")"
-  get_repo_contributed_to | sort > "$CACHE"
+  echo "Writing to cache '$REPOS_CACHE_PATH'"
+  mkdir -p "$(dirname "$REPOS_CACHE_PATH")"
+  get_repo_contributed_to | sort > "$REPOS_CACHE_PATH"
 }
 
 get_local_projects(){
-  find "$BASE" -type d -maxdepth 2 -mindepth 2 \
-    | sed "s|^$BASE/||"
+  find "$BASE_PATH" -type d -maxdepth 2 -mindepth 2 \
+    | sed "s|^$BASE_PATH/||"
 }
 
 exclude_local_projects(){
   while read -r repo; do
-    [ ! -d "$BASE/$repo" ] && echo "$repo"
+    [ ! -d "$BASE_PATH/$repo" ] && echo "$repo"
   done
 }
 
 get_remote_projects(){
-  exclude_local_projects < "$CACHE"
+  exclude_local_projects < "$REPOS_CACHE_PATH"
 }
 
 select_project(){
@@ -132,7 +150,7 @@ select_project(){
 }
 
 clone_repo(){
-  project_path="$BASE/$1"
+  project_path="$BASE_PATH/$1"
   if [ ! -d "$project_path" ]; then
     gh repo clone "$1" "$project_path"
   fi
@@ -142,7 +160,7 @@ switch_session(){
   project="$1"
 
   if ! tmux has-session -t "$project" 2> /dev/null; then
-    tmux new-session -d -s "$project" -c "$BASE/$project"
+    tmux new-session -d -s "$project" -c "$BASE_PATH/$project"
   fi
   tmux switch-client -t "$project"
 }
@@ -152,13 +170,7 @@ force_cache_update=0
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    -h|--help) show_usage && exit 0 ;;
-    -b|--base)
-      shift 1
-      BASE="$1" ;;
-    -c|--cache)
-      shift 1
-      CACHE="$1" ;;
+    -h|--help) show_help && exit 0 ;;
     -u|--update-cache) force_cache_update=1 ;;
     *) initial_query="$1" ;;
   esac
