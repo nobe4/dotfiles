@@ -13,7 +13,8 @@
 #/   - gh
 #/
 #/ Flags:
-#/   -h|--help         display this help
+#/   -h|--help         Display this help
+#/   -d|--delete       Delete the selected local project
 #/
 #/ Environment variables:
 #/   PR_BASE_PATH           path to the base folder
@@ -33,11 +34,11 @@
 # - create a new untouched project via owner/org or url
 #   - `-n|--new`
 #   - use `gh repo` to get the info from the args
-# - add a flag to remove local projects
-#   - `-d|--delete`
-#   - use a specific fzf title (Select project to remove)
-#  - add a flag to ask before cloning
-#    `-a|--ask-before-clonig`
+# - add a flag to ask before cloning
+#   `-a|--ask-before-clonig`
+# - switch and then clone in current folder
+#   - create folder
+#   - gh repo clone {} -- .
 
 set -e
 
@@ -59,7 +60,8 @@ DEFAULT_FZF_PREVIEW_COMMAND='
     fi
 '
 export FZF_PREVIEW_COMMAND="${PR_FZF_PREVIEW_COMMAND:-${DEFAULT_FZF_PREVIEW_COMMAND}}"
-DEFAULT_FZF_OPTS='--preview-window=up:85%:border-bottom:wrap --header "Select project"'
+
+DEFAULT_FZF_OPTS='--preview-window=up:85%:border-bottom:wrap --no-mouse'
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-${DEFAULT_FZF_OPTS}}"
 
 # shellcheck disable=SC2016
@@ -84,22 +86,15 @@ show_help() {
   grep ^#/ <"${0}" | cut -c4- | envsubst
 }
 
-get_repo_contributed_to(){
-  gh api graphql \
-    --paginate \
-    -f query="${REPO_QUERY}" \
-    --jq "${REPO_EXTRACT}"
-}
-
 is_cache_fresh(){
   if [ ! -f "${REPOS_CACHE_PATH}" ]; then
-    echo "Cache file '${REPOS_CACHE_PATH}' is missing"
+    echo "${REPOS_CACHE_PATH} is missing"
     return 1
   fi
 
   days_since_last_cache_update="$(( ( $(date +%s) - $(date -r "${REPOS_CACHE_PATH}" +%s) ) / 86400))"
   if [ "${days_since_last_cache_update}" -gt "${CACHE_TTL_DAYS}" ]; then
-    echo "Cache file '${REPOS_CACHE_PATH}' is ${days_since_last_cache_update} days old"
+    echo "${REPOS_CACHE_PATH} is ${days_since_last_cache_update} days old"
     return 1
   fi
 
@@ -107,13 +102,20 @@ is_cache_fresh(){
 }
 
 update_cache(){
-  if is_cache_fresh; then return; fi
+  is_cache_fresh && return
 
   mkdir -p "${CACHE_PATH}"
   rm -rf "${CACHE_PATH:?}/*"
 
-  echo "Writing repo list to cache '${REPOS_CACHE_PATH}'"
-  get_repo_contributed_to | sort > "${REPOS_CACHE_PATH}"
+  echo "Writing repo list to ${REPOS_CACHE_PATH}"
+  get_projects_contributed_to | sort > "${REPOS_CACHE_PATH}"
+}
+
+get_projects_contributed_to(){
+  gh api graphql \
+    --paginate \
+    -f query="${REPO_QUERY}" \
+    --jq "${REPO_EXTRACT}"
 }
 
 get_local_projects(){
@@ -131,20 +133,30 @@ get_remote_projects(){
   exclude_local_projects < "${REPOS_CACHE_PATH}"
 }
 
+get_all_projects(){
+  echo -e "$(get_local_projects)\n$(get_remote_projects)"
+}
+
 select_project(){
-  echo -e "$(get_local_projects)\n$(get_remote_projects)" \
+  echo "${1}" \
+    | sort \
     | fzf \
       --select-1 \
-      --query="${1}" \
+      --query="${2}" \
+      --header "${3:-Select project}" \
       --preview "${FZF_PREVIEW_COMMAND}" \
     || true # prevent fzf from failing on exit
 }
 
-clone_repo(){
+clone_project(){
   project_path="${BASE_PATH}/${1}"
   if [ ! -d "${project_path}" ]; then
     gh repo clone "${1}" "${project_path}"
   fi
+}
+
+delete_project(){
+  rm -rf "${BASE_PATH:?}/${1:?}"
 }
 
 switch_session(){
@@ -160,10 +172,13 @@ switch_session(){
 }
 
 initial_query=""
+action="default"
 
 while [ $# -gt 0 ]; do
   case "${1}" in
     -h|--help) show_help && exit 0 ;;
+    -d|--delete) action="delete" ;;
+    --show-cache) action="show-cache" ;;
     *) initial_query="${1}" ;;
   esac
 
@@ -171,6 +186,20 @@ while [ $# -gt 0 ]; do
 done
 
 update_cache
-project=$(select_project "${initial_query}")
-clone_repo "${project}"
-switch_session "${project}"
+
+case "${action}" in
+  default)
+    project=$(select_project "$(get_all_projects)" "${initial_query}" "Select project")
+    clone_project "${project}"
+    switch_session "${project}"
+    ;;
+  delete)
+    project="$(select_project "$(get_local_projects)" "${initial_query}" "Select project to delete")"
+    delete_project "${project}"
+    echo "${project} deleted locally"
+    ;;
+  show-cache)
+    echo "cat ${REPOS_CACHE_PATH}"
+    cat "${REPOS_CACHE_PATH}"
+    ;;
+esac
