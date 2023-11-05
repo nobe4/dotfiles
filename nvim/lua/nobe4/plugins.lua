@@ -20,7 +20,7 @@ local options = {
 -- Configs are in after/plugin
 local plugins = {
 	-- Local
-	{ dir = "~/Documents/dev/helldb" },
+	{ dir = "~/dev/nobe4/withhold.nvim" },
 
 	-- Misc
 	"nobe4/exchange.vim",
@@ -56,6 +56,7 @@ local plugins = {
 
 	-- Formatter
 	{ "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+	{ "folke/trouble.nvim" },
 
 	-- Fuzzy finder
 	{
