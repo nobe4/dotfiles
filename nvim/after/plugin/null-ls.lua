@@ -31,6 +31,8 @@ local sources = {
 
 	-- shell
 	diagnostics.shellcheck,
+
+	-- yaml
 	formatting.yamlfmt.with({
 		extra_args = { "--formatter", "indentless_arrays=true,retain_line_breaks=true" },
 	}),

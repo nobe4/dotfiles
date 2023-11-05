@@ -20,9 +20,9 @@ end
 
 def handle(notification)
   begin
-    type, name, link, thread = parse(notification)
-  rescue
-    Thread.exit()
+    type, _, link, thread = parse(notification)
+  rescue StandardError
+    Thread.exit
   end
 
   case type

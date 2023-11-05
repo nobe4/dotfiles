@@ -70,8 +70,6 @@ FPATH="$DOTFILE_FOLDER/functions:/usr/share/zsh/5.7.1/functions:$FPATH"
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
 zmodload zsh/zprof
 # }
-# Path {
-# }
 # Prompt {
 # Default prompt is just current dir
 # shellcheck disable=SC2154 # colors are loaded somewhere else

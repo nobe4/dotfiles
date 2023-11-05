@@ -21,3 +21,4 @@ aliases:
     limits: '!github-limits'
     dependabot_combine_pr: combine-prs --query "author:app/dependabot"
     approve: pr review --approve
+pager: less
