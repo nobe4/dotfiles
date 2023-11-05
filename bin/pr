@@ -34,11 +34,6 @@
 # - create a new untouched project via owner/org or url
 #   - `-n|--new`
 #   - use `gh repo` to get the info from the args
-# - add a flag to ask before cloning
-#   `-a|--ask-before-clonig`
-# - switch and then clone in current folder
-#   - create folder
-#   - gh repo clone {} -- .
 
 set -e
 
