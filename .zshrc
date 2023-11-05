@@ -44,7 +44,7 @@ autoload -U colors && colors
 # }
 # Misc Exports {
 export EDITOR='nvim'
-export PUPPET_HOME="$HOME/Documents/dev/puppet"
+export MANPAGER='nvim +Man!'
 # }
 # Functions {
 # Load compinit and check the cache only once a day
