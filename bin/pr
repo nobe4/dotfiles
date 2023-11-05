@@ -3,8 +3,9 @@
 #/
 #/ Usage: pr [FLAGS] [QUERY]
 #/
-#/ Select a local or remote project to jump to.
-#/ Local projects are folders in the base folder.
+#/ Select a local or remote project to switch to.
+#/
+#/ Local projects are folders in ${BASE_PATH}.
 #/ Remote projects are repositories you contributed to.
 #/
 #/ Requirements:
@@ -13,27 +14,30 @@
 #/   - gh
 #/
 #/ Flags:
-#/   -h|--help         Display this help
-#/   -d|--delete       Delete the selected local project
+#/   -h|--help      Display this help.
+#/   -d|--delete    Delete the selected local project.
+#/   -n|--new       Clone a project not in the contribution list.
+#/                  Needs the 'owner/repo' or URL as QUERY.
 #/
 #/ Environment variables:
-#/   PR_BASE_PATH           path to the base folder
+#/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocation.
+#/                          Value: '${FZF_DEFAULT_OPTS}'
+#/
+#/   PR_BASE_PATH           Path to the base folder.
 #/                          Value: '${BASE_PATH}'
-#/   PR_CACHE_TTL_DAYS      number of days after which the cache needs to update
+#/
+#/   PR_CACHE_TTL_DAYS      Number of days after which the cache needs to update.
 #/                          Set to -1 to always refresh.
 #/                          Value: '${CACHE_TTL_DAYS}'
-#/   PR_CACHE_PATH          path to the cache file
+#/
+#/   PR_CACHE_PATH          Path to the cache file.
 #/                          value: '${CACHE_PATH}'
+#/
 #/   PR_FZF_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
 #/                          Set to ' ' to disable.
 #/                          Value: '${FZF_PREVIEW_COMMAND}'
-#/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocation.
-#/                          Value: '${FZF_DEFAULT_OPTS}'
 # TODO:
 # - clone .dot into dev/nobe4/dotfiles
-# - create a new untouched project via owner/org or url
-#   - `-n|--new`
-#   - use `gh repo` to get the info from the args
 
 set -e
 
@@ -123,6 +127,10 @@ get_remote_projects(){
   exclude_local_projects < "${REPOS_CACHE_PATH}"
 }
 
+get_remote_project(){
+  gh repo view --json nameWithOwner --jq '.nameWithOwner' "${1}"
+}
+
 get_all_projects(){
   echo -e "$(get_local_projects)\n$(get_remote_projects)"
 }
@@ -161,14 +169,15 @@ switch_session(){
   fi
 }
 
-initial_query=""
+query=""
 action="default"
 
 while [ $# -gt 0 ]; do
   case "${1}" in
     -h|--help) show_help && exit 0 ;;
     -d|--delete) action="delete" ;;
-    *) initial_query="${1}" ;;
+    -n|--new) action="new" ;;
+    *) query="${1}" ;;
   esac
 
   shift 1
@@ -178,13 +187,18 @@ update_cache
 
 case "${action}" in
   default)
-    project=$(select_project "$(get_all_projects)" "${initial_query}" "Select project")
+    project="$(select_project "$(get_all_projects)" "${query}" "Select project")"
     clone_project "${project}"
     switch_session "${project}"
     ;;
   delete)
-    project="$(select_project "$(get_local_projects)" "${initial_query}" "Select project to delete")"
+    project="$(select_project "$(get_local_projects)" "${query}" "Select project to delete")"
     delete_project "${project}"
     echo "${project} deleted locally"
+    ;;
+  new)
+    project=$(get_remote_project "${query}")
+    clone_project "${project}"
+    switch_session "${project}"
     ;;
 esac
