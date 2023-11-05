@@ -29,7 +29,6 @@
 #/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocation.
 #/                          Value: '${FZF_DEFAULT_OPTS}'
 # TODO:
-# - ensures works outside of tmux as well
 # - clone .dot into dev/nobe4/dotfiles
 # - create a new untouched project via owner/org or url
 #   - `-n|--new`
@@ -152,7 +151,12 @@ switch_session(){
   if ! tmux has-session -t "${1}" 2> /dev/null; then
     tmux new-session -d -s "${1}" -c "${BASE_PATH}/${1}"
   fi
-  tmux switch-client -t "${1}"
+
+  if [ "${TERM_PROGRAM}" = "tmux" ]; then
+    tmux switch-client -t "${1}"
+  else
+    tmux attach-session -t "${1}"
+  fi
 }
 
 initial_query=""
