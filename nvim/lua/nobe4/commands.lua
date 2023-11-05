@@ -15,7 +15,7 @@ command("WriteSudo", sudo_write_cmd, opts)
 command("JSONPretty", "%!jq '.'", opts)
 command("Writing", "setlocal wrap linebreak spell spellcapcheck= filetype=markdown", opts)
 
-command("ValeVocab", "tabnew ~/.dot/vale-styles/Vocab/Default/accept.txt", opts)
+command("ValeVocab", "tabnew $DOTFILE_FOLDER/vale-styles/Vocab/Default/accept.txt", opts)
 
 command("Mouse", function()
 	vim.cmd([[
