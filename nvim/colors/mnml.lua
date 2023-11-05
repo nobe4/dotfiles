@@ -216,6 +216,7 @@ local rules = {
   { group = "@text.warning",             lk = "@text.note" },
   { group = "@text.debug",               lk = "@text.note" },
   { group = "@text.uri",                 fg = "lblue" },
+  { group = "@text.uri.gitcommit",       lk = "n4_default" },
 }
 
 -- Base16 color definition
