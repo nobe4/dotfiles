@@ -38,6 +38,8 @@
 #/                          Value: '${FZF_PREVIEW_COMMAND}'
 # TODO:
 # - clone .dot into dev/nobe4/dotfiles
+#   AND THEN ln it to '$HOME/.dot' so all the path can be fixed
+#   see http://mywiki.wooledge.org/BashFAQ/028
 
 set -e
 
