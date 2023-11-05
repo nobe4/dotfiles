@@ -17,17 +17,17 @@
 #/
 #/ Environment variables:
 #/   PR_BASE_PATH           path to the base folder
-#/                          Value: '$BASE_PATH'
+#/                          Value: '${BASE_PATH}'
 #/   PR_CACHE_TTL_DAYS      number of days after which the cache needs to update
 #/                          Set to -1 to always refresh.
-#/                          Value: '$CACHE_TTL_DAYS'
+#/                          Value: '${CACHE_TTL_DAYS}'
 #/   PR_CACHE_PATH          path to the cache file
-#/                          value: '$CACHE_PATH'
+#/                          value: '${CACHE_PATH}'
 #/   PR_FZF_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
 #/                          Set to ' ' to disable.
-#/                          Value: '$FZF_PREVIEW_COMMAND'
+#/                          Value: '${FZF_PREVIEW_COMMAND}'
 #/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocation.
-#/                          Value: '$FZF_DEFAULT_OPTS'
+#/                          Value: '${FZF_DEFAULT_OPTS}'
 # TODO:
 # - ensures works outside of tmux as well
 # - clone .dot into dev/nobe4/dotfiles
@@ -39,30 +39,29 @@
 #   - use a specific fzf title (Select project to remove)
 #  - add a flag to ask before cloning
 #    `-a|--ask-before-clonig`
-# - use ${name} for all variables
 
 set -e
 
 # Exporting is required for envsubst
-export BASE_PATH="${PR_BASE_PATH:-$HOME/dev}"
+export BASE_PATH="${PR_BASE_PATH:-${HOME}/dev}"
 export CACHE_TTL_DAYS="${PR_CACHE_TTL_DAYS:-1}"
 export CACHE_PATH="${PR_CACHE_PATH:-/tmp/pr}"
-REPOS_CACHE_PATH="$CACHE_PATH/_repos"
+REPOS_CACHE_PATH="${CACHE_PATH}/_repos"
 
 # Indent to look nice in the help
 # shellcheck disable=SC2016
 DEFAULT_FZF_PREVIEW_COMMAND='
-    if [ -f "$CACHE_PATH/{}" ]; then
-      cat "$CACHE_PATH/{}"
+    if [ -f "${CACHE_PATH}/{}" ]; then
+      cat "${CACHE_PATH}/{}"
     else
       # cache the command output
-      mkdir -p "$(dirname "$CACHE_PATH/{}")"
-      GH_FORCE_TTY=80 gh repo view {} | tee "$CACHE_PATH/{}"
+      mkdir -p "$(dirname "${CACHE_PATH}/{}")"
+      GH_FORCE_TTY=80 gh repo view {} | tee "${CACHE_PATH}/{}"
     fi
 '
-export FZF_PREVIEW_COMMAND="${PR_FZF_PREVIEW_COMMAND:-$DEFAULT_FZF_PREVIEW_COMMAND}"
+export FZF_PREVIEW_COMMAND="${PR_FZF_PREVIEW_COMMAND:-${DEFAULT_FZF_PREVIEW_COMMAND}}"
 DEFAULT_FZF_OPTS='--preview-window=up:85%:border-bottom:wrap --header "Select project"'
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-$DEFAULT_FZF_OPTS}"
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-${DEFAULT_FZF_OPTS}}"
 
 # shellcheck disable=SC2016
 REPO_QUERY='
@@ -83,25 +82,25 @@ REPO_QUERY='
 REPO_EXTRACT='.[].viewer.repositoriesContributedTo.nodes[].nameWithOwner'
 
 show_help() {
-  grep ^#/ <"$0" | cut -c4- | envsubst
+  grep ^#/ <"${0}" | cut -c4- | envsubst
 }
 
 get_repo_contributed_to(){
   gh api graphql \
     --paginate \
-    -f query="$REPO_QUERY" \
-    --jq "$REPO_EXTRACT"
+    -f query="${REPO_QUERY}" \
+    --jq "${REPO_EXTRACT}"
 }
 
 is_cache_fresh(){
-  if [ ! -f "$REPOS_CACHE_PATH" ]; then
-    echo "Cache file '$REPOS_CACHE_PATH' is missing"
+  if [ ! -f "${REPOS_CACHE_PATH}" ]; then
+    echo "Cache file '${REPOS_CACHE_PATH}' is missing"
     return 1
   fi
 
-  days_since_last_cache_update="$(( ( $(date +%s) - $(date -r "$REPOS_CACHE_PATH" +%s) ) / 86400))"
-  if [ "$days_since_last_cache_update" -gt "$CACHE_TTL_DAYS" ]; then
-    echo "Cache file '$REPOS_CACHE_PATH' is $days_since_last_cache_update days old"
+  days_since_last_cache_update="$(( ( $(date +%s) - $(date -r "${REPOS_CACHE_PATH}" +%s) ) / 86400))"
+  if [ "${days_since_last_cache_update}" -gt "${CACHE_TTL_DAYS}" ]; then
+    echo "Cache file '${REPOS_CACHE_PATH}' is ${days_since_last_cache_update} days old"
     return 1
   fi
 
@@ -111,63 +110,63 @@ is_cache_fresh(){
 update_cache(){
   if is_cache_fresh; then return; fi
 
-  mkdir -p "$CACHE_PATH"
+  mkdir -p "${CACHE_PATH}"
   rm -rf "${CACHE_PATH:?}/*"
 
-  echo "Writing repo list to cache '$REPOS_CACHE_PATH'"
-  get_repo_contributed_to | sort > "$REPOS_CACHE_PATH"
+  echo "Writing repo list to cache '${REPOS_CACHE_PATH}'"
+  get_repo_contributed_to | sort > "${REPOS_CACHE_PATH}"
 }
 
 get_local_projects(){
-  find "$BASE_PATH" -type d -maxdepth 2 -mindepth 2 \
-    | sed "s|^$BASE_PATH/||"
+  find "${BASE_PATH}" -type d -maxdepth 2 -mindepth 2 \
+    | sed "s|^${BASE_PATH}/||"
 }
 
 exclude_local_projects(){
   while read -r repo; do
-    [ ! -d "$BASE_PATH/$repo" ] && echo "$repo"
+    [ ! -d "${BASE_PATH}/${repo}" ] && echo "${repo}"
   done
 }
 
 get_remote_projects(){
-  exclude_local_projects < "$REPOS_CACHE_PATH"
+  exclude_local_projects < "${REPOS_CACHE_PATH}"
 }
 
 select_project(){
   echo -e "$(get_local_projects)\n$(get_remote_projects)" \
     | fzf \
       --select-1 \
-      --query="$1" \
-      --preview "$FZF_PREVIEW_COMMAND" \
+      --query="${1}" \
+      --preview "${FZF_PREVIEW_COMMAND}" \
     || true # prevent fzf from failing on exit
 }
 
 clone_repo(){
-  project_path="$BASE_PATH/$1"
-  if [ ! -d "$project_path" ]; then
-    gh repo clone "$1" "$project_path"
+  project_path="${BASE_PATH}/${1}"
+  if [ ! -d "${project_path}" ]; then
+    gh repo clone "${1}" "${project_path}"
   fi
 }
 
 switch_session(){
-  if ! tmux has-session -t "$1" 2> /dev/null; then
-    tmux new-session -d -s "$1" -c "$BASE_PATH/$1"
+  if ! tmux has-session -t "${1}" 2> /dev/null; then
+    tmux new-session -d -s "${1}" -c "${BASE_PATH}/${1}"
   fi
-  tmux switch-client -t "$1"
+  tmux switch-client -t "${1}"
 }
 
 initial_query=""
 
 while [ $# -gt 0 ]; do
-  case "$1" in
+  case "${1}" in
     -h|--help) show_help && exit 0 ;;
-    *) initial_query="$1" ;;
+    *) initial_query="${1}" ;;
   esac
 
   shift 1
 done
 
 update_cache
-project=$(select_project "$initial_query")
-clone_repo "$project"
-switch_session "$project"
+project=$(select_project "${initial_query}")
+clone_repo "${project}"
+switch_session "${project}"
