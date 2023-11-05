@@ -16,16 +16,18 @@
 #/   -h|--help         display this help
 #/
 #/ Environment variables:
-#/   PR_BASE_PATH       path to the base folder
-#/                      Value: '$BASE_PATH'
-#/   PR_CACHE_TTL_DAYS  number of days after which the cache needs to update
-#/                      Set to -1 to always refresh.
-#/                      Value: '$CACHE_TTL_DAYS'
-#/   PR_CACHE_PATH      path to the cache file
-#/                      value: '$CACHE_PATH'
-#/   PR_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
-#/                      Set to ' ' to disable.
-#/                      Value: '$PREVIEW_COMMAND'
+#/   PR_BASE_PATH           path to the base folder
+#/                          Value: '$BASE_PATH'
+#/   PR_CACHE_TTL_DAYS      number of days after which the cache needs to update
+#/                          Set to -1 to always refresh.
+#/                          Value: '$CACHE_TTL_DAYS'
+#/   PR_CACHE_PATH          path to the cache file
+#/                          value: '$CACHE_PATH'
+#/   PR_FZF_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
+#/                          Set to ' ' to disable.
+#/                          Value: '$FZF_PREVIEW_COMMAND'
+#/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocation.
+#/                          Value: '$FZF_DEFAULT_OPTS'
 # TODO:
 # - ensures works outside of tmux as well
 # - clone .dot into dev/nobe4/dotfiles
@@ -35,11 +37,9 @@
 # - add a flag to remove local projects
 #   - `-d|--delete`
 #   - use a specific fzf title (Select project to remove)
-# - use $FZF_DEFAULT_OPTS to allow configuration to be set
 #  - add a flag to ask before cloning
 #    `-a|--ask-before-clonig`
-# - check if using a global variable is better than passing arguments for all
-#   the project=$1
+# - use ${name} for all variables
 
 set -e
 
@@ -51,17 +51,18 @@ REPOS_CACHE_PATH="$CACHE_PATH/_repos"
 
 # Indent to look nice in the help
 # shellcheck disable=SC2016
-DEFAULT_PREVIEW_COMMAND='
-    # cache the command output
+DEFAULT_FZF_PREVIEW_COMMAND='
     if [ -f "$CACHE_PATH/{}" ]; then
       cat "$CACHE_PATH/{}"
     else
+      # cache the command output
       mkdir -p "$(dirname "$CACHE_PATH/{}")"
-      GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS \
-         gh repo view {} | tee "$CACHE_PATH/{}"
+      GH_FORCE_TTY=80 gh repo view {} | tee "$CACHE_PATH/{}"
     fi
 '
-export PREVIEW_COMMAND="${PR_PREVIEW_COMMAND:-$DEFAULT_PREVIEW_COMMAND}"
+export FZF_PREVIEW_COMMAND="${PR_FZF_PREVIEW_COMMAND:-$DEFAULT_FZF_PREVIEW_COMMAND}"
+DEFAULT_FZF_OPTS='--preview-window=up:85%:border-bottom:wrap --header "Select project"'
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-$DEFAULT_FZF_OPTS}"
 
 # shellcheck disable=SC2016
 REPO_QUERY='
@@ -137,9 +138,7 @@ select_project(){
     | fzf \
       --select-1 \
       --query="$1" \
-      --header "Select project" \
-      --preview-window=up:85%:border-bottom \
-      --preview "$PREVIEW_COMMAND" \
+      --preview "$FZF_PREVIEW_COMMAND" \
     || true # prevent fzf from failing on exit
 }
 
@@ -151,12 +150,10 @@ clone_repo(){
 }
 
 switch_session(){
-  project="$1"
-
-  if ! tmux has-session -t "$project" 2> /dev/null; then
-    tmux new-session -d -s "$project" -c "$BASE_PATH/$project"
+  if ! tmux has-session -t "$1" 2> /dev/null; then
+    tmux new-session -d -s "$1" -c "$BASE_PATH/$1"
   fi
-  tmux switch-client -t "$project"
+  tmux switch-client -t "$1"
 }
 
 initial_query=""
