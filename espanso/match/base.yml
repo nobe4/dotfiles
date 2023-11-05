@@ -2,7 +2,7 @@
 # Alternatively, vim will do `espanso restart` after this file is modified.
 
 imports:
-  - "../../private/espanso_config.yml"
+  - "../../private/espanso/match/private.yml"
 
 matches:
   - triggers: ["comitted", "comited", "commited"]
