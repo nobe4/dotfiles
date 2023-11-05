@@ -86,18 +86,13 @@ show_help() {
   grep ^#/ <"${0}" | cut -c4- | envsubst
 }
 
+cache_age_in_days(){
+  echo "$((( $(date +%s) - $(date -r "${REPOS_CACHE_PATH}" +%s)) / 86400))"
+}
+
 is_cache_fresh(){
-  if [ ! -f "${REPOS_CACHE_PATH}" ]; then
-    echo "${REPOS_CACHE_PATH} is missing"
-    return 1
-  fi
-
-  days_since_last_cache_update="$(( ( $(date +%s) - $(date -r "${REPOS_CACHE_PATH}" +%s) ) / 86400))"
-  if [ "${days_since_last_cache_update}" -gt "${CACHE_TTL_DAYS}" ]; then
-    echo "${REPOS_CACHE_PATH} is ${days_since_last_cache_update} days old"
-    return 1
-  fi
-
+  [ ! -f "${REPOS_CACHE_PATH}" ] && return 1
+  [ "$(cache_age_in_days)" -gt "${CACHE_TTL_DAYS}" ] && return 1
   return 0
 }
 
@@ -178,7 +173,6 @@ while [ $# -gt 0 ]; do
   case "${1}" in
     -h|--help) show_help && exit 0 ;;
     -d|--delete) action="delete" ;;
-    --show-cache) action="show-cache" ;;
     *) initial_query="${1}" ;;
   esac
 
@@ -197,9 +191,5 @@ case "${action}" in
     project="$(select_project "$(get_local_projects)" "${initial_query}" "Select project to delete")"
     delete_project "${project}"
     echo "${project} deleted locally"
-    ;;
-  show-cache)
-    echo "cat ${REPOS_CACHE_PATH}"
-    cat "${REPOS_CACHE_PATH}"
     ;;
 esac
