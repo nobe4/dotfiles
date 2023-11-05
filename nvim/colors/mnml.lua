@@ -178,7 +178,6 @@ local rules = {
   { group = "CmpItemAbbrDeprecated",     fg = "lblack",                  ef = "strikethrough" },
   { group = "CmpItemAbbrMatch",          fg = "green" },
   { group = "CmpItemAbbrMatchFuzzy",     fg = "blue" },
-
   -- Custom groups
   -- default
   { group = "CmpItemKindText",           fg = "white" },
@@ -209,12 +208,14 @@ local rules = {
   { group = "CmpItemKindEnumMember",     lk = "CmpItemKindClass" },
   { group = "CmpItemKindEnum",           lk = "CmpItemKindClass" },
   { group = "CmpItemKindStruct",         lk = "CmpItemKindClass" },
+
   -- Comments
   { group = "@text.note",                lk = "Todo" },
   { group = "@text.todo",                lk = "@text.note" },
   { group = "@text.danger",              lk = "@text.note" },
   { group = "@text.warning",             lk = "@text.note" },
   { group = "@text.debug",               lk = "@text.note" },
+  { group = "@text.uri",                 fg = "lblue" },
 }
 
 -- Base16 color definition
