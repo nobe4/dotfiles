@@ -79,7 +79,6 @@ PROMPT="%{${fg[green]}%}%c%{${reset_color}%} "
 prompt_precmd() {
   prompt_on_load_callback() {
     # Gets the new prompt value from the "$(prompt)" call.
-    # shellcheck disable=SC2034 # no need to export this variable
     PROMPT="$(<&"$1")"
 
     zle reset-prompt

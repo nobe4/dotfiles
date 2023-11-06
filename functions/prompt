@@ -1,7 +1,6 @@
-local prompt="%{$fg[green]%}%c%{$fg[red]%}"
+#!/usr/bin/env bash
 
-# Add virtual environment processing
-[ -n "$VIRTUAL_ENV" ] && prompt="($(basename $VIRTUAL_ENV)) $prompt"
+local prompt="%{$fg[green]%}%c%{$fg[red]%}"
 
 branch="$((git symbolic-ref -q HEAD --short || git name-rev --name-only --no-undefined --always HEAD) 2> /dev/null | xargs)"
 if [ -n "$branch" ]; then
@@ -15,9 +14,9 @@ if [ -n "$branch" ]; then
     stash=""
   fi
 
-  prompt="$prompt $branch$stash$dirty"
+  prompt="$prompt$branch$stash$dirty"
 fi
 
-prompt="$prompt%{$reset_color%} "
+[ -n "$VIRTUAL_ENV" ] && prompt="$prompt%{$fg[blue]%}$(basename $VIRTUAL_ENV)"
 
-echo "$prompt"
+echo "$prompt%{$reset_color%} "
