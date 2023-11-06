@@ -16,6 +16,7 @@
 #/ Flags:
 #/   -h|--help      Display this help.
 #/   -d|--delete    Delete the selected local project.
+#/   -|--last       Switch to last project
 #/   -n|--new       Clone a project not in the contribution list.
 #/                  Needs the 'owner/repo' or URL as QUERY.
 #/
@@ -30,8 +31,9 @@
 #/                          Set to -1 to always refresh.
 #/                          Value: '${CACHE_TTL_DAYS}'
 #/
-#/   PR_CACHE_PATH          Path to the cache file.
-#/                          value: '${CACHE_PATH}'
+#/   PR_STATE_PATH          Path to the state folder.
+#/                          Uses XDG_STATE_HOME if set.
+#/                          value: '${STATE_PATH}'
 #/
 #/   PR_FZF_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
 #/                          Set to ' ' to disable.
@@ -41,20 +43,16 @@
 #   AND THEN ln it to '$HOME/.dot' so all the path can be fixed
 #   see http://mywiki.wooledge.org/BashFAQ/028
 # - have tmux open a central view with shortcut to access without a shell
-# - support `-` for switching to the previous project
-#   - needs to add a $cache/previous file
-# - use $XDG_CONFIG_HOME to store cache and last projects
-#   see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 
 set -e
 
 # Exporting is required for envsubst
-export BASE_PATH="${PR_BASE_PATH:-${HOME}/dev}"
+export BASE_PATH="${PR_BASE_PATH:-${HOME:?}/dev}"
 export CACHE_TTL_DAYS="${PR_CACHE_TTL_DAYS:-1}"
-export CACHE_PATH="${PR_CACHE_PATH:-/tmp/pr}"
-export REPOS_CACHE_PATH="${CACHE_PATH}/repo_list"
+export STATE_PATH="${PR_CACHE_PATH:-${XDG_STATE_HOME:-${HOME:?}/.local/state}/pr}"
+CACHE_FILE_PATH="${STATE_PATH:?}/cache"
+LAST_FILE_PATH="${STATE_PATH:?}/last"
 
-# Indent to look nice in the help
 # shellcheck disable=SC2016
 DEFAULT_FZF_PREVIEW_COMMAND='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {}'
 export FZF_PREVIEW_COMMAND="${PR_FZF_PREVIEW_COMMAND:-${DEFAULT_FZF_PREVIEW_COMMAND}}"
@@ -80,27 +78,21 @@ REPO_QUERY='
 '
 REPO_EXTRACT='.[].viewer.repositoriesContributedTo.nodes[].nameWithOwner'
 
-show_help() {
-  grep ^#/ <"${0}" | cut -c4- | envsubst
-}
+show_help() { grep ^#/ <"${0}" | cut -c4- | envsubst ; }
 
-cache_age_in_days(){
-  echo "$((( $(date +%s) - $(date -r "${REPOS_CACHE_PATH}" +%s)) / 86400))"
-}
+cache_age_in_days(){ echo "$((( $(date +%s) - $(date -r "${CACHE_FILE_PATH}" +%s)) / 86400))" ; }
 
 is_cache_fresh(){
-  [ ! -f "${REPOS_CACHE_PATH}" ] && return 1
+  [ ! -f "${CACHE_FILE_PATH}" ] && return 1
   [ "$(cache_age_in_days)" -gt "${CACHE_TTL_DAYS}" ] && return 1
   return 0
 }
 
 update_cache(){
-  mkdir -p "${CACHE_PATH}"
-
   is_cache_fresh && return
 
-  echo "Writing repo list to ${REPOS_CACHE_PATH}"
-  get_projects_contributed_to | sort > "${REPOS_CACHE_PATH}"
+  echo "Writing repo list to ${CACHE_FILE_PATH}"
+  get_projects_contributed_to | sort > "${CACHE_FILE_PATH}"
 }
 
 get_projects_contributed_to(){
@@ -121,17 +113,11 @@ exclude_local_projects(){
   done
 }
 
-get_remote_projects(){
-  exclude_local_projects < "${REPOS_CACHE_PATH}"
-}
+get_remote_projects(){ exclude_local_projects < "${CACHE_FILE_PATH}" ; }
 
-get_remote_project(){
-  gh repo view --json nameWithOwner --jq '.nameWithOwner' "${1}"
-}
+get_remote_project(){ gh repo view --json nameWithOwner --jq '.nameWithOwner' "${1}" ; }
 
-get_all_projects(){
-  echo -e "$(get_local_projects)\n$(get_remote_projects)"
-}
+get_all_projects(){ echo -e "$(get_local_projects)\n$(get_remote_projects)" ; }
 
 select_project(){
   echo "${1}" \
@@ -151,9 +137,11 @@ clone_project(){
   fi
 }
 
-delete_project(){
-  rm -rf "${BASE_PATH:?}/${1:?}"
-}
+delete_project(){ rm -rf "${BASE_PATH:?}/${1:?}"; }
+
+current_session(){ tmux display-message -p '#S'; }
+
+update_last(){ current_session > "${LAST_FILE_PATH}"; }
 
 switch_session(){
   if ! tmux has-session -t "${1}" 2> /dev/null; then
@@ -165,6 +153,8 @@ switch_session(){
   else
     tmux attach-session -t "${1}"
   fi
+
+  update_last
 }
 
 query=""
@@ -174,12 +164,15 @@ while [ $# -gt 0 ]; do
   case "${1}" in
     -h|--help) show_help && exit 0 ;;
     -d|--delete) action="delete" ;;
+    -|--last) action="last" ;;
     -n|--new) action="new" ;;
     *) query="${1}" ;;
   esac
 
   shift 1
 done
+
+mkdir -p "${STATE_PATH}"
 
 update_cache
 
@@ -198,5 +191,8 @@ case "${action}" in
     project=$(get_remote_project "${query}")
     clone_project "${project}"
     switch_session "${project}"
+    ;;
+  last)
+    switch_session "$(cat "${LAST_FILE_PATH}")"
     ;;
 esac
