@@ -40,6 +40,11 @@
 # - clone .dot into dev/nobe4/dotfiles
 #   AND THEN ln it to '$HOME/.dot' so all the path can be fixed
 #   see http://mywiki.wooledge.org/BashFAQ/028
+# - have tmux open a central view with shortcut to access without a shell
+# - support `-` for switching to the previous project
+#   - needs to add a $cache/previous file
+# - use $XDG_CONFIG_HOME to store cache and last projects
+#   see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 
 set -e
 
@@ -47,19 +52,11 @@ set -e
 export BASE_PATH="${PR_BASE_PATH:-${HOME}/dev}"
 export CACHE_TTL_DAYS="${PR_CACHE_TTL_DAYS:-1}"
 export CACHE_PATH="${PR_CACHE_PATH:-/tmp/pr}"
-REPOS_CACHE_PATH="${CACHE_PATH}/_repos"
+export REPOS_CACHE_PATH="${CACHE_PATH}/repo_list"
 
 # Indent to look nice in the help
 # shellcheck disable=SC2016
-DEFAULT_FZF_PREVIEW_COMMAND='
-    if [ -f "${CACHE_PATH}/{}" ]; then
-      cat "${CACHE_PATH}/{}"
-    else
-      # cache the command output
-      mkdir -p "$(dirname "${CACHE_PATH}/{}")"
-      GH_FORCE_TTY=80 gh repo view {} | tee "${CACHE_PATH}/{}"
-    fi
-'
+DEFAULT_FZF_PREVIEW_COMMAND='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {}'
 export FZF_PREVIEW_COMMAND="${PR_FZF_PREVIEW_COMMAND:-${DEFAULT_FZF_PREVIEW_COMMAND}}"
 
 DEFAULT_FZF_OPTS='--preview-window=up:85%:border-bottom:wrap --no-mouse'
@@ -98,10 +95,9 @@ is_cache_fresh(){
 }
 
 update_cache(){
-  is_cache_fresh && return
-
   mkdir -p "${CACHE_PATH}"
-  rm -rf "${CACHE_PATH:?}/*"
+
+  is_cache_fresh && return
 
   echo "Writing repo list to ${REPOS_CACHE_PATH}"
   get_projects_contributed_to | sort > "${REPOS_CACHE_PATH}"
