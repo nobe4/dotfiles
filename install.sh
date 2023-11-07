@@ -27,6 +27,7 @@ mkdir -p "$HOME/.local/bin"
 
 # Fonts {
 unzip -q ./CommitMono.zip -d /tmp/commitmono/
+# install https://github.com/ryanoasis/nerd-fonts/releases
 
 is_macos && mv /tmp/commitmono/*.otf /Library/Fonts/
 is_linux && {

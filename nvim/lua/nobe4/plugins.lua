@@ -56,7 +56,7 @@ local plugins = {
 
 	-- Formatter
 	{ "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-	{ "folke/trouble.nvim" },
+	{ "folke/trouble.nvim", opts = {} },
 
 	-- Fuzzy finder
 	{

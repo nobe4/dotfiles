@@ -143,6 +143,7 @@ alias vit='nvim +tj\ ' # Jump to tag
 # Git {
 alias ga='git add'
 alias gb='git branch'
+alias gbm='git branch -M'
 alias gc='git commit'
 alias gl='git pull'
 alias gs='git status'
