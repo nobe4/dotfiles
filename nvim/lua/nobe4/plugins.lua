@@ -39,6 +39,7 @@ local plugins = {
 	"skywind3000/asyncrun.vim",
 	"numToStr/Comment.nvim",
 	"habamax/vim-godot",
+	"nvim-tree/nvim-web-devicons",
 
 	-- Treesitter
 	"nvim-treesitter/nvim-treesitter",
@@ -56,7 +57,7 @@ local plugins = {
 
 	-- Formatter
 	{ "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
-	{ "folke/trouble.nvim", opts = {} },
+	{ "folke/trouble.nvim" },
 
 	-- Fuzzy finder
 	{
