@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 # Check if shell is interactive
 case $- in
@@ -35,14 +35,14 @@ function is_linux {
 }
 
 function is_missing {
-  if !type "$1" > /dev/null; then
+  if ! type "$1" > /dev/null; then
     return 0
   fi
   return 1
 }
 
 function wait_until {
-  read -s -k "?Press enter when $1..."
+  read -r -s -k "?Press enter when $1..."
 }
 
 # link file and backup if needed
@@ -51,10 +51,10 @@ link(){
   local dst="$2"
 
   # Backup the existing link
-  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
+  if [ -f "$dst" ] || [ -d "$dst" ] || [ -L "$dst" ]
   then
     # If the existing destination does not link to the current source, backup it
-    if ! [ "$src" = "$(readlink $dst)" ]
+    if ! [ "$src" = "$(readlink "$dst")" ]
     then
       mv "$dst" "${dst}.backup.$(date +%s)"
     fi
@@ -66,5 +66,5 @@ link(){
 
 # List configuration file
 list(){
-  find -H "$DOTFILES_ROOT" -type f -name $1 -not -path '*.yada*'
+  find -H "$DOTFILES_ROOT" -type f -name "$1" -not -path '*.yada*'
 }

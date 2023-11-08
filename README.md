@@ -5,7 +5,8 @@
 
 ```
 git clone --recurse-submodules git@github.com:nobe4/dotfiles.git
-cd dotfiles
+ln -fs ./dotfiles ~/.config/dotfiles
+cd /dotfiles
 ./install.sh
 ```
 

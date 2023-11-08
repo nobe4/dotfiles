@@ -3,7 +3,7 @@
 # vim: foldmarker={,} foldmethod=marker
 
 # Setup {
-export DOTFILE_FOLDER="$HOME/.dot"
+export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
 # }
 

@@ -4,7 +4,7 @@
 # This file contains all the configuration necessary for running a zsh shell.
 
 # Setup {
-export DOTFILE_FOLDER="$HOME/.dot"
+export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
 # }
 

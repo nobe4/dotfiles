@@ -1,12 +1,12 @@
 #!/usr/bin/env zsh
 # vim: foldmarker={,} foldmethod=marker
 
-set -e
+set -ex
 
 # This script installs all requirements.
 
 # Setup {
-export DOTFILE_FOLDER="$HOME/.dot"
+export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
 # }
 
@@ -103,15 +103,16 @@ is_linux && {
 	if ! command -v espanso &> /dev/null; then
 		open "https://espanso.org/docs/install/linux/#install-on-x11"
 		wait_until "espanso is installed"
-	end
+  fi
 }
 
-espanso service register
-espanso start
+# TODO: re enable
+#espanso service register
+#espanso start
 
-ESPANSO_CONFIG="$(espanso path config)"
-trash "${ESPANSO_CONFIG}" || true
-link "$DOTFILE_FOLDER/espanso/" "${ESPANSO_CONFIG}"
+#ESPANSO_CONFIG="$(espanso path config)"
+#trash "${ESPANSO_CONFIG}" || true
+#link "$DOTFILE_FOLDER/espanso/" "${ESPANSO_CONFIG}"
 # }
 
 # GPG {
