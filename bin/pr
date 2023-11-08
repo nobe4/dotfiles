@@ -39,9 +39,6 @@
 #/                          Set to ' ' to disable.
 #/                          Value: '${FZF_PREVIEW_COMMAND}'
 # TODO:
-# - clone .dot into dev/nobe4/dotfiles
-#   AND THEN ln it to '$HOME/.config/dotfiles' so all the path can be fixed
-#   see http://mywiki.wooledge.org/BashFAQ/028
 # - have tmux open a central view with shortcut to access without a shell
 
 set -e
