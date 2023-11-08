@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # vim: foldmarker={,} foldmethod=marker
 
-set -ex
+set -e
 
 # This script installs all requirements.
 
@@ -106,13 +106,16 @@ is_linux && {
   fi
 }
 
-# TODO: re enable
-#espanso service register
-#espanso start
+# It's possible that this fails between installs, in which case forcing a clean
+# reinstall seems to have solved the issue.
+# brew uninstall espanso
+# trash $HOME/Library/Application\ Support/espanso
+espanso service register || true
+espanso start
 
-#ESPANSO_CONFIG="$(espanso path config)"
-#trash "${ESPANSO_CONFIG}" || true
-#link "$DOTFILE_FOLDER/espanso/" "${ESPANSO_CONFIG}"
+ESPANSO_CONFIG="$(espanso path config)"
+trash "${ESPANSO_CONFIG}" || true
+link "$DOTFILE_FOLDER/espanso/" "${ESPANSO_CONFIG}"
 # }
 
 # GPG {
