@@ -16,7 +16,7 @@
 #/ Flags:
 #/   -h|--help      Display this help.
 #/   -d|--delete    Delete the selected local project.
-#/   -|--last       Switch to last project
+#/   -|--last       Switch to last project ('${LAST_PROJECT}')
 #/   -n|--new       Clone a project not in the contribution list.
 #/                  Needs the 'owner/repo' or URL as QUERY.
 #/
@@ -49,6 +49,8 @@ export CACHE_TTL_DAYS="${PR_CACHE_TTL_DAYS:-1}"
 export STATE_PATH="${PR_CACHE_PATH:-${XDG_STATE_HOME:-${HOME:?}/.local/state}/pr}"
 CACHE_FILE_PATH="${STATE_PATH:?}/cache"
 LAST_FILE_PATH="${STATE_PATH:?}/last"
+# shellcheck disable=SC2155
+export LAST_PROJECT="$(cat "${LAST_FILE_PATH}")"
 
 # shellcheck disable=SC2016
 DEFAULT_FZF_PREVIEW_COMMAND='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {}'
@@ -138,7 +140,10 @@ delete_project(){ rm -rf "${BASE_PATH:?}/${1:?}"; }
 
 current_session(){ tmux display-message -p '#S'; }
 
-update_last(){ current_session > "${LAST_FILE_PATH}"; }
+update_last(){
+  [ "$(current_session)" == "$LAST_PROJECT" ] && return
+  current_session > "${LAST_FILE_PATH}"
+}
 
 switch_session(){
   if ! tmux has-session -t "${1}" 2> /dev/null; then
@@ -146,12 +151,11 @@ switch_session(){
   fi
 
   if [ "${TERM_PROGRAM}" = "tmux" ]; then
+    update_last "${1}"
     tmux switch-client -t "${1}"
   else
     tmux attach-session -t "${1}"
   fi
-
-  update_last
 }
 
 query=""
@@ -190,6 +194,6 @@ case "${action}" in
     switch_session "${project}"
     ;;
   last)
-    switch_session "$(cat "${LAST_FILE_PATH}")"
+    switch_session "${LAST_PROJECT}"
     ;;
 esac
