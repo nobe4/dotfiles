@@ -236,7 +236,7 @@ alias kk='killall'                                   # Quicker kill all
 alias tel='telegram-send'                            # Send a message to a telegram channel
 alias hmac='openssl rand -hex 32'
 alias tmp='tmux new-window "cd `mktemp -d` && zsh"'
-alias dotvi='cd $DOTFILE_FOLDER && vi'
+alias dotfiles='pr --switch nobe4/dotfiles'
 
 # GDB {
 alias gdb='gdb -q' # Silent GDB

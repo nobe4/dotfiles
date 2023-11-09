@@ -18,7 +18,8 @@
 #/   -d|--delete    Delete the selected local project.
 #/   -|--last       Switch to last project ('${LAST_PROJECT}')
 #/   -n|--new       Clone a project not in the contribution list.
-#/                  Needs the 'owner/repo' or URL as QUERY.
+#/                  Needs the 'owner/repo' or URL in QUERY.
+#/   -s|--switch    Switch to project in QUERY.
 #/
 #/ Environment variables:
 #/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocation.
@@ -40,6 +41,7 @@
 #/                          Value: '${FZF_PREVIEW_COMMAND}'
 # TODO:
 # - have tmux open a central view with shortcut to access without a shell
+# - explore fzf --history
 
 set -e
 
@@ -167,6 +169,7 @@ while [ $# -gt 0 ]; do
     -d|--delete) action="delete" ;;
     -|--last) action="last" ;;
     -n|--new) action="new" ;;
+    -s|--switch) action="switch" ;;
     *) query="${1}" ;;
   esac
 
@@ -195,5 +198,8 @@ case "${action}" in
     ;;
   last)
     switch_session "${LAST_PROJECT}"
+    ;;
+  switch)
+    switch_session "${query}"
     ;;
 esac
