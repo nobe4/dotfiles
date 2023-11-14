@@ -20,6 +20,7 @@
 #/   -n|--new       Clone a project not in the contribution list.
 #/                  Needs the 'owner/repo' or URL in QUERY.
 #/   -s|--switch    Switch to project in QUERY.
+#/   -w|--web       Open selected project in your browser.
 #/
 #/ Environment variables:
 #/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocation.
@@ -45,6 +46,7 @@
 # - allow custom cache command
 # - create IGNORE list + bindings from fzf
 # - sort by usage count so the most used are selected first
+# - add fzf commands to delete and open
 
 set -e
 
@@ -173,6 +175,7 @@ while [ $# -gt 0 ]; do
     -|--last) action="last" ;;
     -n|--new) action="new" ;;
     -s|--switch) action="switch" ;;
+    -w|--web) action="web" ;;
     *) query="${1}" ;;
   esac
 
@@ -204,5 +207,9 @@ case "${action}" in
     ;;
   switch)
     switch_session "${query}"
+    ;;
+  web)
+    project="$(select_project "$(get_all_projects)" "${query}" "Select project to open")"
+    gh repo view --web "${project}"
     ;;
 esac
