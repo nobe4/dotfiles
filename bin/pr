@@ -151,15 +151,15 @@ update_last(){
 }
 
 switch_session(){
-  if ! tmux has-session -t "${1}" 2> /dev/null; then
+  if ! tmux has-session -t="${1}" 2> /dev/null; then
     tmux new-session -d -s "${1}" -c "${BASE_PATH}/${1}"
   fi
 
   if [ "${TERM_PROGRAM}" = "tmux" ]; then
     update_last "${1}"
-    tmux switch-client -t "${1}"
+    tmux switch-client -t="${1}"
   else
-    tmux attach-session -t "${1}"
+    tmux attach-session -t="${1}"
   fi
 }
 
