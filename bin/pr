@@ -45,8 +45,8 @@
 #/                          Value: '${FZF_PREVIEW_COMMAND}'
 # TODO:
 # - allow custom cache command
-# - create IGNORE list + bindings from fzf
 # - add fzf commands to delete
+# - simplify functions
 
 set -e
 
@@ -57,8 +57,10 @@ export STATE_PATH="${PR_CACHE_PATH:-${XDG_STATE_HOME:-${HOME:?}/.local/state}/pr
 CACHE_FILE_PATH="${STATE_PATH:?}/cache"
 LAST_FILE_PATH="${STATE_PATH:?}/last"
 HISTORY_FILE_PATH="${STATE_PATH:?}/history"
+IGNORED_FILE_PATH="${STATE_PATH:?}/ignored"
+
 # shellcheck disable=SC2155
-export LAST_PROJECT="$(cat "${LAST_FILE_PATH}")"
+export LAST_PROJECT="$(cat "${LAST_FILE_PATH}" 2>/dev/null)"
 
 # shellcheck disable=SC2016
 DEFAULT_FZF_PREVIEW_COMMAND='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {}'
@@ -70,6 +72,7 @@ DEFAULT_FZF_OPTS='
   --preview-window=up:85%:border-bottom:wrap
   --no-mouse
   --bind="ctrl-o:execute-silent(gh repo view --web {})"
+  --bind="ctrl-i:execute-silent(echo {} >> '"${IGNORED_FILE_PATH}"')"
 '
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-${DEFAULT_FZF_OPTS}} ${FZF_ADDITIONAL_OPTS}"
 
@@ -126,7 +129,7 @@ exclude_local_projects(){
   done
 }
 
-get_recent_projects(){ sort < "${HISTORY_FILE_PATH}" | uniq -c | sort -nr | cut -d' ' -f5; }
+get_recent_projects(){ [ -e "${HISTORY_FILE_PATH}" ] && sort < "${HISTORY_FILE_PATH}" | uniq -c | sort -nr | cut -d' ' -f5; }
 
 get_non_recent_projects(){ comm -23 <(get_all_projects) <(get_recent_projects); }
 
@@ -134,9 +137,13 @@ get_remote_projects(){ exclude_local_projects < "${CACHE_FILE_PATH}" ; }
 
 get_remote_project(){ gh repo view --json nameWithOwner --jq '.nameWithOwner' "${1}" ; }
 
-get_all_projects(){ echo -e "$(get_local_projects)\n$(get_remote_projects)" | sort ; }
+get_all_projects(){ filted_ignored_projects "$(echo -e "$(get_local_projects)\n$(get_remote_projects)" | sort)" ; }
 
-get_ordered_projects(){ echo -e "$(get_recent_projects)\n$(get_non_recent_projects)"; }
+get_ordered_projects(){ echo -e "$(get_recent_projects)\n$(get_non_recent_projects)" ; }
+
+get_ignored_projects(){ [ -e "${IGNORED_FILE_PATH}" ] && sort -u < "${IGNORED_FILE_PATH}" ; }
+
+filted_ignored_projects(){ comm -23 <(echo "${1}") <(get_ignored_projects) ; }
 
 select_project(){
   echo "${1}" \
