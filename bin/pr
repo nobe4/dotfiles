@@ -26,6 +26,9 @@
 #/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocation.
 #/                          Value: '${FZF_DEFAULT_OPTS}'
 #/
+#/   FZF_ADDITIONAL_OPTS    Append those to 'FZF_DEFAULT_OPTS'.
+#/                          Value: '${FZF_ADDITIONAL_OPTS}'
+#/
 #/   PR_BASE_PATH           Path to the base folder.
 #/                          Value: '${BASE_PATH}'
 #/
@@ -61,8 +64,14 @@ export LAST_PROJECT="$(cat "${LAST_FILE_PATH}")"
 DEFAULT_FZF_PREVIEW_COMMAND='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {}'
 export FZF_PREVIEW_COMMAND="${PR_FZF_PREVIEW_COMMAND:-${DEFAULT_FZF_PREVIEW_COMMAND}}"
 
-DEFAULT_FZF_OPTS='--preview-window=up:85%:border-bottom:wrap --no-mouse'
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-${DEFAULT_FZF_OPTS}}"
+DEFAULT_FZF_OPTS='
+  --no-sort
+  --info=inline
+  --preview-window=up:85%:border-bottom:wrap
+  --no-mouse
+  --bind="ctrl-o:execute-silent(gh repo view --web {})"
+'
+export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-${DEFAULT_FZF_OPTS}} ${FZF_ADDITIONAL_OPTS}"
 
 # shellcheck disable=SC2016
 REPO_QUERY='
@@ -129,8 +138,8 @@ select_project(){
     | fzf \
       --select-1 \
       --query="${2}" \
-      --header "${3:-Select project}" \
-      --preview "${FZF_PREVIEW_COMMAND}" \
+      --header="${3:-Select project}" \
+      --preview="${FZF_PREVIEW_COMMAND}" \
     || true # prevent fzf from failing on exit
 }
 
