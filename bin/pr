@@ -42,7 +42,6 @@
 #/                          Value: '${FZF_PREVIEW_COMMAND}'
 # TODO:
 # - have tmux open a central view with shortcut to access without a shell
-# - explore fzf --history
 # - allow custom cache command
 # - create IGNORE list + bindings from fzf
 # - sort by usage count so the most used are selected first
