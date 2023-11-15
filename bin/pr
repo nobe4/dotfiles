@@ -46,8 +46,7 @@
 # TODO:
 # - allow custom cache command
 # - create IGNORE list + bindings from fzf
-# - sort by usage count so the most used are selected first
-# - add fzf commands to delete and open
+# - add fzf commands to delete
 
 set -e
 
@@ -57,6 +56,7 @@ export CACHE_TTL_DAYS="${PR_CACHE_TTL_DAYS:-1}"
 export STATE_PATH="${PR_CACHE_PATH:-${XDG_STATE_HOME:-${HOME:?}/.local/state}/pr}"
 CACHE_FILE_PATH="${STATE_PATH:?}/cache"
 LAST_FILE_PATH="${STATE_PATH:?}/last"
+HISTORY_FILE_PATH="${STATE_PATH:?}/history"
 # shellcheck disable=SC2155
 export LAST_PROJECT="$(cat "${LAST_FILE_PATH}")"
 
@@ -126,15 +126,21 @@ exclude_local_projects(){
   done
 }
 
+get_recent_projects(){ sort < "${HISTORY_FILE_PATH}" | uniq -c | sort -nr | cut -d' ' -f5; }
+
+get_non_recent_projects(){ comm -23 <(get_all_projects) <(get_recent_projects); }
+
 get_remote_projects(){ exclude_local_projects < "${CACHE_FILE_PATH}" ; }
 
 get_remote_project(){ gh repo view --json nameWithOwner --jq '.nameWithOwner' "${1}" ; }
 
-get_all_projects(){ echo -e "$(get_local_projects)\n$(get_remote_projects)" ; }
+get_all_projects(){ echo -e "$(get_local_projects)\n$(get_remote_projects)" | sort ; }
+
+get_ordered_projects(){ echo -e "$(get_recent_projects)\n$(get_non_recent_projects)"; }
 
 select_project(){
   echo "${1}" \
-    | sort \
+    | sed "/^$/d" \
     | fzf \
       --select-1 \
       --query="${2}" \
@@ -158,8 +164,11 @@ update_last(){
   [ "$(current_session)" == "$LAST_PROJECT" ] && return
   current_session > "${LAST_FILE_PATH}"
 }
+update_history(){ echo "${1}" >> "${HISTORY_FILE_PATH}"; }
 
 switch_session(){
+  update_history "${1}"
+
   if ! tmux has-session -t="${1}" 2> /dev/null; then
     tmux new-session -d -s "${1}" -c "${BASE_PATH}/${1}"
   fi
@@ -195,7 +204,7 @@ update_cache
 
 case "${action}" in
   default)
-    project="$(select_project "$(get_all_projects)" "${query}" "Select project")"
+    project="$(select_project "$(get_ordered_projects)" "${query}" "Select project")"
     clone_project "${project}"
     switch_session "${project}"
     ;;
@@ -216,7 +225,7 @@ case "${action}" in
     switch_session "${query}"
     ;;
   web)
-    project="$(select_project "$(get_all_projects)" "${query}" "Select project to open")"
+    project="$(select_project "$(get_ordered_projects)" "${query}" "Select project to open")"
     gh repo view --web "${project}"
     ;;
 esac
