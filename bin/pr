@@ -44,23 +44,33 @@
 #/                          Set to ' ' to disable.
 #/                          Value: '${FZF_PREVIEW_COMMAND}'
 # TODO:
-# - allow custom cache command
-# - add fzf commands to delete
-# - simplify functions
+# - show in order:
+#   recent
+#   local
+#   all others
 
 set -e
 
 # Exporting is required for envsubst
 export BASE_PATH="${PR_BASE_PATH:-${HOME:?}/dev}"
 export CACHE_TTL_DAYS="${PR_CACHE_TTL_DAYS:-1}"
-export STATE_PATH="${PR_CACHE_PATH:-${XDG_STATE_HOME:-${HOME:?}/.local/state}/pr}"
-CACHE_FILE_PATH="${STATE_PATH:?}/cache"
-LAST_FILE_PATH="${STATE_PATH:?}/last"
-HISTORY_FILE_PATH="${STATE_PATH:?}/history"
-IGNORED_FILE_PATH="${STATE_PATH:?}/ignored"
 
+export STATE_PATH="${PR_CACHE_PATH:-${XDG_STATE_HOME:-${HOME:?}/.local/state}/pr}"
+mkdir -p "${STATE_PATH}"
+
+CACHE_FILE_PATH="${STATE_PATH:?}/cache"
+# Don't touch the cache file to preserve last modification date.
+
+LAST_FILE_PATH="${STATE_PATH:?}/last"
+touch "${LAST_FILE_PATH}"
 # shellcheck disable=SC2155
-export LAST_PROJECT="$(cat "${LAST_FILE_PATH}" 2>/dev/null)"
+export LAST_PROJECT="$(<"${LAST_FILE_PATH}")"
+
+HISTORY_FILE_PATH="${STATE_PATH:?}/history"
+touch "${HISTORY_FILE_PATH}"
+
+IGNORED_FILE_PATH="${STATE_PATH:?}/ignored"
+touch "${IGNORED_FILE_PATH}"
 
 # shellcheck disable=SC2016
 DEFAULT_FZF_PREVIEW_COMMAND='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {}'
@@ -94,56 +104,43 @@ REPO_QUERY='
 '
 REPO_EXTRACT='.[].viewer.repositoriesContributedTo.nodes[].nameWithOwner'
 
+LOCAL_PROJECTS="$(
+  find "${BASE_PATH}" -type d -maxdepth 2 -mindepth 2 \
+    | sed "s#^${BASE_PATH}/##" \
+    | sort -u
+)"
+
 show_help() { grep ^#/ <"${0}" | cut -c4- | envsubst ; }
 
-cache_age_in_days(){ echo "$((( $(date +%s) - $(date -r "${CACHE_FILE_PATH}" +%s)) / 86400))" ; }
-
-is_cache_fresh(){
-  [ ! -f "${CACHE_FILE_PATH}" ] && return 1
-  [ "$(cache_age_in_days)" -gt "${CACHE_TTL_DAYS}" ] && return 1
-  return 0
-}
-
 update_cache(){
-  is_cache_fresh && return
+  if [ -f "${CACHE_FILE_PATH}" ]; then
+    cache_age_in_days="$((( $(date +%s) - $(date -r "${CACHE_FILE_PATH}" +%s)) / 86400))"
+    [ "${cache_age_in_days}" -lt "${CACHE_TTL_DAYS}" ] && return
+  fi
 
   echo "Writing repo list to ${CACHE_FILE_PATH}"
-  get_projects_contributed_to | sort > "${CACHE_FILE_PATH}"
-}
 
-get_projects_contributed_to(){
   gh api graphql \
     --paginate \
     -f query="${REPO_QUERY}" \
-    --jq "${REPO_EXTRACT}"
+    --jq "${REPO_EXTRACT}" \
+   | sort > "${CACHE_FILE_PATH}"
 }
 
-get_local_projects(){
-  find "${BASE_PATH}" -type d -maxdepth 2 -mindepth 2 \
-    | sed "s|^${BASE_PATH}/||"
+get_projects(){
+  recent_projects="$(sort < "${HISTORY_FILE_PATH}" | uniq -c | sort -nr | cut -d' ' -f5)"
+  echo "${recent_projects}"
+
+  remote_projects="$(cat "${CACHE_FILE_PATH}")"
+  all_projects="$(echo -e "${LOCAL_PROJECTS}\n${remote_projects}" | sort -u)"
+
+  ignored_projects="$(cat "${IGNORED_FILE_PATH}")"
+  projects_to_reject="$(echo -e "${ignored_projects}\n${recent_projects}" | sort -u)"
+
+  comm -23 \
+    <(echo "${all_projects}") \
+    <(echo "${projects_to_reject}")
 }
-
-exclude_local_projects(){
-  while read -r repo; do
-    [ ! -d "${BASE_PATH}/${repo}" ] && echo "${repo}"
-  done
-}
-
-get_recent_projects(){ [ -e "${HISTORY_FILE_PATH}" ] && sort < "${HISTORY_FILE_PATH}" | uniq -c | sort -nr | cut -d' ' -f5; }
-
-get_non_recent_projects(){ comm -23 <(get_all_projects) <(get_recent_projects); }
-
-get_remote_projects(){ exclude_local_projects < "${CACHE_FILE_PATH}" ; }
-
-get_remote_project(){ gh repo view --json nameWithOwner --jq '.nameWithOwner' "${1}" ; }
-
-get_all_projects(){ filted_ignored_projects "$(echo -e "$(get_local_projects)\n$(get_remote_projects)" | sort)" ; }
-
-get_ordered_projects(){ echo -e "$(get_recent_projects)\n$(get_non_recent_projects)" ; }
-
-get_ignored_projects(){ [ -e "${IGNORED_FILE_PATH}" ] && sort -u < "${IGNORED_FILE_PATH}" ; }
-
-filted_ignored_projects(){ comm -23 <(echo "${1}") <(get_ignored_projects) ; }
 
 select_project(){
   echo "${1}" \
@@ -151,7 +148,7 @@ select_project(){
     | fzf \
       --select-1 \
       --query="${2}" \
-      --header="${3:-Select project}" \
+      --header="Select project to ${3}" \
       --preview="${FZF_PREVIEW_COMMAND}" \
     || true # prevent fzf from failing on exit
 }
@@ -163,18 +160,15 @@ clone_project(){
   fi
 }
 
-delete_project(){ rm -rf "${BASE_PATH:?}/${1:?}"; }
-
-current_session(){ tmux display-message -p '#S'; }
-
 update_last(){
-  [ "$(current_session)" == "$LAST_PROJECT" ] && return
-  current_session > "${LAST_FILE_PATH}"
+  current_session="$(tmux display-message -p '#S')"
+
+  [ "${current_session}" == "${LAST_PROJECT}" ] && return
+  echo "${current_session}" > "${LAST_FILE_PATH}"
 }
-update_history(){ echo "${1}" >> "${HISTORY_FILE_PATH}"; }
 
 switch_session(){
-  update_history "${1}"
+  echo "${1}" >> "${HISTORY_FILE_PATH}"
 
   if ! tmux has-session -t="${1}" 2> /dev/null; then
     tmux new-session -d -s "${1}" -c "${BASE_PATH}/${1}"
@@ -193,35 +187,34 @@ action="default"
 
 while [ $# -gt 0 ]; do
   case "${1}" in
-    -h|--help) show_help && exit 0 ;;
+    -h|--help)   show_help && exit 0 ;;
     -d|--delete) action="delete" ;;
-    -|--last) action="last" ;;
-    -n|--new) action="new" ;;
+    -|--last)    action="last" ;;
+    -n|--new)    action="new" ;;
     -s|--switch) action="switch" ;;
-    -w|--web) action="web" ;;
-    *) query="${1}" ;;
+    -w|--web)    action="web" ;;
+    *)           query="${1}" ;;
   esac
 
   shift 1
 done
 
-mkdir -p "${STATE_PATH}"
 
 update_cache
 
 case "${action}" in
   default)
-    project="$(select_project "$(get_ordered_projects)" "${query}" "Select project")"
+    project="$(select_project "$(get_projects)" "${query}" "Select project to switch to")"
     clone_project "${project}"
     switch_session "${project}"
     ;;
   delete)
-    project="$(select_project "$(get_local_projects)" "${query}" "Select project to delete")"
-    delete_project "${project}"
+    project="$(select_project "${LOCAL_PROJECTS}" "${query}" "Select local project to delete")"
+    rm -rf "${BASE_PATH:?}/${project:?}"
     echo "${project} deleted locally"
     ;;
   new)
-    project=$(get_remote_project "${query}")
+    project=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' "${query}")
     clone_project "${project}"
     switch_session "${project}"
     ;;
@@ -232,7 +225,7 @@ case "${action}" in
     switch_session "${query}"
     ;;
   web)
-    project="$(select_project "$(get_ordered_projects)" "${query}" "Select project to open")"
+    project="$(select_project "$(get_projects)" "${query}" "Select project to open in a browser")"
     gh repo view --web "${project}"
     ;;
 esac
