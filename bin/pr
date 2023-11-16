@@ -104,12 +104,6 @@ REPO_QUERY='
 '
 REPO_EXTRACT='.[].viewer.repositoriesContributedTo.nodes[].nameWithOwner'
 
-LOCAL_PROJECTS="$(
-  find "${BASE_PATH}" -type d -maxdepth 2 -mindepth 2 \
-    | sed "s#^${BASE_PATH}/##" \
-    | sort -u
-)"
-
 show_help() { grep ^#/ <"${0}" | cut -c4- | envsubst ; }
 
 update_cache(){
@@ -127,12 +121,18 @@ update_cache(){
    | sort > "${CACHE_FILE_PATH}"
 }
 
+get_local_projects(){
+  find "${BASE_PATH}" -type d -maxdepth 2 -mindepth 2 \
+    | sed "s#^${BASE_PATH}/##" \
+    | sort -u
+}
+
 get_projects(){
   recent_projects="$(sort < "${HISTORY_FILE_PATH}" | uniq -c | sort -nr | cut -d' ' -f5)"
   echo "${recent_projects}"
 
   remote_projects="$(cat "${CACHE_FILE_PATH}")"
-  all_projects="$(echo -e "${LOCAL_PROJECTS}\n${remote_projects}" | sort -u)"
+  all_projects="$(echo -e "$(get_local_projects)\n${remote_projects}" | sort -u)"
 
   ignored_projects="$(cat "${IGNORED_FILE_PATH}")"
   projects_to_reject="$(echo -e "${ignored_projects}\n${recent_projects}" | sort -u)"
@@ -209,7 +209,7 @@ case "${action}" in
     switch_session "${project}"
     ;;
   delete)
-    project="$(select_project "${LOCAL_PROJECTS}" "${query}" "Select local project to delete")"
+    project="$(select_project "$(get_local_projects)" "${query}" "Select local project to delete")"
     rm -rf "${BASE_PATH:?}/${project:?}"
     echo "${project} deleted locally"
     ;;
