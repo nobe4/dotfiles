@@ -43,11 +43,6 @@
 #/   PR_FZF_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
 #/                          Set to ' ' to disable.
 #/                          Value: '${FZF_PREVIEW_COMMAND}'
-# TODO:
-# - show in order:
-#   recent
-#   local
-#   all others
 
 set -e
 
@@ -118,7 +113,7 @@ update_cache(){
     --paginate \
     -f query="${REPO_QUERY}" \
     --jq "${REPO_EXTRACT}" \
-   | sort > "${CACHE_FILE_PATH}"
+    > "${CACHE_FILE_PATH}"
 }
 
 get_local_projects(){
@@ -131,11 +126,17 @@ get_projects(){
   recent_projects="$(sort < "${HISTORY_FILE_PATH}" | uniq -c | sort -nr | cut -d' ' -f5)"
   echo "${recent_projects}"
 
+  local_projects="$(get_local_projects)"
+  comm -23 \
+    <(echo "${local_projects}") \
+    <(echo "${recent_projects}" | sort)
+
+  update_cache
   remote_projects="$(cat "${CACHE_FILE_PATH}")"
-  all_projects="$(echo -e "$(get_local_projects)\n${remote_projects}" | sort -u)"
+  all_projects="$(echo -e "${remote_projects}" | sort -u)"
 
   ignored_projects="$(cat "${IGNORED_FILE_PATH}")"
-  projects_to_reject="$(echo -e "${ignored_projects}\n${recent_projects}" | sort -u)"
+  projects_to_reject="$(echo -e "${ignored_projects}\n${recent_projects}\n${local_projects}" | sort -u)"
 
   comm -23 \
     <(echo "${all_projects}") \
@@ -200,7 +201,6 @@ while [ $# -gt 0 ]; do
 done
 
 
-update_cache
 
 case "${action}" in
   default)
