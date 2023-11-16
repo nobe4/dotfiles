@@ -171,15 +171,19 @@ update_last(){
 switch_session(){
   echo "${1}" >> "${HISTORY_FILE_PATH}"
 
-  if ! tmux has-session -t="${1}" 2> /dev/null; then
-    tmux new-session -d -s "${1}" -c "${BASE_PATH}/${1}"
+  # Tmux doesn't like . or : in session names as they represent window index or
+  # pane index.
+  session_name="${1//[.:]/_}"
+
+  if ! tmux has-session -t="${session_name}" 2> /dev/null; then
+    tmux new-session -d -s "${session_name}" -c "${BASE_PATH}/${1}"
   fi
 
   if [ "${TERM_PROGRAM}" = "tmux" ]; then
     update_last "${1}"
-    tmux switch-client -t="${1}"
+    tmux switch-client -t="${session_name}"
   else
-    tmux attach-session -t="${1}"
+    tmux attach-session -t="${session_name}"
   fi
 }
 
