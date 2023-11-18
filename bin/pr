@@ -43,6 +43,13 @@
 #/   PR_FZF_PREVIEW_COMMAND FZF command for preview ({} corresponds to the selected project)
 #/                          Set to ' ' to disable.
 #/                          Value: '${FZF_PREVIEW_COMMAND}'
+# TODO:
+# - add a switch to create + clone new repo
+#   `pr -c|--create nobe4/something`
+#   make it possible to create it only locally for now
+#   `pr -C|--create-local nobe4/something`
+#   gh repo create offers a lot of options, the challenge might be to clone at
+#   the right place
 
 set -e
 
@@ -203,8 +210,6 @@ while [ $# -gt 0 ]; do
 
   shift 1
 done
-
-
 
 case "${action}" in
   default)
