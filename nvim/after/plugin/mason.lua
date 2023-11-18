@@ -25,6 +25,7 @@ local ensured_installed_packages = {
 
 	"selene",
 	"stylua",
+	"lua-language-server",
 
 	"css-lsp",
 	"html-lsp",

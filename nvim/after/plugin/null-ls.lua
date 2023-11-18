@@ -12,7 +12,7 @@ local sources = {
 
 	-- lua
 	formatting.stylua,
-	-- diagnostics.selene,
+	diagnostics.selene,
 
 	-- ruby
 	diagnostics.rubocop.with({ command = rubocop.command() }),
