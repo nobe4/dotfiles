@@ -14,11 +14,13 @@ touch "$tmpfile"
 		| sed -l 's/\x1b.*//g' \
 		| xargs -L1 -I{} bash -c "open '{}'"
 ) &
+open_pid="${!}"
 
 command="$*"
 
 script -qt1 "$tmpfile" bash -c "$command"
 
 sleep 1
-# Kill background processes (i.e. the tail -f ...).
-jobs -p | xargs kill
+
+kill "${open_pid}"
+wait "${open_pid}" 2>/dev/null
