@@ -51,11 +51,17 @@ ls.add_snippets("go", {
 	ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {${2:t.Skip("TODO")}})'),
 })
 
+local conventional_commit_types = { "feat", "fix", "docs", "refactor", "test" }
 ls.add_snippets("gitcommit", {
 	ls.parser.parse_snippet("missing", "Remove missing team"),
 	ls.parser.parse_snippet("empty", "Remove empty team"),
 	ls.parser.parse_snippet("checksums", "Rebuild checksums"),
 })
+for i in ipairs(conventional_commit_types) do
+	ls.add_snippets("gitcommit", {
+		ls.parser.parse_snippet(i, i .. "($1): $2\n\n$3"),
+	})
+end
 
 ls.add_snippets("sh", {
 	ls.parser.parse_snippet("shellcheck ignore", "# shellcheck disable=$1"),
