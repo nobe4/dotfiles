@@ -11,4 +11,17 @@
 # 2. Settings > Keyboard > Shortcuts
 #    > Services > General > Set the created service
 
-ls | fzf | pbcopy
+PREVIEW_COMMAND="grep ^#/ <${DOTFILE_FOLDER}/launch/commands/{} | cut -c4- | envsubst"
+COMMANDS_PATH="${DOTFILE_FOLDER}/launch/commands"
+BECOME_COMMAND="
+${PREVIEW_COMMAND}
+printf '> '
+read -r input
+${COMMANDS_PATH}/{} \$input
+"
+
+find "${COMMANDS_PATH}" -type f -exec basename {} \; \
+  | fzf \
+    --preview="${PREVIEW_COMMAND}" \
+    --bind="enter:become(${BECOME_COMMAND})"
+

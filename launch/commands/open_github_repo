@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#/ Usage: ${0} REPO
+#/
+#/ Open github repo in the browser
+
+set -e
+
+# shellcheck disable=2068
+pr -w $@
