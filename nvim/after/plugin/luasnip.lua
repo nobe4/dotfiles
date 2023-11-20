@@ -1,15 +1,15 @@
 local ls = require("luasnip")
+local t = ls.text_node
+local i = ls.insert_node
+local f = ls.function_node
 
--- config
 ls.config.setup({
 	history = true,
 	updateevents = "TextChanged,TextChangedI",
 	enable_autosnippets = true,
 })
 
--- snippets
 ls.add_snippets("ruby", {
-	-- spec describe
 	ls.parser.parse_snippet(
 		"describe",
 		[[
@@ -38,7 +38,6 @@ context "$1" do
 end]]
 	),
 
-	-- spec double
 	-- TODO: have a choice between the `let` and the `X =`
 	ls.parser.parse_snippet("let", [[let(:$1) { "$1" }]]),
 	ls.parser.parse_snippet("double", [[let(:$1) { double("$1") }]]),
@@ -51,17 +50,26 @@ ls.add_snippets("go", {
 	ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {${2:t.Skip("TODO")}})'),
 })
 
-local conventional_commit_types = { "feat", "fix", "docs", "refactor", "test" }
 ls.add_snippets("gitcommit", {
 	ls.parser.parse_snippet("missing", "Remove missing team"),
 	ls.parser.parse_snippet("empty", "Remove empty team"),
 	ls.parser.parse_snippet("checksums", "Rebuild checksums"),
 })
-for i in ipairs(conventional_commit_types) do
-	ls.add_snippets("gitcommit", {
-		ls.parser.parse_snippet(i, i .. "($1): $2\n\n$3"),
-	})
-end
+
+ls.add_snippets("gitcommit", {
+	-- https://www.conventionalcommits.org/en/v1.0.0/#specification
+	ls.multi_snippet({ "feat", "fix", "docs", "refactor", "test" }, {
+		f(function(_, parent)
+			return parent.trigger
+		end, {}),
+
+		t("("),
+		i(1, "reference"),
+		t("): "),
+		i(2, "title"),
+		i(3, "body"),
+	}),
+})
 
 ls.add_snippets("sh", {
 	ls.parser.parse_snippet("shellcheck ignore", "# shellcheck disable=$1"),
