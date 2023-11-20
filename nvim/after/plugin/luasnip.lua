@@ -1,12 +1,22 @@
 local ls = require("luasnip")
+local s = ls.snippet
 local t = ls.text_node
 local i = ls.insert_node
 local f = ls.function_node
+local ms = ls.multi_snippet
+local fmt = require("luasnip.extras.fmt").fmt
 
 ls.config.setup({
 	history = true,
 	updateevents = "TextChanged,TextChangedI",
 	enable_autosnippets = true,
+})
+
+ls.add_snippets("all", {
+	s("modeline", {
+		t("#!/usr/bin/env "),
+		i(1, "interpreter"),
+	}),
 })
 
 ls.add_snippets("ruby", {
@@ -54,25 +64,21 @@ ls.add_snippets("gitcommit", {
 	ls.parser.parse_snippet("missing", "Remove missing team"),
 	ls.parser.parse_snippet("empty", "Remove empty team"),
 	ls.parser.parse_snippet("checksums", "Rebuild checksums"),
-})
-
-ls.add_snippets("gitcommit", {
 	-- https://www.conventionalcommits.org/en/v1.0.0/#specification
-	ls.multi_snippet({ "feat", "fix", "docs", "refactor", "test" }, {
-		f(function(_, parent)
-			return parent.trigger
-		end, {}),
-
-		t("("),
-		i(1, "reference"),
-		t("): "),
-		i(2, "title"),
-		i(3, "body"),
+	ms({ "feat", "fix", "docs", "refactor", "test" }, {
+		fmt([[ {}({}):{} {} ]], {
+			f(function(_, parent)
+				return parent.trigger
+			end, {}),
+			i(1, "reference"),
+			i(2, "title"),
+			i(3, "body"),
+		}),
 	}),
 })
 
 ls.add_snippets("sh", {
-	ls.parser.parse_snippet("shellcheck ignore", "# shellcheck disable=$1"),
+	s("shellcheck ignore", { t("# shellcheck disable=${1:code}") }),
 })
 
 -- mappings
