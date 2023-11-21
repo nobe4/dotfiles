@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-#/ Usage: ask_for_review PR
+#/ Usage: deploy PR
 #/
-#/ Ask on slack for a review.
+#/ Sends the PR to deploy on slack
 #/ If an URL is in your clipboard, it will propose to default to that.
 #/
 #/ Requirements:
@@ -12,11 +12,11 @@
 set -e
 
 TEAM="github"
-CHANNEL="$(cat "${DOTFILE_FOLDER}/private/launch/review_channel")"
+CHANNEL="$(cat "${DOTFILE_FOLDER}/private/launch/deploy_channel")"
 
 default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
 
-echo "Enter a url to send for review in ${TEAM}/#${CHANNEL}"
+echo "Enter a url to deploy in ${TEAM}/#${CHANNEL}"
 if [[ "${default}" != "" ]]; then
   echo "or <CR> to use: '${default}'"
 fi
@@ -24,7 +24,7 @@ fi
 printf '> '
 read -r input
 
-message="${input:-${default}} :review:"
+message=".deploy ${input:-${default}}"
 
 echo -e "Sending '${message}'\n\tto ${TEAM}/#${CHANNEL}"
 

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+#/ Usage: review PR
+#/
+#/ Ask on slack for a review.
+#/ If an URL is in your clipboard, it will propose to default to that.
+#/
+#/ Requirements:
+#/  - pbpaste
+#/  - gh - https://cli.github.com/
+#/  - gh-slack - https://github.com/rneatherway/gh-slack
+
+set -e
+
+TEAM="github"
+CHANNEL="$(cat "${DOTFILE_FOLDER}/private/launch/review_channel")"
+
+default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
+
+echo "Enter a url to send for review in ${TEAM}/#${CHANNEL}"
+if [[ "${default}" != "" ]]; then
+  echo "or <CR> to use: '${default}'"
+fi
+
+printf '> '
+read -r input
+
+message="${input:-${default}} :review:"
+
+echo -e "Sending '${message}'\n\tto ${TEAM}/#${CHANNEL}"
+
+gh slack send \
+  --team "${TEAM}" \
+  --channel "${CHANNEL}" \
+  --message "${message}"
