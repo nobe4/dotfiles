@@ -67,10 +67,10 @@ ls.add_snippets("gitcommit", {
 
 	-- https://www.conventionalcommits.org/en/v1.0.0/#specification
 	ms(
-		{ "feat", "fix", "docs", "refactor", "test" },
+		{ "chore", "docs", "feat", "fix", "refactor", "test" },
 		fmt(
 			[[
-      {}({}):{}
+      {}({}): {}
 
       {}
       ]],
