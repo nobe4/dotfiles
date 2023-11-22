@@ -34,6 +34,7 @@ local ensured_installed_packages = {
   "shellcheck",
   "bash-language-server",
 
+  "python-lsp-server",
   "black",
 
   "yaml-language-server",

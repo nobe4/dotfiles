@@ -10,10 +10,7 @@ require("conform").setup({
     python = { "black" },
     golang = { "gofmt", "goimports" },
     javascript = { "prettier" },
-    html = { "prettier" },
-    css = { "prettier" },
     graphql = { "prettier" },
-    json = { "prettier" },
     -- TODO: add for yaml
     -- formatting.yamlfmt.with({
     -- 	extra_args = { "--formatter", "indentless_arrays=true,retain_line_breaks=true" },
