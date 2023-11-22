@@ -50,6 +50,9 @@
 #   `pr -C|--create-local nobe4/something`
 #   gh repo create offers a lot of options, the challenge might be to clone at
 #   the right place
+# - reorder: add LAST_PROJECT first, so pr - is equivalent to pr <CR>
+# - check why FZF_DEFAULT_OPTS and FZF_PREVIEW_COMMAND get exported into the
+#   shell
 
 set -e
 
