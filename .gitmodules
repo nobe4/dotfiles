@@ -1,12 +1,3 @@
 [submodule "private"]
 	path = private
 	url = git@github.com:nobe4/dotfiles-private.git
-[submodule "vale-styles/Google"]
-	path = vale-styles/Google
-	url = git@github.com:errata-ai/Google.git
-[submodule "vale-styles/proselint"]
-	path = vale-styles/proselint
-	url = git@github.com:errata-ai/proselint.git
-[submodule "vale-styles/Openly"]
-	path = vale-styles/Openly
-	url = git@github.com:testthedocs/Openly.git

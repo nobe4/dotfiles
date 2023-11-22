@@ -7,3 +7,6 @@ zsh_profile
 ngrok.bin
 .telegram-creds
 .link-list
+
+vale-styles/*
+!vale-styles/Vocab/
