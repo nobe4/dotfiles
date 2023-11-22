@@ -21,10 +21,16 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local default_config = { on_attach = on_attach, capabilities = capabilities }
 
 -- lspconfig.solargraph.setup(default_config)
+lspconfig.bashls.setup(default_config)
 lspconfig.clangd.setup(default_config)
 lspconfig.gopls.setup(default_config)
 lspconfig.marksman.setup(default_config)
 lspconfig.pylsp.setup(default_config)
+lspconfig.vale_ls.setup(default_config)
+
+-- TODO: add custom rubocop for ruby
+-- diagnostics.rubocop.with({ command = rubocop.command() }),
+
 lspconfig.lua_ls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,

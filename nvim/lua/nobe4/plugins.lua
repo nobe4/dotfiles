@@ -36,9 +36,10 @@ local plugins = {
 	"junegunn/vim-easy-align",
 	"mbbill/undotree",
 	"romainl/vim-qf",
-	"skywind3000/asyncrun.vim",
 	"numToStr/Comment.nvim",
-	"habamax/vim-godot",
+	-- "habamax/vim-godot",
+
+  -- UI
 	"nvim-tree/nvim-web-devicons",
 
 	-- Treesitter
@@ -56,7 +57,6 @@ local plugins = {
 	"williamboman/mason-lspconfig.nvim",
 
 	-- Formatter
-	{ "nvimtools/none-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
 	{ "folke/trouble.nvim" },
 
 	-- Fuzzy finder

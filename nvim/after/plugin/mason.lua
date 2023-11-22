@@ -18,12 +18,12 @@ local ensured_installed_packages = {
 
 	"marksman",
 	"vale",
+	"vale-ls",
 
 	"prettier",
 
 	"solargraph",
 
-	"selene",
 	"stylua",
 	"lua-language-server",
 
