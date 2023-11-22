@@ -21,14 +21,18 @@ local options = {
 local plugins = {
 	-- Local
 	{ dir = "~/dev/nobe4/withhold.nvim" },
+	{ dir = "~/dev/nobe4/relativity.nvim" },
+	-- "nobe4/relativity.nvim",
 
 	-- Misc
 	"nobe4/exchange.vim",
 	"nobe4/curl.vim",
 	"nobe4/vimcorrect",
+
 	"tpope/vim-fugitive",
 	"tpope/vim-rhubarb",
 	"tpope/vim-surround",
+
 	"stevearc/oil.nvim",
 	"christoomey/vim-tmux-navigator",
 	"danro/rename.vim",
@@ -57,7 +61,8 @@ local plugins = {
 	"williamboman/mason-lspconfig.nvim",
 
 	-- Formatter
-	{ "folke/trouble.nvim" },
+	"stevearc/conform.nvim",
+	"folke/trouble.nvim",
 
 	-- Fuzzy finder
 	{
