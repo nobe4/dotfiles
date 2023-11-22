@@ -1,8 +1,8 @@
 tap "homebrew/cask"
 tap "homebrew/core"
 tap "homebrew/services"
-tap "1password/tap"
-tap "universal-ctags/universal-ctags"
+
+cask_args appdir: "~/Applications", require_sha: true
 
 brew "fd"
 brew "ffmpeg"
@@ -32,8 +32,9 @@ brew "universal-ctags"
 brew "xq"
 brew "z"
 
-cask_args appdir: "~/Applications", require_sha: true
+tap "1password/tap"
 cask "1password-cli"
-cask "vimr"
+
+cask "neovide"
 cask "kitty"
 cask "espanso"
