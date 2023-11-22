@@ -13,6 +13,9 @@
 #     maybe using ./bin would be easier? That would enforce consistency but
 #     migth lead up to a lot of noise as well.
 #     maybe using a link to ./bin ?
+#   - store logs somewhere for easier debugging
+
+set -e
 
 PREVIEW_COMMAND="grep ^#/ <${DOTFILE_FOLDER}/launch/commands/{} | cut -c4- | envsubst"
 COMMANDS_PATH="${DOTFILE_FOLDER}/launch/commands"

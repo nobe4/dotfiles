@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#/ Usage: vim_everywhere
+#/
+#/ Open a new vim buffer and copies the content to the clipboard on exit.
+#/ Don't forget to ZZ
+
+set -e
+
+file="$(mktemp -d)/tmp.md"
+touch "${file}"
+nvim "${file}"
+LANG=en_US.UTF-8 pbcopy < "${file}"
