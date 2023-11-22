@@ -55,6 +55,10 @@ end]]
 	ls.parser.parse_snippet("freeze", "# frozen_string_literal: true"),
 })
 
+ls.add_snippets("python", {
+	ls.parser.parse_snippet("debug", "import pdb; pdb.set_trace()"),
+})
+
 ls.add_snippets("go", {
 	ls.parser.parse_snippet("test", 'func Test${1:Name}(t *testing.T) {${2:t.Skip("TODO")}}'),
 	ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {${2:t.Skip("TODO")}})'),
