@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 #/ Usage: deploy PR
 #/
-#/ Sends the PR to deploy on slack
-#/ If an URL is in your clipboard, it will propose to default to that.
+#/ Sends the PR to deploy on slack.
+#/ If one or multiple URLs are in your clipboard, it will propose to default to
+#/ that.
 #/
 #/ Requirements:
 #/  - pbpaste
@@ -16,7 +17,7 @@ CHANNEL="$(cat "${DOTFILE_FOLDER}/private/launch/deploy_channel")"
 
 default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
 
-echo "Enter a url to deploy in ${TEAM}/#${CHANNEL}"
+echo "Enter a URL to deploy in ${TEAM}/#${CHANNEL}"
 if [[ "${default}" != "" ]]; then
   echo "or <CR> to use: '${default}'"
 fi
@@ -24,11 +25,13 @@ fi
 printf '> '
 read -r input
 
-message=".deploy ${input:-${default}}"
+echo "${input:-${default}}" | while IFS= read -r line; do
+  message=".deploy ${line}"
 
-echo -e "Sending '${message}'\n\tto ${TEAM}/#${CHANNEL}"
-
-gh slack send \
-  --team "${TEAM}" \
-  --channel "${CHANNEL}" \
-  --message "${message}"
+  echo -e "Sending '${message}'\n\tto ${TEAM}/#${CHANNEL}"
+  gh slack send \
+    --team "${TEAM}" \
+    --channel "${CHANNEL}" \
+    --message "${message}"
+  sleep 1
+done
