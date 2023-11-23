@@ -11,7 +11,7 @@
 
 set -e
 
-TEAM="github"
+TEAM="$(cat "${DOTFILE_FOLDER}/private/launch/slack_team")"
 CHANNEL="$(cat "${DOTFILE_FOLDER}/private/launch/deploy_channel")"
 
 default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
