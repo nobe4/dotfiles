@@ -24,7 +24,7 @@ fi
 printf '> '
 read -r input
 
-message="${input:-${default}} :review:"
+message="$(echo -e ":review:\n${input:-${default}}")"
 
 echo -e "Sending '${message}'\n\tto ${TEAM}/#${CHANNEL}"
 
