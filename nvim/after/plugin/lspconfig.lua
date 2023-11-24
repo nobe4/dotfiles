@@ -2,23 +2,25 @@ local Mappings = require("nobe4.mappings")
 
 -- Show diagnosis float text
 vim.diagnostic.config({
-  float = { border = "single" },
-  virtual_text = { prefix = "!" },
+	float = { border = "single" },
+	virtual_text = { prefix = "!" },
 })
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = "rounded",
+	border = "rounded",
 })
 
 local on_attach = function(_, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-  Mappings.lsp_mappings(bufnr)
+	-- Enable completion triggered by <c-x><c-o>
+	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+	Mappings.lsp_mappings(bufnr)
 end
 
 local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local default_config = { on_attach = on_attach, capabilities = capabilities }
+
+require("lspconfig.ui.windows").default_options.border = "rounded"
 
 -- lspconfig.solargraph.setup(default_config)
 lspconfig.bashls.setup(default_config)
