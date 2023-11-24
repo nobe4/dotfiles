@@ -1,6 +1,27 @@
 #!/usr/bin/env bash
+#/ Usage: synccomment [FLAGS] URL [FILE]
+#/ Automatically sync a local file change with a comment on GitHub.
+#/
+#/ Arguments:
+#/  URL   URL to the comment or issue/PR.
+#/        e.g. https://github.com/owner/repo/issues/123
+#/             https://github.com/owner/repo/issues/123#issuecomment-123
+#/             https://github.com/owner/repo/pull/123
+#/             https://github.com/owner/repo/pull/123#issuecomment-123
+#/
+#/  FILE  (optional) Path to local file to use.
+#/        The file content's will be replaced by the comment.
+#/
+#/ Flags:
+#/   -h   Show this help
+
 
 set -e
+
+if [[ "$*" == "-h" ]]; then
+	grep ^#/ <"${0}" |cut -c4- | envsubst
+	exit 0
+fi
 
 parts="$(
   # shellcheck disable=2001
@@ -19,7 +40,7 @@ if [ "${comment}" != "" ]; then
   endpoint="/repos/${owner}/${repo}/issues/comments/${comment}"
 fi
 
-file="$(mktemp -d)/comment.md"
+file="${2:-$(mktemp -d)/comment.md}"
 
 gh api "${endpoint}" -q '.body' > "${file}"
 
