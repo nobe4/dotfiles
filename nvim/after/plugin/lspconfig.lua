@@ -32,35 +32,35 @@ lspconfig.gopls.setup(default_config)
 lspconfig.marksman.setup(default_config)
 lspconfig.pylsp.setup(default_config)
 lspconfig.vale_ls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "markdown", "text", "gitcommit" },
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "markdown", "text", "gitcommit" },
 })
 
 -- TODO: add custom rubocop for ruby
 -- diagnostics.rubocop.with({ command = rubocop.command() }),
 
 lspconfig.lua_ls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    Lua = {
-      diagnostics = { globals = { "vim", "require" } },
-    },
-    workspace = {
-      -- Make the server aware of Neovim runtime files
-      library = vim.api.nvim_get_runtime_file("", true),
-    },
-    telemetry = { enable = false },
-  },
+	on_attach = on_attach,
+	capabilities = capabilities,
+	settings = {
+		Lua = {
+			diagnostics = { globals = { "vim", "require" } },
+		},
+		workspace = {
+			-- Make the server aware of Neovim runtime files
+			library = vim.api.nvim_get_runtime_file("", true),
+		},
+		telemetry = { enable = false },
+	},
 })
 lspconfig.gdscript.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  flags = { debounce_text_changes = 150 },
+	on_attach = on_attach,
+	capabilities = capabilities,
+	flags = { debounce_text_changes = 150 },
 })
 lspconfig.emmet_ls.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "html" },
+	on_attach = on_attach,
+	capabilities = capabilities,
+	filetypes = { "html" },
 })
