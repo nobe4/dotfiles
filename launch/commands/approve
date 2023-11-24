@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#/ Usage: approve PR
+#/
+#/ Approve the PR.
+#/ If one or multiple URLs are in your clipboard, it will propose to default to
+#/ that.
+#/
+#/ Requirements:
+#/  - pbpaste
+#/  - gh - https://cli.github.com/
+
+set -e
+
+default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
+
+echo "Enter a URL to approve"
+if [[ "${default}" != "" ]]; then
+  echo "or <CR> to use: '${default}'"
+fi
+
+printf '> '
+read -r input
+
+echo "${input:-${default}}" | xargs -n1 gh pr review --approve
