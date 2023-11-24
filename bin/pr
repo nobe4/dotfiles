@@ -53,6 +53,8 @@
 # - reorder: add LAST_PROJECT first, so pr - is equivalent to pr <CR>
 # - check why FZF_DEFAULT_OPTS and FZF_PREVIEW_COMMAND get exported into the
 #   shell
+# - add flag to only output selection without anything else, so this can be
+#   piped
 
 set -e
 
