@@ -43,7 +43,7 @@ local plugins = {
 	"numToStr/Comment.nvim",
 	-- "habamax/vim-godot",
 
-  -- UI
+	-- UI
 	"nvim-tree/nvim-web-devicons",
 
 	-- Treesitter
@@ -85,11 +85,10 @@ local plugins = {
 	"hrsh7th/cmp-nvim-lsp-signature-help",
 	"saadparwaiz1/cmp_luasnip",
 
+	-- Debugger
 	"mfussenegger/nvim-dap",
 	"leoluz/nvim-dap-go",
 	"rcarriga/nvim-dap-ui",
-
-	-- https://github.com/TimUntersberger/neogit
 }
 
 require("lazy").setup(plugins, options)
