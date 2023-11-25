@@ -14,22 +14,17 @@ vim.opt.textwidth = 80
 vim.opt.cursorline = true
 
 vim.opt.background = "dark"
+vim.opt.guifont = "CommitMono:h14"
 vim.opt.termguicolors = true
 vim.cmd("colorscheme mnml")
-vim.opt.guifont = "Source Code Pro:h11"
-
--- Vimr doesn't like mnml somehow
-if vim.fn.has("gui_vimr") == 1 then
-	vim.cmd("colorscheme desert")
-end
 
 -- Editing
 vim.opt.hidden = true
 vim.opt.backspace = { "indent", "eol", "start" }
 vim.opt.expandtab = true
 vim.opt.autoindent = true
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 vim.opt.spellcapcheck = ""
 vim.opt.autoread = true
 vim.opt.updatecount = 200
@@ -75,3 +70,18 @@ if vim.fn.executable("rg") == 1 then
 end
 
 vim.g.godot_executable = "/Applications/Godot.app/Contents/MacOS/Godot"
+
+if vim.g.neovide then
+	vim.opt.mouse = "a"
+	vim.opt.linespace = 1
+	vim.g.neovide_cursor_animation_length = 0
+	vim.g.neovide_theme = "auto"
+	vim.g.neovide_transparency = 0.0
+	vim.g.transparency = 0.95
+	local alpha = string.format("%x", math.floor(255 * vim.g.transparency))
+	vim.g.neovide_background_color = "#1d1f21" .. alpha
+	vim.g.neovide_padding_top = 10
+	vim.g.neovide_padding_bottom = 5
+	vim.g.neovide_padding_right = 10
+	vim.g.neovide_padding_left = 10
+end
