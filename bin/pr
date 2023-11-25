@@ -52,6 +52,9 @@
 #   gh repo create offers a lot of options, the challenge might be to clone at
 #   the right place
 # - reorder: add LAST_PROJECT first, so pr - is equivalent to pr <CR>
+# - research using positional args instead of flags for the action
+#    could be pr [FLAGS] [ACTION] [QUERY]
+#    and use $1/$2
 
 set -e
 
@@ -210,45 +213,42 @@ action="default"
 
 while [ $# -gt 0 ]; do
 	case "${1}" in
-		-h|--help)   show_help && exit 0 ;;
-		-d|--delete) action="delete" ;;
-		-|--last)    action="last" ;;
-		-n|--new)    action="new" ;;
-		-o|--output) action="output" ;;
-		-s|--switch) action="switch" ;;
-		-w|--web)    action="web" ;;
-		*)           query="${1}" ;;
+		-*) action="${1}" ;;
+		*)  query="${1}" ;;
 	esac
 
 	shift 1
 done
 
 case "${action}" in
+	-h|--help)
+		show_help
+		;;
 	default)
 		project="$(select_project "$(get_projects)" "${query}" "Select project to switch to")"
 		clone_project "${project}"
 		switch_session "${project}"
 		;;
-	delete)
+	-d|--delete)
 		project="$(select_project "$(get_local_projects)" "${query}" "Select local project to delete")"
 		rm -rf "${BASE_PATH:?}/${project:?}"
 		echo "${project} deleted locally"
 		;;
-	new)
+	-n|--new)
 		project=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' "${query}")
 		clone_project "${project}"
 		switch_session "${project}"
 		;;
-	output)
+	-o|--output)
 		select_project "$(get_local_projects)" "${query}" "Select local project to output"
 		;;
-	last)
+	-|--last)
 		switch_session "${LAST_PROJECT}"
 		;;
-	switch)
+	-s|--switch)
 		switch_session "${query}"
 		;;
-	web)
+	-w|--web)
 		project="$(select_project "$(get_projects)" "${query}" "Select project to open in a browser")"
 		gh repo view --web "${project}"
 		;;
