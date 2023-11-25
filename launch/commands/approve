@@ -11,6 +11,9 @@
 
 set -e
 
+show_help() { grep ^#/ <"${0}" |cut -c4- | envsubst ; }
+[[ "$*" == "-h" ]] && show_help && exit 0
+
 default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
 
 echo "Enter a URL to approve"

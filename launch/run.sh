@@ -17,7 +17,7 @@
 
 set -e
 
-PREVIEW_COMMAND="grep ^#/ <${DOTFILE_FOLDER}/launch/commands/{} | cut -c4- | envsubst"
+PREVIEW_COMMAND="${DOTFILE_FOLDER}/launch/commands/{} -h"
 COMMANDS_PATH="${DOTFILE_FOLDER}/launch/commands"
 
 find "${COMMANDS_PATH}" -type f -exec basename {} \; \

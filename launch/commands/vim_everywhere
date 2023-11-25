@@ -6,6 +6,9 @@
 
 set -e
 
+show_help() { grep ^#/ <"${0}" |cut -c4- | envsubst ; }
+[[ "$*" == "-h" ]] && show_help && exit 0
+
 file="$(mktemp -d)/tmp.md"
 touch "${file}"
 nvim "${file}"
