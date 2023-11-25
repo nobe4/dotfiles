@@ -173,8 +173,9 @@ alias bd="bundle"
 alias bde="bundle exec"
 # }
 
-# CTAGS {
+# misc {
 alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
+alias l="${DOTFILE_FOLDER}/launch/run.sh"
 # }
 
 # linuxbrew {

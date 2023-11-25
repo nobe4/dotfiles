@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 list_file=${DOTFILE_FOLDER}/.link-list
 [ ! -f "$list_file" ] && echo "OPEN_LIST" > "$list_file"
@@ -8,19 +8,19 @@ sane_list="$(cat $list_file | sed '/^#/d; /^$/d')"
 choice="$(echo $sane_list | fzf)"
 if [ -z "$choice" ]; then
 	echo "No choice, aborting."
-	return 1
+	exit 1
 fi
 
 if [ "$choice" = "OPEN_LIST" ]; then
 	echo "Opening $list_file in $EDITOR."
 	$EDITOR "$list_file"
-	return 0
+	exit 0
 fi
 
 url="$(echo $choice | cut -d' ' -f1)"
 if [ -z "$url" ]; then
 	echo "No url, aborting."
-	return 1
+	exit 1
 fi
 
 echo "Copying '$url' in the clipboard."
