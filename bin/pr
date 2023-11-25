@@ -52,6 +52,13 @@
 #   gh repo create offers a lot of options, the challenge might be to clone at
 #   the right place
 # - reorder: add LAST_PROJECT first, so pr - is equivalent to pr <CR>
+# - add indication about status:
+#   - remote
+#   - local
+#   - active
+#   - last
+#   - current
+#   add after the name but still allow searching
 # - research using positional args instead of flags for the action
 #    could be pr [FLAGS] [ACTION] [QUERY]
 #    and use $1/$2
