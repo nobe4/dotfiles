@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
 #
 # Setup:
-# 1. create an automator workflow that runs a bash script
+# 1. create an automator workflow that runs one of the following:
 #
-#  source "${HOME}/.zprofile" && \
-#  kitty --config "${DOTFILE_FOLDER}/launch/kitty.conf" "${DOTFILE_FOLDER}/launch/run.sh"
+#  - Terminal.app
+#    ```applescript
+#    tell application "Terminal" to activate
+#    tell application "Terminal" to do script "launch ; exit"
+#    ```
+#
+#  - Kitty
+#    ```bash
+#    source "${HOME}/.zprofile" && kitty launch
+#    ```
 #
 # 2. Settings > Keyboard > Shortcuts > Services > General > Set the service
 #
 # TODO:
-#   - have the commands also be runable from the shell
-#     maybe using ./bin would be easier? That would enforce consistency but
-#     migth lead up to a lot of noise as well.
-#     maybe using a link to ./bin ?
 #   - store logs somewhere for easier debugging
+#   - allow to pass a custom "list binaries" command
 
 set -e
 
