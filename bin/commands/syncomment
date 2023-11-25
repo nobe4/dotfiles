@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+#/ Usage: synccomment [FLAGS] [URL [FILE]]
+#/ Automatically sync a local file change with a comment on GitHub.
+#/
+#/ Arguments:
+#/  URL   URL to the comment or issue/PR.
+#/        e.g. https://github.com/owner/repo/issues/123
+#/             https://github.com/owner/repo/issues/123#issuecomment-123
+#/             https://github.com/owner/repo/pull/123
+#/             https://github.com/owner/repo/pull/123#issuecomment-123
+#/
+#/  FILE  Path to local file to use.
+#/        !Warning! The file content's will be replaced by the comment.
+#/
+#/ Flags:
+#/   -h   Show this help
+
+set -e
+
+show_help() { grep ^#/ <"${0}" |cut -c4- | envsubst ; }
+[[ "$*" == "-h" ]] && show_help && exit 0
+
+input="${1}"
+file="${2:-$(mktemp -d)/comment.md}"
+
+if [[ "${input}" == "" ]]; then
+	default="$(pbpaste | grep 'https://github.com/.\+' || true)"
+
+	echo "Enter a comment URL to sync with '${file}'"
+	if [[ "${default}" != "" ]]; then
+		echo "or <CR> to use: '${default}'"
+	fi
+
+	printf '> '
+	read -r input
+fi
+
+parts="$(
+	# shellcheck disable=2001
+	# cannot really use the variable replacement easily
+	echo "${input:-${default}}" \
+		| sed 's;^https://github.com/\([^/]*\)/\([^/]*\)/[^/]*/\([0-9]*\)\(#issuecomment-\([0-9]*\)\)*.*;\1 \2 \3 \5;'
+)"
+
+owner="$(echo "${parts}" | cut -d' ' -f1)"
+repo="$(echo "${parts}" | cut -d' ' -f2)"
+issue="$(echo "${parts}" | cut -d' ' -f3)"
+comment="$(echo "${parts}" | cut -d' ' -f4)"
+
+endpoint="/repos/${owner}/${repo}/issues/${issue}"
+if [ "${comment}" != "" ]; then
+	endpoint="/repos/${owner}/${repo}/issues/comments/${comment}"
+fi
+
+gh api "${endpoint}" -q '.body' > "${file}"
+ls -la "${file}"
+
+(
+	last_update="$(ls -l "${file}")"
+	while true; do
+		sleep 1
+		new_update="$(ls -l "$file")"
+		if [ "${new_update}" != "${last_update}" ]; then
+			gh api --method PATCH "${endpoint}" -f body="$(cat "${file}")"
+			last_update="${new_update}"
+		fi
+	done
+) 1>/dev/null 2>&1 &
+watch_pid="${!}"
+
+${EDITOR} "${file}"
+
+echo "Waiting a sec for exit save"
+sleep 1
+
+kill "${watch_pid}"
+wait "${watch_pid}" 2>/dev/null
