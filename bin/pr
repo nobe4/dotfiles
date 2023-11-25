@@ -19,6 +19,7 @@
 #/   -|--last       Switch to last project ('${LAST_PROJECT}')
 #/   -n|--new       Clone a project not in the contribution list.
 #/                  Needs the 'owner/repo' or URL in QUERY.
+#/   -o|--output    Output the name of the selected project.
 #/   -s|--switch    Switch to project in QUERY.
 #/   -w|--web       Open selected project in your browser.
 #/
@@ -51,8 +52,6 @@
 #   gh repo create offers a lot of options, the challenge might be to clone at
 #   the right place
 # - reorder: add LAST_PROJECT first, so pr - is equivalent to pr <CR>
-# - add flag to only output selection without anything else, so this can be
-#   piped
 
 set -e
 
@@ -168,7 +167,7 @@ select_project(){
 		| fzf \
 			--select-1 \
 			--query="${2}" \
-			--header="Select project to ${3}" \
+			--header="${3}" \
 			--preview="${FZF_PREVIEW_COMMAND}" \
 		|| true # prevent fzf from failing on exit
 }
@@ -215,6 +214,7 @@ while [ $# -gt 0 ]; do
 		-d|--delete) action="delete" ;;
 		-|--last)    action="last" ;;
 		-n|--new)    action="new" ;;
+		-o|--output) action="output" ;;
 		-s|--switch) action="switch" ;;
 		-w|--web)    action="web" ;;
 		*)           query="${1}" ;;
@@ -238,6 +238,9 @@ case "${action}" in
 		project=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' "${query}")
 		clone_project "${project}"
 		switch_session "${project}"
+		;;
+	output)
+		select_project "$(get_local_projects)" "${query}" "Select local project to output"
 		;;
 	last)
 		switch_session "${LAST_PROJECT}"
