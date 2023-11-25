@@ -17,8 +17,8 @@
 
 set -e
 
-PREVIEW_COMMAND="${DOTFILE_FOLDER}/launch/commands/{} -h"
-COMMANDS_PATH="${DOTFILE_FOLDER}/launch/commands"
+PREVIEW_COMMAND="${DOTFILE_FOLDER}/bin/commands/{} -h"
+COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
 
 find "${COMMANDS_PATH}" -type f -exec basename {} \; \
   | fzf \
