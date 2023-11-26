@@ -22,19 +22,24 @@
 set -e
 
 COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
-COMMAND_PATH="${COMMANDS_PATH}/{}"
+PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
+
 LOG_FILE="${HOME}/Library/Logs/launsh.log"
 BECOME_COMMAND="
-	${COMMAND_PATH} 2>> ${LOG_FILE} || \
-		echo '${COMMAND_PATH} failed' && \
-		echo 'Look at ${LOG_FILE}' && \
-		echo 'Press <CR> to exit... ' && \
-		read -r
+	{} 2>> ${LOG_FILE} || \
+		( \
+			echo '{} failed' && \
+			echo 'Look at ${LOG_FILE}' && \
+			echo 'Press <CR> to exit... ' && \
+			read -r \
+		)
 "
 
-find "${COMMANDS_PATH}" -type f -exec basename {} \; \
+find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
+	-type f \
+	-exec basename {} \; \
 	| sort \
 	| fzf \
-		--preview="${COMMAND_PATH} -h" \
+		--preview="{} -h" \
 		--bind="enter:become(${BECOME_COMMAND})"
 

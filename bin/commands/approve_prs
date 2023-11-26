@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-#/ Usage: approve PR
+#/ Usage: approve_prs [URL[ URL]+]
 #/
-#/ Approve the PR.
+#/ Approve the PRs.
 #/ If one or multiple URLs are in your clipboard, it will propose to default to
 #/ that.
 #/
@@ -14,14 +14,19 @@ set -e
 show_help() { grep ^#/ <"${0}" |cut -c4- | envsubst ; }
 [[ "$*" == "-h" ]] && show_help && exit 0
 
-default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
+input="${*}"
 
-echo "Enter a URL to approve"
-if [[ "${default}" != "" ]]; then
-  echo "or <CR> to use: '${default}'"
+if [[ "${input}" == "" ]];then
+	default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
+
+	echo "Enter a URL(s) to approve"
+	if [[ "${default}" != "" ]]; then
+		echo "or <CR> to use: '${default}'"
+	fi
+
+	printf '> '
+	read -r input
 fi
 
-printf '> '
-read -r input
 
 echo "${input:-${default}}" | xargs -n1 gh pr review --approve
