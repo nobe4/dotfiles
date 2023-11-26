@@ -9,7 +9,13 @@ set -e
 show_help() { grep ^#/ <"${0}" |cut -c4- | envsubst ; }
 [[ "$*" == "-h" ]] && show_help && exit 0
 
-file="$(mktemp -d)/tmp.md"
+folder="$(mktemp -d)"
+file="${folder}/tmp.md"
+
 touch "${file}"
+
+cp "${HOME}/.config/dotfiles/.vale.ini" "${folder}/.vale.ini"
+
 nvim "${file}"
+
 LANG=en_US.UTF-8 pbcopy < "${file}"
