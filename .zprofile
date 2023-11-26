@@ -8,7 +8,10 @@ source "$DOTFILE_FOLDER/utils.zsh"
 # }
 
 # PATH {
-PATH="$DOTFILE_FOLDER/bin:$HOME/.local/bin:$DOTFILE_FOLDER/private/bin:$PATH"
+PATH="/usr/local/sbin:$PATH"
+PATH="/usr/local/bin:$PATH"
+PATH="$DOTFILE_FOLDER/bin/commands:$DOTFILE_FOLDER/bin:$PATH"
+PATH="$DOTFILE_FOLDER/private/bin:$DOTFILE_FOLDER/private/bin/commands:$PATH"
 
 # macos Applications
 is_macos && {
@@ -26,20 +29,6 @@ fi
 # Same as `which go`
 PATH="$PATH:/usr/local/go/bin:$HOME/go:$HOME/go/bin"
 
-# Haskell
-PATH="$PATH:$HOME/.cabal/bin:$HOME/.ghcup/bin"
-
-# Shims
-PATH="$HOME/.rbenv/shims:$PATH"
-PATH="$HOME/.nodenv/shims:$PATH"
-PATH="$HOME/.pyenv/shims:$PATH"
-
-# Ruby
-PATH="$HOME/.gem/ruby/3.1.0/bin/:$PATH"
-
-# LLVM
-PATH="/usr/local/opt/llvm/bin:$PATH"
-
 export PATH
 # }
 
@@ -47,3 +36,6 @@ export PATH
 MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 export MANPATH
 # }
+
+export EDITOR='nvim'
+export MANPAGER='nvim +Man!'

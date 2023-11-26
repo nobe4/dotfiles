@@ -42,10 +42,6 @@ export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
 # }
-# Misc Exports {
-export EDITOR='nvim'
-export MANPAGER='nvim +Man!'
-# }
 # Functions {
 # Load compinit and check the cache only once a day
 autoload -Uz compinit
@@ -175,7 +171,7 @@ alias bde="bundle exec"
 
 # misc {
 alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
-alias l="${DOTFILE_FOLDER}/launch/run.sh"
+alias l="launsh"
 # }
 
 # linuxbrew {
