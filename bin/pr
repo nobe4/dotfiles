@@ -51,7 +51,6 @@
 #   `pr -C|--create-local nobe4/something`
 #   gh repo create offers a lot of options, the challenge might be to clone at
 #   the right place
-# - reorder: add LAST_PROJECT first, so pr - is equivalent to pr <CR>
 # - add indication about status:
 #   - remote
 #   - local
@@ -62,6 +61,9 @@
 # - research using positional args instead of flags for the action
 #    could be pr [FLAGS] [ACTION] [QUERY]
 #    and use $1/$2
+# - ensures no empty line gets added to the history
+# - fix discrepency between tmux session and project
+#   one can't have . in it
 
 set -e
 
@@ -151,13 +153,17 @@ get_local_projects(){
 }
 
 get_projects(){
+	echo "${LAST_PROJECT}"
+
 	recent_projects="$(sort < "${HISTORY_FILE_PATH}" | uniq -c | sort -nr | sed 's/ *[0-9]* //')"
-	echo "${recent_projects}"
+	comm -23 \
+		<(echo "${recent_projects}") \
+		<(echo "${LAST_PROJECT}")
 
 	local_projects="$(get_local_projects)"
 	comm -23 \
 		<(echo "${local_projects}") \
-		<(echo "${recent_projects}" | sort)
+		<(echo -e "${recent_projects}\n${LAST_PROJECT}" | sort)
 
 	update_cache
 	remote_projects="$(cat "${CACHE_FILE_PATH}")"
@@ -177,7 +183,7 @@ select_project(){
 		| fzf \
 			--select-1 \
 			--query="${2}" \
-			--header="${3}" \
+			--prompt="${3}" \
 			--preview="${FZF_PREVIEW_COMMAND}" \
 		|| true # prevent fzf from failing on exit
 }
@@ -192,7 +198,7 @@ clone_project(){
 update_last(){
 	current_session="$(tmux display-message -p '#S')"
 
-	[ "${current_session}" == "${LAST_PROJECT}" ] && return
+	[ "${current_session}" == "${LAST_PROJECT//[.:]/_}" ] && return
 	echo "${current_session}" > "${LAST_FILE_PATH}"
 }
 
@@ -231,32 +237,40 @@ case "${action}" in
 	-h|--help)
 		show_help
 		;;
+
 	default)
-		project="$(select_project "$(get_projects)" "${query}" "Select project to switch to")"
+		project="$(select_project "$(get_projects)" "${query}" "Switch to ")"
 		clone_project "${project}"
 		switch_session "${project}"
 		;;
+
 	-d|--delete)
-		project="$(select_project "$(get_local_projects)" "${query}" "Select local project to delete")"
+		project="$(select_project "$(get_local_projects)" "${query}" "Delete ")"
 		rm -rf "${BASE_PATH:?}/${project:?}"
 		echo "${project} deleted locally"
 		;;
+
+	--debug)
+		find "${STATE_PATH}" -type f \
+			-exec bash -c 'echo -e "$1\n$(cat "$1" | sort | uniq -c | sort -nr)\n"' \
+			shell {} \; \
+			| less
+		;;
+
 	-n|--new)
 		project=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' "${query}")
 		clone_project "${project}"
 		switch_session "${project}"
 		;;
-	-o|--output)
-		select_project "$(get_local_projects)" "${query}" "Select local project to output"
-		;;
-	-|--last)
-		switch_session "${LAST_PROJECT}"
-		;;
-	-s|--switch)
-		switch_session "${query}"
-		;;
+
+	-o|--output) select_project "$(get_local_projects)" "${query}" "Output " ;;
+
+	-|--last) switch_session "${LAST_PROJECT}" ;;
+
+	-s|--switch) switch_session "${query}" ;;
+
 	-w|--web)
-		project="$(select_project "$(get_projects)" "${query}" "Select project to open in a browser")"
+		project="$(select_project "$(get_projects)" "${query}" "Open ")"
 		gh repo view --web "${project}"
 		;;
 esac
