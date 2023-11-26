@@ -6,12 +6,12 @@
 #  - Terminal.app
 #    ```applescript
 #    tell application "Terminal" to activate
-#    tell application "Terminal" to do script "launsh 2> "${HOME}/Library/Logs/launsh.log" ; exit"
+#    tell application "Terminal" to do script "launsh 2>> "${HOME}/Library/Logs/launsh.log" ; exit"
 #    ```
 #
 #  - Kitty
 #    ```bash
-#    source "${HOME}/.zprofile" && kitty launsh 2> "${HOME}/Library/Logs/launsh.log"
+#    source "${HOME}/.zprofile" && kitty launsh 2>> "${HOME}/Library/Logs/launsh.log"
 #    ```
 #
 # 2. Settings > Keyboard > Shortcuts > Services > General > Set the service
@@ -23,10 +23,18 @@ set -e
 
 COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
 COMMAND_PATH="${COMMANDS_PATH}/{}"
+LOG_FILE="${HOME}/Library/Logs/launsh.log"
+BECOME_COMMAND="
+	${COMMAND_PATH} 2>> ${LOG_FILE} || \
+		echo '${COMMAND_PATH} failed' && \
+		echo 'Look at ${LOG_FILE}' && \
+		echo 'Press <CR> to exit... ' && \
+		read -r
+"
 
 find "${COMMANDS_PATH}" -type f -exec basename {} \; \
 	| sort \
 	| fzf \
 		--preview="${COMMAND_PATH} -h" \
-		--bind="enter:become(${COMMAND_PATH} 2> ${HOME}/Library/Logs/launsh.log)"
+		--bind="enter:become(${BECOME_COMMAND})"
 
