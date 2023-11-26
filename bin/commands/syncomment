@@ -2,15 +2,18 @@
 #/ Usage: synccomment [FLAGS] [URL [FILE]]
 #/ Automatically sync a local file change with a comment on GitHub.
 #/
-#/ Arguments:
-#/  URL   URL to the comment or issue/PR.
-#/        e.g. https://github.com/owner/repo/issues/123
-#/             https://github.com/owner/repo/issues/123#issuecomment-123
-#/             https://github.com/owner/repo/pull/123
-#/             https://github.com/owner/repo/pull/123#issuecomment-123
+#/ Requirements:
+#/   - gh
 #/
-#/  FILE  Path to local file to use.
-#/        !Warning! The file content's will be replaced by the comment.
+#/ Arguments:
+#/   URL   URL to the comment or issue/PR.
+#/         e.g. https://github.com/owner/repo/issues/123
+#/              https://github.com/owner/repo/issues/123#issuecomment-123
+#/              https://github.com/owner/repo/pull/123
+#/              https://github.com/owner/repo/pull/123#issuecomment-123
+#/
+#/   FILE  Path to local file to use.
+#/         !Warning! The file content's will be replaced by the comment.
 #/
 #/ Flags:
 #/   -h   Show this help
@@ -56,6 +59,10 @@ gh api "${endpoint}" -q '.body' > "${file}"
 ls -la "${file}"
 
 (
+	# I tried using entr here, but it didn't behave well with the background
+	# job. It started a new process that wouldn't get killed by the kill at the
+	# end of the file. Playing with the flags (esp. -r and -z) didn't result in
+	# a better state.
 	last_update="$(ls -l "${file}")"
 	while true; do
 		sleep 1
