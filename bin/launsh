@@ -40,6 +40,7 @@ find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
 	-exec basename {} \; \
 	| sort \
 	| fzf \
+		--preview-window="bottom" \
 		--preview="{} -h" \
 		--bind="enter:become(${BECOME_COMMAND})"
 
