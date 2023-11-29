@@ -31,6 +31,7 @@ lspconfig.clangd.setup(default_config)
 lspconfig.gopls.setup(default_config)
 lspconfig.marksman.setup(default_config)
 lspconfig.pylsp.setup(default_config)
+lspconfig.ruby_ls.setup(default_config)
 lspconfig.vale_ls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
