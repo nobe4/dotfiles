@@ -6,17 +6,33 @@
 #/   - gh
 #/
 #/ Arguments:
-#/   URL   URL to the comment or issue/PR.
-#/         e.g. https://github.com/owner/repo/issues/123
-#/              https://github.com/owner/repo/issues/123#issuecomment-123
+#/   URL   URL to the item to edit
+#/         e.g.
+#/              Issue
+#/              https://github.com/owner/repo/issues/123
+#/              https://github.com/owner/repo/issues/123#issuecomment-456
+#/              PR
 #/              https://github.com/owner/repo/pull/123
-#/              https://github.com/owner/repo/pull/123#issuecomment-123
+#/              https://github.com/owner/repo/pull/123#issuecomment-456
+#/              https://github.com/owner/repo/pull/123#discussion_r456
+#/              Gist
+#/              https://gist.github.com/owner/123
 #/
 #/   FILE  Path to local file to use.
 #/         !Warning! The file content's will be replaced by the comment.
 #/
 #/ Flags:
 #/   -h   Show this help
+#/
+#/ TODO:
+#/  - add gist
+#/        https://docs.github.com/en/rest/gists/gists?apiVersion=2022-11-28#get-a-gist
+#/        https://docs.github.com/en/rest/gists/gists?apiVersion=2022-11-28#update-a-gist
+#/    will need to generalize the patch because gist use a different format
+#/    gh gist edit <url> works
+#/  - add PR comments
+#/        https://github.com/[X]/[Y]/pull/Z#discussion_r[A]
+#/        gh api /repos/X/Y/pulls/comments/A
 
 set -e
 
@@ -24,6 +40,7 @@ show_help() { grep ^#/ <"${0}" |cut -c4- | envsubst ; }
 [[ "$*" == "-h" ]] && show_help && exit 0
 
 input="${1}"
+
 file="${2:-$(mktemp -d)/comment.md}"
 
 if [[ "${input}" == "" ]]; then
@@ -38,26 +55,91 @@ if [[ "${input}" == "" ]]; then
 	read -r input
 fi
 
-parts="$(
-	# shellcheck disable=2001
-	# cannot really use the variable replacement easily
-	echo "${input:-${default}}" \
-		| sed 's;^https://github.com/\([^/]*\)/\([^/]*\)/[^/]*/\([0-9]*\)\(#issuecomment-\([0-9]*\)\)*.*;\1 \2 \3 \5;'
-)"
+regexp_github="https://github.com/([^/]+)/([^/]+)/([^/]+)/([^#]+)#?([^0-9_\-]+)?[_-]?r?([0-9]+)?"
+regexp_gist="https://gist.github.com/([^/]+)/(.+)#file-(.+)"
 
-owner="$(echo "${parts}" | cut -d' ' -f1)"
-repo="$(echo "${parts}" | cut -d' ' -f2)"
-issue="$(echo "${parts}" | cut -d' ' -f3)"
-comment="$(echo "${parts}" | cut -d' ' -f4)"
+get_issues_body(){
+	# https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#get-an-issue
+	gh api "/repos/${owner}/${repo}/issues/${id}" -q '.body'
+}
+set_issues_body(){
+	echo "set issue $owner $repo $id"
+}
 
-endpoint="/repos/${owner}/${repo}/issues/${issue}"
-if [ "${comment}" != "" ]; then
-	endpoint="/repos/${owner}/${repo}/issues/comments/${comment}"
+get_issues_issuecomment(){
+	# https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request
+	gh api "/repos/${owner}/${repo}/issues/comments/${field_id}" -q '.body'
+}
+set_issues_issuecomment(){
+	echo "set issue issuecomment $owner $repo $field_id"
+}
+
+get_pull_body(){
+	# https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request
+	gh api "/repos/${owner}/${repo}/pulls/${id}" -q '.body'
+}
+set_pull_body(){
+	echo "set pull $owner $repo $id"
+}
+
+get_pull_issuecomment(){
+	get_issues_issuecomment
+}
+set_pull_issuecomment(){
+	echo "set pull issuecomment $owner $repo $field_id"
+}
+
+get_pull_discussion(){
+	# https://docs.github.com/en/rest/pulls/comments?apiVersion=2022-11-28#get-a-review-comment-for-a-pull-request
+	gh api "/repos/${owner}/${repo}/pulls/comments/${field_id}" -q '.body'
+}
+set_pull_discussion(){
+	echo "set set_pull_discussion"
+}
+
+get_gist_file(){
+	# https://docs.github.com/en/rest/gists/gists?apiVersion=2022-11-28#get-a-gist
+	echo "Warning: partial support"
+	# The link one gets from the UI doesn't always match what's in the UI,
+	# especially in the case of special characters:
+	# UI
+	#   https://gist.github.com/owner/123#file-file-with-a-space-and
+	# API
+	#   gh api "/gists/123" -q '.files'
+	#   "file with a space and &[])"
+
+	# cc https://github.com/github/repos/issues/9439
+	gh api "/gists/${id}" -q ".files.${field_id}.content"
+}
+set_gist_file(){
+	echo "set gist $owner $id $field_id"
+
+}
+
+if [[ "${input}" =~ ${regexp_github} ]]; then
+	owner="${BASH_REMATCH[1]}"
+	repo="${BASH_REMATCH[2]}"
+	type="${BASH_REMATCH[3]}"
+	id="${BASH_REMATCH[4]}"
+	field="${BASH_REMATCH[5]:-body}"
+	field_id="${BASH_REMATCH[6]}"
+
+	echo "$type $owner $repo $id $field $field_id"
+elif [[ "${input}" =~ ${regexp_gist} ]]; then
+	type="gist"
+	owner="${BASH_REMATCH[1]}"
+	id="${BASH_REMATCH[2]}"
+	field="file"
+	field_id="${BASH_REMATCH[3]}"
+	echo "gist $owner $id $field_id"
+else
+	echo "${input} didn't match"
+	exit 1
 fi
 
-gh api "${endpoint}" -q '.body' > "${file}"
-ls -la "${file}"
-
+"get_${type}_${field}"
+exit 0
+"get_${type}_${field}" > "${file}"
 (
 	# I tried using entr here, but it didn't behave well with the background
 	# job. It started a new process that wouldn't get killed by the kill at the
@@ -68,7 +150,7 @@ ls -la "${file}"
 		sleep 1
 		new_update="$(ls -l "$file")"
 		if [ "${new_update}" != "${last_update}" ]; then
-			gh api --method PATCH "${endpoint}" -f body="$(cat "${file}")"
+			"set_${type}_${field}" "$(cat "${file}")"
 			last_update="${new_update}"
 		fi
 	done
