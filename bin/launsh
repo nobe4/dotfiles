@@ -6,12 +6,12 @@
 #  - Terminal.app
 #    ```applescript
 #    tell application "Terminal" to activate
-#    tell application "Terminal" to do script "launsh 2>> "${HOME}/Library/Logs/launsh.log" ; exit"
+#    tell application "Terminal" to do script "launsh; exit"
 #    ```
 #
 #  - Kitty
 #    ```bash
-#    source "${HOME}/.zprofile" && kitty launsh 2>> "${HOME}/Library/Logs/launsh.log"
+#    source "${HOME}/.zprofile" && kitty launsh
 #    ```
 #
 # 2. Settings > Keyboard > Shortcuts > Services > General > Set the service
@@ -26,7 +26,7 @@ PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
 
 LOG_FILE="${HOME}/Library/Logs/launsh.log"
 BECOME_COMMAND="
-	{} 2>> ${LOG_FILE} || \
+	{} 2> >(tee -a ${LOG_FILE} >&2) || \
 		( \
 			echo '{} failed' && \
 			echo 'Look at ${LOG_FILE}' && \
@@ -43,4 +43,3 @@ find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
 		--preview-window="bottom" \
 		--preview="{} -h" \
 		--bind="enter:become(${BECOME_COMMAND})"
-
