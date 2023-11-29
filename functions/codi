@@ -3,7 +3,7 @@
 # Choose an interpreter
 choices="ruby rb
 node js
-python py"
+python3 py"
 choice=$(echo $choices | fzf -select-1 -q "$1")
 
 # Templates
@@ -33,7 +33,7 @@ pane_id=$(
 )
 
 # Edit
-$EDITOR "$tmpfile"
+"${EDITOR}" "$tmpfile"
 
 # Cleanup
 tmux kill-pane -t "$pane_id"
