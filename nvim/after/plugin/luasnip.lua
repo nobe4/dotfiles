@@ -80,11 +80,11 @@ ls.add_snippets("gitcommit", {
       ]],
 			{
 				f(function(_, parent)
-					return parent.trigger
-				end, {}),
+					  return parent.trigger
+				  end, {}),
 				i(1, "reference"),
 				i(2, "title"),
-				i(3, "body"),
+				i(3),
 			}
 		)
 	),
@@ -96,16 +96,16 @@ ls.add_snippets("sh", {
 
 -- mappings
 vim.keymap.set({ "n", "i", "s" }, "<C-K>", function()
-	if ls.expand_or_jumpable() then
-		ls.expand_or_jump()
-	end
-end, { silent = true })
+				   if ls.expand_or_jumpable() then
+					   ls.expand_or_jump()
+				   end
+			   end, { silent = true })
 
 vim.keymap.set({ "n", "i", "s" }, "<C-B>", function()
-	if ls.jumpable(-1) then
-		ls.jump(-1)
-	end
-end, { silent = true })
+				   if ls.jumpable(-1) then
+					   ls.jump(-1)
+				   end
+			   end, { silent = true })
 
 vim.keymap.set({ "i", "s" }, "<C-L>", function()
 	if ls.choice_active() then
