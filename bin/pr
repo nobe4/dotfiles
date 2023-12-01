@@ -9,10 +9,10 @@
 #/ Remote projects are repositories you contributed to.
 #/
 #/ Status indications in the FZF search:
-#/   - 'L'  last project
-#/   - 'R'  recent project
-#/   - 'C'  cloned project
-#/   - ' '  remote project
+#/   - '-'  Last project
+#/   - '*'  Recent project
+#/   - '+'  Cloned project
+#/   - '?'  Remote project
 #/
 #/ Requirements:
 #/   - tmux
@@ -26,6 +26,7 @@
 #/   -n|--new       Clone a project not in the contribution list.
 #/                  Needs the 'owner/repo' or URL in QUERY.
 #/   -o|--output    Output the name of the selected project.
+#/   -r|--refresh   Refresh cache.
 #/   -s|--switch    Switch to project in QUERY.
 #/   -w|--web       Open selected project in your browser.
 #/
@@ -39,7 +40,7 @@
 #/   PR_BASE_PATH           Path to the base folder.
 #/                          Value: '${BASE_PATH}'
 #/
-#/   PR_CACHE_TTL_DAYS      Number of days after which the cache needs to update.
+#/   PR_CACHE_TTL_DAYS      Number of days after which the cache needs to refresh.
 #/                          Set to -1 to always refresh.
 #/                          Value: '${CACHE_TTL_DAYS}'
 #/
@@ -64,7 +65,6 @@
 # - fix discrepency between tmux session and project
 #   one can't have . in it
 # - reload in background
-# - add flag for reloading
 
 set -e
 
@@ -75,6 +75,7 @@ STATE_PATH="${PR_CACHE_PATH:-${XDG_STATE_HOME:-${HOME:?}/.local/state}/pr}"
 mkdir -p "${STATE_PATH}"
 
 CACHE_FILE_PATH="${STATE_PATH:?}/cache"
+FORCE_RELOAD_CACHE=0
 # Don't touch the cache file to preserve last modification date.
 
 LAST_FILE_PATH="${STATE_PATH:?}/last"
@@ -132,8 +133,8 @@ show_help() {
 	grep ^#/ <"${0}" | cut -c4- | envsubst
 }
 
-update_cache(){
-	if [ -f "${CACHE_FILE_PATH}" ]; then
+refresh_cache(){
+	if [ "${FORCE_RELOAD_CACHE}" == 0 ] && [ -f "${CACHE_FILE_PATH}" ]; then
 		cache_age_in_days="$((( $(date +%s) - $(date -r "${CACHE_FILE_PATH}" +%s)) / 86400))"
 		[ "${cache_age_in_days}" -lt "${CACHE_TTL_DAYS}" ] && return
 	fi
@@ -154,7 +155,7 @@ get_local_projects(){
 }
 
 get_projects(){
-	echo "L ${LAST_PROJECT}"
+	echo "- ${LAST_PROJECT}"
 
 	recent_projects="$(
 		sort < "${HISTORY_FILE_PATH}" \
@@ -166,15 +167,15 @@ get_projects(){
 	)"
 
 	# shellcheck disable=SC2001
-	echo "${recent_projects}" | sed 's/^/R /'
+	echo "${recent_projects}" | sed 's/^/* /'
 
 	local_projects="$(get_local_projects)"
 	comm -23 \
 		<(echo "${local_projects}") \
 		<(echo -e "${recent_projects}\n${LAST_PROJECT}" | sort) \
-		| sed 's/^/C /'
+		| sed 's/^/+ /'
 
-	update_cache
+	refresh_cache
 	remote_projects="$(cat "${CACHE_FILE_PATH}")"
 	all_projects="$(echo -e "${remote_projects}" | sort -u)"
 
@@ -184,7 +185,7 @@ get_projects(){
 	comm -23 \
 		<(echo "${all_projects}") \
 		<(echo "${projects_to_reject}") \
-		| sed 's/^/  /'
+		| sed 's/^/? /'
 }
 
 select_project(){
@@ -192,6 +193,7 @@ select_project(){
 		| sed "/^$/d" \
 		| fzf \
 			--select-1 \
+			--nth=2 \
 			--query="${2}" \
 			--prompt="${3}" \
 			--preview="${FZF_PREVIEW_COMMAND}" \
@@ -237,6 +239,7 @@ action="default"
 
 while [ $# -gt 0 ]; do
 	case "${1}" in
+		-r|--reload) FORCE_RELOAD_CACHE=1 ;;
 		-*) action="${1}" ;;
 		*)  query="${1}" ;;
 	esac
@@ -274,7 +277,7 @@ case "${action}" in
 		switch_session "${project}"
 		;;
 
-	-o|--output) select_project "$(get_local_projects)" "${query}" "Output " ;;
+	-o|--output) select_project "$(get_projects)" "${query}" "Output " ;;
 
 	-|--last) switch_session "${LAST_PROJECT}" ;;
 
