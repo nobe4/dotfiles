@@ -8,6 +8,12 @@
 #/ Local projects are folders in ${BASE_PATH}.
 #/ Remote projects are repositories you contributed to.
 #/
+#/ Status indications in the FZF search:
+#/   - 'L'  last project
+#/   - 'R'  recent project
+#/   - 'C'  cloned project
+#/   - ' '  remote project
+#/
 #/ Requirements:
 #/   - tmux
 #/   - fzf
@@ -51,19 +57,14 @@
 #   `pr -C|--create-local nobe4/something`
 #   gh repo create offers a lot of options, the challenge might be to clone at
 #   the right place
-# - add indication about status:
-#   - remote
-#   - local
-#   - active
-#   - last
-#   - current
-#   add after the name but still allow searching
 # - research using positional args instead of flags for the action
 #    could be pr [FLAGS] [ACTION] [QUERY]
 #    and use $1/$2
 # - ensures no empty line gets added to the history
 # - fix discrepency between tmux session and project
 #   one can't have . in it
+# - reload in background
+# - add flag for reloading
 
 set -e
 
@@ -88,7 +89,7 @@ IGNORED_FILE_PATH="${STATE_PATH:?}/ignored"
 touch "${IGNORED_FILE_PATH}"
 
 # shellcheck disable=SC2016
-DEFAULT_FZF_PREVIEW_COMMAND='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {}'
+DEFAULT_FZF_PREVIEW_COMMAND='GH_FORCE_TTY=$FZF_PREVIEW_COLUMNS gh repo view {2}'
 FZF_PREVIEW_COMMAND="${PR_FZF_PREVIEW_COMMAND:-${DEFAULT_FZF_PREVIEW_COMMAND}}"
 
 DEFAULT_FZF_OPTS='
@@ -96,8 +97,8 @@ DEFAULT_FZF_OPTS='
   --info=inline
   --preview-window=up:85%:border-bottom:wrap
   --no-mouse
-  --bind="ctrl-o:execute-silent(gh repo view --web {})"
-  --bind="ctrl-i:execute-silent(echo {} >> '"${IGNORED_FILE_PATH}"')"
+  --bind="ctrl-o:execute-silent(gh repo view --web {2})"
+  --bind="ctrl-i:execute-silent(echo {2} >> '"${IGNORED_FILE_PATH}"')"
 '
 FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:-${DEFAULT_FZF_OPTS}} ${FZF_ADDITIONAL_OPTS}"
 
@@ -153,17 +154,25 @@ get_local_projects(){
 }
 
 get_projects(){
-	echo "${LAST_PROJECT}"
+	echo "L ${LAST_PROJECT}"
 
-	recent_projects="$(sort < "${HISTORY_FILE_PATH}" | uniq -c | sort -nr | sed 's/ *[0-9]* //')"
-	comm -23 \
-		<(echo "${recent_projects}") \
-		<(echo "${LAST_PROJECT}")
+	recent_projects="$(
+		sort < "${HISTORY_FILE_PATH}" \
+			| grep -v "^$" \
+			| grep -v "${LAST_PROJECT}" \
+			| uniq -c \
+			| sort -nr \
+			| sed 's/ *[0-9]* //'
+	)"
+
+	# shellcheck disable=SC2001
+	echo "${recent_projects}" | sed 's/^/R /'
 
 	local_projects="$(get_local_projects)"
 	comm -23 \
 		<(echo "${local_projects}") \
-		<(echo -e "${recent_projects}\n${LAST_PROJECT}" | sort)
+		<(echo -e "${recent_projects}\n${LAST_PROJECT}" | sort) \
+		| sed 's/^/C /'
 
 	update_cache
 	remote_projects="$(cat "${CACHE_FILE_PATH}")"
@@ -174,7 +183,8 @@ get_projects(){
 
 	comm -23 \
 		<(echo "${all_projects}") \
-		<(echo "${projects_to_reject}")
+		<(echo "${projects_to_reject}") \
+		| sed 's/^/  /'
 }
 
 select_project(){
@@ -185,6 +195,7 @@ select_project(){
 			--query="${2}" \
 			--prompt="${3}" \
 			--preview="${FZF_PREVIEW_COMMAND}" \
+			| awk '{print $2}' \
 		|| true # prevent fzf from failing on exit
 }
 
