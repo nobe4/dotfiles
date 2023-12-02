@@ -61,9 +61,8 @@
 # - research using positional args instead of flags for the action
 #    could be pr [FLAGS] [ACTION] [QUERY]
 #    and use $1/$2
-# - ensures no empty line gets added to the history
-# - fix discrepency between tmux session and project
-#   one can't have . in it
+# - ensure no empty line get displayed in fzf
+#   with the new prefixes, echo '' | sed ... will display a line
 # - reload in background
 
 set -e
@@ -151,6 +150,7 @@ refresh_cache(){
 get_local_projects(){
 	find "${BASE_PATH}" -type d -maxdepth 2 -mindepth 2 \
 		| sed "s#^${BASE_PATH}/##" \
+		| grep -v "^$" \
 		| sort -u
 }
 
@@ -216,6 +216,8 @@ update_last(){
 }
 
 switch_session(){
+	[ "${1}" == "" ] && return
+
 	echo "${1}" >> "${HISTORY_FILE_PATH}"
 
 	# Tmux doesn't like . or : in session names as they represent window index or
