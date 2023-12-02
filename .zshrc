@@ -172,6 +172,7 @@ alias bde="bundle exec"
 # misc {
 alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
 alias l="launsh"
+alias pr="${HOME}/dev/nobe4/projector.sh/projector.sh"
 # }
 
 # linuxbrew {
