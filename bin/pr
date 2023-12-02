@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+#VERSION 0.0.0
 #/ pr - project interface for tmux
 #/
-#/ Usage: pr [FLAGS] [QUERY]
+#/ Usage: pr [FLAGS] [COMMAND] [QUERY]
 #/
 #/ Select a local or remote project to switch to.
 #/
@@ -21,17 +22,21 @@
 #/
 #/ Flags:
 #/   -h|--help      Display this help.
-#/   -d|--delete    Delete the selected local project.
-#/   -|--last       Switch to last project ('${LAST_PROJECT}')
-#/   -n|--new       Clone a project not in the contribution list.
-#/                  Needs the 'owner/repo' or URL in QUERY.
-#/   -o|--output    Output the name of the selected project.
+#/   -v|--version   Display the version.
 #/   -r|--refresh   Refresh cache.
-#/   -s|--switch    Switch to project in QUERY.
-#/   -w|--web       Open selected project in your browser.
+#/
+#/ Commands (default: '${DEFAULT_COMMAND}'):
+#/   debug          Print some debug information.
+#/   delete         Delete the selected local project.
+#/   -|last         Switch to last project ('${LAST_PROJECT}')
+#/   n|new          Clone a project not in the contribution list.
+#/                  Needs the 'owner/repo' or URL in QUERY.
+#/   o|output       Output the name of the selected project.
+#/   s|switch       Switch to selected project.
+#/   w|web          Open selected project in your browser.
 #/
 #/ Environment variables:
-#/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocation.
+#/   FZF_DEFAULT_OPTS       Respects this value for every FZF invocations.
 #/                          Value: '${FZF_DEFAULT_OPTS}'
 #/
 #/   FZF_ADDITIONAL_OPTS    Append those to 'FZF_DEFAULT_OPTS'.
@@ -58,9 +63,6 @@
 #   `pr -C|--create-local nobe4/something`
 #   gh repo create offers a lot of options, the challenge might be to clone at
 #   the right place
-# - research using positional args instead of flags for the action
-#    could be pr [FLAGS] [ACTION] [QUERY]
-#    and use $1/$2
 # - reload in background
 
 set -e
@@ -118,16 +120,22 @@ REPO_QUERY='
 '
 REPO_EXTRACT='.[].viewer.repositoriesContributedTo.nodes[].nameWithOwner'
 
+DEFAULT_COMMAND='switch'
+
 show_help() {
-	# envsubst need variables to be exported
 	export \
+		BASE_PATH \
+		CACHE_TTL_DAYS \
+		DEFAULT_COMMAND \
 		FZF_DEFAULT_OPTS \
 		FZF_PREVIEW_COMMAND \
 		LAST_PROJECT \
-		STATE_PATH \
-		CACHE_TTL_DAYS \
-		BASE_PATH
+		STATE_PATH
 	grep ^#/ <"${0}" | cut -c4- | envsubst
+}
+
+show_version(){
+	grep ^#VERSION <"${0}" | cut -d' ' -f2
 }
 
 refresh_cache(){
@@ -235,57 +243,63 @@ switch_session(){
 	fi
 }
 
-query=""
-action="default"
-
-while [ $# -gt 0 ]; do
+while [ "${#}" -gt 0 ]; do
 	case "${1}" in
+		-h|--help) show_help && exit 0 ;;
+		-v|--version) show_version && exit 0 ;;
 		-r|--reload) FORCE_RELOAD_CACHE=1 ;;
-		-*) action="${1}" ;;
-		*)  query="${1}" ;;
+		-) break ;;
+		-*)
+			echo "Unknown flag '${1}'"
+			show_help
+			exit 1
+			;;
+		*)  break ;;
 	esac
 
 	shift 1
 done
 
-case "${action}" in
-	-h|--help)
-		show_help
-		;;
+COMMAND="${1:-"${DEFAULT_COMMAND}"}"
+query="${*:2}"
 
-	default)
+case "${COMMAND}" in
+	s|switch)
 		project="$(select_project "$(get_projects)" "${query}" "Switch to ")"
 		clone_project "${project}"
 		switch_session "${project}"
 		;;
 
-	-d|--delete)
+	delete)
 		project="$(select_project "$(get_local_projects)" "${query}" "Delete ")"
 		rm -rf "${BASE_PATH:?}/${project:?}"
 		echo "${project} deleted locally"
 		;;
 
-	--debug)
+	debug)
 		find "${STATE_PATH}" -type f \
 			-exec bash -c 'echo -e "$1\n$(cat "$1" | sort | uniq -c | sort -nr)\n"' \
 			shell {} \; \
 			| less
 		;;
 
-	-n|--new)
+	-|last) switch_session "${LAST_PROJECT}" ;;
+
+	n|new)
 		project=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' "${query}")
 		clone_project "${project}"
 		switch_session "${project}"
 		;;
 
-	-o|--output) select_project "$(get_projects)" "${query}" "Output " ;;
+	o|output) select_project "$(get_projects)" "${query}" "Output " ;;
 
-	-|--last) switch_session "${LAST_PROJECT}" ;;
-
-	-s|--switch) switch_session "${query}" ;;
-
-	-w|--web)
+	w|web)
 		project="$(select_project "$(get_projects)" "${query}" "Open ")"
 		gh repo view --web "${project}"
+		;;
+
+	*)
+		echo "Unknown command '${COMMAND}'"
+		exit 1
 		;;
 esac
