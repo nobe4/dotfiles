@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#VERSION 0.0.0
+#VERSION 0.0.1
 #/ pr - project interface for tmux
 #/
 #/ Usage: pr [FLAGS] [COMMAND] [QUERY]
@@ -63,7 +63,6 @@
 #   `pr -C|--create-local nobe4/something`
 #   gh repo create offers a lot of options, the challenge might be to clone at
 #   the right place
-# - reload in background
 
 set -e
 
@@ -144,13 +143,16 @@ refresh_cache(){
 		[ "${cache_age_in_days}" -lt "${CACHE_TTL_DAYS}" ] && return
 	fi
 
-	echo "Writing repo list to ${CACHE_FILE_PATH}" >&2
+	echo "Writing repo list to ${CACHE_FILE_PATH} in the background" >&2
+	sleep 0.5
 
-	gh api graphql \
-		--paginate \
-		-f query="${REPO_QUERY}" \
-		--jq "${REPO_EXTRACT}" \
-		> "${CACHE_FILE_PATH}"
+	(
+		gh api graphql \
+			--paginate \
+			-f query="${REPO_QUERY}" \
+			--jq "${REPO_EXTRACT}" \
+			> "${CACHE_FILE_PATH}"
+	) &
 }
 
 get_local_projects(){
