@@ -61,8 +61,6 @@
 # - research using positional args instead of flags for the action
 #    could be pr [FLAGS] [ACTION] [QUERY]
 #    and use $1/$2
-# - ensure no empty line get displayed in fzf
-#   with the new prefixes, echo '' | sed ... will display a line
 # - reload in background
 
 set -e
@@ -150,7 +148,7 @@ refresh_cache(){
 get_local_projects(){
 	find "${BASE_PATH}" -type d -maxdepth 2 -mindepth 2 \
 		| sed "s#^${BASE_PATH}/##" \
-		| grep -v "^$" \
+		| grep -v '^$' \
 		| sort -u
 }
 
@@ -159,7 +157,7 @@ get_projects(){
 
 	recent_projects="$(
 		sort < "${HISTORY_FILE_PATH}" \
-			| grep -v "^$" \
+			| grep -v '^$' \
 			| grep -v "${LAST_PROJECT}" \
 			| uniq -c \
 			| sort -nr \
@@ -173,6 +171,7 @@ get_projects(){
 	comm -23 \
 		<(echo "${local_projects}") \
 		<(echo -e "${recent_projects}\n${LAST_PROJECT}" | sort) \
+		| grep -v '^$' \
 		| sed 's/^/+ /'
 
 	refresh_cache
@@ -185,12 +184,12 @@ get_projects(){
 	comm -23 \
 		<(echo "${all_projects}") \
 		<(echo "${projects_to_reject}") \
+		| grep -v '^$' \
 		| sed 's/^/? /'
 }
 
 select_project(){
 	echo "${1}" \
-		| sed "/^$/d" \
 		| fzf \
 			--select-1 \
 			--nth=2 \
