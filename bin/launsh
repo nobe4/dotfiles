@@ -26,7 +26,8 @@ PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
 
 LOG_FILE="${HOME}/Library/Logs/launsh.log"
 BECOME_COMMAND="
-	{} 2> >(tee -a ${LOG_FILE} >&2) || \
+	{} 2> >(tee -a ${LOG_FILE} >&2) \
+	|| \
 		( \
 			echo '{} failed' && \
 			echo 'Look at ${LOG_FILE}' && \
