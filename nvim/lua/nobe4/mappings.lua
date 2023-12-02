@@ -98,6 +98,9 @@ map("n", "T", function()
 	require("trouble").toggle()
 end, options)
 
+map("n", "gm", ":RLMark ", options)
+map("n", "gt", ":RLTravel ", options)
+
 -- vim-tmux-navigator
 vim.g.tmux_navigator_no_mappings = 1
 map("", "<C-Left>", ":<C-U>TmuxNavigateLeft<CR>", options)
