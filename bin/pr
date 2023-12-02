@@ -136,7 +136,7 @@ refresh_cache(){
 		[ "${cache_age_in_days}" -lt "${CACHE_TTL_DAYS}" ] && return
 	fi
 
-	echo "Writing repo list to ${CACHE_FILE_PATH}"
+	echo "Writing repo list to ${CACHE_FILE_PATH}" >&2
 
 	gh api graphql \
 		--paginate \
