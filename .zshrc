@@ -172,7 +172,6 @@ alias bde="bundle exec"
 # misc {
 alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
 alias l="launsh"
-alias pr="${HOME}/dev/nobe4/projector.sh/projector.sh"
 # }
 
 # linuxbrew {
@@ -234,7 +233,6 @@ alias kk='killall'                                   # Quicker kill all
 alias tel='telegram-send'                            # Send a message to a telegram channel
 alias hmac='openssl rand -hex 32'
 alias tmp='tmux new-window "cd `mktemp -d` && zsh"'
-alias dotfiles='pr --switch nobe4/dotfiles'
 
 # GDB {
 alias gdb='gdb -q' # Silent GDB

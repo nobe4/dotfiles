@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC2068 disable=SC2016
+FZF_DEFAULT_OPTS='
+  --no-sort
+  --info=inline
+  --preview-window=up:85%:border-bottom:wrap
+  --no-mouse
+  --bind="ctrl-o:execute-silent(gh repo view --web {2})"
+  --bind="ctrl-i:execute-silent(echo {2} >> '"${PR_STATE_PATH}/ignored"')"
+  --preview="GH_FORCE_TTY=${FZF_PREVIEW_COLUMNS} gh repo view {2}"
+' \
+PR_SWITCHER="${HOME}/dev/nobe4/projector.sh/switchers/tmux.sh" \
+"${HOME}/dev/nobe4/projector.sh/projector.sh" $@
