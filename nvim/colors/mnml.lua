@@ -94,7 +94,7 @@ local rules = {
 	{ group = "Comment",                   fg = "lblack" },
 	{ group = "Conceal",                   lk = "n4_default" },
 	{ group = "Conditional",               lk = "n4_default" },
-	{ group = "Constant",                  fg = "lgreen" },
+	{ group = "Constant",                  lk = "Variable" },
 	{ group = "Debug",                     lk = "n4_default" },
 	{ group = "Define",                    lk = "n4_default" },
 	{ group = "Delimiter",                 lk = "n4_default" },
