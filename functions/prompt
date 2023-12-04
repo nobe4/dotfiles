@@ -1,22 +1,24 @@
 #!/usr/bin/env bash
 
-local prompt="%{$fg[green]%}%c%{$fg[red]%}"
+# shellcheck disable=2154
+# Colors are defined.
 
-branch="$((git symbolic-ref -q HEAD --short || git name-rev --name-only --no-undefined --always HEAD) 2> /dev/null | xargs)"
+# shellcheck disable=1087
+prompt="%{$fg[green]%}%c%{$fg[red]%}"
+
+branch="$( (git symbolic-ref -q HEAD --short || git name-rev --name-only --no-undefined --always HEAD) 2> /dev/null | xargs)"
 if [ -n "$branch" ]; then
-  local dirty=""
-  if (! git diff-index --quiet HEAD -- 2> /dev/null); then
+
+  stash_count="$(git stash list 2> /dev/null | wc -l | tr -d ' ')"
+  [ "${stash_count}" = "0" ] && stash_count=""
+
+  if ! git diff-index --no-ext-diff --quiet --exit-code HEAD --; then
     dirty="*"
   fi
 
-  local stash=`expr $(git stash list 2> /dev/null | wc -l)`
-  if [ "$stash" = "0" ]; then
-    stash=""
-  fi
-
-  prompt="$prompt$branch$stash$dirty"
+  prompt="${prompt}${branch}${stash_count}${dirty}"
 fi
 
-[ -n "$VIRTUAL_ENV" ] && prompt="$prompt%{$fg[blue]%}$(basename $VIRTUAL_ENV)"
+[ -n "$VIRTUAL_ENV" ] && prompt="${prompt}%{$fg[blue]%}$(basename "${VIRTUAL_ENV}")"
 
 echo "$prompt%{$reset_color%} "
