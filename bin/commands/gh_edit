@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
+[ "$*" == "-h" ] && cat "${0}" && exit 0
+
 # shellcheck disable=SC2068
 gh edit $@

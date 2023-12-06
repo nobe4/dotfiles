@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
-#/ Usage: open_github_repo
-#/
-#/ Open github repo in the browser
 
-set -e
+[ "$*" == "-h" ] && cat "${0}" && exit 0
 
-show_help() { grep ^#/ <"${0}" |cut -c4- | envsubst ; }
-[[ "$*" == "-h" ]] && show_help && exit 0
-
-pr -w
+pr web
