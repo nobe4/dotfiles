@@ -73,18 +73,13 @@ ls.add_snippets("gitcommit", {
 	ms(
 		{ "chore", "docs", "feat", "fix", "refactor", "test" },
 		fmt(
-			[[
-      {}({}): {}
-
-      {}
-      ]],
+			"{}({}): {}",
 			{
 				f(function(_, parent)
 					  return parent.trigger
 				  end, {}),
 				i(1, "reference"),
 				i(2, "title"),
-				i(3),
 			}
 		)
 	),
