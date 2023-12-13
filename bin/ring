@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 osascript -e 'display notification "Go back to '"$(tmux display-message -p '#S')"'" with title "'"${*:-job done}"'"'
-say "${*:-"job done"}"
+say --rate=200 "${*:-"job done"}"
