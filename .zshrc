@@ -226,7 +226,6 @@ alias x509='openssl x509 -text -noout'               # That's what I use all the
 alias re='exec zsh'                                  # Reload .zshrc
 alias als='alias | grep'                             # Search through aliases
 alias reverse-link='find -L /dir/to/start -samefile' # Find what is linked to a file
-alias coffee="caffeinate -d"                         # Keep display on
 alias ll='ls -la'
 alias p8='ping -v 8.8.8.8'                           # Ping 8.8.8.8
 alias pg='ps aux | grep'                             # ps and grep easily
