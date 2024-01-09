@@ -4,6 +4,11 @@ local autocmd = vim.api.nvim_create_autocmd
 autocmd("InsertEnter", { pattern = "*", command = [[let save_cwd = getcwd() | set autochdir]] })
 autocmd("InsertLeave", { pattern = "*", command = [[set noautochdir | execute 'cd' fnameescape(save_cwd)]] })
 
+-- Using Treesitter produces weird indentation on ., so just don't indent when
+-- we press a .
+-- See https://github.com/nvim-treesitter/nvim-treesitter/issues/3363#issuecomment-1229163192
+autocmd("FileType", { pattern = "ruby", command = [[setlocal indentkeys-=.]] })
+
 autocmd("QuickFixCmdPost", { pattern = "*", command = "botright copen 5" })
 autocmd("TextYankPost", {
 	pattern = "*",
