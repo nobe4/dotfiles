@@ -14,12 +14,6 @@ matches:
 
       </details>
 
-  - trigger: "```"
-    replace: |
-      ```
-      $|$
-      ```
-
   - trigger: ",date"
     replace: "{{now}}"
     vars:
