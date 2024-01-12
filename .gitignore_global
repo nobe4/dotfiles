@@ -50,3 +50,4 @@ tag
 !.prettierrc
 !.rubocop*
 !.ruby-version
+!.editorconfig
