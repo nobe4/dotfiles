@@ -11,18 +11,14 @@ vim.g.maplocalleader = " "
 map("n", "zf", "zM100zozz", options) -- Fold to current level
 
 -- Move vertically
-map("n", "j", "gj", options)
-map("n", "k", "gk", options)
-map("v", "j", "gj", options)
-map("v", "k", "gk", options)
+for _, command in pairs({ "j", "k", "<DOWN>", "<UP>" }) do
+	map("n", command, "g" .. command, options)
+	map("v", command, "g" .. command, options)
+end
 
 -- Keep search centered
 map("n", "n", "nzz", options)
 map("n", "N", "Nzz", options)
-
--- Move block of text
--- map("v", "<Up>", ":m '<-2<CR>gv=gv")
--- map("v", "<Down>", ":m '>+1<CR>gv=gv")
 
 map("n", "gp", "'[v']", options) -- Select last pasted zone
 map("v", "@", ":norm@", options) -- Replay mapping over visual
@@ -35,28 +31,28 @@ map("n", "<Leader>w", ":noautocmd w<CR>", options) -- Save file without autocmd
 map("n", "<Leader>q", ":quit!", options)
 map("n", "<Leader>x", ":xit", options)
 map("n", "<Leader>m", ":make", options)
-map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options) -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
-map("n", "<Leader>r", ":<UP>", options) -- repeat last command
+map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options)               -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
+map("n", "<Leader>r", ":<UP>", options)                                  -- repeat last command
 
 map("n", "go", ":call system('open ' . expand('<cWORD>'))<CR>", options) -- open WORD under cursor
-map("n", "gf", ":e <cfile><CR>", options) -- open file under cursor
+-- map("n", "gf", ":e <cfile><CR>", options)                                                               -- open file under cursor
 
-map("n", "<Leader>b", ":b#<CR>", options) -- show buffer list
-map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options) -- show buffers and wait for a selection
+map("n", "<Leader>b", ":b#<CR>", options)                                                               -- show buffer list
+map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options)                                                 -- show buffers and wait for a selection
 map("n", "<Leader><Leader>", ":<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>", options) -- clear highlight
-map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]], options) -- show registers value before pasting
+map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]], options)                              -- show registers value before pasting
 
-map("c", "<C-A>", "<Home>", options) -- Go to the start of the command line
+map("c", "<C-A>", "<Home>", options)                                                                    -- Go to the start of the command line
 
 -- Add edition breakpoint on different keypress
 map("i", "<CR>", "<C-G>u<CR>", options)
 map("i", "<C-U>", "<C-G>u<C-U>", options)
 map("i", "<C-W>", "<C-G>u<C-W>", options)
 
-map("c", "<C-F>", "<C-R>=expand('%:p:h')<CR>/", options) -- Insert path to current file
-map("n", "<Leader>e", ":edit <C-R>=expand('%:p:h')<CR>/", options) -- Prepare to edit a file in the same folder as the current one
+map("c", "<C-F>", "<C-R>=expand('%:p:h')<CR>/", options)                    -- Insert path to current file
+map("n", "<Leader>e", ":edit <C-R>=expand('%:p:h')<CR>/", options)          -- Prepare to edit a file in the same folder as the current one
 map("n", "<Leader>z", ":execute 'tabnew +' . line('.') .' %'<CR>", options) -- Zoom in current buffer
-map("t", "<Esc>", [[<C-\><C-n>]], options) -- Escape in terminal
+map("t", "<Esc>", [[<C-\><C-n>]], options)                                  -- Escape in terminal
 
 -- Fugitive
 map("n", "<Leader>gs", ":tabnew +Git status<CR>", options)
@@ -72,9 +68,7 @@ map("n", "Z=", ":Correct<CR>", options)
 map("x", "ga", "<Plug>(EasyAlign)", options)
 map("n", "ga", "<Plug>(EasyAlign)", options)
 
-map("n", "<Leader>ut", function()
-	print("Use :UndotreeToggle")
-end, options)
+map("n", "<Leader>ut", function() print("Use :UndotreeToggle") end, options)
 
 -- unimpaired-like
 -- Inspired by https://git.io/vHtuc
@@ -95,8 +89,8 @@ map("n", "[e", vim.diagnostic.goto_prev, options)
 map("n", "[o", vim.diagnostic.open_float, options)
 
 map("n", "T", function()
-	require("trouble").toggle()
-end, options)
+		require("trouble").toggle()
+	end, options)
 
 map("n", "gm", ":RLMark ", options)
 map("n", "gt", ":RLTravel ", options)
