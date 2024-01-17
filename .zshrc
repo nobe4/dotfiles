@@ -182,17 +182,6 @@ is_linux && {
   eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 }
 # }
-
-# z {
-is_macos && {
-  # brew --prefix == /usr/local
-  source "/usr/local/etc/profile.d/z.sh"
-}
-is_linux && {
-  unsetopt BG_NICE
-}
-# }
-
 # Kitty {
 is_macos && {
   export KITTY_CONFIG_DIRECTORY="$DOTFILE_FOLDER/"

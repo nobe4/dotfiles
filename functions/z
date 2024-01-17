@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+cd "$(
+	fd . "${HOME}" \
+		--type d \
+		--color never \
+		--max-depth 5 \
+		--exclude '/go' \
+		--exclude '/VirtualBox VMs' \
+		--exclude '/Public' \
+		--exclude '/Library' \
+		--exclude '/Pictures' \
+		--exclude '/Movies' \
+		--exclude '/Music' \
+		--exclude '/Applications' \
+		| fzf --select-1 --query "${*}"
+)" || exit
