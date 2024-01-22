@@ -1,25 +1,10 @@
 #!/usr/bin/env bash
-#
-# Setup:
-# 1. create an automator workflow that runs one of the following:
-#
-#  - Terminal.app
-#    ```applescript
-#    tell application "Terminal" to activate
-#    tell application "Terminal" to do script "launsh; exit"
-#    ```
-#
-#  - Kitty
-#    ```bash
-#    source "${HOME}/.zprofile" && kitty launsh
-#    ```
-#
-# 2. Settings > Keyboard > Shortcuts > Services > General > Set the service
-#
-# TODO:
-#   - allow to pass a custom "list binaries" command
+# from https://github.com/nobe4/sling.sh
 
 set -e
+
+show_help() { grep ^#/ <"${0}" | cut -c4-; }
+[ "${*}" == "-h" ] && show_help && exit 0
 
 COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
 PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
