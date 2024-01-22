@@ -35,7 +35,7 @@ while true; do
 		break
 	fi
 
-	sleep 1
+	sleep 10
 	echo -e "\n---\n"
 done
 
