@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# Get ip addresses
-echo "\
-$(curl -s icanhazip.com) / \
-$(ifconfig en0 | grep 'inet ' | awk '{print $2}')"
-
