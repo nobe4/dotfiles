@@ -7,6 +7,7 @@ zsh_profile
 ngrok.bin
 .telegram-creds
 .link-list
+nvim/lazy-lock.json
 
 vale-styles/*
 !vale-styles/Vocab/
