@@ -60,7 +60,7 @@ case "${COMMAND}" in
 		;;
 	s|search)
 		selection="$(cd "${ROOT}" && rg --line-number . | fzf --print0)"
-		file="$(echo "${selection}" | cut -d: -f1)"
+		file="${ROOT}/$(echo "${selection}" | cut -d: -f1)"
 		line="$(echo "${selection}" | cut -d: -f2)"
 
 		if [[ "${OPEN}" == 1 ]]; then
