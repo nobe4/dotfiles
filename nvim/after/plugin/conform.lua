@@ -7,9 +7,11 @@ require("conform").setup({
 		c = { "clang_format" },
 		cpp = { "clang_format" },
 		python = { "black" },
+		golang = { "gofmt", "goimports" },
 		go = { "goimports", "gofmt" },
-		javascript = { "prettier" },
 		graphql = { "prettier" },
+		javascript = { "prettier" },
+		json = { "prettier" },
 		-- TODO: add for yaml
 		-- formatting.yamlfmt.with({
 		-- 	extra_args = { "--formatter", "indentless_arrays=true,retain_line_breaks=true" },

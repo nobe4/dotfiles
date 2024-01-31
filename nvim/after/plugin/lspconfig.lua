@@ -24,6 +24,7 @@ require("lspconfig.ui.windows").default_options.border = "rounded"
 
 lspconfig.bashls.setup(default_config)
 lspconfig.jsonls.setup(default_config)
+lspconfig.tsserver.setup(default_config)
 lspconfig.html.setup(default_config)
 lspconfig.cssls.setup(default_config)
 lspconfig.clangd.setup(default_config)
