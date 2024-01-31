@@ -7,6 +7,8 @@ zsh_profile
 ngrok.bin
 .telegram-creds
 .link-list
+
+Brewfile.lock.json
 nvim/lazy-lock.json
 
 vale-styles/*
