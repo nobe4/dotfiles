@@ -6,6 +6,8 @@
 # Setup {
 export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
+is_macos && { BREW_PREFIX="/usr/local/" }
+is_linux && { BREW_PREFIX="/home/linuxbrew/.linuxbrew" }
 # }
 
 # ZSH {
@@ -46,25 +48,26 @@ autoload -U colors && colors
 # Load compinit and check the cache only once a day
 autoload -Uz compinit
 is_macos && {
-  if [ "$(date +'%j')" != "$(/usr/bin/stat -f '%Sm' -t '%j' "$HOME/.zcompdump")" ]; then
-    compinit
-  else
-    compinit -C
-  fi
+	if [ "$(find "$HOME/.zcompdump" -mtime +1)" ]; then
+		rm -f "$HOME/.zcompdump"
+		compinit -i
+	else
+		compinit -C
+	fi
 }
 is_linux && {
-  if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
-    compinit
-  else
-    compinit -C
-  fi
+	if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
+		rm -f "$HOME/.zcompdump"
+		compinit -i
+	else
+		compinit -C
+	fi
 }
 zmodload -i zsh/complist
 FPATH="$DOTFILE_FOLDER/functions:/usr/share/zsh/5.7.1/functions:$FPATH"
 
 # shellcheck disable=SC2086 # doesn't find the functions if quoted
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
-zmodload zsh/zprof
 # }
 # Prompt {
 # Default prompt is just current dir
@@ -173,26 +176,15 @@ alias bde="bundle exec"
 
 # misc {
 alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
-alias l="launsh"
+alias l="sling"
+alias fex='$(fzf)'
 # }
 
 # linuxbrew {
 is_linux && {
-  # brew --prefix == /home/linuxbrew/.linuxbrew
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  eval "${BREW_PREFIX}/bin/brew shellenv"
 }
 # }
-
-# z {
-is_macos && {
-  # brew --prefix == /usr/local
-  source "/usr/local/etc/profile.d/z.sh"
-}
-is_linux && {
-  unsetopt BG_NICE
-}
-# }
-
 # Kitty {
 is_macos && {
   export KITTY_CONFIG_DIRECTORY="$DOTFILE_FOLDER/"
@@ -210,11 +202,10 @@ export PYTHONDONTWRITEBYTECODE=1
 alias todo="rg -i todo"
 alias rg='rg --ignore-file $HOME/.gitignore_global'
 
-BREW_PREFIX=$(brew --prefix)
 # shellcheck disable=SC1094 # this file is fine
-[[ $- == *i* ]] && source "$BREW_PREFIX/opt/fzf/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "${BREW_PREFIX}/opt/fzf/shell/completion.zsh" 2> /dev/null
 # shellcheck disable=SC1094 # this file is fine
-source "$BREW_PREFIX/opt/fzf/shell/key-bindings.zsh"
+source "${BREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"
 
 export FZF_DEFAULT_COMMAND="rg --files --follow --ignore-file $HOME/.gitignore_global"
 
@@ -258,9 +249,7 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 ulimit -S -n 10240
 
 # env init {
-eval "$(rbenv init -)"
-eval "$(pyenv init -)"
-eval "$(nodenv init -)"
+alias shims_setup='eval "$(rbenv init -)" && eval "$(pyenv init -)" && eval "$(nodenv init -)"'
 # }
 
 # Restart espanso
@@ -268,7 +257,4 @@ eval "$(nodenv init -)"
 # }
 # Private {
 source "$DOTFILE_FOLDER/private/.zshrc"
-# }
-# 1Password {
-eval "$(op completion zsh)"; compdef _op op
 # }

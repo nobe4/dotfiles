@@ -8,8 +8,9 @@ require("conform").setup({
 		cpp = { "clang_format" },
 		python = { "black" },
 		golang = { "gofmt", "goimports" },
-		javascript = { "prettier" },
+		go = { "goimports", "gofmt" },
 		graphql = { "prettier" },
+		javascript = { "prettier" },
 		json = { "prettier" },
 		-- TODO: add for yaml
 		-- formatting.yamlfmt.with({

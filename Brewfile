@@ -31,7 +31,6 @@ brew "tmux"
 brew "trash"
 brew "universal-ctags"
 brew "xq"
-brew "z"
 
 tap "1password/tap"
 cask "1password-cli"

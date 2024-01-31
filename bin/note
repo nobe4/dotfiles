@@ -1,56 +1,77 @@
 #!/usr/bin/env bash
-#/ Usage: note [FLAGS] [NOTE]
+#VERSION 0.0.1
+#/ Usage: note [FLAG] [COMMAND] [ARGUMENT]
 #/
-#/ Create/update notes for today
+#/ This is a base bash script with as many niceties included as possible.
+#/ See comments below for each parts.
 #/
 #/ Flags:
-#/  -r|--root ROOT        sets the root (default: ~/.notes)
-#/  -s|--search SEARCH    searches the notes
+#/   -h|--help                Show this help
+#/   -v|--version             Show the version
+#/   -O|--no-open             Don't open the note after search
+#/
+#/ Commands (current: ${COMMAND}):
+#/   n|new     [TITLE]        Create a new note (current title: ${TITLE})
+#/   s|search                 Search for a note
+#/
 
 set -e
 
-if [ -t 1 ]; then
-  # In a terminal, use colors.
-  NC='\033[0m' # No Color
-  RED='\033[0;31m'
-  GREEN='\033[0;32m'
-  PURPLE='\033[0;35m'
-else
-  # Not a terminal, skip colors.
-  NC=''
-  RED=''
-  GREEN=''
-  PURPLE=''
-fi
-
-ROOT="$HOME/.notes"
-
-function usage {
-  if [ -n "$1" ]; then
-    echo -e "${RED}$1${NC}\n";
-  fi
-  grep ^#/ <"$0" |cut -c4-
+show_help() {
+	export COMMAND TITLE
+	grep ^#/ <"${0}" |cut -c4- | envsubst
 }
 
-function search {
-  rg "$@" "$ROOT"
-}
+show_version(){ grep ^#VERSION <"${0}" |cut -d' ' -f2; }
 
-function create {
-  FILE="$ROOT/$(date +%F)"
-  touch "$FILE"
-  echo "$@" >> "$FILE"
-  $EDITOR "$FILE"
-}
+ROOT="${HOME}/.notes"
+COMMAND="new"
+TITLE="$(date +%F)"
+OPEN=1
 
-while [[ "$#" -gt 0 ]]; do
-    case "$1" in
-        -h|--help) usage; exit 0;;
-        -r|--root) ROOT="$2"; shift;;
-        -s|--search) search "$@"; exit 0;;
-        *) create "$@"; exit 0;;
-      esac
-    shift
+while [ "${#}" -gt 0 ]; do
+	case "${1}" in
+		-h|--help) show_help && exit 0 ;;
+		-v|--version) show_version && exit 0 ;;
+		-O|--no-open) OPEN=0 ;;
+		-*)
+			echo "Unknown flag '${1}'"
+			show_help
+			exit 1
+			;;
+
+		# Break on non-flags
+		*)  break ;;
+	esac
+	shift 1
 done
 
-create
+COMMAND="${1:-"${COMMAND}"}"
+
+shift 1 || true
+ARGUMENT="${*:-"${ARGUMENT}"}"
+
+# Parse command
+case "${COMMAND}" in
+	n|new)
+		FILE="${ROOT}/${TITLE}"
+		echo "${ARGUMENT}" >> "${FILE}"
+		"${EDITOR}" "${FILE}"
+		;;
+	s|search)
+		selection="$(cd "${ROOT}" && rg --line-number . | fzf --print0)"
+		file="${ROOT}/$(echo "${selection}" | cut -d: -f1)"
+		line="$(echo "${selection}" | cut -d: -f2)"
+
+		if [[ "${OPEN}" == 1 ]]; then
+			"${EDITOR}" "${file}" "+${line}"
+		else
+			echo "Found in $file at line $line"
+		fi
+		;;
+	*)
+		echo "Unknown command '${COMMAND}'"
+		show_help
+		exit 1
+		;;
+esac
