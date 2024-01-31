@@ -10,3 +10,5 @@ ngrok.bin
 
 vale-styles/*
 !vale-styles/Vocab/
+
+vendor/
