@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -e
+
+(
+	git config --get-regexp alias | sed 's/ /,/' && \
+	cat "${DOTFILE_FOLDER}/.zshrc" | grep 'alias' | grep 'git' | sed 's/=/,/'
+) | column -s, -t | sort

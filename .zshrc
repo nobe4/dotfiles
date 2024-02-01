@@ -140,21 +140,21 @@ alias vit='nvim +tj\ ' # Jump to tag
 # }
 
 # Git {
+# alias gp is now in bin/gp
 alias ga='git add'
 alias gb='git branch'
 alias gbm='git branch -M'
 alias gc='git commit'
 alias gl='git pull'
-alias gss='git status'
-# alias gp is now in bin/gp
-alias gsc='git switch -c'
-alias gs='git switch'
-alias gcb='echo "stop using git checkout, use git switch for that, alias is gsc"'
-alias gco='echo "stop using git checkout, use git switch or git reset for that"'
 alias glo='git lg'
 alias grhh='git reset --hard HEAD'
+alias gs='git switch'
+alias gcb='echo "stop using git checkout: use git switch for that (alias is gsc)"'
+alias gco='echo "stop using git checkout: use git switch or git reset for that"'
+alias gsc='git switch -c'
+alias gsm='git switch "$(git main)"'
+alias gss='git status'
 alias gst='git stash'
-alias grccb=',git-recreate-current-branch'
 # }
 
 # Docker {
