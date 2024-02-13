@@ -18,8 +18,7 @@ require("nvim-treesitter.configs").setup({
 		lint_events = { "BufWrite", "CursorHold" },
 	},
 })
-
-require("treesitter-context").setup({
-	trim_scope = "outer",   -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-	separator = '-',
-})
+-- require("treesitter-context").setup({
+-- 	trim_scope = "outer",   -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+-- 	separator = '-',
+-- })
