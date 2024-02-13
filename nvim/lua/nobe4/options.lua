@@ -42,7 +42,7 @@ vim.opt.smartcase = true
 -- Fold
 vim.opt.foldenable = false
 vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()"
 vim.opt.foldopen = { "insert", "percent", "quickfix", "tag", "search" }
 vim.opt.wildmode = { "longest", "list", "full" }
 
@@ -51,6 +51,7 @@ vim.opt.completeopt = { "menu", "preview" }
 vim.opt.wildmenu = true
 vim.opt.undofile = true
 vim.opt.wildignore:append([[*.pyc]])
+vim.opt.cmdheight = 0
 
 -- Split
 vim.opt.splitbelow = true

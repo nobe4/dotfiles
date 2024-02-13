@@ -49,7 +49,7 @@ local plugins = {
 	-- Treesitter
 	"nvim-treesitter/nvim-treesitter",
 	"nvim-treesitter/playground",
-	"nvim-treesitter/nvim-treesitter-context",
+	-- "nvim-treesitter/nvim-treesitter-context",
 
 	-- Snippet
 	"L3MON4D3/LuaSnip",
