@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+#/ Usage: requestbin [PORT]
+#/
+#/ Open netcat on PORT (default 8080).
+set -e
+
+
+show_help() { grep ^#/ <"${0}" |cut -c4- ;}
+[[ "$*" == "-h" ]] && show_help && exit 0
 
 PORT="${1:-8080}"
 
@@ -8,7 +16,6 @@ function ctrl_c() {
 	exit 0
 }
 
-clear
 echo -e "Listening on :$PORT\n"
 
 while true; do
