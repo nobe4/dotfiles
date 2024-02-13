@@ -21,3 +21,11 @@ matches:
         type: date
         params:
           format: "%Y-%m-%d"
+
+  - trigger: ",time"
+    replace: "{{now}}"
+    vars:
+      - name: now
+        type: date
+        params:
+          format: "%Y-%m-%dT%H-%M%Z"
