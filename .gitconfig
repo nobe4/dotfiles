@@ -58,6 +58,7 @@
 	required = true
 
 [diff]
+	external = difft
 	tool = difftastic
 [difftool]
 	prompt = false
@@ -66,3 +67,6 @@
 
 [pager]
 	difftool = true
+
+[column]
+	ui = auto
