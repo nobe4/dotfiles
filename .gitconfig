@@ -6,40 +6,63 @@
 	signingKey = 8EB61429D6C54B9B1787EBA0911FE2A36C3403DD
 [github]
 	user = nobe4
+
+[url "git@github.com:"]
+	insteadOf = "https://github.com/"
+
 [commit]
 	gpgsign = true
+[gpg]
+	program = gpg
+
 [core]
 	editor = nvim
 	excludesFile = ~/.gitignore_global
 	# untrackedcache = true
 	# fsmonitor = true
+
 [alias]
 	alias = !git-alias
+
 	main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
-	rebase-main = !"git fetch; git rebase origin/$(git main)"
+
+	df = difftool
+
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
 	amend=commit --amend
 	oops = !git commit -a --fixup=HEAD && GIT_EDITOR=true git rebase -i --autosquash HEAD~2
+
 	safe-pull = !git-safe-pull
+
+	rebase-main = !"git fetch; git rebase origin/$(git main)"
 	clean-branches = !git-clean-branches
 	recent-branches = branch --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)"
+
+[init]
+	defaultBranch = main
 [pull]
 	default = current
 	rebase = false
 [push]
 	default = current
+[fetch]
+	prune = true
+[submodule]
+	recurse = true
+
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[gpg]
-	program = gpg
-[submodule]
-	recurse = true
-[url "git@github.com:"]
-	insteadOf = "https://github.com/"
-[init]
-	defaultBranch = main
-[fetch]
-	prune = true
+
+[diff]
+	tool = difftastic
+[difftool]
+	prompt = false
+[difftool "difftastic"]
+	cmd = difft "$LOCAL" "$REMOTE"
+
+[pager]
+	difftool = true
