@@ -247,22 +247,8 @@ local index = {
 	lwhite = 16,
 }
 local colors = {
-	"#1d1f21",
-	"#cc342b",
-	"#14b363",
-	"#fba922",
-	"#3971ed",
-	"#b028e9",
-	"#0abdae",
-	"#c5c8c6",
-	"#878988",
-	"#c49c9a",
-	"#93b6a4",
-	"#c8b394",
-	"#859acb",
-	"#a884b8",
-	"#7c9e9b",
-	"#ffffff",
+	"#1d1f21", "#cc342b", "#14b363", "#fba922", "#3971ed", "#b028e9", "#0abdae", "#c5c8c6",
+	"#878988", "#c49c9a", "#93b6a4", "#c8b394", "#859acb", "#a884b8", "#7c9e9b", "#ffffff",
 }
 
 -- set gui colors

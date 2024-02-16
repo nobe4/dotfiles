@@ -20,6 +20,13 @@ is_macos && {
   fi
 }
 
+# export TERM=xterm-256color
+is_macos && export TERM=xterm-kitty
+
+# difftastic
+export DFT_SYNTAX_HIGHLIGHT=off
+export DFT_CONTEXT=1
+
 # FZF
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
   PATH="$PATH:/usr/local/opt/fzf/bin"

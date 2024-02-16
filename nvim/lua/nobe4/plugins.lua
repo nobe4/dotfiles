@@ -32,6 +32,7 @@ local plugins = {
 	"tpope/vim-fugitive",
 	"tpope/vim-rhubarb",
 	"tpope/vim-surround",
+	"github/copilot.vim",
 
 	"stevearc/oil.nvim",
 	"christoomey/vim-tmux-navigator",
@@ -42,6 +43,7 @@ local plugins = {
 	"romainl/vim-qf",
 	"numToStr/Comment.nvim",
 	-- "habamax/vim-godot",
+	{ 'norcalli/nvim-colorizer.lua',              config = function() require 'colorizer'.setup() end },
 
 	-- UI
 	"nvim-tree/nvim-web-devicons",

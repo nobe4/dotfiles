@@ -4,6 +4,7 @@ tap "homebrew/services"
 
 cask_args appdir: "~/Applications", require_sha: true
 
+brew "difftastic"
 brew "fd"
 brew "ffmpeg"
 brew "fzf"

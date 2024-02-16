@@ -154,6 +154,7 @@ alias gco='echo "stop using git checkout: use git switch or git reset for that"'
 alias gsc='git switch -c'
 alias gsm='git switch "$(git main)"'
 alias gss='git status'
+alias gs-='git status -'
 alias gst='git stash'
 # }
 
