@@ -1,0 +1,4 @@
+nodenv(){
+	eval "$(command nodenv init -)"
+	nodenv "${@}"
+}

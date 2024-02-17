@@ -149,6 +149,8 @@ alias gl='git pull'
 alias glo='git lg'
 alias grhh='git reset --hard HEAD'
 alias gs='git switch'
+alias gp='git push'
+alias gpf='git push --force-with-lease'
 alias gcb='echo "stop using git checkout: use git switch for that (alias is gsc)"'
 alias gco='echo "stop using git checkout: use git switch or git reset for that"'
 alias gsc='git switch -c'
@@ -243,19 +245,15 @@ is_macos && {
 
 # Misc {
 export LYNX_CFG="$HOME/.lynx.cfg"
-
 alias gpg='GPG_TTY="$(tty)" gpg'
 
 # Limit how many files can be used by the current session
 ulimit -S -n 10240
 
-# env init {
-alias shims_setup='eval "$(rbenv init -)" && eval "$(pyenv init -)" && eval "$(nodenv init -)"'
-# }
-
 # Restart espanso
 (&>/dev/null espanso restart &)
 # }
+
 # Private {
 source "$DOTFILE_FOLDER/private/.zshrc"
 # }
