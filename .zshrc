@@ -10,10 +10,9 @@ is_macos && { BREW_PREFIX="/usr/local/" }
 is_linux && { BREW_PREFIX="/home/linuxbrew/.linuxbrew" }
 # }
 
-# ZSH {
 # zshoptions {
-# Ref man zshoptions
 setopt ALWAYS_TO_END
+setopt INTERACTIVE_COMMENTS
 setopt APPEND_HISTORY
 setopt AUTO_CD
 setopt AUTO_LIST
@@ -23,19 +22,22 @@ setopt COMPLETE_IN_WORD
 setopt EXTENDED_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_VERIFY
 setopt INC_APPEND_HISTORY
 setopt NO_BEEP
-setopt PUSHD_IGNORE_DUPS
 setopt PROMPT_SUBST
+setopt PUSHD_IGNORE_DUPS
 # }
+
 # Lang {
 export LANG="en_US.UTF-8"
 export LC_ALL="$LANG"
 export LC_CTYPE="$LANG"
 # }
+
 # Colors {
 is_macos && {
   export TERM=xterm-kitty
@@ -44,6 +46,7 @@ export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
 # }
+
 # Functions {
 # Load compinit and check the cache only once a day
 autoload -Uz compinit
@@ -64,7 +67,6 @@ is_linux && {
 	fi
 }
 zmodload -i zsh/complist
-FPATH="$DOTFILE_FOLDER/functions:/usr/share/zsh/5.7.1/functions:$FPATH"
 
 # shellcheck disable=SC2086 # doesn't find the functions if quoted
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
@@ -74,26 +76,8 @@ autoload -U $DOTFILE_FOLDER/functions/*(:t)
 # shellcheck disable=SC2154 # colors are loaded somewhere else
 PROMPT="%{${fg[green]}%}%c%{${reset_color}%} "
 
-# This precmd will run at PROMPT display time.
-prompt_precmd() {
-  prompt_on_load_callback() {
-    # Gets the new prompt value from the "$(prompt)" call.
-    PROMPT="$(<&"$1")"
-
-    zle reset-prompt
-    zle -F "$1"
-  }
-
-  # run the slow prompt method
-  exec {FD}< <(
-    echo -n "$(prompt)"
-  )
-  # On result, call the callback
-  zle -F $FD prompt_on_load_callback
-}
-
+# Add functions/prompt_precmd to the list of precmd_functions
 typeset -a precmd_functions
-# Add the prompt_precmd to the list of precmd_functions
 precmd_functions+=(prompt_precmd)
 # }
 # }
@@ -105,26 +89,19 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 zstyle ':completion:*' list-colors
 zstyle ':completion:*' menu select
 # }
+
 # Key Binding {
 zle -N fancy-ctrl-z
-bindkey '^Z' fancy-ctrl-z
-bindkey "^R"      history-incremental-search-backward  # ctrl-r
-bindkey "^A"      beginning-of-line                    # ctrl-a
-bindkey "^E"      end-of-line                          # ctrl-e
-
-# Use hjkl to select the completion
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
-bindkey -v   # Default to standard vi bindings, regardless of editor string
-# }
+bindkey -v   # Use vi bindings
+bindkey "^Z" fancy-ctrl-z
+bindkey "^R" history-incremental-search-backward
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
 # }
 
 # Tmux {
 # Start tmux with unicode support (prevent trailing witespace for the prompt)
 alias tmux='tmux -u'
-
 alias ta='tmux attach -t'
 alias ts='tmux new-session -s'
 alias tw='tmux switch -t'
@@ -140,7 +117,6 @@ alias vit='nvim +tj\ ' # Jump to tag
 # }
 
 # Git {
-# alias gp is now in bin/gp
 alias ga='git add'
 alias gb='git branch'
 alias gbm='git branch -M'
@@ -207,6 +183,7 @@ alias rg='rg --ignore-file $HOME/.gitignore_global'
 
 # shellcheck disable=SC1094 # this file is fine
 [[ $- == *i* ]] && source "${BREW_PREFIX}/opt/fzf/shell/completion.zsh" 2> /dev/null
+
 # shellcheck disable=SC1094 # this file is fine
 source "${BREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"
 
@@ -230,6 +207,7 @@ alias tmp='tmux new-window "cd `mktemp -d` && zsh"'
 
 # GDB {
 alias gdb='gdb -q' # Silent GDB
+
 # ref: http://thexploit.com/secdev/turning-off-buffer-overflow-protections-in-gcc/
 alias gccunsafe='gcc -fno-stack-protector -D_FORTIFY_SOURCE=0'
 # }

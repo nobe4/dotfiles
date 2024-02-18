@@ -70,3 +70,9 @@
 
 [column]
 	ui = auto
+
+[branch]
+	sort = committerdate
+
+[rerere]
+	enable = true

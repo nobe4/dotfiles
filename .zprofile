@@ -20,6 +20,17 @@ is_macos && {
   fi
 }
 
+# FZF
+if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+  PATH="$PATH:/usr/local/opt/fzf/bin"
+fi
+
+# Go
+PATH="$PATH:/usr/local/go/bin:$HOME/go:$HOME/go/bin"
+
+export PATH
+# }
+
 # export TERM=xterm-256color
 is_macos && export TERM=xterm-kitty
 
@@ -27,16 +38,10 @@ is_macos && export TERM=xterm-kitty
 export DFT_SYNTAX_HIGHLIGHT=off
 export DFT_CONTEXT=1
 
-# FZF
-if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-  PATH="$PATH:/usr/local/opt/fzf/bin"
-fi
+# Functions PATH {
+FPATH="$DOTFILE_FOLDER/functions:$FPATH"
 
-# Go
-# Same as `which go`
-PATH="$PATH:/usr/local/go/bin:$HOME/go:$HOME/go/bin"
-
-export PATH
+export FPATH
 # }
 
 # Man PATH {
@@ -45,4 +50,5 @@ export MANPATH
 # }
 
 export EDITOR='nvim'
+export VISUAL='nvim'
 export MANPAGER='nvim +Man!'

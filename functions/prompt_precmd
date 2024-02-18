@@ -1,0 +1,17 @@
+# This precmd will run at PROMPT display time.
+prompt_precmd() {
+  prompt_on_load_callback() {
+    # Gets the new prompt value from the "$(prompt)" call.
+    PROMPT="$(<&"$1")"
+
+    zle reset-prompt
+    zle -F "$1"
+  }
+
+  # run the slow prompt method
+  exec {FD}< <(
+    echo -n "$(prompt)"
+  )
+  # On result, call the callback
+  zle -F $FD prompt_on_load_callback
+}
