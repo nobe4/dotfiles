@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+[ "$*" == "-h" ] && cat "${0}" && exit 0
+
+rg --vimgrep -F "${1}" | nvim -c 'cbuffer | copen | bdelete! 1 | cfirst'
