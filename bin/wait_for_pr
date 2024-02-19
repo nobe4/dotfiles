@@ -1,42 +1,137 @@
-#!/usr/bin/env bash
-#/ Usage: wait_for_pr [URL]
+##!/usr/bin/env bash
+#VERSION 0.0.1
+#/ Usage: wait_for_pr [FLAG] [CONDITION] [URL]
+#/
+#/ This is a base bash script with as many niceties included as possible.
+#/ See comments below for each parts.
+#/
+#/ Flags:
+#/   -h|--help          Show this help
+#/   -v|--version       Show the version
+#/   -c|--clear         Clear the screen before each check
+#/
+#/ Condition (current: ${CONDITION}):
+#/   a|approved         PR is approved sufficiently
+#/   c|ci_passed        CI is green
+#/   m|merged           PR is merged
+#/   r|ready            PR is approved and CI is green
+
 set -e
 
-show_help() {
-	grep ^#/ <"${0}" |cut -c4- | envsubst
-}
+YELLOW='\033[0;33m'
+GREEN='\033[0;32m'
+NO_COLOR='\033[0m'
 
+show_help() { export CONDITION URL && grep ^#/ <"${0}" |cut -c4- | envsubst; }
+show_version(){ grep ^#VERSION <"${0}" |cut -d' ' -f2; }
+
+input="${*}"
+if [[ "${input}" == "" ]];then
+	default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
+
+	echo "Enter URL(s) to deploy in ${TEAM}/#${CHANNEL}"
+	if [[ "${default}" != "" ]]; then
+	  echo "or <CR> to use: '${default}'"
+	fi
+
+	printf '> '
+	read -r input
+fi
+
+CONDITION="ready"
+URL="${input}"
+
+# No argument equals `--help`
+[ "${#}" -eq 0 ] && set -- --help
+
+# Parse arguments
 while [ "${#}" -gt 0 ]; do
 	case "${1}" in
-		# Some flags exit directly
 		-h|--help) show_help && exit 0 ;;
+		-v|--version) show_version && exit 0 ;;
 		-c|--clear) CLEAR=1 ;;
-		-r|--ring) RING=1 ;;
+		-*)
+			echo "Unknown flag '${1}'"
+			show_help
+			exit 1
+			;;
 		*)  break ;;
 	esac
 	shift 1
 done
 
-set -e
+CONDITION="${1:-"${CONDITION}"}"
+case "${CONDITION}" in
+	a|approved) CONDITION="approved" ;;
+	c|ci_passed) CONDITION="ci_passed" ;;
+	r|ready) CONDITION="ready" ;;
+	m|merged) CONDITION="merged" ;;
+	*)
+		echo "Unknown condition '${CONDITION}'"
+		show_help
+		exit 1
+		;;
+esac
+
+shift 1 || true
+URL="${*:-"${URL}"}"
+
+function check_ci_passed(){
+	gh pr checks "${URL}" && checks_passed=0 || checks_passed=1
+
+	if [ "${checks_passed}" == "0" ]; then
+		echo "${GREEN}✓ PR CI is green${NO_COLOR}"
+	else
+		echo "${YELLOW}* PR CI is not green${NO_COLOR}"
+	fi
+
+	return "${checks_passed}"
+}
+
+function check_approved() {
+	missing_approvals_count="$(gh pr view "${URL}" --json reviewRequests -q '.reviewRequests | length')"
+	if [ "${missing_approvals_count}" == "0" ]; then
+		echo "${GREEN}✓ All required approvals done${NO_COLOR}"
+	else
+		echo "${YELLOW}* ${missing_approvals_count} remaining approvals needed${NO_COLOR}"
+	fi
+
+	return "${missing_approvals_count}"
+}
+
+function check_ready() {
+    ready=0
+	if ! check_ci_passed; then ready=1; fi
+	if ! check_approved; then ready=1; fi
+
+	if [ "${ready}" == "0" ]; then
+		echo "${GREEN}✓ PR is ready${NO_COLOR}"
+	else
+		echo "${YELLOW}* PR not ready yet${NO_COLOR}"
+	fi
+
+	return "${ready}"
+}
+
+function check_merged() {
+	is_merged=$(gh pr view "${URL}" --json state -q '.state | contains("MERGED")')
+	if [ "${is_merged}" == "true" ]; then
+		echo "✓  PR is merged"
+		return 0
+	fi
+
+	echo "* PR not merged yet"
+	return 1
+}
 
 while true; do
 	[ "${CLEAR}" == "1" ] && clear
 
-	gh pr checks "${1}" && checks_passed=0 || checks_passed=1
-
-	missing_approvals_count="$(gh pr view "${1}" --json reviewRequests -q '.reviewRequests | length')"
-	if [ "${missing_approvals_count}" == "0" ]; then
-		echo "✓  All required approvals done"
-	else
-		echo "*  ${missing_approvals_count} remaining approvals needed"
-	fi
-
-	if [ "${checks_passed}" == "0" ] && [ "${missing_approvals_count}" == "0" ]; then
+	if "check_${CONDITION}"; then
 		break
 	fi
 
-	sleep 10
-	echo -e "\n---\n"
-done
+	echo "\n---\n"
 
-[ "${RING}" == "1" ] && ( ring "pr ${1} is ready" ) &
+	sleep 10
+done
