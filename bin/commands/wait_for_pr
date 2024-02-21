@@ -12,7 +12,8 @@
 #/
 #/ Condition (current: ${CONDITION}):
 #/   a|approved         PR is approved sufficiently
-#/   c|ci_passed        CI is green
+#/   c|ci_completed     CI is completed
+#/   g|ci_green         CI is green
 #/   m|merged           PR is merged
 #/   r|ready            PR is approved and CI is green
 
@@ -24,25 +25,6 @@ NO_COLOR='\033[0m'
 
 show_help() { export CONDITION URL && grep ^#/ <"${0}" |cut -c4- | envsubst; }
 show_version(){ grep ^#VERSION <"${0}" |cut -d' ' -f2; }
-
-input="${*}"
-if [[ "${input}" == "" ]];then
-	default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
-
-	echo "Enter URL(s) to deploy in ${TEAM}/#${CHANNEL}"
-	if [[ "${default}" != "" ]]; then
-	  echo "or <CR> to use: '${default}'"
-	fi
-
-	printf '> '
-	read -r input
-fi
-
-CONDITION="ready"
-URL="${input}"
-
-# No argument equals `--help`
-[ "${#}" -eq 0 ] && set -- --help
 
 # Parse arguments
 while [ "${#}" -gt 0 ]; do
@@ -60,10 +42,18 @@ while [ "${#}" -gt 0 ]; do
 	shift 1
 done
 
-CONDITION="${1:-"${CONDITION}"}"
+CONDITION="${1:-ready}"
+if [ "${#}" -eq 0 ]; then
+    show_help | awk '/Condition/,0'
+	printf "condition [%s] > " "${CONDITION}"
+	read -r input
+	CONDITION="${input:-"${CONDITION}"}"
+fi
+
 case "${CONDITION}" in
 	a|approved) CONDITION="approved" ;;
-	c|ci_passed) CONDITION="ci_passed" ;;
+	g|ci_green) CONDITION="ci_green" ;;
+	c|ci_completed) CONDITION="ci_completed" ;;
 	r|ready) CONDITION="ready" ;;
 	m|merged) CONDITION="merged" ;;
 	*)
@@ -74,26 +64,45 @@ case "${CONDITION}" in
 esac
 
 shift 1 || true
-URL="${*:-"${URL}"}"
 
-function check_ci_passed(){
+URL="${*}"
+if [ -z "${URL}" ]; then
+	URL="$(get_pr "Enter PR URL to wait to be ${CONDITION}:")"
+fi
+
+function check_ci_green(){
 	gh pr checks "${URL}" && checks_passed=0 || checks_passed=1
 
 	if [ "${checks_passed}" == "0" ]; then
-		echo "${GREEN}✓ PR CI is green${NO_COLOR}"
+		printf "${GREEN}✓ PR CI is green${NO_COLOR}\n"
 	else
-		echo "${YELLOW}* PR CI is not green${NO_COLOR}"
+		printf "${YELLOW}* PR CI is not green${NO_COLOR}\n"
 	fi
 
 	return "${checks_passed}"
 }
 
+function check_ci_completed(){
+	gh pr checks "${URL}"
+	gh pr view --json statusCheckRollup \
+		-q '.statusCheckRollup[].status' "${URL}" \
+		| grep 'IN_PROGRESS' >/dev/null && ci_completed=1 || ci_completed=0
+
+	if [ "${ci_completed}" == "0" ]; then
+		printf "${GREEN}✓ PR CI has completed${NO_COLOR}\n"
+	else
+		printf "${YELLOW}* PR CI has not completed${NO_COLOR}\n"
+	fi
+
+	return "${ci_completed}"
+}
+
 function check_approved() {
 	missing_approvals_count="$(gh pr view "${URL}" --json reviewRequests -q '.reviewRequests | length')"
 	if [ "${missing_approvals_count}" == "0" ]; then
-		echo "${GREEN}✓ All required approvals done${NO_COLOR}"
+		printf "${GREEN}✓ All required approvals done${NO_COLOR}\n"
 	else
-		echo "${YELLOW}* ${missing_approvals_count} remaining approvals needed${NO_COLOR}"
+		printf "${YELLOW}* ${missing_approvals_count} remaining approvals needed${NO_COLOR}\n"
 	fi
 
 	return "${missing_approvals_count}"
@@ -101,13 +110,13 @@ function check_approved() {
 
 function check_ready() {
     ready=0
-	if ! check_ci_passed; then ready=1; fi
+	if ! check_ci_green; then ready=1; fi
 	if ! check_approved; then ready=1; fi
 
 	if [ "${ready}" == "0" ]; then
-		echo "${GREEN}✓ PR is ready${NO_COLOR}"
+		printf "${GREEN}✓ PR is ready${NO_COLOR}\n"
 	else
-		echo "${YELLOW}* PR not ready yet${NO_COLOR}"
+		printf "${YELLOW}* PR not ready yet${NO_COLOR}\n"
 	fi
 
 	return "${ready}"
@@ -116,11 +125,11 @@ function check_ready() {
 function check_merged() {
 	is_merged=$(gh pr view "${URL}" --json state -q '.state | contains("MERGED")')
 	if [ "${is_merged}" == "true" ]; then
-		echo "✓  PR is merged"
+		printf "✓  PR is merged\n"
 		return 0
 	fi
 
-	echo "* PR not merged yet"
+	printf "* PR not merged yet\n"
 	return 1
 }
 
@@ -131,7 +140,7 @@ while true; do
 		break
 	fi
 
-	echo "\n---\n"
+	printf "\n---\n"
 
 	sleep 10
 done
