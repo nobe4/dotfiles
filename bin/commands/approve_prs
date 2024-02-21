@@ -2,8 +2,6 @@
 #/ Usage: approve_prs [URL[ URL]+]
 #/
 #/ Approve the PRs.
-#/ If one or multiple URLs are in your clipboard, it will propose to default to
-#/ that.
 #/
 #/ Requirements:
 #/  - pbpaste
@@ -14,19 +12,5 @@ set -e
 show_help() { grep ^#/ <"${0}" |cut -c4- | envsubst ; }
 [[ "$*" == "-h" ]] && show_help && exit 0
 
-input="${*}"
-
-if [[ "${input}" == "" ]];then
-	default="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
-
-	echo "Enter a URL(s) to approve"
-	if [[ "${default}" != "" ]]; then
-		echo "or <CR> to use: '${default}'"
-	fi
-
-	printf '> '
-	read -r input
-fi
-
-
-echo "${input:-${default}}" | xargs -n1 gh pr review --approve
+echo "${*:-"$(get_pr "Enter PR URL(s) to approve:")"}" \
+	| xargs -n1 gh pr review --approve
