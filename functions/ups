@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 curl 'https://www.ups.com/track/api/Track/GetStatus?loc=en_US' \
 	-s \

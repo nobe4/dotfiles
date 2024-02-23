@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 vagrantStatus="$(vagrant status 2>&1)"
 if echo $vagrantStatus | grep -q 'environment' ; then
