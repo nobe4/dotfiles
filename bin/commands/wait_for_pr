@@ -1,5 +1,5 @@
 ##!/usr/bin/env bash
-#VERSION 0.0.1
+#VERSION 0.0.2
 #/ Usage: wait_for_pr [FLAG] [CONDITION] [URL]
 #/
 #/ This is a base bash script with as many niceties included as possible.
@@ -9,21 +9,21 @@
 #/   -h|--help          Show this help
 #/   -v|--version       Show the version
 #/   -c|--clear         Clear the screen before each check
+#/   -d|--delay DELAY   Delay between checks in seconds (default: ${DELAY})
 #/
 #/ Condition (current: ${CONDITION}):
 #/   a|approved         PR is approved sufficiently
 #/   c|ci_completed     CI is completed
 #/   g|ci_green         CI is green
+#/   d|deployed         PR is deployed
 #/   m|merged           PR is merged
 #/   r|ready            PR is approved and CI is green
 
 set -e
 
-YELLOW='\033[0;33m'
-GREEN='\033[0;32m'
-NO_COLOR='\033[0m'
+DELAY="10"
 
-show_help() { export CONDITION URL && grep ^#/ <"${0}" |cut -c4- | envsubst; }
+show_help() { export CONDITION DELAY URL && grep ^#/ <"${0}" |cut -c4- | envsubst; }
 show_version(){ grep ^#VERSION <"${0}" |cut -d' ' -f2; }
 
 # Parse arguments
@@ -32,6 +32,10 @@ while [ "${#}" -gt 0 ]; do
 		-h|--help) show_help && exit 0 ;;
 		-v|--version) show_version && exit 0 ;;
 		-c|--clear) CLEAR=1 ;;
+		-d|--delay)
+			shift 1
+			DELAY="$1"
+		;;
 		-*)
 			echo "Unknown flag '${1}'"
 			show_help
@@ -54,6 +58,7 @@ case "${CONDITION}" in
 	a|approved) CONDITION="approved" ;;
 	g|ci_green) CONDITION="ci_green" ;;
 	c|ci_completed) CONDITION="ci_completed" ;;
+	d|deployed) CONDITION="deployed" ;;
 	r|ready) CONDITION="ready" ;;
 	m|merged) CONDITION="merged" ;;
 	*)
@@ -70,13 +75,16 @@ if [ -z "${URL}" ]; then
 	URL="$(get_pr "Enter PR URL to wait to be ${CONDITION}:")"
 fi
 
+function p_green() { printf "\033[0;32m✓ %s\033[0m\n" "${*}"; }
+function p_yellow() { printf "\033[0;33m* %s\033[0m\n" "${*}"; }
+
 function check_ci_green(){
 	gh pr checks "${URL}" && checks_passed=0 || checks_passed=1
 
 	if [ "${checks_passed}" == "0" ]; then
-		printf "${GREEN}✓ PR CI is green${NO_COLOR}\n"
+		p_green "PR CI is green"
 	else
-		printf "${YELLOW}* PR CI is not green${NO_COLOR}\n"
+		p_yellow "PR CI is not green"
 	fi
 
 	return "${checks_passed}"
@@ -89,9 +97,9 @@ function check_ci_completed(){
 		| grep 'IN_PROGRESS' >/dev/null && ci_completed=1 || ci_completed=0
 
 	if [ "${ci_completed}" == "0" ]; then
-		printf "${GREEN}✓ PR CI has completed${NO_COLOR}\n"
+		p_green "PR CI has completed"
 	else
-		printf "${YELLOW}* PR CI has not completed${NO_COLOR}\n"
+		p_yellow "PR CI has not completed"
 	fi
 
 	return "${ci_completed}"
@@ -100,9 +108,9 @@ function check_ci_completed(){
 function check_approved() {
 	missing_approvals_count="$(gh pr view "${URL}" --json reviewRequests -q '.reviewRequests | length')"
 	if [ "${missing_approvals_count}" == "0" ]; then
-		printf "${GREEN}✓ All required approvals done${NO_COLOR}\n"
+		p_green "All required approvals are done"
 	else
-		printf "${YELLOW}* ${missing_approvals_count} remaining approvals needed${NO_COLOR}\n"
+		p_yellow "${missing_approvals_count} remaining approvals needed"
 	fi
 
 	return "${missing_approvals_count}"
@@ -114,9 +122,9 @@ function check_ready() {
 	if ! check_approved; then ready=1; fi
 
 	if [ "${ready}" == "0" ]; then
-		printf "${GREEN}✓ PR is ready${NO_COLOR}\n"
+		p_green "PR is ready"
 	else
-		printf "${YELLOW}* PR not ready yet${NO_COLOR}\n"
+		p_yellow "PR not ready yet"
 	fi
 
 	return "${ready}"
@@ -125,22 +133,34 @@ function check_ready() {
 function check_merged() {
 	is_merged=$(gh pr view "${URL}" --json state -q '.state | contains("MERGED")')
 	if [ "${is_merged}" == "true" ]; then
-		printf "✓  PR is merged\n"
+		p_green "PR is merged"
 		return 0
 	fi
 
-	printf "* PR not merged yet\n"
+	p_yellow "PR not merged yet"
 	return 1
+}
+
+function check_deployed(){
+	set -x
+	data="$(gh pr view "${URL}" --json headRefOid,headRepository,headRepositoryOwner -q '"\(.headRefOid) \(.headRepositoryOwner.login)/\(.headRepository.name)"')"
+
+	sha="${data%% *}"
+	repo="${data##* }"
+
+	gh api "/repos/${repo}/deployments" -f "ref=${sha}" -q '.url'
+
+	return 0
 }
 
 while true; do
 	[ "${CLEAR}" == "1" ] && clear
 
-	if "check_${CONDITION}"; then
-		break
-	fi
+	echo "Checking PR ${URL} to be ${CONDITION}..."
 
-	printf "\n---\n"
+	"check_${CONDITION}" && break
 
-	sleep 10
+	printf '\n%*s\n\n' "${COLUMNS:-$(tput cols)}" '' | tr ' ' '─'
+
+	sleep "${DELAY}"
 done
