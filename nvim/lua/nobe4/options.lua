@@ -51,7 +51,6 @@ vim.opt.completeopt = { "menu", "preview" }
 vim.opt.wildmenu = true
 vim.opt.undofile = true
 vim.opt.wildignore:append([[*.pyc]])
-vim.opt.cmdheight = 0
 
 -- Split
 vim.opt.splitbelow = true

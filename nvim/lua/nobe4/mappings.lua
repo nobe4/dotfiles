@@ -34,9 +34,6 @@ map("n", "<Leader>m", ":make", options)
 map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options)               -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
 map("n", "<Leader>r", ":<UP>", options)                                  -- repeat last command
 
-map("n", "go", ":call system('open ' . expand('<cWORD>'))<CR>", options) -- open WORD under cursor
--- map("n", "gf", ":e <cfile><CR>", options)                                                               -- open file under cursor
-
 map("n", "<Leader>b", ":b#<CR>", options)                                                               -- show buffer list
 map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options)                                                 -- show buffers and wait for a selection
 map("n", "<Leader><Leader>", ":<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>", options) -- clear highlight

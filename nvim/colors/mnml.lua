@@ -224,6 +224,10 @@ local rules = {
 	{ group = "@comment.uri",                lk = "@text.uri" },
 	{ group = "@string.special.url.comment", lk = "@text.uri" },
 	{ group = "@text.uri.gitcommit",         lk = "@text.uri" },
+
+	-- help
+	{ group = "@markup.link.vimdoc",         lk = "@text.uri" },
+
 }
 
 -- Base16 color definition

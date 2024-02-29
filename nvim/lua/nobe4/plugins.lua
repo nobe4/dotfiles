@@ -20,8 +20,8 @@ local options = {
 -- Configs are in after/plugin
 local plugins = {
 	-- Local
-	{ dir = "~/dev/nobe4/withhold.nvim" },
-	{ dir = "~/dev/nobe4/relativity.nvim" },
+	-- { dir = "~/dev/nobe4/withhold.nvim" },
+	-- { dir = "~/dev/nobe4/relativity.nvim" },
 	-- "nobe4/relativity.nvim",
 
 	-- Misc
@@ -43,7 +43,7 @@ local plugins = {
 	"romainl/vim-qf",
 	"numToStr/Comment.nvim",
 	-- "habamax/vim-godot",
-	{ 'norcalli/nvim-colorizer.lua',              config = function() require 'colorizer'.setup() end },
+	{ "norcalli/nvim-colorizer.lua",              config = function() require "colorizer".setup() end },
 
 	-- UI
 	"nvim-tree/nvim-web-devicons",
