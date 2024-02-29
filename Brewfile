@@ -5,6 +5,7 @@ tap "homebrew/services"
 cask_args appdir: "~/Applications", require_sha: true
 
 brew "difftastic"
+brew "direnv"
 brew "fd"
 brew "ffmpeg"
 brew "fzf"
@@ -32,10 +33,10 @@ brew "tmux"
 brew "trash"
 brew "universal-ctags"
 brew "xq"
-
 tap "1password/tap"
 cask "1password-cli"
 
 cask "neovide"
 cask "kitty"
 cask "espanso"
+cask "notunes"

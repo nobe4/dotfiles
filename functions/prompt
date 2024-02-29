@@ -20,6 +20,7 @@ if [ -n "$branch" ]; then
   prompt="${prompt}${branch}${stash_count}${dirty}"
 fi
 
-[ -n "$VIRTUAL_ENV" ] && prompt="${prompt}%{$fg[blue]%}$(basename "${VIRTUAL_ENV}")"
+[ -n "$RBENV_SHELL" ] && prompt="${prompt}%{$fg[blue]%}rbenv%{$reset_color%}"
+[ -n "$PIPENV_ACTIVE" ] && prompt="${prompt}%{$fg[blue]%}pipenv%{$reset_color%}"
 
 echo "$prompt%{$reset_color%} "

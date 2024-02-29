@@ -125,7 +125,6 @@ alias gl='git pull'
 alias glo='git lg'
 alias grhh='git reset --hard HEAD'
 alias gs='git switch'
-alias gp='git push'
 alias gpf='git push --force-with-lease'
 alias gcb='echo "stop using git checkout: use git switch for that (alias is gsc)"'
 alias gco='echo "stop using git checkout: use git switch or git reset for that"'
@@ -227,6 +226,10 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 
 # Limit how many files can be used by the current session
 ulimit -S -n 10240
+
+eval "$(direnv hook zsh)"
+alias direnv_rbenv='echo "use rbenv" >> .envrc && direnv allow'
+export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
 
 # Restart espanso
 (&>/dev/null espanso restart &)
