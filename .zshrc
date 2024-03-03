@@ -147,9 +147,11 @@ alias dcr="docker compose run"
 alias dcsh="docker compose-ssh"
 # }
 
-# Ruby {
-alias bd="bundle"
-alias bde="bundle exec"
+# copy/paste{
+is_linux && {
+	alias pbcopy='xsel --clipboard --input'
+	alias pbpaste='xsel --clipboard --output'
+}
 # }
 
 # misc {
@@ -211,9 +213,9 @@ alias gdb='gdb -q' # Silent GDB
 alias gccunsafe='gcc -fno-stack-protector -D_FORTIFY_SOURCE=0'
 # }
 
-is_macos && {
-  alias rm='echo "use /bin/rm or trash"' # Don't use rm unless you know what you're doing.
+alias rm='echo "use /bin/rm or trash"' # Don't use rm unless you know what you're doing.
 
+is_macos && {
   # Mac Catalina is breaking everything, thanks Tim Apple.
   # from https://www.kvraudio.com/forum/viewtopic.php?t=530824&start=15
   alias unlockvst='xattr -d com.apple.quarantine'
@@ -221,7 +223,6 @@ is_macos && {
 # }
 
 # Misc {
-export LYNX_CFG="$HOME/.lynx.cfg"
 alias gpg='GPG_TTY="$(tty)" gpg'
 
 # Limit how many files can be used by the current session
