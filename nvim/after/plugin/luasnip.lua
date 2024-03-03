@@ -65,9 +65,9 @@ ls.add_snippets("go", {
 })
 
 ls.add_snippets("gitcommit", {
-	ls.parser.parse_snippet("missing", "Remove missing team"),
-	ls.parser.parse_snippet("empty", "Remove empty team"),
-	ls.parser.parse_snippet("checksums", "Rebuild checksums"),
+	ls.parser.parse_snippet("missing", "fix: remove missing team"),
+	ls.parser.parse_snippet("empty", "fix: remove empty team"),
+	ls.parser.parse_snippet("checksums", "chore: rebuild checksums"),
 
 	-- https://www.conventionalcommits.org/en/v1.0.0/#specification
 	ms(
@@ -76,8 +76,8 @@ ls.add_snippets("gitcommit", {
 			"{}({}): {}",
 			{
 				f(function(_, parent)
-					  return parent.trigger
-				  end, {}),
+					return parent.trigger
+				end, {}),
 				i(1, "reference"),
 				i(2, "title"),
 			}
@@ -91,16 +91,16 @@ ls.add_snippets("sh", {
 
 -- mappings
 vim.keymap.set({ "n", "i", "s" }, "<C-K>", function()
-				   if ls.expand_or_jumpable() then
-					   ls.expand_or_jump()
-				   end
-			   end, { silent = true })
+	if ls.expand_or_jumpable() then
+		ls.expand_or_jump()
+	end
+end, { silent = true })
 
 vim.keymap.set({ "n", "i", "s" }, "<C-B>", function()
-				   if ls.jumpable(-1) then
-					   ls.jump(-1)
-				   end
-			   end, { silent = true })
+	if ls.jumpable(-1) then
+		ls.jump(-1)
+	end
+end, { silent = true })
 
 vim.keymap.set({ "i", "s" }, "<C-L>", function()
 	if ls.choice_active() then
