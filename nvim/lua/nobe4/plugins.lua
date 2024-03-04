@@ -44,6 +44,25 @@ local plugins = {
 	"numToStr/Comment.nvim",
 	-- "habamax/vim-godot",
 	{ "norcalli/nvim-colorizer.lua",              config = function() require "colorizer".setup() end },
+	{
+		"m4xshen/hardtime.nvim",
+		opts = {
+			restricted_keys = {
+				["}"] = { "n", "x" },
+				["{"] = { "n", "x" },
+				["<Up>"] = { "n", "x" },
+				["<Down>"] = { "n", "x" },
+				["<Left>"] = { "n", "x" },
+				["<Right>"] = { "n", "x" },
+			},
+			disabled_keys = {
+				["<Up>"] = {},
+				["<Down>"] = {},
+				["<Left>"] = {},
+				["<Right>"] = {},
+			},
+		}
+	},
 
 	-- UI
 	"nvim-tree/nvim-web-devicons",
