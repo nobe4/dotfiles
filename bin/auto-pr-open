@@ -5,12 +5,14 @@ set -e
 tmpfile="$(mktemp)"
 touch "$tmpfile"
 
-# In the background launch a process that looks at the output, match the fido URLs and open them.
-# the s/\x1b.*//g replaces the escape character that git can insert on tty.
+# In the background launch a process that looks at the output, match the GitHub
+# URLs and open them. The `s/\x1b.*//g` replaces the escape character that git can
+# insert on tty.
+# awk's `system("")` is used to flush the buffer and print the line immediately.
+# Other solutions like `stdbuf -oL` or `unbuffer` didn't work on macOS.
 (
 	tail -f "$tmpfile" \
-		| sed -uE 's/remote:[ ]*//' \
-		| grep --line-buffered 'https://github.com/.*' \
+		| awk '/https:\/\/github.com/ {print $2; system("")}' \
 		| sed -l 's/\x1b.*//g' \
 		| xargs -L1 -I{} bash -c "open '{}'"
 ) &
