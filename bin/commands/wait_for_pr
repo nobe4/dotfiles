@@ -1,4 +1,4 @@
-##!/usr/bin/env bash
+#!/usr/bin/env bash
 #VERSION 0.0.2
 #/ Usage: wait_for_pr [FLAG] [CONDITION] [URL]
 #/
