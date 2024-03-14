@@ -31,13 +31,18 @@ map("n", "<Leader>w", ":noautocmd w<CR>", options) -- Save file without autocmd
 map("n", "<Leader>q", ":quit!", options)
 map("n", "<Leader>x", ":xit", options)
 map("n", "<Leader>m", ":make", options)
-map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options)               -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
-map("n", "<Leader>r", ":<UP>", options)                                  -- repeat last command
+map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options)                                              -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
+map("n", "<Leader>r", ":<UP>", options)                                                                 -- repeat last command
 
 map("n", "<Leader>b", ":b#<CR>", options)                                                               -- show buffer list
 map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options)                                                 -- show buffers and wait for a selection
 map("n", "<Leader><Leader>", ":<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>", options) -- clear highlight
 map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]], options)                              -- show registers value before pasting
+
+map("n", "<C-W><S-Left>", "<C-W>H")                                                                     -- Move to the left window
+map("n", "<C-W><S-Right>", "<C-W>L")                                                                    -- Move to the right window
+map("n", "<C-W><S-Up>", "<C-W>K")                                                                       -- Move to the upper window
+map("n", "<C-W><S-Down>", "<C-W>J")                                                                     -- Move to the lower window
 
 map("c", "<C-A>", "<Home>", options)                                                                    -- Go to the start of the command line
 
@@ -86,8 +91,8 @@ map("n", "[e", vim.diagnostic.goto_prev, options)
 map("n", "[o", vim.diagnostic.open_float, options)
 
 map("n", "T", function()
-		require("trouble").toggle()
-	end, options)
+	require("trouble").toggle()
+end, options)
 
 map("n", "gm", ":RLMark ", options)
 map("n", "gt", ":RLTravel ", options)
