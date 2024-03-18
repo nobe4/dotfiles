@@ -3,13 +3,11 @@
 
 # Install
 
-The dotfiles folder is expected to be found at `~/.config/dotfiles`.
+**Requirements:**
+- SSH key setup with GitHub
 
 ```
-git clone --recurse-submodules git@github.com:nobe4/dotfiles.git
-ln -fs "$(pwd)/dotfiles" "~/.config/dotfiles"
-cd /dotfiles
-./install.sh
+curl https://raw.githubusercontent.com/nobe4/dotfiles/main/bootstrap.sh | bash
 ```
 
 In case of `zsh compinit: insecure directories, run compaudit for list.`:
