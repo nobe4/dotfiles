@@ -76,3 +76,8 @@
 
 [rerere]
 	enable = true
+
+[include]
+	# Add [maintenance] section there, so it's not tracked
+	path = ~/dev/.gitconfig
+
