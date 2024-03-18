@@ -24,7 +24,7 @@ show_help() {
 
 show_version(){ grep ^#VERSION <"${0}" |cut -d' ' -f2; }
 
-ROOT="${HOME}/.notes"
+ROOT="${DOTFILE_FOLDER}/private/notes"
 COMMAND="new"
 TITLE="$(date +%F)"
 OPEN=1
