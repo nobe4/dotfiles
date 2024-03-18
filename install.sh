@@ -132,6 +132,9 @@ is_macos && {
 	# ref: https://github.com/mathiasbynens/dotfiles/blob/master/.osx
 	# Default finder view: column
 	defaults write com.apple.Finder FXPreferredViewStyle clmv
+ 
+    # Show all files
+    defaults write com.apple.Finder AppleShowAllFiles true
 
 	# Show the $HOME/Library folder.
 	chflags nohidden "$HOME/Library"
