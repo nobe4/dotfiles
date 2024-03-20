@@ -145,6 +145,7 @@ touch "$HOME/.z"
 tldr --update
 
 link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.vale.ini"
+link "$DOTFILE_FOLDER/hammerspoon/" "$HOME/.hammerspoon"
 
 mkdir -p "$HOME/.config/gh"
 link "$DOTFILE_FOLDER/gh-config.yml" "$HOME/.config/gh/config.yml"
