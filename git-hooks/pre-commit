@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Run any hook in the pre-commit.d folder
+for hook in "${DOTFILE_FOLDER}/git-hooks/pre-commit.d/"*; do
+	echo "[git-hook] RUN $hook"
+
+	bash "$hook" && status=0 || status=1
+
+	if [ "$status" = 1 ]; then
+		echo "[git-hook] FAILED $hook"
+		echo "[git-hook] HINT fix your code or use 'git commit --no-verify'"
+		exit 1
+	fi
+done
+
+# Run local pre-commit hook if exists
+if [ -e ./.git/hooks/pre-commit ]; then
+./.git/hooks/pre-commit "$@"
+fi
