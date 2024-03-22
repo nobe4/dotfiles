@@ -15,7 +15,6 @@ for hook in "${DOTFILE_FOLDER}/git-hooks/pre-commit.d/"*; do
 	fi
 done
 
-# Run local pre-commit hook if exists
 if [ -e ./.git/hooks/pre-commit ]; then
-./.git/hooks/pre-commit "$@"
+	./.git/hooks/pre-commit "$@"
 fi
