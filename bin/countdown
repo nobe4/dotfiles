@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#/ usage: countdown [TIME_IN_SECONDS]
+
+set -e
+
+show_help() { grep ^#/ <"${0}" | cut -c4-; }
+[ "${*}" == "-h" ] && show_help && exit 0
+
+seconds="${1:-60}"
+
+while [ ${seconds} -gt 0 ]; do
+   echo -ne "> ${seconds} remaining... \033[0K\r"
+   sleep 1
+   : $((seconds--))
+done
