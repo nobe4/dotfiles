@@ -2,4 +2,5 @@
 
 # Made into a bin to be accessible from vim
 
-auto-pr-open git push -u
+is_linux && git push -u
+is_macos && auto-pr-open git push -u
