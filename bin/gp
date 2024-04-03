@@ -2,4 +2,8 @@
 
 # Made into a bin to be accessible from vim
 
-auto-pr-open git push -u
+case "$(uname -s)" in
+  Linux*) git push -u;;
+  Darwin*) auto-pr-open git push -u;;
+  *) exit 1
+esac

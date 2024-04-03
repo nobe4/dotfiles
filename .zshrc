@@ -8,6 +8,9 @@ export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
 is_macos && { BREW_PREFIX="/usr/local/" }
 is_linux && { BREW_PREFIX="/home/linuxbrew/.linuxbrew" }
+is_linux && {
+    source "${DOTFILE_FOLDER}/.zprofile" # TODO: why is this needed ?
+}
 # }
 
 # zshoptions {
@@ -162,7 +165,7 @@ alias fex='$(fzf)'
 
 # linuxbrew {
 is_linux && {
-  eval "${BREW_PREFIX}/bin/brew shellenv"
+  eval "$(${BREW_PREFIX}/bin/brew shellenv)"
 }
 # }
 # Kitty {
