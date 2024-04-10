@@ -3,51 +3,51 @@ local registry = require("mason-registry")
 local lsp_config = require("mason-lspconfig")
 
 mason.setup({
-  ui = {
-    border = "single",
-  },
+	ui = {
+		border = "single",
+	},
 })
 
 local ensured_installed_packages = {
-  "clang-format",
-  "clangd",
+	"clang-format",
+	"clangd",
 
-  "goimports",
-  "golangci-lint",
-  "gopls",
+	"goimports",
+	"golangci-lint",
+	"gopls",
 
-  "marksman",
-  "vale",
-  "vale-ls",
+	"marksman",
+	"vale",
+	"vale-ls",
 
-  "prettier",
+	"prettier",
 
-  "solargraph",
+	"solargraph",
 
-  "lua-language-server",
+	"lua-language-server",
 
-  "css-lsp",
-  "html-lsp",
-  "json-lsp",
-  "emmet-ls",
+	"css-lsp",
+	"html-lsp",
+	"json-lsp",
+	"emmet-ls",
 
-  "shellcheck",
-  "bash-language-server",
+	"shellcheck",
+	"bash-language-server",
 
-  "python-lsp-server",
-  "black",
+	"python-lsp-server",
+	"black",
 
-  "yaml-language-server",
-  "yamlfmt",
-  "yamllint",
+	"yaml-language-server",
+	"yamlfmt",
+	"yamllint",
 }
 
 for _, package in ipairs(ensured_installed_packages) do
-  local p = registry.get_package(package)
+	local p = registry.get_package(package)
 
-  if not p:is_installed() then
-    p:install()
-  end
+	if not p:is_installed() then
+		p:install()
+	end
 end
 
 lsp_config.setup()

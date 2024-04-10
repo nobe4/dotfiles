@@ -36,8 +36,6 @@ lspconfig.vale_ls.setup({
 	capabilities = capabilities,
 	filetypes = { "markdown", "gitcommit" },
 })
-vim.env.VALE_CONFIG_PATH = "$HOME/.config/dotfiles/vale.ini"
-
 
 lspconfig.ruby_ls.setup(default_config)
 -- https://github.com/Shopify/ruby-lsp/blob/main/EDITORS.md#neovim-lsp
@@ -65,7 +63,7 @@ lspconfig.ruby_ls.setup(default_config)
 -- 					nil,
 -- 					vim.tbl_extend("keep", params, { diagnostics = diagnostic_items }),
 -- 					{ client_id = client.id }
--- 				)
+-- 			)
 -- 			end)
 -- 		end
 --
@@ -95,7 +93,7 @@ lspconfig.lua_ls.setup({
 	capabilities = capabilities,
 	settings = {
 		Lua = {
-			diagnostics = { globals = { "vim", "require" } },
+			diagnostics = { globals = { "vim", "require", "hs", "spoon" } },
 		},
 		workspace = {
 			-- Make the server aware of Neovim runtime files
