@@ -12,6 +12,6 @@ Brewfile.lock.json
 nvim/lazy-lock.json
 
 vale-styles/*
-!vale-styles/Vocab/
+!vale-styles/config/
 
 vendor/
