@@ -3,18 +3,15 @@
 
 set -e
 
+[ "$*" == "-h" ] && cat "${0}" && exit 0
+
 PR_FROM_DIR="$(gh pr view --json url -q '.url' 2>/dev/null || true)"
 PR_FROM_PBPASTE="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
 
 count=0
 
-if [[ "${PR_FROM_DIR}" != "" ]]; then
-	count=$((count + 1))
-fi
-
-if [[ "${PR_FROM_PBPASTE}" != "" ]]; then
-	count=$((count + 1))
-fi
+[[ "${PR_FROM_DIR}" != "" ]] && count=$((count + 1))
+[[ "${PR_FROM_PBPASTE}" != "" ]] && count=$((count + 1))
 
 PROMPT="${1:-Enter PR URL:}"
 echo "${PROMPT}" >&2
