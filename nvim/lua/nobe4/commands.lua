@@ -8,6 +8,8 @@ command("VimrcSource", "silent source $MYVIMRC", opts)
 command("EditVimrc", "edit $MYVIMRC", opts)
 command("VimrcEdit", "edit $MYVIMRC", opts)
 
+command("GHLinks", [[%s/^[A-Z]\+ [0-9-]\+ \([^ ]\+\)#\([^ ]\+\).\+/- https:\/\/github.com\/\1\/issues\/\2]], opts)
+
 local sudo_write_cmd = "write !sudo tee % >/dev/null"
 command("SudoWrite", sudo_write_cmd, opts)
 command("WriteSudo", sudo_write_cmd, opts)

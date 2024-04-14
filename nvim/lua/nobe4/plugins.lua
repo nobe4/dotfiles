@@ -44,25 +44,25 @@ local plugins = {
 	"numToStr/Comment.nvim",
 	-- "habamax/vim-godot",
 	{ "norcalli/nvim-colorizer.lua",              config = function() require "colorizer".setup() end },
-	{
-		"m4xshen/hardtime.nvim",
-		opts = {
-			restricted_keys = {
-				["}"] = { "n", "x" },
-				["{"] = { "n", "x" },
-				["<Up>"] = { "n", "x" },
-				["<Down>"] = { "n", "x" },
-				["<Left>"] = { "n", "x" },
-				["<Right>"] = { "n", "x" },
-			},
-			disabled_keys = {
-				["<Up>"] = {},
-				["<Down>"] = {},
-				["<Left>"] = {},
-				["<Right>"] = {},
-			},
-		}
-	},
+	-- {
+	-- 	"m4xshen/hardtime.nvim",
+	-- 	opts = {
+	-- 		restricted_keys = {
+	-- 			["}"] = { "n", "x" },
+	-- 			["{"] = { "n", "x" },
+	-- 			["<Up>"] = { "n", "x" },
+	-- 			["<Down>"] = { "n", "x" },
+	-- 			["<Left>"] = { "n", "x" },
+	-- 			["<Right>"] = { "n", "x" },
+	-- 		},
+	-- 		disabled_keys = {
+	-- 			["<Up>"] = {},
+	-- 			["<Down>"] = {},
+	-- 			["<Left>"] = {},
+	-- 			["<Right>"] = {},
+	-- 		},
+	-- 	}
+	-- },
 
 	-- UI
 	"nvim-tree/nvim-web-devicons",
@@ -108,9 +108,9 @@ local plugins = {
 	"saadparwaiz1/cmp_luasnip",
 
 	-- Debugger
-	"mfussenegger/nvim-dap",
-	"leoluz/nvim-dap-go",
-	"rcarriga/nvim-dap-ui",
+	-- "mfussenegger/nvim-dap",
+	-- "leoluz/nvim-dap-go",
+	-- "rcarriga/nvim-dap-ui",
 }
 
 require("lazy").setup(plugins, options)
