@@ -13,14 +13,18 @@ touch "$tmpfile"
 (
 	tail -f "$tmpfile" \
 		| awk '/https:\/\/github.com/ {print $2; system("")}' \
-		| sed -l 's/\x1b.*//g' \
-		| xargs -L1 -I{} bash -c "open '{}'"
+		| sed 's/\x1b.*//g' \
+		| xargs -I{} bash -c "open '{}'"
 ) &
 open_pid="${!}"
 
 command="$*"
 
-script -qt1 "$tmpfile" bash -c "$command"
+case "$(uname -s)" in
+  Linux*) script -q "$tmpfile" -c "$command" ;;
+  Darwin*) script -qt1 "$tmpfile" bash -c "$command" ;;
+  *) exit 1
+esac
 
 sleep 1
 
