@@ -10,5 +10,5 @@ FZF_DEFAULT_OPTS='
   --bind="ctrl-i:execute-silent(echo {2} >> '"${PR_STATE_PATH}/ignored"')"
   --preview="GH_FORCE_TTY=${FZF_PREVIEW_COLUMNS} gh repo view {2}"
 ' \
-PR_SWITCHER="${HOME}/dev/nobe4/projector.sh/switchers/tmux.sh" \
+PR_SWITCHER="${HOME}/dev/nobe4/projector.sh/switchers/kitty.sh" \
 "${HOME}/dev/nobe4/projector.sh/projector.sh" $@
