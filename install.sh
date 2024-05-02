@@ -86,8 +86,7 @@ link "$DOTFILE_FOLDER/.pryrc" "$HOME/.pryrc"
 # }
 
 # Kitty {
-mkdir -p "$HOME/.config/kitty/"
-link "$DOTFILE_FOLDER/kitty.conf" "$HOME/.config/kitty/kitty.conf"
+link "$DOTFILE_FOLDER/kitty/" "$HOME/.config/kitty"
 # }
 
 # 1password cli {
@@ -132,7 +131,7 @@ is_macos && {
 	# ref: https://github.com/mathiasbynens/dotfiles/blob/master/.osx
 	# Default finder view: column
 	defaults write com.apple.Finder FXPreferredViewStyle clmv
- 
+
     # Show all files
     defaults write com.apple.Finder AppleShowAllFiles true
 
