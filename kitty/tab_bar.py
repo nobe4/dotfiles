@@ -47,16 +47,15 @@ def _draw_right_status(
     return screen.cursor.x
 
 
-def _draw_left_side(
+def _draw_left_status(
     draw_data: DrawData,
     screen: Screen,
     tab: TabBarData,
     index: int,
 ) -> int:
-
-    mode = get_boss().mappings.current_keyboard_mode_name
-    if mode != "":
-        screen.draw(f"[{mode}]")
+    # the first tab has index 1
+    if index == 1:
+        screen.draw(f"[{get_boss().mappings.current_keyboard_mode_name}]")
 
     draw_title(draw_data, screen, tab, index)
 
@@ -82,7 +81,7 @@ def draw_tab(
     if timer_id is None:
         timer_id = add_timer(_redraw_tab_bar, REFRESH_TIME_SECONDS, True)
 
-    _draw_left_side(draw_data, screen, tab, index)
+    _draw_left_status(draw_data, screen, tab, index)
 
     # after the last tab, we draw the right side
     if is_last:
