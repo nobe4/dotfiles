@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+[ "$*" == "-h" ] && cat "${0}" && exit 0
+
+function choices(){
+	find "$DOTFILE_FOLDER/bin" "$DOTFILE_FOLDER/private/bin" -type f -exec basename {} \;
+	alias | cut -d= -f1
+}
+
+choice="$(choices | fzf)"
+echo "Copied to clipboard: ${choice}"
+printf "%s" "${choice}" | pbcopy

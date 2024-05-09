@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#/ usage: de
+
+set -e
+
+[ "$*" == "-h" ] && cat "${0}" && exit 0
+
+setup_ruby_rbenv(){ echo "use rbenv" >> .envrc && direnv allow; }
+
+functions="
+ruby rbenv
+"
+
+choice=$(echo "${functions}" | grep -v "^$" | fzf | tr ' ' '_')
+"setup_${choice}"

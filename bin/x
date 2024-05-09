@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+
+set -e
+set -x
+
+[[ "$*" == "-h" ]] && cat "${0}" && exit 0
+
+command=$(
+	find . \
+		-type f \
+		\( -perm -u=x -o -perm -g=x -o -perm -o=x \) \
+		-not -path './vendor/*' \
+		-not -path './.git/*' \
+		| fzf --select-1
+)
+
+print -s "$command"
+"$comand"
