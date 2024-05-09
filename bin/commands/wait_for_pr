@@ -2,8 +2,7 @@
 #VERSION 0.0.2
 #/ Usage: wait_for_pr [FLAG] [CONDITION] [URL]
 #/
-#/ This is a base bash script with as many niceties included as possible.
-#/ See comments below for each parts.
+#/ This script will loop and wait until the CONDITION is fullfilled.
 #/
 #/ Flags:
 #/   -h|--help          Show this help
@@ -156,7 +155,7 @@ function check_deployed(){
 while true; do
 	[ "${CLEAR}" == "1" ] && clear
 
-	echo "Checking PR ${URL} to be ${CONDITION}..."
+	echo "Waiting for PR ${URL} to be ${CONDITION}..."
 
 	"check_${CONDITION}" && break
 
