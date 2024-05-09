@@ -13,6 +13,7 @@
 #/ Commands (current: ${COMMAND}):
 #/   n|new     [TITLE]        Create a new note (current title: ${TITLE})
 #/   s|search                 Search for a note
+#/   p|path                   Show notes path
 #/
 
 set -e
@@ -69,6 +70,7 @@ case "${COMMAND}" in
 			echo "Found in $file at line $line"
 		fi
 		;;
+	p|path) echo "${ROOT}" ;;
 	*)
 		echo "Unknown command '${COMMAND}'"
 		show_help
