@@ -3,6 +3,7 @@
 
 autocmd BufNewFile,BufRead *.zsh       set filetype=sh
 autocmd BufNewFile,BufRead *.bash      set filetype=sh
+autocmd BufNewFile,BufRead .envrc      set filetype=sh
 
 autocmd BufNewFile,BufRead *.graphql   set filetype=graphql
 autocmd BufNewFile,BufRead *.jspf      set filetype=jsp
