@@ -19,7 +19,7 @@ function ctrl_c() {
 echo -e "Listening on :$PORT\n"
 
 while true; do
-	echo -e "HTTP/1.1 200 OK\r\n" | nc -v -l -p "$PORT"
+	echo -e "HTTP/1.1 200 OK\r\n" | nc -v -l "$PORT"
 	echo -e "\n\n---\n"
 done
 
