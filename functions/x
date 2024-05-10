@@ -1,9 +1,7 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+#/ x: search for an executable and run it
 
 set -e
-set -x
-
-[[ "$*" == "-h" ]] && cat "${0}" && exit 0
 
 command=$(
 	find . \
@@ -14,5 +12,6 @@ command=$(
 		| fzf --select-1
 )
 
+"$command" || true
+
 print -s "$command"
-"$comand"
