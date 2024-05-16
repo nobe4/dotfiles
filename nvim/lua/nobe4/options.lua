@@ -10,12 +10,12 @@ vim.opt.sidescroll = 1
 vim.opt.sidescrolloff = 10
 vim.opt.hlsearch = true
 vim.opt.incsearch = true
+vim.opt.inccommand = "split"
 vim.opt.textwidth = 80
 vim.opt.cursorline = true
 
 vim.opt.background = "dark"
 vim.opt.guifont = "CommitMono:h14"
-vim.opt.termguicolors = true
 vim.cmd("colorscheme mnml")
 
 -- Editing
