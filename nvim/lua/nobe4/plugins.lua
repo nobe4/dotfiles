@@ -41,7 +41,6 @@ local plugins = {
 	"junegunn/vim-easy-align",
 	"mbbill/undotree",
 	"romainl/vim-qf",
-	"numToStr/Comment.nvim",
 	-- "habamax/vim-godot",
 	{ "norcalli/nvim-colorizer.lua",              config = function() require "colorizer".setup() end },
 	-- {
