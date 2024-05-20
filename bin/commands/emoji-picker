@@ -21,8 +21,7 @@ if [ "${*}" == "--refresh" ]; then
 	exit 0
 fi
 
-selection=$( cat "${LIST}" | fzf --nth=2 --query="${@}")
+selection=$(fzf --nth='2..' --query="${@}" < "${LIST}")
+
 echo "Copying emoji for ${selection}"
-echo "${selection}" \
-	| cut -d' ' -f1 \
-	| pbcopy
+echo "${selection}" | cut -d' ' -f1 | pbcopy
