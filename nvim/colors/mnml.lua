@@ -1,6 +1,16 @@
+-- reload with <leader>.
+vim.g.colors_name = "mnml"
+vim.opt.background = "dark"
+vim.opt.termguicolors = true
+
+vim.cmd.highlight("clear")
+
 local rules = {
 	-- Groups
 	{ group = "n4_default",                  fg = "lwhite" },
+
+	-- Important: this preserves the terminal background color.
+	{ group = "Normal" },
 
 	-- Cursor
 	{ group = "Cursor",                      ef = "reverse" },
@@ -22,6 +32,8 @@ local rules = {
 	-- Search
 	{ group = "Search",                      fg = "green" },
 	{ group = "IncSearch",                   fg = "blue" },
+	{ group = "CurSearch",                   fg = "blue" },
+	{ group = "Substitute",                  fg = "blue" },
 
 	-- Spelling
 	{ group = "SpellBad",                    ef = "underline",               fg = "lred" },
@@ -55,8 +67,9 @@ local rules = {
 	{ group = "QuickFixLine",                fg = "white" },
 	{ group = "SignColumn",                  fg = "lblack" },
 	{ group = "SpecialKey",                  fg = "lblack" },
-	{ group = "FloatBorder",                 fg = "lblack" },
 	{ group = "Title",                       lk = "n4_default" },
+	{ group = "FloatBorder",                 fg = "lblack" },
+	{ group = "NormalFloat",                 lk = "n4_default" },
 
 	-- Menu bar
 	{ group = "Menu",                        fg = "white" },
@@ -109,7 +122,7 @@ local rules = {
 	{ group = "Keyword",                     lk = "n4_default" },
 	{ group = "Label",                       lk = "n4_default" },
 	{ group = "Macro",                       lk = "n4_default" },
-	{ group = "Normal",                      lk = "n4_default" },
+	{ group = "NormalNC",                    lk = "n4_default" },
 	{ group = "Number",                      fg = "lgreen" },
 	{ group = "Operator",                    lk = "n4_default" },
 	{ group = "PreCondit",                   lk = "n4_default" },
@@ -227,11 +240,9 @@ local rules = {
 
 	-- help
 	{ group = "@markup.link.vimdoc",         lk = "@text.uri" },
-
 }
 
 -- Base16 color definition
-
 local index = {
 	black = 1,
 	red = 2,
@@ -255,71 +266,41 @@ local colors = {
 	"#878988", "#c49c9a", "#93b6a4", "#c8b394", "#859acb", "#a884b8", "#7c9e9b", "#ffffff",
 }
 
--- set gui colors
 for i, color in ipairs(colors) do
 	vim.g["terminal_color_" .. (i - 1)] = color
 end
 
 -- name to color
-local n_to_c = function(name)
-	if name == "NONE" then
-		return "NONE"
-	end
-	return colors[index[name]]
-end
+local n_to_c = function(name) return colors[index[name]] or "NONE" end
 
 -- name to index
-local n_to_i = function(name)
-	if name == "NONE" then
-		return "NONE"
+local n_to_i = function(name) return index[name] or "NONE" end
+
+-- effects to map
+local ef_to_map = function(ef)
+	if type(ef) == "string" then ef = { ef } end
+	if type(ef) == "nil" then ef = {} end
+
+	local m = {}
+	for _, e in pairs(ef) do
+		m[e] = true
 	end
-	return index[name]
+	return m
 end
 
 -- highlight wrapper
 for _, rule in pairs(rules) do
-	-- TODO: redo with nvim_set_hl
-	if rule.ef == nil then
-		rule.ef = "NONE"
-	end
-	if rule.fg == nil then
-		rule.fg = "NONE"
-	end
-	if rule.bg == nil then
-		rule.bg = "NONE"
-	end
+	local rule_map = {}
 
 	if rule.lk == nil then
-		vim.cmd(
-			"highlight! "
-			.. rule.group
-			.. " term="
-			.. rule.ef
-			.. " cterm="
-			.. rule.ef
-			.. " gui="
-			.. rule.ef
-			.. " ctermfg="
-			.. n_to_i(rule.fg)
-			.. " ctermbg="
-			.. n_to_i(rule.bg)
-			.. " guifg="
-			.. n_to_c(rule.fg)
-			.. " guibg="
-			.. n_to_c(rule.bg)
-			.. " guisp="
-			.. n_to_c(rule.fg)
-		)
+		rule_map = ef_to_map(rule.ef)
+		rule_map.fg = n_to_c(rule.fg)
+		rule_map.bg = n_to_c(rule.bg)
+		rule_map.ctermfg = n_to_i(rule.fg)
+		rule_map.ctermbg = n_to_i(rule.bg)
 	else
-		vim.cmd("highlight! link " .. rule.group .. " " .. rule.lk)
+		rule_map = { link = rule.lk }
 	end
+
+	vim.api.nvim_set_hl(0, rule.group, rule_map)
 end
-
-vim.cmd([[
-  augroup color_auto_reload
-  autocmd!
-  autocmd BufWritePost mnml.lua source <afile>
-  augroup end
-]])
-
-vim.g.colors_name = "mnml"

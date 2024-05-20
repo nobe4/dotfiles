@@ -27,6 +27,10 @@ map("n", "<Leader>y", '"+y', options)
 map("n", "<Leader>Y", '"+Y', options)
 map("v", "<Leader>y", '"+y', options)
 
+-- Undo those mappings now that gc is built-in
+map("n", "<Leader>cc", function() error("\n\nUse gcc\n") end)
+map("v", "<Leader>c", function() error("\n\nUse gc\n") end)
+
 map("n", "<Leader>w", ":noautocmd w<CR>", options) -- Save file without autocmd
 map("n", "<Leader>q", ":quit!", options)
 map("n", "<Leader>x", ":xit", options)
@@ -85,14 +89,12 @@ map_braquet("q", "c") -- jump between items in the (q)uickfix list
 map_braquet("t", "t") -- jump between matching (t)ags
 map_braquet("l", "l") -- jump between lines in the (l)ocation list
 
--- Goto next/prev "Error"
-map("n", "]e", vim.diagnostic.goto_next, options)
-map("n", "[e", vim.diagnostic.goto_prev, options)
+-- Goto next/prev "diagnostic" is built in with ]d [d
+map("n", "]e", function() error("\n\nUse ]d\n") end)
+map("n", "[e", function() error("\n\nUse [d\n") end)
 map("n", "[o", vim.diagnostic.open_float, options)
 
-map("n", "T", function()
-	require("trouble").toggle()
-end, options)
+map("n", "T", function() require("trouble").toggle() end, options)
 
 map("n", "gm", ":RLMark ", options)
 map("n", "gt", ":RLTravel ", options)
@@ -109,7 +111,6 @@ M.lsp_mappings = function(bufnr)
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
-	map("n", "K", vim.lsp.buf.hover, bufopts)
 	map("n", "gr", vim.lsp.buf.rename, bufopts)
 	map("n", "gd", vim.lsp.buf.definition, bufopts)
 	map("n", "gR", vim.lsp.buf.references, bufopts)

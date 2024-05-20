@@ -14,9 +14,9 @@ vim.opt.inccommand = "split"
 vim.opt.textwidth = 80
 vim.opt.cursorline = true
 
-vim.opt.background = "dark"
+vim.opt.termguicolors = true
+vim.cmd.colorscheme("mnml")
 vim.opt.guifont = "CommitMono:h14"
-vim.cmd("colorscheme mnml")
 
 -- Editing
 vim.opt.hidden = true
