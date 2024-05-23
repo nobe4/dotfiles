@@ -15,6 +15,7 @@ PATH="$DOTFILE_FOLDER/private/bin:$DOTFILE_FOLDER/private/bin/commands:$PATH"
 
 # macos Applications
 is_macos && {
+  eval "$(/opt/homebrew/bin/brew shellenv)"
   if [[ ! "$PATH" == *Applications* ]]; then
     PATH="$PATH:/Applications:$HOME/Applications"
   fi
@@ -47,6 +48,12 @@ export FPATH
 # Man PATH {
 MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 export MANPATH
+# }
+
+# Python {
+unset PYTHONHOME
+unset PYTHONPATH
+export PYTHONDONTWRITEBYTECODE=1
 # }
 
 export EDITOR='nvim'
