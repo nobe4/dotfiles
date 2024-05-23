@@ -46,6 +46,13 @@ fi
 
 brew bundle install
 BREW_PREFIX=$(brew --prefix)
+
+# }
+
+# JQ {
+# Making `jq` available for all process tho it's installed as `gojq`.
+# This is somewhat easier than an alias or a function.
+ln -s "${BREW_PREFIX}/bin/gojq" "${BREW_PREFIX}/bin/jq"
 # }
 
 # Linux base packages {
