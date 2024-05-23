@@ -37,8 +37,11 @@
 	safe-pull = !git-safe-pull
 
 	rebase-main = !"git fetch; git rebase origin/$(git main)"
-	clean-branches = !git-clean-branches
+	sweep = !git-clean-branches
 	recent-branches = branch --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)"
+
+	dft = difftool
+	dlog = "-c diff.external=difft log -p --ext-diff"
 
 [init]
 	defaultBranch = main
@@ -59,12 +62,16 @@
 	required = true
 
 [diff]
-	external = difft
 	tool = difftastic
+
 [difftool]
 	prompt = false
+
 [difftool "difftastic"]
 	cmd = difft "$LOCAL" "$REMOTE"
+
+[pager]
+	difftool = true
 
 [pager]
 	difftool = true
@@ -81,4 +88,3 @@
 [include]
 	# Add [maintenance] section there, so it's not tracked
 	path = ~/dev/.gitconfig
-
