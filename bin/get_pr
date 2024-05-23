@@ -11,7 +11,16 @@ PR_FROM_PBPASTE="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
 count=0
 
 [[ "${PR_FROM_DIR}" != "" ]] && count=$((count + 1))
-[[ "${PR_FROM_PBPASTE}" != "" ]] && count=$((count + 1))
+
+if [[ "${PR_FROM_PBPASTE}" != "" ]]; then
+	# The second link only matters if it's different from the first one.
+	# Otherwise we can discard it
+	if [[ "${PR_FROM_PBPASTE}" == "${PR_FROM_DIR}" ]]; then
+		PR_FROM_PBPASTE=""
+	else
+		count=$((count + 1))
+	fi
+fi
 
 PROMPT="${1:-Enter PR URL:}"
 echo "${PROMPT}" >&2
