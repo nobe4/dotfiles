@@ -2,9 +2,10 @@ tap "homebrew/services"
 tap "1password/tap"
 
 brew "difftastic"
+brew "htop"
 brew "direnv"
 brew "fd"
-brew "ffmpeg"
+# brew "ffmpeg"
 brew "fzf"
 brew "gdb"
 brew "gh"
@@ -25,6 +26,7 @@ brew "trash"
 brew "tree"
 brew "universal-ctags"
 brew "xq"
+brew "cmake"
 
 brew "pipenv"
 brew "pyenv"
@@ -35,6 +37,7 @@ cask_args appdir: "~/Applications", require_sha: true
 
 cask "1password" , args: { appdir: "/Applications" }
 cask "1password-cli"
+cask "docker"
 cask "espanso"
 cask "hammerspoon"
 cask "kitty"
