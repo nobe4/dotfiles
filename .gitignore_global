@@ -53,3 +53,4 @@ tag
 !.rubocop*
 !.ruby-version
 !.editorconfig
+!.goreleaser.yaml
