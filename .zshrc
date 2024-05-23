@@ -6,9 +6,10 @@
 # Setup {
 export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
+
 is_macos && { BREW_PREFIX="/usr/local/" }
-is_linux && { BREW_PREFIX="/home/linuxbrew/.linuxbrew" }
 is_linux && {
+	BREW_PREFIX="/home/linuxbrew/.linuxbrew"
     source "${DOTFILE_FOLDER}/.zprofile" # TODO: why is this needed ?
 }
 # }
@@ -33,6 +34,7 @@ setopt INC_APPEND_HISTORY
 setopt NO_BEEP
 setopt PROMPT_SUBST
 setopt PUSHD_IGNORE_DUPS
+setopt SHARE_HISTORY
 # }
 
 # Lang {
@@ -102,6 +104,10 @@ bindkey "^A" beginning-of-line
 bindkey "^E" end-of-line
 # }
 
+# Important {
+alias rm='echo "use /bin/rm or trash"' # Don't use rm unless you know what you're doing.
+# }
+
 # Tmux {
 # Start tmux with unicode support (prevent trailing witespace for the prompt)
 alias tmux='tmux -u'
@@ -112,6 +118,7 @@ alias tw='tmux switch -t'
 
 # Neovim {
 alias vi="nvim"
+alias vi="nvim"
 alias vim="nvim"
 alias vst='nvim +Git now' # Run Gstatus at vim startup
 alias vih='nvim +help\ ' # Jump to vim help
@@ -120,6 +127,7 @@ alias vit='nvim +tj\ ' # Jump to tag
 # }
 
 # Git {
+alias gd='git difftool'
 alias ga='git add'
 alias gb='git branch'
 alias gbm='git branch -M'
@@ -129,13 +137,14 @@ alias glo='git lg'
 alias grhh='git reset --hard HEAD'
 alias gs='git switch'
 alias gpf='git push --force-with-lease'
-alias gcb='echo "stop using git checkout: use git switch for that (alias is gsc)"'
-alias gco='echo "stop using git checkout: use git switch or git reset for that"'
 alias gsc='git switch -c'
-alias gsm='git switch "$(git main)"'
+alias gsm='git switch "$(git main)" && git pull'
 alias gss='git status'
 alias gs-='git status -'
 alias gst='git stash'
+
+alias gcb='echo "DEPRECATED stop using git checkout: use git switch for that (alias is gsc)"'
+alias gco='echo "DEPRECATED stop using git checkout: use git switch or git reset for that"'
 # }
 
 # Docker {
@@ -161,6 +170,7 @@ is_linux && {
 alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
 alias l="sling"
 alias fex='$(fzf)'
+alias wspec="find . -name '*.rb' | entr sh -c 'clear && bundle exec rspec'"
 # }
 
 # linuxbrew {
@@ -170,31 +180,15 @@ is_linux && {
 # }
 # Kitty {
 is_macos && {
-  export KITTY_CONFIG_DIRECTORY="$DOTFILE_FOLDER/"
-  alias kitty='/Applications/kitty.app/Contents/MacOS/kitty'
+  alias kitty='${HOME}/Applications/kitty.app/Contents/MacOS/kitty'
 }
-# }
-
-# Python {
-unset PYTHONHOME
-unset PYTHONPATH
-export PYTHONDONTWRITEBYTECODE=1
 # }
 
 # Search {
 alias todo="rg -i todo"
 alias rg='rg --ignore-file $HOME/.gitignore_global'
 
-# shellcheck disable=SC1094 # this file is fine
-[[ $- == *i* ]] && source "${BREW_PREFIX}/opt/fzf/shell/completion.zsh" 2> /dev/null
-
-# shellcheck disable=SC1094 # this file is fine
-source "${BREW_PREFIX}/opt/fzf/shell/key-bindings.zsh"
-
 export FZF_DEFAULT_COMMAND="rg --files --follow --ignore-file $HOME/.gitignore_global"
-
-# Trigger fzf-completion with **
-export FZF_COMPLETION_TRIGGER='**'
 # }
 
 # Alias {
@@ -216,7 +210,6 @@ alias gdb='gdb -q' # Silent GDB
 alias gccunsafe='gcc -fno-stack-protector -D_FORTIFY_SOURCE=0'
 # }
 
-alias rm='echo "use /bin/rm or trash"' # Don't use rm unless you know what you're doing.
 
 is_macos && {
   # Mac Catalina is breaking everything, thanks Tim Apple.
@@ -232,7 +225,6 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 ulimit -S -n 10240
 
 eval "$(direnv hook zsh)"
-alias direnv_rbenv='echo "use rbenv" >> .envrc && direnv allow'
 export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
 
 # Restart espanso
