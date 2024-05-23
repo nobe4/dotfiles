@@ -94,7 +94,6 @@ local plugins = {
 		},
 	},
 	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-	"nvim-telescope/telescope-ui-select.nvim",
 
 	-- Completion
 	"hrsh7th/nvim-cmp",
