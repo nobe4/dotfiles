@@ -32,9 +32,6 @@ PATH="$PATH:/usr/local/go/bin:$HOME/go:$HOME/go/bin"
 export PATH
 # }
 
-# export TERM=xterm-256color
-is_macos && export TERM=xterm-kitty
-
 # difftastic
 export DFT_SYNTAX_HIGHLIGHT=off
 export DFT_CONTEXT=1

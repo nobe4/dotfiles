@@ -44,9 +44,6 @@ export LC_CTYPE="$LANG"
 # }
 
 # Colors {
-is_macos && {
-  export TERM=xterm-kitty
-}
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
