@@ -22,6 +22,9 @@
 	# untrackedcache = true
 	# fsmonitor = true
 
+[format]
+	signOff = true
+
 [alias]
 	alias = !git-alias
 
@@ -47,7 +50,7 @@
 	defaultBranch = main
 [pull]
 	default = current
-	rebase = false
+	rebase = true
 [push]
 	default = current
 [fetch]
