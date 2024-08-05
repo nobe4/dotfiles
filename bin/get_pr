@@ -28,7 +28,7 @@ echo "${PROMPT}" >&2
 case "${count}" in
 	0)
 		printf '> ' >&2
-		read -r input
+		read -r input < /dev/tty
 
 		echo "${input}"
 		exit 0
@@ -39,7 +39,7 @@ case "${count}" in
 		echo "or <CR> to use: '${default}'" >&2
 
 		printf '> ' >&2
-		read -r input
+		read -r input < /dev/tty
 
 		echo "${input:-${default}}"
 		exit 0
@@ -50,7 +50,7 @@ case "${count}" in
 		echo "or 2: '${PR_FROM_DIR}'" >&2
 
 		printf '> ' >&2
-		read -r input
+		read -r input < /dev/tty
 
 		if [[ "${input}" == "1" ]]; then
 			echo "${PR_FROM_PBPASTE}"
