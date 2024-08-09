@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+find . \
+	-not -path './vendor*' \
+	-not -path './.ruby-lsp*' \
+	-name '*.rb' \
+	| entr "$@"
