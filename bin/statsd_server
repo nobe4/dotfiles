@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+[ "$*" == "-h" ] && cat "${0}" && exit 0
+
+nc -ul ::1 "${1:-28125}"
