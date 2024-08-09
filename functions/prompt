@@ -21,6 +21,8 @@ if [ -n "$branch" ]; then
 fi
 
 [ -n "$RBENV_SHELL" ] && prompt="${prompt}%{$fg[blue]%}rbenv%{$reset_color%}"
+[ -n "$NODENV_SHELL" ] && prompt="${prompt}%{$fg[blue]%}nodenv%{$reset_color%}"
 [ -n "$PIPENV_ACTIVE" ] && prompt="${prompt}%{$fg[blue]%}pipenv%{$reset_color%}"
+[ -n "$VIRTUAL_ENV_PROMPT" ] && prompt="${prompt}%{$fg[blue]%}${VIRTUAL_ENV_PROMPT}%{$reset_color%}"
 
 echo "$prompt%{$reset_color%} "
