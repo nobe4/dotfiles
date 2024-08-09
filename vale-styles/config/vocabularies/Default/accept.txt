@@ -5,6 +5,7 @@ Automator
 CodeQL
 Docker(file)?
 GitHub
+Hubot
 IP\ [Aa]ddress(es)?
 JIT
 Moda
@@ -15,6 +16,8 @@ Sinatra
 Splunk
 U?ID
 Youtube
+Yubico
+Yubikey
 [Cc]hatops
 [Cc]onfig(uration)?
 [Cc]ron
@@ -32,3 +35,4 @@ Youtube
 [Rr]unbook
 macOS
 tmux
+Zendesk
