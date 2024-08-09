@@ -121,6 +121,7 @@ alias vst='nvim +Git now' # Run Gstatus at vim startup
 alias vih='nvim +help\ ' # Jump to vim help
 alias vin='nvim -Nu NONE' # Vim without config
 alias vit='nvim +tj\ ' # Jump to tag
+alias vidir='nvim +":normal -"'
 # }
 
 # Git {
@@ -135,13 +136,11 @@ alias grhh='git reset --hard HEAD'
 alias gs='git switch'
 alias gpf='git push --force-with-lease'
 alias gsc='git switch -c'
-alias gsm='git switch "$(git main)" && git pull'
+alias gsm='git switch "$(git main)" && git pull && git sweep'
 alias gss='git status'
 alias gs-='git status -'
 alias gst='git stash'
-
-alias gcb='echo "DEPRECATED stop using git checkout: use git switch for that (alias is gsc)"'
-alias gco='echo "DEPRECATED stop using git checkout: use git switch or git reset for that"'
+alias gcb='echo "DEPRECATED stop using git checkout for creating branch: use git switch for that (alias is gsc)"'
 # }
 
 # Docker {
@@ -164,6 +163,7 @@ is_linux && {
 # }
 
 # misc {
+alias not="gh not"
 alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
 alias l="sling"
 alias fex='$(fzf)'
@@ -198,7 +198,7 @@ alias p8='ping -v 8.8.8.8'                           # Ping 8.8.8.8
 alias pg='ps aux | grep'                             # ps and grep easily
 alias kk='killall'                                   # Quicker kill all
 alias hmac='openssl rand -hex 32'
-alias tmp='tmux new-window "cd `mktemp -d` && zsh"'
+alias tmp='cd `mktemp -d`'
 
 # GDB {
 alias gdb='gdb -q' # Silent GDB

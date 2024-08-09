@@ -35,7 +35,6 @@ local plugins = {
 	"github/copilot.vim",
 
 	"stevearc/oil.nvim",
-	"christoomey/vim-tmux-navigator",
 	"danro/rename.vim",
 	"editorconfig/editorconfig-vim",
 	"junegunn/vim-easy-align",
