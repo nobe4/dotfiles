@@ -13,6 +13,7 @@ aliases:
     chk: "gh pr checks"
     chks: "!while true; do gh pr checks; sleep 1; done"
     err: '!gh pr view --comments | grep ''FATAL\|Errno'''
+    up: 'extension upgrade --all'
     merge-pr-delete-branch: pr merge --merge --delete-branch
     comments-pr-full: pr view --comments
     clone: repo clone
