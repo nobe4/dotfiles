@@ -7,5 +7,5 @@ set -e
 for pr in ${*:-$(get_pr "Enter PR URL to merge:")}; do
 	clear
 	echo "Merging PR: ${pr}"
-	gh pr merge "${pr}" --delete-branch --merge
+	gh pr merge "${pr}" --delete-branch --merge || true
 done
