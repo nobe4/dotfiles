@@ -79,7 +79,7 @@ local rules = {
 	{ group = "Question",                    fg = "blue" },
 
 	-- End of file / buffer
-	{ group = "NonText",                     fg = "white" },
+	{ group = "NonText",                     fg = "lblack" },
 	{ group = "EndOfBuffer",                 lk = "NonText" },
 
 	-- Popup Menu
@@ -221,6 +221,9 @@ local rules = {
 	{ group = "CmpItemKindEnumMember",       lk = "CmpItemKindClass" },
 	{ group = "CmpItemKindEnum",             lk = "CmpItemKindClass" },
 	{ group = "CmpItemKindStruct",           lk = "CmpItemKindClass" },
+
+	-- LSP
+	-- { group = "LspInlayHint",                lk = "lred" },
 
 	-- Comments
 	{ group = "@text.note",                  lk = "Todo" },
