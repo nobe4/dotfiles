@@ -13,6 +13,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 local on_attach = function(_, bufnr)
 	-- Enable completion triggered by <c-x><c-o>
 	vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+	vim.lsp.inlay_hint.enable(true, { bufnr })
 	Mappings.lsp_mappings(bufnr)
 end
 
@@ -24,11 +25,32 @@ require("lspconfig.ui.windows").default_options.border = "rounded"
 
 lspconfig.bashls.setup(default_config)
 lspconfig.jsonls.setup(default_config)
-lspconfig.tsserver.setup(default_config)
+lspconfig.ts_ls.setup(default_config)
 lspconfig.html.setup(default_config)
 lspconfig.cssls.setup(default_config)
 lspconfig.clangd.setup(default_config)
-lspconfig.gopls.setup(default_config)
+lspconfig.gopls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	settings = {
+		gopls = {
+			analyses = {
+				shadow = true,
+				unusedvariable = true,
+				useany = true,
+			},
+			hints = {
+				assignVariableTypes = true,
+				compositeLiteralFields = true,
+				compositeLiteralTypes = true,
+				constantValues = true,
+				functionTypeParameters = true,
+				parameterNames = true,
+				rangeVariableTypes = true,
+			},
+		}
+	},
+})
 lspconfig.marksman.setup(default_config)
 lspconfig.pylsp.setup(default_config)
 lspconfig.vale_ls.setup({
@@ -37,7 +59,7 @@ lspconfig.vale_ls.setup({
 	filetypes = { "markdown", "gitcommit" },
 })
 
-lspconfig.ruby_ls.setup(default_config)
+lspconfig.ruby_lsp.setup(default_config)
 -- https://github.com/Shopify/ruby-lsp/blob/main/EDITORS.md#neovim-lsp
 -- _timers = {}
 -- lspconfig.ruby_ls.setup({
