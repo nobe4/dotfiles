@@ -11,6 +11,8 @@ require("conform").setup({
 		go = { "goimports", "gofmt" },
 		graphql = { "prettier" },
 		javascript = { "prettier" },
+		scss = { "prettier" },
+		css = { "prettier" },
 		json = { "prettier" },
 		-- TODO: add for yaml
 		-- formatting.yamlfmt.with({

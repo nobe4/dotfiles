@@ -77,34 +77,39 @@ map("n", "ga", "<Plug>(EasyAlign)", options)
 map("n", "<Leader>ut", function() print("Use :UndotreeToggle") end, options)
 
 -- unimpaired-like
--- Inspired by https://git.io/vHtuc
-local function map_braquet(map_key, cmd)
-	map("n", "]" .. map_key, ":" .. cmd .. "next<CR>", options)
-	map("n", "[" .. map_key, ":" .. cmd .. "previous<CR>", options)
-	map("n", "]" .. map_key:upper(), ":" .. cmd .. "last<CR>", options)
-	map("n", "[" .. map_key:upper(), ":" .. cmd .. "first<CR>", options)
+-- Inspired by tpope/unimpaired
+local function map_bracket(map_key, cmd)
+	map("n", "]" .. map_key, function()
+		local ok, _ = pcall(vim.cmd, cmd .. "next")
+		if not ok then
+			vim.cmd(cmd .. "first")
+		end
+	end)
+
+	map("n", "[" .. map_key, function()
+		local ok, _ = pcall(vim.cmd, cmd .. "previous")
+		if not ok then
+			vim.cmd(cmd .. "last")
+		end
+	end, options)
+
+	map("n", "]" .. map_key:upper(), function() vim.cmd(cmd .. "last") end, options)
+	map("n", "[" .. map_key:upper(), function() vim.cmd(cmd .. "first") end, options)
 end
 
-map_braquet("q", "c") -- jump between items in the (q)uickfix list
-map_braquet("t", "t") -- jump between matching (t)ags
-map_braquet("l", "l") -- jump between lines in the (l)ocation list
+map_bracket("q", "c") -- jump between items in the (q)uickfix list
+map_bracket("t", "t") -- jump between matching (t)ags
+map_bracket("l", "l") -- jump between lines in the (l)ocation list
 
 -- Goto next/prev "diagnostic" is built in with ]d [d
 map("n", "]e", function() error("\n\nUse ]d\n") end)
 map("n", "[e", function() error("\n\nUse [d\n") end)
 map("n", "[o", vim.diagnostic.open_float, options)
 
-map("n", "T", function() require("trouble").toggle() end, options)
+map("n", "T", function() require("trouble").toggle("diagnostics") end, options)
 
 map("n", "gm", ":RLMark ", options)
 map("n", "gt", ":RLTravel ", options)
-
--- vim-tmux-navigator
-vim.g.tmux_navigator_no_mappings = 1
-map("", "<C-Left>", ":<C-U>TmuxNavigateLeft<CR>", options)
-map("", "<C-Right>", ":<C-U>TmuxNavigateRight<CR>", options)
-map("", "<C-Down>", ":<C-U>TmuxNavigateDown<CR>", options)
-map("", "<C-Up>", ":<C-U>TmuxNavigateUp<CR>", options)
 
 -- LSP
 M.lsp_mappings = function(bufnr)

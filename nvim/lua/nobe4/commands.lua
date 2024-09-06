@@ -34,6 +34,8 @@ end, opts)
 command("Format", function() vim.lsp.buf.formatting() end, opts)
 command("Browse", function(o) vim.fn.system { "open", o.fargs[1] } end, { nargs = 1, bang = true })
 
+command("Todo", "silent grep -e TODO -e XXX -e FIXME", opts)
+
 command("ColorGroup", function()
 	vim.cmd([[
 		let s = synID(line('.'), col('.'), 1) | echo synIDattr(s, 'name') . ' -> ' . synIDattr(synIDtrans(s), 'name')
