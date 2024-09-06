@@ -8,6 +8,9 @@ matches:
   - triggers: ["comitted", "comited", "commited"]
     replace: "committed"
 
+  - trigger: ",hh"
+    replace: "happy to help 🎉"
+
   - trigger: "<details>"
     replace: |
       <details><summary>$|$</summary>
