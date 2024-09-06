@@ -84,7 +84,7 @@ choose_from () {
 doc () {
     find "$DEVDOCS_DIR" -mindepth 1 -type d -printf '%f\n' |
         fzy -p 'Choose docs > ' | {
-            read -r slug
+            read -r slug < /dev/tty
             test -n "$slug" || return
 
             jq -r '.entries[] | "\(.name) --- \(.path) --- (\(.type))"' \
@@ -98,7 +98,7 @@ doc () {
                     print substr($2, 1, h - 1), substr($2, h)
                 }
             }' | {
-                read -r dpath frag
+                read -r dpath frag < /dev/tty
                 test -n "$dpath" || return
 
                 jq -r ".\"${dpath}\"" \

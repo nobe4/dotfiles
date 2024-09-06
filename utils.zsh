@@ -33,7 +33,7 @@ is_missing() {
 
 wait_until() {
   is_interactive && {
-    read -r -s -k "?Press enter when $1..."
+    read -r -s -k "?Press enter when $1..." < /dev/tty
   }
   ! is_interactive && {
     echo "Cannot wait for $1, terminal is not interactive. Exiting..."

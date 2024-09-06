@@ -20,7 +20,7 @@ if [[ "${input}" == "" ]];then
 	fi
 
 	printf '> '
-	read -r input
+	read -r input < /dev/tty
 fi
 
 bot_id="bot$(cat $DOTFILE_FOLDER/.telegram-creds | head -n1)"

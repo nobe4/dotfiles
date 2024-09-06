@@ -49,7 +49,7 @@ CONDITION="${1:-ready}"
 if [ "${#}" -eq 0 ]; then
     show_help | awk '/Condition/,0'
 	printf "condition [%s] > " "${CONDITION}"
-	read -r input
+	read -r input < /dev/tty
 	CONDITION="${input:-"${CONDITION}"}"
 fi
 
