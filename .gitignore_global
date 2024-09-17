@@ -45,12 +45,3 @@ tags
 tag
 
 .envrc
-
-!.github
-!.gitattributes
-!.clang*
-!.prettierrc
-!.rubocop*
-!.ruby-version
-!.editorconfig
-!.goreleaser.yaml
