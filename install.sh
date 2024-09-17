@@ -158,6 +158,8 @@ link "$DOTFILE_FOLDER/hammerspoon/" "$HOME/.hammerspoon"
 
 mkdir -p "$HOME/.config/gh"
 link "$DOTFILE_FOLDER/gh-config.yml" "$HOME/.config/gh/config.yml"
+
+link "$DOTFILE_FOLDER/.ignore" "$HOME/.ignore"
 # }
 
 # Private {

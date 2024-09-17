@@ -9,9 +9,11 @@ command=$(
 		\( -perm -u=x -o -perm -g=x -o -perm -o=x \) \
 		-not -path './vendor/*' \
 		-not -path './.git/*' \
-		| fzf --select-1
+		| fzf \
+		--select-1 \
+		--query="${1}"
 )
 
-"$command" || true
-
-print -s "$command"
+echo "Running: ${command} and adding to clipboard"
+echo -n "${command}" | pbcopy
+"${command}"

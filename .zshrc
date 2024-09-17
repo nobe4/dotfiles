@@ -183,9 +183,8 @@ is_macos && {
 
 # Search {
 alias todo="rg -i todo"
-alias rg='rg --ignore-file $HOME/.gitignore_global'
 
-export FZF_DEFAULT_COMMAND="rg --files --follow --ignore-file $HOME/.gitignore_global"
+export FZF_DEFAULT_COMMAND="rg --files --follow"
 # }
 
 # Alias {
@@ -221,8 +220,7 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 # Limit how many files can be used by the current session
 ulimit -S -n 10240
 
-eval "$(direnv hook zsh)"
-export DIRENV_LOG_FORMAT=$'\033[2mdirenv: %s\033[0m'
+eval "$(mise activate zsh)"
 
 # Restart espanso
 (&>/dev/null espanso restart &)
