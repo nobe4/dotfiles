@@ -55,7 +55,7 @@ ARGUMENT="${*:-"${ARGUMENT}"}"
 # Parse command
 case "${COMMAND}" in
 	n|new)
-		FILE="${ROOT}/${TITLE}"
+		FILE="${ROOT}/${TITLE}.md"
 		echo "${ARGUMENT}" >> "${FILE}"
 		"${EDITOR}" "${FILE}"
 		;;
