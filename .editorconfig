@@ -15,3 +15,7 @@ table_separator_style = none
 trailing_table_separator = smart
 continuation_indent_size = 8
 align_call_args = true
+
+[*.py]
+
+indent_style = space
