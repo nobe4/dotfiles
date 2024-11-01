@@ -97,19 +97,59 @@ local function map_bracket(map_key, cmd)
 	map("n", "[" .. map_key:upper(), function() vim.cmd(cmd .. "first") end, options)
 end
 
-map_bracket("q", "c") -- jump between items in the (q)uickfix list
 map_bracket("t", "t") -- jump between matching (t)ags
 map_bracket("l", "l") -- jump between lines in the (l)ocation list
 
--- Goto next/prev "diagnostic" is built in with ]d [d
-map("n", "]e", function() error("\n\nUse ]d\n") end)
-map("n", "[e", function() error("\n\nUse [d\n") end)
+-- Use ]q/[q to move between quickfix and diagnostics
+map("n", "]q", function()
+	local ok, _ = pcall(vim.cmd, "cnext")
+	if ok then return end
+
+	if vim.diagnostic.count() ~= 0 then
+		vim.diagnostic.goto_next()
+	else
+		vim.cmd("cfirst")
+	end
+end)
+
+map("n", "[q", function()
+	local ok, _ = pcall(vim.cmd, "cprev")
+	if ok then return end
+
+	if vim.diagnostic.count() ~= 0 then
+		vim.diagnostic.goto_prev()
+	else
+		vim.cmd("clast")
+	end
+end)
+
 map("n", "[o", vim.diagnostic.open_float, options)
 
 map("n", "T", function() require("trouble").toggle("diagnostics") end, options)
 
-map("n", "gm", ":RLMark ", options)
-map("n", "gt", ":RLTravel ", options)
+-- map("n", "gm", ":RLMark ", options)
+-- map("n", "gt", ":RLTravel ", options)
+
+map("n", "go", function()
+	-- get WORD under cursor
+	local word = vim.fn.expand("<cWORD>")
+
+	-- if it's a full URL
+	if word:match("^https?://") then
+		vim.cmd("!open " .. word)
+		return
+	end
+
+	-- if it's a partial GitHub URL
+	-- owner/repo#123
+	local owner, repo, number = word:match("([^/]+)/([^#]+)#(.+)")
+	if owner and repo and number then
+		vim.cmd("!open https://github.com/" .. owner .. "/" .. repo .. "/issues/" .. number)
+		return
+	end
+
+	print("Don't know how to open", word)
+end, options)
 
 -- LSP
 M.lsp_mappings = function(bufnr)
