@@ -32,7 +32,19 @@ local plugins = {
 	"tpope/vim-fugitive",
 	"tpope/vim-rhubarb",
 	"tpope/vim-surround",
-	"github/copilot.vim",
+
+	{
+		"zbirenbaum/copilot.lua",
+		lazy = true,
+		event = "InsertEnter",
+		config = function()
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+			})
+		end,
+	},
+	"zbirenbaum/copilot-cmp",
 
 	"stevearc/oil.nvim",
 	"danro/rename.vim",
@@ -61,6 +73,12 @@ local plugins = {
 	-- 		},
 	-- 	}
 	-- },
+	{
+		'hat0uma/csvview.nvim',
+		config = function()
+			require('csvview').setup()
+		end
+	},
 
 	-- UI
 	"nvim-tree/nvim-web-devicons",

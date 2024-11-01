@@ -1,3 +1,5 @@
+require("copilot_cmp").setup()
+
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 
@@ -34,10 +36,6 @@ end
 cmp.setup({
 	preselect = cmp.PreselectMode.Item,
 
-	-- completion = {
-	-- 	autocomplete = false,
-	-- },
-
 	snippet = {
 		expand = function(args)
 			luasnip.lsp_expand(args.body)
@@ -63,6 +61,7 @@ cmp.setup({
 	},
 
 	sources = cmp.config.sources({
+		{ name = "copilot" },
 		{ name = "nvim_lsp" },
 		{ name = "nvim_lsp_signature_help" },
 		{ name = "luasnip" },

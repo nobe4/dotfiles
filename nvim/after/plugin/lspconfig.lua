@@ -24,11 +24,13 @@ local default_config = { on_attach = on_attach, capabilities = capabilities }
 require("lspconfig.ui.windows").default_options.border = "rounded"
 
 lspconfig.bashls.setup(default_config)
-lspconfig.jsonls.setup(default_config)
-lspconfig.ts_ls.setup(default_config)
-lspconfig.html.setup(default_config)
-lspconfig.cssls.setup(default_config)
 lspconfig.clangd.setup(default_config)
+lspconfig.cssls.setup(default_config)
+lspconfig.html.setup(default_config)
+lspconfig.jsonls.setup(default_config)
+lspconfig.pylsp.setup(default_config)
+lspconfig.ts_ls.setup(default_config)
+
 lspconfig.gopls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
