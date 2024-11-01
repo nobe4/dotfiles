@@ -145,7 +145,6 @@ alias gcb='echo "DEPRECATED stop using git checkout for creating branch: use git
 
 # Docker {
 alias dk="docker"
-alias dkclean="docker system prune --force --all --volumes"
 alias bbox="docker run -it --rm busybox"
 alias dkclean="docker system prune --all --force --volumes"
 alias dksh="docker-ssh"
@@ -163,7 +162,9 @@ is_linux && {
 # }
 
 # misc {
-alias not="gh not"
+alias n="gh not"
+alias nr="gh not --repl"
+alias ns="gh not sync --verbosity 4"
 alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
 alias l="sling"
 alias fex='$(fzf)'
@@ -197,7 +198,7 @@ alias p8='ping -v 8.8.8.8'                           # Ping 8.8.8.8
 alias pg='ps aux | grep'                             # ps and grep easily
 alias kk='killall'                                   # Quicker kill all
 alias hmac='openssl rand -hex 32'
-alias tmp='cd `mktemp -d`'
+alias tmp='(cd `mktemp -d` && $SHELL)'
 
 # GDB {
 alias gdb='gdb -q' # Silent GDB

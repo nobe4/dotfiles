@@ -41,8 +41,8 @@ Thumbs.db$
 .projections.json$
 
 n4_env
-tags
-tag
+/tags
+/tag
 
 .envrc
 .mise.toml

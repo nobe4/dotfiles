@@ -61,6 +61,7 @@ vim.opt.signcolumn = "number"
 
 -- Misc
 vim.opt.tags:append(".git/tags")
+vim.opt.switchbuf = { "useopen", "usetab", "vsplit" }
 -- vim.opt.errorformat:append "[error] %f: %m (%l:%c)"
 
 -- ripgrep
@@ -70,6 +71,12 @@ if vim.fn.executable("rg") == 1 then
 end
 
 vim.g.godot_executable = "/Applications/Godot.app/Contents/MacOS/Godot"
+vim.cmd [[
+let g:easy_align_delimiters = {
+  \ ';': { 'pattern': ';', 'left_margin': 0, 'stick_to_left': 1 } }
+]]
+
+vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
 
 if vim.g.neovide then
 	vim.opt.mouse = "a"
