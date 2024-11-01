@@ -60,7 +60,7 @@ case "${COMMAND}" in
 		"${EDITOR}" "${FILE}"
 		;;
 	s|search)
-		selection="$(cd "${ROOT}" && rg --line-number . | fzf --print0)"
+		selection="$(cd "${ROOT}" && rg --line-number . | fzf --print0 --delimiter : --preview "cat ${ROOT}/{1}" --preview-window "up,+{2}-/2")"
 		file="${ROOT}/$(echo "${selection}" | cut -d: -f1)"
 		line="$(echo "${selection}" | cut -d: -f2)"
 
