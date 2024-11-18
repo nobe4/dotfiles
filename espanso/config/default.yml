@@ -3,4 +3,4 @@ show_icon: false
 show_notification: false
 toggle_key: off
 search_shortcut: off
-search_trigger: off
+search_trigger: ',,'

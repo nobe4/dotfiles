@@ -11,6 +11,9 @@ matches:
   - trigger: ",hh"
     replace: "happy to help 🎉"
 
+  - trigger: ",clnw"
+    replace: "Closing for now, feel free to reopen if needed.\nThanks 🎉"
+
   - trigger: "<details>"
     replace: |
       <details><summary>$|$</summary>
