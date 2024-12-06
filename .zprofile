@@ -12,6 +12,7 @@ PATH="/usr/local/sbin:$PATH"
 PATH="/usr/local/bin:$PATH"
 PATH="$DOTFILE_FOLDER/bin/commands:$DOTFILE_FOLDER/bin:$PATH"
 PATH="$DOTFILE_FOLDER/private/bin:$DOTFILE_FOLDER/private/bin/commands:$PATH"
+PATH="$HOME/.local/share/nvim/mason/bin/:$PATH"
 
 # macos Applications
 is_macos && {
