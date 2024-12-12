@@ -12,6 +12,7 @@ PATH="/usr/local/sbin:$PATH"
 PATH="/usr/local/bin:$PATH"
 PATH="$DOTFILE_FOLDER/bin/commands:$DOTFILE_FOLDER/bin:$PATH"
 PATH="$DOTFILE_FOLDER/private/bin:$DOTFILE_FOLDER/private/bin/commands:$PATH"
+PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 
 # macos Applications
 is_macos && {
@@ -24,6 +25,7 @@ is_macos && {
 # FZF
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
   PATH="$PATH:/usr/local/opt/fzf/bin"
+  export FZF_DEFAULT_OPTS='--no-mouse'
 fi
 
 # Go
