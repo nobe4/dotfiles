@@ -1,19 +1,16 @@
-#!/usr/bin/env bash
-#/ x: search for an executable and run it
-
-set -e
-
+# search for an executable and run it
 command=$(
 	find . \
 		-type f \
 		\( -perm -u=x -o -perm -g=x -o -perm -o=x \) \
 		-not -path './vendor/*' \
+		-not -path './node_modules/*' \
 		-not -path './.git/*' \
 		| fzf \
 		--select-1 \
 		--query="${1}"
 )
 
-echo "Running: ${command} and adding to clipboard"
-echo -n "${command}" | pbcopy
+print -s -- "${command}" # add to history
+
 "${command}"
