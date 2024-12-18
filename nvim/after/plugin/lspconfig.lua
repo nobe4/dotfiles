@@ -54,6 +54,7 @@ lspconfig.gopls.setup({
 		}
 	},
 })
+lspconfig.golangci_lint_ls.setup(default_config)
 lspconfig.marksman.setup(default_config)
 lspconfig.pylsp.setup(default_config)
 lspconfig.vale_ls.setup({

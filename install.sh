@@ -153,7 +153,11 @@ is_macos && {
 touch "$HOME/.z"
 tldr --update
 
-link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.vale.ini"
+mkdir -p "$HOME/.config/vale"
+link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.config/vale/.vale.ini"
+vale sync
+
+
 link "$DOTFILE_FOLDER/hammerspoon/" "$HOME/.hammerspoon"
 
 mkdir -p "$HOME/.config/gh"

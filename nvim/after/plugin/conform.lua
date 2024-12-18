@@ -13,6 +13,7 @@ require("conform").setup({
 		javascript = { "prettier" },
 		scss = { "prettier" },
 		css = { "prettier" },
+		html = { "prettier" },
 		json = { "prettier" },
 		-- TODO: add for yaml
 		-- formatting.yamlfmt.with({

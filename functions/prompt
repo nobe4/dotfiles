@@ -13,7 +13,7 @@ if [ -n "$branch" ]; then
   [ "${stash_count}" = "0" ] && stash_count=""
 
   git update-index --refresh >/dev/null
-  if ! git diff-index --no-ext-diff --quiet --exit-code HEAD --; then
+  if ! git diff-index --no-ext-diff --quiet --exit-code HEAD -- 2> /dev/null; then
     dirty="*"
   fi
 
