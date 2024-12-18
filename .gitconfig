@@ -92,3 +92,4 @@
 [include]
 	# Add [maintenance] section there, so it's not tracked
 	path = ~/dev/.gitconfig
+	path = ~/dev/github/.gitconfig
