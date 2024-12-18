@@ -243,6 +243,17 @@ local rules = {
 
 	-- help
 	{ group = "@markup.link.vimdoc",         lk = "@text.uri" },
+
+	-- Obsidian
+	{ group = "ObsidianTodo",                lk = "Todo" },
+	{ group = "ObsidianDone",                fg = "lgreen" },
+	{ group = "ObsidianImportant",           fg = "lred" },
+	{ group = "ObsidianBullet",              lk = "Normal" },
+	{ group = "ObsidianRefText",             lk = "@text.uri" },
+	{ group = "ObsidianExtLinkIcon",         lk = "Error" },
+	{ group = "ObsidianTag",                 lk = "ObsidianRefText" },
+	{ group = "ObsidianBlockID",             lk = "ObsidianRefText" },
+	{ group = "ObsidianHighlightText",       lk = "Error" },
 }
 
 -- Base16 color definition
