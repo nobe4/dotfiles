@@ -13,6 +13,7 @@ vim.opt.incsearch = true
 vim.opt.inccommand = "split"
 vim.opt.textwidth = 80
 vim.opt.cursorline = true
+vim.opt.conceallevel = 0
 
 vim.opt.termguicolors = true
 vim.cmd.colorscheme("mnml")
