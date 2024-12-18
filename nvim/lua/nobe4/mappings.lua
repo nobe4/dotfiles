@@ -181,4 +181,23 @@ M.telescope = function(ts_builtin)
 	-- end, options)
 end
 
+-- Obsidian
+M.obsidian = {
+	["<leader>f"] = {
+		action = function() vim.cmd(":ObsidianSearch") end,
+	},
+	["<leader>t"] = {
+		action = function() vim.cmd(":ObsidianTags") end,
+	},
+	["<leader>b"] = {
+		action = function() vim.cmd(":ObsidianBacklinks") end,
+	},
+	["<cr>"] = {
+		action = function()
+			return require("obsidian").util.smart_action()
+		end,
+		opts = { buffer = true, expr = true },
+	}
+}
+
 return M
