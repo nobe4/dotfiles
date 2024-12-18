@@ -32,61 +32,38 @@ local plugins = {
 	"tpope/vim-fugitive",
 	"tpope/vim-rhubarb",
 	"tpope/vim-surround",
-
-	{
-		"zbirenbaum/copilot.lua",
-		lazy = true,
-		event = "InsertEnter",
-		config = function()
-			require("copilot").setup({
-				suggestion = { enabled = false },
-				panel = { enabled = false },
-			})
-		end,
-	},
-	"zbirenbaum/copilot-cmp",
-
-	"stevearc/oil.nvim",
-	"danro/rename.vim",
 	"editorconfig/editorconfig-vim",
 	"junegunn/vim-easy-align",
 	"mbbill/undotree",
 	"romainl/vim-qf",
-	-- "habamax/vim-godot",
-	{ "norcalli/nvim-colorizer.lua",              config = function() require "colorizer".setup() end },
-	-- {
-	-- 	"m4xshen/hardtime.nvim",
-	-- 	opts = {
-	-- 		restricted_keys = {
-	-- 			["}"] = { "n", "x" },
-	-- 			["{"] = { "n", "x" },
-	-- 			["<Up>"] = { "n", "x" },
-	-- 			["<Down>"] = { "n", "x" },
-	-- 			["<Left>"] = { "n", "x" },
-	-- 			["<Right>"] = { "n", "x" },
-	-- 		},
-	-- 		disabled_keys = {
-	-- 			["<Up>"] = {},
-	-- 			["<Down>"] = {},
-	-- 			["<Left>"] = {},
-	-- 			["<Right>"] = {},
-	-- 		},
-	-- 	}
-	-- },
+	{ "norcalli/nvim-colorizer.lua", config = function() require("colorizer").setup() end },
+	{ "hat0uma/csvview.nvim",        config = function() require("csvview").setup() end },
 	{
-		'hat0uma/csvview.nvim',
-		config = function()
-			require('csvview').setup()
-		end
+		dir = "~/dev/nobe4/obsidian.nvim",
+		-- "epwalsh/obsidian.nvim",
+		version = "*",
+		ft = "markdown",
+		dependencies = { "nvim-lua/plenary.nvim" },
 	},
 
 	-- UI
 	"nvim-tree/nvim-web-devicons",
 
+	-- OS
+	"stevearc/oil.nvim",
+	"danro/rename.vim",
+
 	-- Treesitter
 	"nvim-treesitter/nvim-treesitter",
 	"nvim-treesitter/playground",
 	-- "nvim-treesitter/nvim-treesitter-context",
+
+	-- Completion
+	{
+		"zbirenbaum/copilot.lua",
+		event = "InsertEnter",
+	},
+	"zbirenbaum/copilot-cmp",
 
 	-- Snippet
 	"L3MON4D3/LuaSnip",
