@@ -30,6 +30,7 @@ lspconfig.html.setup(default_config)
 lspconfig.jsonls.setup(default_config)
 lspconfig.pylsp.setup(default_config)
 lspconfig.ts_ls.setup(default_config)
+lspconfig.yamlls.setup(default_config)
 
 lspconfig.gopls.setup({
 	on_attach = on_attach,
