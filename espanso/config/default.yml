@@ -1,6 +1,6 @@
 auto_restart: true
 show_icon: false
-show_notification: false
+show_notifications: false
 toggle_key: off
 search_shortcut: off
 search_trigger: ',,'

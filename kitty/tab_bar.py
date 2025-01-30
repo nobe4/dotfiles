@@ -1,3 +1,4 @@
+from os import environ
 from datetime import datetime
 from subprocess import run
 
@@ -19,6 +20,7 @@ clock_color = as_rgb(color_as_int(opts.color15))
 
 REFRESH_TIME_SECONDS = 1
 timer_id = None
+battery_path = (f"{environ["HOME"]}/dev/nobe4/dotfiles/bin/battery_percent",)
 
 
 def _draw_right_status(
@@ -27,11 +29,15 @@ def _draw_right_status(
     right_status_length = 0
 
     battery_percent = (
-        run("/Users/nobe4/.config/dotfiles/bin/battery_percent", capture_output=True)
+        run(
+            battery_path,
+            capture_output=True,
+        )
         .stdout.strip()
         .decode("utf8")
         + " "
     )
+
     right_status_length += len(battery_percent)
 
     clock = datetime.now().strftime("%m/%d %H:%M ")

@@ -20,6 +20,7 @@ Youtube
 Yubico
 Yubikey
 Zendesk
+Zendesk
 [Cc]hatops
 [Cc]onfig(uration)?
 [Cc]ron
@@ -27,6 +28,7 @@ Zendesk
 [Ee]ditorconfig
 [Ee]ntitlements
 [Ff]ailsafe
+[Ff]ormatters?
 [Gg]ists?
 [Hh]ost(names?)?
 [Hh]ubber
