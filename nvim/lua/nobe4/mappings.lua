@@ -1,80 +1,93 @@
 local M = {}
 
-local options = { noremap = true, silent = false }
-local map = vim.keymap.set
+local snipe = require("nobe4/function/snipe")
+
+local default_opts = { noremap = true, silent = false }
+local map = function(mod, left, right, opts)
+	if not opts then opts = default_opts end
+	vim.keymap.set(mod, left, right, opts)
+end
 
 -- Space is the Leader key
-map("", "<Space>", "<Nop>", options)
+map("", "<Space>", "<Nop>")
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-map("n", "zf", "zM100zozz", options) -- Fold to current level
+map("n", "zf", "zM100zozz") -- Fold to current level
 
 -- Move vertically
 for _, command in pairs({ "j", "k", "<DOWN>", "<UP>" }) do
-	map("n", command, "g" .. command, options)
-	map("v", command, "g" .. command, options)
+	map("n", command, "g" .. command)
+	map("v", command, "g" .. command)
 end
 
--- Keep search centered
-map("n", "n", "nzz", options)
-map("n", "N", "Nzz", options)
+map("n", "n", function()
+	vim.cmd("normal! nzz")
+	snipe()
+end)
+map("n", "N", function()
+	vim.cmd("normal! Nzz")
+	snipe()
+end)
 
-map("n", "gp", "'[v']", options) -- Select last pasted zone
-map("v", "@", ":norm@", options) -- Replay mapping over visual
+map("n", "gp", "'[v']") -- Select last pasted zone
+map("v", "@", ":norm@") -- Replay mapping over visual
 
-map("n", "<Leader>y", '"+y', options)
-map("n", "<Leader>Y", '"+Y', options)
-map("v", "<Leader>y", '"+y', options)
+map("n", "<Leader>y", '"+y')
+map("n", "<Leader>Y", '"+Y')
+map("v", "<Leader>y", '"+y')
 
 -- Undo those mappings now that gc is built-in
 map("n", "<Leader>cc", function() error("\n\nUse gcc\n") end)
 map("v", "<Leader>c", function() error("\n\nUse gc\n") end)
 
-map("n", "<Leader>w", ":noautocmd w<CR>", options) -- Save file without autocmd
-map("n", "<Leader>q", ":quit!", options)
-map("n", "<Leader>x", ":xit", options)
-map("n", "<Leader>m", ":make", options)
-map("n", "<Leader>R", ":nnoremap <lt>Leader>r :", options)                                              -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
-map("n", "<Leader>r", ":<UP>", options)                                                                 -- repeat last command
+map("n", "<Leader>w", ":noautocmd w<CR>") -- Save file without autocmd
+map("n", "<Leader>q", ":quit!")
+map("n", "<Leader>x", ":xit")
+map("n", "<Leader>m", ":make")
+map("n", "<Leader>R", ":nnoremap <lt>Leader>r :") -- Prepare a quick command: http://vi.stackexchange.com/a/3136/1821
+map("n", "<Leader>r", ":<UP>")                    -- repeat last command
 
-map("n", "<Leader>b", ":b#<CR>", options)                                                               -- show buffer list
-map("n", "<Leader>l", ":ls<CR>:buffer<Space>", options)                                                 -- show buffers and wait for a selection
-map("n", "<Leader><Leader>", ":<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>", options) -- clear highlight
-map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]], options)                              -- show registers value before pasting
+map("n", "<Leader>b", ":b#<CR>")                  -- show buffer list
+map("n", "<Leader>l", ":ls<CR>:buffer<Space>")    -- show buffers and wait for a selection
 
-map("n", "<C-W><S-Left>", "<C-W>H")                                                                     -- Move to the left window
-map("n", "<C-W><S-Right>", "<C-W>L")                                                                    -- Move to the right window
-map("n", "<C-W><S-Up>", "<C-W>K")                                                                       -- Move to the upper window
-map("n", "<C-W><S-Down>", "<C-W>J")                                                                     -- Move to the lower window
+map("n", "<Leader><Leader>",
+	":<C-U>nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR>"
+)                                                                 -- clear highlight
+map("n", '"p', [[:reg <bar> exec 'normal!"'.input('>').'p'<CR>]]) -- show registers value before pasting
 
-map("c", "<C-A>", "<Home>", options)                                                                    -- Go to the start of the command line
+map("n", "<C-W><S-Left>", "<C-W>H")                               -- Move to the left window
+map("n", "<C-W><S-Right>", "<C-W>L")                              -- Move to the right window
+map("n", "<C-W><S-Up>", "<C-W>K")                                 -- Move to the upper window
+map("n", "<C-W><S-Down>", "<C-W>J")                               -- Move to the lower window
+
+map("c", "<C-A>", "<Home>")                                       -- Go to the start of the command line
 
 -- Add edition breakpoint on different keypress
-map("i", "<CR>", "<C-G>u<CR>", options)
-map("i", "<C-U>", "<C-G>u<C-U>", options)
-map("i", "<C-W>", "<C-G>u<C-W>", options)
+map("i", "<CR>", "<C-G>u<CR>")
+map("i", "<C-U>", "<C-G>u<C-U>")
+map("i", "<C-W>", "<C-G>u<C-W>")
 
-map("c", "<C-F>", "<C-R>=expand('%:p:h')<CR>/", options)                    -- Insert path to current file
-map("n", "<Leader>e", ":edit <C-R>=expand('%:p:h')<CR>/", options)          -- Prepare to edit a file in the same folder as the current one
-map("n", "<Leader>z", ":execute 'tabnew +' . line('.') .' %'<CR>", options) -- Zoom in current buffer
-map("t", "<Esc>", [[<C-\><C-n>]], options)                                  -- Escape in terminal
+map("c", "<C-F>", "<C-R>=expand('%:p:h')<CR>/")                    -- Insert path to current file
+map("n", "<Leader>e", ":edit <C-R>=expand('%:p:h')<CR>/")          -- Prepare to edit a file in the same folder as the current one
+map("n", "<Leader>z", ":execute 'tabnew +' . line('.') .' %'<CR>") -- Zoom in current buffer
+map("t", "<Esc>", [[<C-\><C-n>]])                                  -- Escape in terminal
 
 -- Fugitive
-map("n", "<Leader>gs", ":tabnew +Git status<CR>", options)
-map("n", "<Leader>gp", ":!gp", options)
-map("n", "<Leader>gl", ":Git pull", options)
-map("n", "<Leader>gb", ":GBrowse<CR>", options)
-map("v", "<Leader>gb", ":GBrowse<CR>", options)
+map("n", "<Leader>gs", ":tabnew +Git status<CR>")
+map("n", "<Leader>gp", ":!gp")
+map("n", "<Leader>gl", ":Git pull")
+map("n", "<Leader>gb", ":GBrowse<CR>")
+map("v", "<Leader>gb", ":GBrowse<CR>")
 
 -- VimCorrect
-map("n", "Z=", ":Correct<CR>", options)
+map("n", "Z=", ":Correct<CR>")
 
 -- EasyAlign
-map("x", "ga", "<Plug>(EasyAlign)", options)
-map("n", "ga", "<Plug>(EasyAlign)", options)
+map("x", "ga", "<Plug>(EasyAlign)")
+map("n", "ga", "<Plug>(EasyAlign)")
 
-map("n", "<Leader>ut", function() print("Use :UndotreeToggle") end, options)
+map("n", "<Leader>ut", function() print("Use :UndotreeToggle") end)
 
 -- unimpaired-like
 -- Inspired by tpope/unimpaired
@@ -84,6 +97,7 @@ local function map_bracket(map_key, cmd)
 		if not ok then
 			vim.cmd(cmd .. "first")
 		end
+		snipe()
 	end)
 
 	map("n", "[" .. map_key, function()
@@ -91,10 +105,17 @@ local function map_bracket(map_key, cmd)
 		if not ok then
 			vim.cmd(cmd .. "last")
 		end
-	end, options)
+		snipe()
+	end)
 
-	map("n", "]" .. map_key:upper(), function() vim.cmd(cmd .. "last") end, options)
-	map("n", "[" .. map_key:upper(), function() vim.cmd(cmd .. "first") end, options)
+	map("n", "]" .. map_key:upper(), function()
+		vim.cmd(cmd .. "last")
+		snipe()
+	end)
+	map("n", "[" .. map_key:upper(), function()
+		vim.cmd(cmd .. "first")
+		snipe()
+	end)
 end
 
 map_bracket("t", "t") -- jump between matching (t)ags
@@ -110,6 +131,8 @@ map("n", "]q", function()
 	else
 		vim.cmd("cfirst")
 	end
+
+	snipe()
 end)
 
 map("n", "[q", function()
@@ -121,14 +144,15 @@ map("n", "[q", function()
 	else
 		vim.cmd("clast")
 	end
+	snipe()
 end)
 
-map("n", "[o", vim.diagnostic.open_float, options)
+map("n", "[o", vim.diagnostic.open_float)
 
-map("n", "T", function() require("trouble").toggle("diagnostics") end, options)
+map("n", "T", function() require("trouble").toggle("diagnostics") end)
 
--- map("n", "gm", ":RLMark ", options)
--- map("n", "gt", ":RLTravel ", options)
+-- map("n", "gm", ":RLMark ")
+-- map("n", "gt", ":RLTravel ")
 
 map("n", "go", function()
 	-- get WORD under cursor
@@ -148,8 +172,8 @@ map("n", "go", function()
 		return
 	end
 
-	print("Don't know how to open", word)
-end, options)
+	print("Don't know how to open:", word)
+end)
 
 -- LSP
 M.lsp_mappings = function(bufnr)
@@ -164,12 +188,12 @@ end
 
 -- Telescope
 M.telescope = function(ts_builtin)
-	map("n", "<Leader>f", ts_builtin.find_files, options)
-	map("n", "<Leader>t", ts_builtin.tags, options)
-	map("n", "<Leader>:", ts_builtin.commands, options)
-	map("n", "<Leader>?", ts_builtin.help_tags, options)
-	map("n", [[\]], ts_builtin.grep_string, options)
-	map("n", "|", ts_builtin.live_grep, options)
+	map("n", "<Leader>f", ts_builtin.find_files)
+	map("n", "<Leader>t", ts_builtin.tags)
+	map("n", "<Leader>:", ts_builtin.commands)
+	map("n", "<Leader>?", ts_builtin.help_tags)
+	map("n", [[\]], ts_builtin.grep_string)
+	map("n", "|", ts_builtin.live_grep)
 
 	-- Notational
 	-- TODO: find a way to search for the filename as well
