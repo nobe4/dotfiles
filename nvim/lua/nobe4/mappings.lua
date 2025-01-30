@@ -22,12 +22,13 @@ for _, command in pairs({ "j", "k", "<DOWN>", "<UP>" }) do
 end
 
 map("n", "n", function()
-	vim.cmd("normal! nzz")
-	snipe()
+	local ok, _ = pcall(vim.cmd, "normal! nzz")
+	if ok then snipe() end
 end)
+
 map("n", "N", function()
-	vim.cmd("normal! Nzz")
-	snipe()
+	local ok, _ = pcall(vim.cmd, "normal! Nzz")
+	if ok then snipe() end
 end)
 
 map("n", "gp", "'[v']") -- Select last pasted zone
