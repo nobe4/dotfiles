@@ -8,6 +8,7 @@ GitHub
 Hubot
 IP\ [Aa]ddress(es)?
 JIT
+Janky
 Moda
 NPM
 Nodejs
@@ -18,6 +19,7 @@ U?ID
 Youtube
 Yubico
 Yubikey
+Zendesk
 [Cc]hatops
 [Cc]onfig(uration)?
 [Cc]ron
@@ -35,4 +37,3 @@ Yubikey
 [Rr]unbook
 macOS
 tmux
-Zendesk
