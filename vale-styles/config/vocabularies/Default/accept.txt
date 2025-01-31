@@ -20,7 +20,6 @@ Youtube
 Yubico
 Yubikey
 Zendesk
-Zendesk
 [Cc]hatops
 [Cc]onfig(uration)?
 [Cc]ron
@@ -33,6 +32,7 @@ Zendesk
 [Hh]ost(names?)?
 [Hh]ubber
 [Kk]illswitch
+[Nn]amespaces?
 [Oo]ffboard(ing)?
 [Oo]nboarding
 [Rr]epo(sitor[y(ies)])?
