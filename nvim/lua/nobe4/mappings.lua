@@ -122,6 +122,9 @@ end
 map_bracket("t", "t") -- jump between matching (t)ags
 map_bracket("l", "l") -- jump between lines in the (l)ocation list
 
+map("n", "]d", function() error("\n\nUse ]q\n") end)
+map("n", "[d", function() error("\n\nUse [q\n") end)
+
 -- Use ]q/[q to move between quickfix and diagnostics
 map("n", "]q", function()
 	local ok, _ = pcall(vim.cmd, "cnext")
