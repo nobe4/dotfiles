@@ -94,7 +94,7 @@ bindkey "^E" end-of-line
 # }
 
 # Important {
-is macos && {
+is_macos && {
 	# Don't use rm unless you know what you're doing.
 	alias rm='echo "use /bin/rm or trash"'
 }

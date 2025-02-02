@@ -15,7 +15,7 @@ PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 PATH="$HOME/.local/kitty.app/bin:$PATH"
 
 is_linux && { BREW_PREFIX="/home/linuxbrew/.linuxbrew" }
-is_macos && { BREW_PREFIX="/usr/local/" }
+is_macos && { BREW_PREFIX="/opt/homebrew/" }
 eval "$(${BREW_PREFIX}/bin/brew shellenv)"
 
 # macos Applications
