@@ -4,15 +4,7 @@
 # This file contains all the configuration necessary for running a zsh shell.
 
 # Setup {
-export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
-
-is_macos && { BREW_PREFIX="/usr/local/" }
-is_linux && {
-	BREW_PREFIX="/home/linuxbrew/.linuxbrew"
-    source "${DOTFILE_FOLDER}/.zprofile" # TODO: why is this needed ?
-}
-# }
 
 # zshoptions {
 setopt ALWAYS_TO_END
@@ -102,7 +94,10 @@ bindkey "^E" end-of-line
 # }
 
 # Important {
-alias rm='echo "use /bin/rm or trash"' # Don't use rm unless you know what you're doing.
+is macos && {
+	# Don't use rm unless you know what you're doing.
+	alias rm='echo "use /bin/rm or trash"'
+}
 # }
 
 # Tmux {
@@ -171,10 +166,6 @@ alias fex='$(fzf)'
 alias wspec="find . -name '*.rb' | entr sh -c 'clear && bundle exec rspec'"
 # }
 
-# linuxbrew {
-is_linux && {
-  eval "$(${BREW_PREFIX}/bin/brew shellenv)"
-}
 # }
 # Kitty {
 is_macos && {
