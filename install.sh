@@ -19,7 +19,6 @@ is_interactive && {
 }
 
 link "$DOTFILE_FOLDER/.zshrc" "$HOME/.zshrc"
-link "$DOTFILE_FOLDER/.zprofile" "$HOME/.zprofile"
 link "$DOTFILE_FOLDER/.zshenv" "$HOME/.zshenv"
 link "$DOTFILE_FOLDER/.bashrc" "$HOME/.bashrc"
 mkdir -p "$HOME/.local/bin"
