@@ -21,15 +21,28 @@ for _, command in pairs({ "j", "k", "<DOWN>", "<UP>" }) do
 	map("v", command, "g" .. command)
 end
 
-map("n", "n", function()
-	local ok, _ = pcall(vim.cmd, "normal! nzz")
-	if ok then snipe() end
-end)
+-- Remap search jumps to be snipped
+for _, command in pairs({ "n", "N", "*", "#" }) do
+	map("n", command, function()
+		local ok, _ = pcall(vim.cmd, "normal! " .. command .. "zz")
+		if ok then snipe() end
+	end)
+end
+-- <CR> for search should also be snipped
+map("c", "<CR>", function()
+	local type = vim.fn.getcmdtype()
 
-map("n", "N", function()
-	local ok, _ = pcall(vim.cmd, "normal! Nzz")
-	if ok then snipe() end
-end)
+	-- send another <CR> to validate the search
+	vim.api.nvim_feedkeys(
+		vim.api.nvim_replace_termcodes("<CR>", true, true, true),
+		"n",
+		false
+	)
+
+	if type == "/" or type == "?" then
+		snipe()
+	end
+end, { expr = true, silent = true })
 
 map("n", "gp", "'[v']") -- Select last pasted zone
 map("v", "@", ":norm@") -- Replay mapping over visual
