@@ -26,6 +26,7 @@ mkdir -p "$HOME/.local/bin"
 # }
 
 # Fonts {
+# https://github.com/eigilnikolajsen/commit-mono/issues/15#issuecomment-1948102784
 unzip -q ./CommitMono.zip -d /tmp/commitmono/
 # install https://github.com/ryanoasis/nerd-fonts/releases
 
