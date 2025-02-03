@@ -6,6 +6,11 @@
 export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
 
+# Disable the global .zshrc and .zshenv files.
+# This is especially important for macOS which likes to include its own into the
+# PATH.
+unsetopt GLOBAL_RCS
+
 # PATH
 PATH="/usr/local/sbin:$PATH"
 PATH="/usr/local/bin:$PATH"
