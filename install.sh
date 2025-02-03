@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 # vim: foldmarker={,} foldmethod=marker
 
-set -e
-
 # This script installs all requirements.
 
 # Setup {
@@ -19,7 +17,10 @@ is_interactive && {
 }
 
 link "$DOTFILE_FOLDER/.zshrc" "$HOME/.zshrc"
-link "$DOTFILE_FOLDER/.zshenv" "$HOME/.zshenv"
+is_linux && { link "$DOTFILE_FOLDER/.zshenv" "$HOME/.zshenv" }
+# macOs makes a mess of PATH with path_helper, so setting them _before_ it runs
+# is moot, so set it after, and only for interactive shells.
+is_macos && { link "$DOTFILE_FOLDER/.zshenv" "$HOME/.zprofile" }
 link "$DOTFILE_FOLDER/.bashrc" "$HOME/.bashrc"
 mkdir -p "$HOME/.local/bin"
 # }

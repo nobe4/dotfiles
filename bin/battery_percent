@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if command -v pmset; then
+if command -v pmset > /dev/null; then
 	pmset -g batt | grep -o "[0-9]\{1,3\}%"
 else
 	echo "?%"
