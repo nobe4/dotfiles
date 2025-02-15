@@ -12,6 +12,7 @@ Janky
 Moda
 NPM
 Nodejs
+Octokit
 Okta
 Sinatra
 Splunk
@@ -37,5 +38,6 @@ Zendesk
 [Oo]nboarding
 [Rr]epo(sitor[y(ies)])?
 [Rr]unbook
+[Uu]ntracked
 macOS
 tmux
