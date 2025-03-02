@@ -12,6 +12,7 @@
 
 [commit]
 	gpgsign = true
+	verbose = true
 [gpg]
 	program = gpg
 
@@ -19,8 +20,6 @@
 	hooksPath = ~/.config/dotfiles/git-hooks
 	editor = nvim
 	excludesFile = ~/.gitignore_global
-	# untrackedcache = true
-	# fsmonitor = true
 
 [format]
 	signOff = true
@@ -54,8 +53,12 @@
 	rebase = true
 [push]
 	default = current
+	autoSetupRemote = true
+	followTags = true
 [fetch]
 	prune = true
+	pruneTags = true
+	all = true
 [submodule]
 	recurse = true
 
@@ -67,12 +70,16 @@
 
 [diff]
 	tool = difftastic
+	algorithm = histogram
+	colorMoved = plain
+	renames = true
+	mnemonicPrefix = true
 
 [difftool]
 	prompt = false
 
 [difftool "difftastic"]
-	cmd = difft "$LOCAL" "$REMOTE"
+    cmd = difft --background=light "$LOCAL" "$REMOTE"
 
 [pager]
 	difftool = true
@@ -84,10 +91,14 @@
 	ui = auto
 
 [branch]
-	sort = committerdate
+	sort = -committerdate
+
+[tag]
+	sort = version:refname
 
 [rerere]
 	enable = true
+	autoUpdate = true
 
 [include]
 	# Add [maintenance] section there, so it's not tracked
