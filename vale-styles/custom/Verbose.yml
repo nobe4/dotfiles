@@ -1,0 +1,10 @@
+extends: substitution
+message: "Consider using '%s' instead of '%s'."
+ignorecase: true
+level: error
+action:
+  name: replace
+swap:
+  This is to make sure: This ensures
+  This is to make certain: This ensures
+  This is to: This
