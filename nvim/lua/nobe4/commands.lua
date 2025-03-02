@@ -40,7 +40,7 @@ command("ColorGroup", function()
 	vim.cmd([[
 		let s = synID(line('.'), col('.'), 1) | echo synIDattr(s, 'name') . ' -> ' . synIDattr(synIDtrans(s), 'name')
 	]])
-	print(require("nvim-treesitter.ts_utils").get_node_at_cursor())
+	print(vim.inspect(vim.treesitter.get_captures_at_cursor(0)))
 end, opts)
 
 command("Glow", function()
