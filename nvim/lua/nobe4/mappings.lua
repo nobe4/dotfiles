@@ -210,7 +210,7 @@ M.telescope = function(ts_builtin)
 	map("n", "<Leader>:", ts_builtin.commands)
 	map("n", "<Leader>?", ts_builtin.help_tags)
 	map("n", [[\]], ts_builtin.grep_string)
-	map("n", "|", ts_builtin.live_grep)
+	map("n", "|", function() ts_builtin.live_grep({ additional_args = { "-j1" } }) end)
 
 	-- Notational
 	-- TODO: find a way to search for the filename as well
