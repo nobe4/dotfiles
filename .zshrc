@@ -9,12 +9,16 @@ source "$DOTFILE_FOLDER/utils.zsh"
 # zshoptions {
 setopt ALWAYS_TO_END
 setopt INTERACTIVE_COMMENTS
-setopt APPEND_HISTORY
 setopt AUTO_CD
 setopt AUTO_LIST
 setopt AUTO_MENU
 setopt AUTO_PUSHD
 setopt COMPLETE_IN_WORD
+setopt NO_BEEP
+setopt PROMPT_SUBST
+setopt PUSHD_IGNORE_DUPS
+
+setopt APPEND_HISTORY
 setopt EXTENDED_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
@@ -23,10 +27,11 @@ setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 setopt HIST_VERIFY
 setopt INC_APPEND_HISTORY
-setopt NO_BEEP
-setopt PROMPT_SUBST
-setopt PUSHD_IGNORE_DUPS
 setopt SHARE_HISTORY
+export HISTFILE="$HOME/.zsh_history"
+# TODO: read docs on those values
+export HISTSIZE=10000000
+export SAVEHIST=10000000
 # }
 
 # Lang {
