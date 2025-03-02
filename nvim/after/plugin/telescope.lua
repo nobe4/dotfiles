@@ -1,9 +1,21 @@
 local telescope = require("telescope")
+local actions = require("telescope.actions")
 
 telescope.setup({
 	defaults = {
-		preview = true,
+		preview = {
+			treesitter = false,
+		},
+
+		mappings = {
+			i = {
+				["<C-h>"] = actions.file_split,
+				["<C-v>"] = actions.file_vsplit,
+				["<C-t>"] = actions.file_tab,
+			},
+		},
 	},
+
 	extensions = {
 		fzf = {
 			fuzzy = true,
