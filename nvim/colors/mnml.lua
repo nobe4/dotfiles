@@ -24,6 +24,8 @@ local rules = {
 	{ group = "DiffDelete",                  fg = "red" },
 	{ group = "DiffRemoved",                 lk = "DiffDelete" },
 	{ group = "DiffText",                    fg = "yellow" },
+	{ group = "@diff.plus",                  lk = "DiffAdd" },
+	{ group = "@diff.minus",                 lk = "DiffDelete" },
 
 	-- Fold
 	{ group = "Folded",                      fg = "white" },
@@ -275,9 +277,13 @@ local index = {
 	lcyan = 15,
 	lwhite = 16,
 }
+
 local colors = {
-	"#1d1f21", "#cc342b", "#14b363", "#fba922", "#3971ed", "#b028e9", "#0abdae", "#c5c8c6",
-	"#878988", "#c49c9a", "#93b6a4", "#c8b394", "#859acb", "#a884b8", "#7c9e9b", "#ffffff",
+	-- see script/update-colors
+	-- marker: colors
+	"#1d1f21", "#cc342b", "#14b363", "#fba922", "#3971ed", "#b028e9", "#0abdae", "#CECDC3",
+	"#878988", "#c49c9a", "#93b6a4", "#c8b394", "#859acb", "#a884b8", "#7c9e9b", "#f1f3f5",
+	-- marker: colors
 }
 
 for i, color in ipairs(colors) do
