@@ -1,3 +1,20 @@
 #/usr/bin/env bash
 
-msgcat --color=test
+# msgcat --color=test
+
+echo ""
+printf "   "
+for x in {0..15}; do
+	printf "\e[48;5;%dm      \e[0m" $x
+done
+echo "\n"
+
+for x in {0..15}; do
+	printf "   "
+	for y in {0..15}; do
+		printf "\e[48;5;%d;38;5;%dm %2d %2d\e[0m" $x $y $x $y
+	done
+
+	echo
+done
+echo
