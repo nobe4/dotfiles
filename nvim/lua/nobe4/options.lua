@@ -84,10 +84,8 @@ if vim.g.neovide then
 	vim.opt.linespace = 1
 	vim.g.neovide_cursor_animation_length = 0
 	vim.g.neovide_theme = "auto"
-	vim.g.neovide_transparency = 0.0
-	vim.g.transparency = 0.95
-	local alpha = string.format("%x", math.floor(255 * vim.g.transparency))
-	vim.g.neovide_background_color = "#1d1f21" .. alpha
+	vim.g.transparency = 0.8
+	vim.g.neovide_opacity = 0.0
 	vim.g.neovide_padding_top = 10
 	vim.g.neovide_padding_bottom = 5
 	vim.g.neovide_padding_right = 10
