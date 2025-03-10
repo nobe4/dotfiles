@@ -37,6 +37,7 @@ Zendesk
 [Oo]ffboard(ing)?
 [Oo]nboarding
 [Rr]epo(sitor[y(ies)])?
+[Rr]ollout
 [Rr]unbook
 [Uu]ntracked
 macOS

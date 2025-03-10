@@ -5,6 +5,9 @@ level: error
 action:
   name: replace
 swap:
+  This ensures that: This ensures
   This is to make sure: This ensures
   This is to make certain: This ensures
+  This will make sure: This ensures
+  This will make certain: This ensures
   This is to: This
