@@ -165,7 +165,6 @@ is_linux && {
 alias n="gh not"
 alias nr="gh not --repl"
 alias ns="gh not sync --verbosity 4"
-alias tags="ctags -R --exclude=@$DOTFILE_FOLDER/.ctagsignore -o tags"
 alias l="sling"
 alias fex='$(fzf)'
 alias wspec="find . -name '*.rb' | entr sh -c 'clear && bundle exec rspec'"

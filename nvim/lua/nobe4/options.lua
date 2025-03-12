@@ -64,6 +64,7 @@ vim.opt.signcolumn = "number"
 vim.opt.tags:append(".git/tags")
 vim.opt.switchbuf = { "useopen", "usetab", "vsplit" }
 -- vim.opt.errorformat:append "[error] %f: %m (%l:%c)"
+vim.tags = { "tags", ".git/tags" }
 
 -- ripgrep
 if vim.fn.executable("rg") == 1 then

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# vim: ft=bash
+
+out="tags"
+[ -d .git ] && out=".git/tags"
+
+ctags \
+	--recurse \
+	--exclude=@"$DOTFILE_FOLDER/.ctagsignore" \
+	-o "$out"
