@@ -1,26 +1,28 @@
-local command = vim.api.nvim_create_user_command
+local cmd = vim.api.nvim_create_user_command
+local auc = vim.api.nvim_create_autocmd
 local opts = { bang = true }
 local M = {}
 
 -- Source and edit vimrc file
-command("SourceVimrc", "silent source $MYVIMRC", opts)
-command("VimrcSource", "silent source $MYVIMRC", opts)
-command("EditVimrc", "edit $MYVIMRC", opts)
-command("VimrcEdit", "edit $MYVIMRC", opts)
+cmd("SourceVimrc", "silent source $MYVIMRC", opts)
+cmd("VimrcSource", "silent source $MYVIMRC", opts)
+cmd("EditVimrc", "edit $MYVIMRC", opts)
+cmd("VimrcEdit", "edit $MYVIMRC", opts)
 
-command("GHLinks", [[%s/^[A-Z]\+ [0-9-]\+ \([^ ]\+\)#\([^ ]\+\).\+/- https:\/\/github.com\/\1\/issues\/\2]], opts)
+cmd("GHLinks", [[%s/^[A-Z]\+ [0-9-]\+ \([^ ]\+\)#\([^ ]\+\).\+/- https:\/\/github.com\/\1\/issues\/\2]], opts)
 
 local sudo_write_cmd = "write !sudo tee % >/dev/null"
-command("SudoWrite", sudo_write_cmd, opts)
-command("WriteSudo", sudo_write_cmd, opts)
+cmd("SudoWrite", sudo_write_cmd, opts)
+cmd("WriteSudo", sudo_write_cmd, opts)
 
-command("JSONPretty", "%!jq '.'", opts)
-command("Writing", "setlocal wrap linebreak spell spellcapcheck= filetype=markdown", opts)
+cmd("JSONPretty", "%!jq '.'", opts)
+cmd("Writing", "setlocal wrap linebreak spell spellcapcheck= filetype=markdown", opts)
 
-command("ValeVocab", "tabnew $DOTFILE_FOLDER/vale-styles/config/vocabularies/Default/accept.txt", opts)
+cmd("ValeVocab", "tabnew $DOTFILE_FOLDER/vale-styles/config/vocabularies/Default/accept.txt", opts)
 
-command("Mouse", function()
-	vim.cmd([[
+cmd("Mouse",
+	function()
+		vim.cmd([[
 		if &mouse == 'a'
 			set mouse=
 			echo "Mouse is disabled"
@@ -29,80 +31,88 @@ command("Mouse", function()
 			echo "Mouse is enabled"
 		endif
 	]])
-end, opts)
+	end, opts)
 
-command("Format", function() vim.lsp.buf.formatting() end, opts)
-command("Browse", function(o) vim.fn.system { "open", o.fargs[1] } end, { nargs = 1, bang = true })
+cmd("Format", function() vim.lsp.buf.formatting() end, opts)
+cmd("Browse", function(o) vim.fn.system { "open", o.fargs[1] } end, { nargs = 1, bang = true })
 
-command("Todo", "silent grep -e TODO -e XXX -e FIXME", opts)
+cmd("Todo", "silent grep -e TODO -e XXX -e FIXME", opts)
 
-command("ColorGroup", function()
-	vim.cmd([[
-		let s = synID(line('.'), col('.'), 1) | echo synIDattr(s, 'name') . ' -> ' . synIDattr(synIDtrans(s), 'name')
-	]])
-	print(vim.inspect(vim.treesitter.get_captures_at_cursor(0)))
-end, opts)
+cmd("ColorGroup",
+	function()
+		vim.cmd([[
+				let s = synID(line('.'), col('.'), 1) | echo synIDattr(s, 'name') . ' -> ' . synIDattr(synIDtrans(s), 'name')
+			]])
+		print(vim.inspect(vim.treesitter.get_captures_at_cursor(0)))
+	end, opts)
 
-command("Glow", function()
-	local glow_augroup = vim.api.nvim_create_augroup("Glow", { clear = true })
-	local glow_preview_augroup = vim.api.nvim_create_augroup("GlowPreview", { clear = true })
+cmd("Glow",
+	function()
+		local glow_augroup = vim.api.nvim_create_augroup("Glow", { clear = true })
+		local glow_preview_augroup = vim.api.nvim_create_augroup("GlowPreview", { clear = true })
 
-	local markdown_win = vim.api.nvim_get_current_win()
-	local markdown_buf = vim.api.nvim_get_current_buf()
-	local markdown_file = vim.api.nvim_buf_get_name(markdown_buf)
+		local markdown_win = vim.api.nvim_get_current_win()
+		local markdown_buf = vim.api.nvim_get_current_buf()
+		local markdown_file = vim.api.nvim_buf_get_name(markdown_buf)
 
-	-- Create a new split and get the window
-	vim.cmd("vsplit")
-	local preview_win = vim.api.nvim_get_current_win()
+		-- Create a new split and get the window
+		vim.cmd("vsplit")
+		local preview_win = vim.api.nvim_get_current_win()
 
-	-- Switch to preview window, refresh content and go back
-	local preview = function()
-		vim.api.nvim_set_current_win(preview_win)
+		-- Switch to preview window, refresh content and go back
+		local preview = function()
+			vim.api.nvim_set_current_win(preview_win)
 
-		-- Save the cursor position
-		local cursor = vim.api.nvim_win_get_cursor(preview_win)
+			-- Save the cursor position
+			local cursor = vim.api.nvim_win_get_cursor(preview_win)
 
-		vim.api.nvim_cmd({ cmd = "term", args = { "glow", markdown_file } }, {})
+			vim.api.nvim_cmd({ cmd = "term", args = { "glow", markdown_file } }, {})
 
-		local preview_buf = vim.api.nvim_get_current_buf()
+			local preview_buf = vim.api.nvim_get_current_buf()
 
-		-- When the term command is done, reset the cursor.
-		vim.api.nvim_create_autocmd("TermClose", {
-			callback = function()
-				vim.api.nvim_win_set_cursor(preview_win, cursor)
-				vim.api.nvim_clear_autocmds({ group = glow_preview_augroup })
-			end,
-			group = glow_preview_augroup,
-			buffer = preview_buf,
+			-- When the term command is done, reset the cursor.
+			vim.api.nvim_create_autocmd("TermClose", {
+				callback = function()
+					vim.api.nvim_win_set_cursor(preview_win, cursor)
+					vim.api.nvim_clear_autocmds({ group = glow_preview_augroup })
+				end,
+				group = glow_preview_augroup,
+				buffer = preview_buf,
+			})
+
+			vim.api.nvim_set_current_win(markdown_win)
+		end
+
+		preview()
+
+		local cleanup = function()
+			vim.api.nvim_win_close(preview_win, true)
+			vim.api.nvim_clear_autocmds({ group = glow_augroup })
+		end
+
+		-- Create the autocommand to reload glow
+		vim.api.nvim_create_autocmd("BufWritePost", {
+			callback = preview,
+			group = glow_augroup,
+			buffer = markdown_buf,
 		})
 
-		vim.api.nvim_set_current_win(markdown_win)
-	end
+		-- Cleanup on close
+		-- FIXME: this prevents closing the markdown buffer, needs to close twice
+		-- vim.api.nvim_create_autocmd("BufLeave", {
+		-- 	callback = cleanup,
+		-- 	group = glow_augroup,
+		-- 	buffer = markdown_buf,
+		-- })
 
-	preview()
+		cmd("GlowStop", cleanup, opts)
+	end, opts)
 
-	local cleanup = function()
-		vim.api.nvim_win_close(preview_win, true)
-		vim.api.nvim_clear_autocmds({ group = glow_augroup })
-	end
-
-	-- Create the autocommand to reload glow
-	vim.api.nvim_create_autocmd("BufWritePost", {
-		callback = preview,
-		group = glow_augroup,
-		buffer = markdown_buf,
-	})
-
-	-- Cleanup on close
-	-- FIXME: this prevents closing the markdown buffer, needs to close twice
-	-- vim.api.nvim_create_autocmd("BufLeave", {
-	-- 	callback = cleanup,
-	-- 	group = glow_augroup,
-	-- 	buffer = markdown_buf,
-	-- })
-
-	command("GlowStop", cleanup, opts)
-end, opts)
+auc({ "BufWritePost" }, {
+	callback = function()
+		vim.system({ "tags" }, { detach = true })
+	end,
+})
 
 M.telescope = function(ts_builtin)
 	vim.api.nvim_create_user_command("LSPReferences", ts_builtin.lsp_references, { bang = true })
