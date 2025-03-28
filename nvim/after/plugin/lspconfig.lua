@@ -2,8 +2,8 @@ local Mappings = require("nobe4.mappings")
 
 -- Show diagnosis float text
 vim.diagnostic.config({
+	virtual_lines = true,
 	float = { border = "single" },
-	virtual_text = { prefix = "!" },
 })
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
