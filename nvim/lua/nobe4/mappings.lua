@@ -8,6 +8,10 @@ local map = function(mod, left, right, opts)
 	vim.keymap.set(mod, left, right, opts)
 end
 
+local deprecated = function(mod, left, new)
+	map(mod, left, function() error("\n\nUse " .. new .. "\n") end)
+end
+
 -- Space is the Leader key
 map("", "<Space>", "<Nop>")
 vim.g.mapleader = " "
@@ -51,9 +55,8 @@ map("n", "<Leader>y", '"+y')
 map("n", "<Leader>Y", '"+Y')
 map("v", "<Leader>y", '"+y')
 
--- Undo those mappings now that gc is built-in
-map("n", "<Leader>cc", function() error("\n\nUse gcc\n") end)
-map("v", "<Leader>c", function() error("\n\nUse gc\n") end)
+deprecated("n", "<Leader>cc", "gcc")
+deprecated("v", "<Leader>c", "gc")
 
 map("n", "<Leader>w", ":noautocmd w<CR>") -- Save file without autocmd
 map("n", "<Leader>q", ":quit!")
@@ -103,40 +106,8 @@ map("n", "ga", "<Plug>(EasyAlign)")
 
 map("n", "<Leader>ut", function() print("Use :UndotreeToggle") end)
 
--- unimpaired-like
--- Inspired by tpope/unimpaired
-local function map_bracket(map_key, cmd)
-	map("n", "]" .. map_key, function()
-		local ok, _ = pcall(vim.cmd, cmd .. "next")
-		if not ok then
-			vim.cmd(cmd .. "first")
-		end
-		snipe()
-	end)
-
-	map("n", "[" .. map_key, function()
-		local ok, _ = pcall(vim.cmd, cmd .. "previous")
-		if not ok then
-			vim.cmd(cmd .. "last")
-		end
-		snipe()
-	end)
-
-	map("n", "]" .. map_key:upper(), function()
-		vim.cmd(cmd .. "last")
-		snipe()
-	end)
-	map("n", "[" .. map_key:upper(), function()
-		vim.cmd(cmd .. "first")
-		snipe()
-	end)
-end
-
-map_bracket("t", "t") -- jump between matching (t)ags
-map_bracket("l", "l") -- jump between lines in the (l)ocation list
-
-map("n", "]d", function() error("\n\nUse ]q\n") end)
-map("n", "[d", function() error("\n\nUse [q\n") end)
+deprecated("n", "]d", "]q")
+deprecated("n", "[d", "[q")
 
 -- Use ]q/[q to move between quickfix and diagnostics
 map("n", "]q", function()
@@ -168,9 +139,6 @@ map("n", "[o", vim.diagnostic.open_float)
 
 map("n", "T", function() require("trouble").toggle("diagnostics") end)
 
--- map("n", "gm", ":RLMark ")
--- map("n", "gt", ":RLTravel ")
-
 map("n", "go", function()
 	-- get WORD under cursor
 	local word = vim.fn.expand("<cWORD>")
@@ -189,6 +157,14 @@ map("n", "go", function()
 		return
 	end
 
+	-- if it's a partial GitHub URL
+	-- owner/repo
+	owner, repo = word:match("([^/]+)/([^#]+)")
+	if owner and repo then
+		vim.cmd("!open https://github.com/" .. owner .. "/" .. repo)
+		return
+	end
+
 	print("Don't know how to open:", word)
 end)
 
@@ -197,10 +173,10 @@ M.lsp_mappings = function(bufnr)
 	-- Mappings.
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
-	map("n", "gr", vim.lsp.buf.rename, bufopts)
 	map("n", "gd", vim.lsp.buf.definition, bufopts)
-	map("n", "gR", vim.lsp.buf.references, bufopts)
-	map("n", "gc", vim.lsp.buf.code_action, bufopts)
+	deprecated("n", "gr", "grn")
+	deprecated("n", "gR", "grr")
+	deprecated("n", "gc", "gra")
 end
 
 -- Telescope
