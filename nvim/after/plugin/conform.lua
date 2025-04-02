@@ -1,14 +1,13 @@
 require("conform").setup({
 	format_on_save = {
-		timeout_ms = 500,
+		timeout_ms = 2500,
 		lsp_fallback = true,
 	},
 	formatters_by_ft = {
 		c = { "clang_format" },
 		cpp = { "clang_format" },
 		python = { "black" },
-		golang = { "gofmt", "goimports" },
-		go = { "goimports", "gofmt" },
+		go = { "gofmt", "goimports" },
 		graphql = { "prettier" },
 		javascript = { "prettier" },
 		scss = { "prettier" },
