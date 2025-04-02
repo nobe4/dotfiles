@@ -18,7 +18,7 @@ local on_attach = function(_, bufnr)
 end
 
 local lspconfig = require("lspconfig")
-local capabilities = require('blink.cmp').get_lsp_capabilities()
+local capabilities = require("blink.cmp").get_lsp_capabilities()
 local default_config = { on_attach = on_attach, capabilities = capabilities }
 
 require("lspconfig.ui.windows").default_options.border = "rounded"
@@ -51,7 +51,7 @@ lspconfig.gopls.setup({
 				parameterNames = true,
 				rangeVariableTypes = true,
 			},
-		}
+		},
 	},
 })
 lspconfig.golangci_lint_ls.setup(default_config)
@@ -88,13 +88,13 @@ lspconfig.ruby_lsp.setup({
 			semanticHighlighting = true,
 			signatureHelp = true,
 			typeHierarchy = true,
-			workspaceSymbol = true
+			workspaceSymbol = true,
 		},
 		featuresConfiguration = {
 			inlayHint = {
 				implicitHashValue = true,
-				implicitRescue = true
-			}
+				implicitRescue = true,
+			},
 		},
 	},
 })

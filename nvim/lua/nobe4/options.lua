@@ -62,7 +62,7 @@ vim.opt.signcolumn = "number"
 
 -- Misc
 vim.opt.tags:append(".git/tags")
-vim.opt.switchbuf = { "useopen", "usetab", "vsplit" }
+vim.opt.switchbuf = { "useopen", "usetab", "newtab" }
 -- vim.opt.errorformat:append "[error] %f: %m (%l:%c)"
 vim.tags = { "tags", ".git/tags" }
 
