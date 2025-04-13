@@ -10,21 +10,35 @@ touch "$tmpfile"
 # insert on tty.
 # awk's `system("")` is used to flush the buffer and print the line immediately.
 # Other solutions like `stdbuf -oL` or `unbuffer` didn't work on macOS.
-(
-	tail -f "$tmpfile" \
-		| awk -W interactive '/https:\/\/github.com/ {print $2; system("")}' \
-		| sed -u 's/\x1b.*//g' \
-		| xargs -d '\n' -n1 open
-) &
-open_pid="${!}"
+tail_darwin (){
+	(
+		tail -f "$tmpfile" \
+			| awk '/https:\/\/github.com/ {print $2; system("")}' \
+			| sed -l 's/\x1b.*//g' \
+			| xargs -L1 -I{} bash -c "open '{}'"
+	) &
+	open_pid="${!}"
+}
+
+tail_linux (){
+	(
+		tail -f "$tmpfile" \
+			| awk -W interactive '/https:\/\/github.com/ {print $2; system("")}' \
+			| sed -u 's/\x1b.*//g' \
+			| xargs -d '\n' -n1 open
+	) &
+	open_pid="${!}"
+}
+
+case "$(uname -s)" in
+  Linux*) tail_linux ;;
+  Darwin*) tail_darwin ;;
+  *) exit 1
+esac
 
 command="$*"
 
-case "$(uname -s)" in
-  Linux*) script -q "$tmpfile" -c "$command" ;;
-  Darwin*) script -qt1 "$tmpfile" bash -c "$command" ;;
-  *) exit 1
-esac
+script -qt1 "$tmpfile" bash -c "$command"
 
 sleep 1
 
