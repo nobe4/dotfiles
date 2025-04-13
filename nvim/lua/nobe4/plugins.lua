@@ -14,6 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 
 local options = {
 	default = { lazy = true },
+	-- TODO: check if https://github.com/folke/lazy.nvim/issues/1951 is closed
 	ui = { border = "rounded" },
 }
 
@@ -39,8 +40,8 @@ local plugins = {
 	{ "norcalli/nvim-colorizer.lua", config = function() require("colorizer").setup() end },
 	{ "hat0uma/csvview.nvim",        config = function() require("csvview").setup() end },
 	{
-		dir = "~/dev/nobe4/obsidian.nvim",
-		-- "epwalsh/obsidian.nvim",
+		-- dir = "~/dev/nobe4/obsidian.nvim",
+		"epwalsh/obsidian.nvim",
 		version = "*",
 		ft = "markdown",
 		dependencies = { "nvim-lua/plenary.nvim" },
@@ -50,7 +51,8 @@ local plugins = {
 	"nvim-tree/nvim-web-devicons",
 
 	-- OS
-	"stevearc/oil.nvim",
+	-- "stevearc/oil.nvim",
+	{ dir = "~/dev/nobe4/oil.nvim" },
 	"danro/rename.vim",
 
 	-- Treesitter
@@ -100,11 +102,11 @@ local plugins = {
 	-- "saadparwaiz1/cmp_luasnip",
 	"giuxtaposition/blink-cmp-copilot",
 	{
-		'saghen/blink.cmp',
-		version = '*',
+		"saghen/blink.cmp",
+		version = "*",
 
 		dependencies = {
-			{ 'L3MON4D3/LuaSnip', version = 'v2.*', },
+			{ "L3MON4D3/LuaSnip", version = "v2.*" },
 			"giuxtaposition/blink-cmp-copilot",
 			"moyiz/blink-emoji.nvim",
 		},
@@ -118,7 +120,7 @@ local plugins = {
 					copilot = {
 						name = "copilot",
 						module = "blink-cmp-copilot",
-						score_offset = 100,
+						score_offset = -100,
 						async = true,
 						transform_items = function(_, items)
 							local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
@@ -135,19 +137,19 @@ local plugins = {
 						name = "Emoji",
 						score_offset = 15,
 						opts = { insert = true },
-					}
+					},
 				},
 			},
 			keymap = {
-				preset = 'none',
-				['<Up>'] = { 'select_prev', 'fallback' },
-				['<Down>'] = { 'select_next', 'fallback' },
-				['<Right>'] = { 'snippet_forward', 'fallback' },
-				['<Left>'] = { 'snippet_backward', 'fallback' },
-				['<C-c>'] = { 'hide', 'fallback' },
+				preset = "none",
+				["<Up>"] = { "select_prev", "fallback" },
+				["<Down>"] = { "select_next", "fallback" },
+				["<Right>"] = { "snippet_forward", "fallback" },
+				["<Left>"] = { "snippet_backward", "fallback" },
+				["<C-c>"] = { "hide", "fallback" },
 				-- For future @nobe4: using <Enter> messes up all the
 				-- newline/confirmation things. Learn to Use <C-y> instead.
-				['<C-y>'] = { 'select_and_accept' },
+				["<C-y>"] = { "select_and_accept" },
 
 			},
 			appearance = {
@@ -157,43 +159,42 @@ local plugins = {
 				-- is done
 				kind_icons = {
 					Copilot = "",
-					Text = '󰉿',
-					Method = '󰊕',
-					Function = '󰊕',
-					Constructor = '󰒓',
+					Text = "󰉿",
+					Method = "󰊕",
+					Function = "󰊕",
+					Constructor = "󰒓",
 
-					Field = '󰜢',
-					Variable = '󰆦',
-					Property = '󰖷',
+					Field = "󰜢",
+					Variable = "󰆦",
+					Property = "󰖷",
 
-					Class = '󱡠',
-					Interface = '󱡠',
-					Struct = '󱡠',
-					Module = '󰅩',
+					Class = "󱡠",
+					Interface = "󱡠",
+					Struct = "󱡠",
+					Module = "󰅩",
 
-					Unit = '󰪚',
-					Value = '󰦨',
-					Enum = '󰦨',
-					EnumMember = '󰦨',
+					Unit = "󰪚",
+					Value = "󰦨",
+					Enum = "󰦨",
+					EnumMember = "󰦨",
 
-					Keyword = '󰻾',
-					Constant = '󰏿',
+					Keyword = "󰻾",
+					Constant = "󰏿",
 
-					Snippet = '󱄽',
-					Color = '󰏘',
-					File = '󰈔',
-					Reference = '󰬲',
-					Folder = '󰉋',
-					Event = '󱐋',
-					Operator = '󰪚',
-					TypeParameter = '󰬛',
+					Snippet = "󱄽",
+					Color = "󰏘",
+					File = "󰈔",
+					Reference = "󰬲",
+					Folder = "󰉋",
+					Event = "󱐋",
+					Operator = "󰪚",
+					TypeParameter = "󰬛",
 				},
 			},
 			completion = {
-				keyword = { range = 'full' },
-				ghost_text = { enabled = false, },
+				keyword = { range = "full" },
+				ghost_text = { enabled = false },
 				menu = {
-					border = 'rounded',
 					draw = {
 						columns = {
 							{
@@ -205,23 +206,21 @@ local plugins = {
 								"label_description",
 							},
 						},
-						treesitter = { 'lsp' }
+						treesitter = { "lsp" },
 					},
 				},
 				documentation = {
 					auto_show = true,
 					auto_show_delay_ms = 0,
-					window = { border = 'rounded' }
 				},
 			},
 			signature = {
 				enabled = true,
-				window = { border = 'rounded' }
 			},
-			snippets = { preset = 'luasnip' },
+			snippets = { preset = "luasnip" },
 		},
-		opts_extend = { "sources.default" }
-	}
+		opts_extend = { "sources.default" },
+	},
 
 	-- Debugger
 	-- "mfussenegger/nvim-dap",
