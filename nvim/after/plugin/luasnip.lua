@@ -60,8 +60,27 @@ ls.add_snippets("python", {
 })
 
 ls.add_snippets("go", {
-	ls.parser.parse_snippet("test", 'func Test${1:Name}(t *testing.T) {${2:t.Skip("TODO")}}'),
+	ls.parser.parse_snippet("test", [[
+func Test${1:Name}(t *testing.T) {
+	t.Parallel()
+
+	t.Run("${2:Case}", func(t *testing.T) {
+		t.Parallel()
+
+		${3:t.Skip("TODO")}
+	})
+}
+]]),
 	ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {${2:t.Skip("TODO")}})'),
+	ls.parser.parse_snippet("test_cases", [[
+tests := []struct{
+	// TODO
+}{}
+
+for _, test := range tests {
+	$1
+}
+]]),
 })
 
 ls.add_snippets("gitcommit", {
@@ -76,8 +95,8 @@ ls.add_snippets("gitcommit", {
 			"{}({}): {}",
 			{
 				f(function(_, parent)
-					return parent.trigger
-				end, {}),
+					  return parent.trigger
+				  end, {}),
 				i(1, "reference"),
 				i(2, "title"),
 			}
@@ -91,16 +110,16 @@ ls.add_snippets("sh", {
 
 -- mappings
 vim.keymap.set({ "n", "i", "s" }, "<C-K>", function()
-	if ls.expand_or_jumpable() then
-		ls.expand_or_jump()
-	end
-end, { silent = true })
+				   if ls.expand_or_jumpable() then
+					   ls.expand_or_jump()
+				   end
+			   end, { silent = true })
 
 vim.keymap.set({ "n", "i", "s" }, "<C-B>", function()
-	if ls.jumpable(-1) then
-		ls.jump(-1)
-	end
-end, { silent = true })
+				   if ls.jumpable(-1) then
+					   ls.jump(-1)
+				   end
+			   end, { silent = true })
 
 vim.keymap.set({ "i", "s" }, "<C-L>", function()
 	if ls.choice_active() then
