@@ -5,6 +5,7 @@ Automator
 CodeQL
 Docker(file)?
 GitHub
+GitHub Actions
 Hubot
 IP\ [Aa]ddress(es)?
 JIT
