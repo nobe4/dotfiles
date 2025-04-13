@@ -46,6 +46,7 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()"
 vim.opt.foldopen = { "insert", "percent", "quickfix", "tag", "search" }
 vim.opt.wildmode = { "longest", "list", "full" }
+vim.opt.winborder = "rounded"
 
 -- Menu
 vim.opt.completeopt = { "menu", "preview" }

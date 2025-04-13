@@ -3,11 +3,6 @@ local Mappings = require("nobe4.mappings")
 -- Show diagnosis float text
 vim.diagnostic.config({
 	virtual_lines = true,
-	float = { border = "single" },
-})
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-	border = "rounded",
 })
 
 local on_attach = function(_, bufnr)
@@ -20,8 +15,6 @@ end
 local lspconfig = require("lspconfig")
 local capabilities = require("blink.cmp").get_lsp_capabilities()
 local default_config = { on_attach = on_attach, capabilities = capabilities }
-
-require("lspconfig.ui.windows").default_options.border = "rounded"
 
 lspconfig.bashls.setup(default_config)
 lspconfig.clangd.setup(default_config)
