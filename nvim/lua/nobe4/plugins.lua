@@ -51,8 +51,8 @@ local plugins = {
 	"nvim-tree/nvim-web-devicons",
 
 	-- OS
-	-- "stevearc/oil.nvim",
-	{ dir = "~/dev/nobe4/oil.nvim" },
+	"stevearc/oil.nvim",
+	-- { dir = "~/dev/nobe4/oil.nvim" },
 	"danro/rename.vim",
 
 	-- Treesitter
