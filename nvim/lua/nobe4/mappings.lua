@@ -174,6 +174,8 @@ M.lsp_mappings = function(bufnr)
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 	local bufopts = { noremap = true, silent = true, buffer = bufnr }
 	map("n", "gd", vim.lsp.buf.definition, bufopts)
+	-- [l]sp [t]oggle diagnostics
+	map("n", "glt", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, bufopts)
 	deprecated("n", "gr", "grn")
 	deprecated("n", "gR", "grr")
 	deprecated("n", "gc", "gra")
