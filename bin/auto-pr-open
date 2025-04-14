@@ -30,15 +30,20 @@ tail_linux (){
 	open_pid="${!}"
 }
 
-case "$(uname -s)" in
-  Linux*) tail_linux ;;
-  Darwin*) tail_darwin ;;
-  *) exit 1
-esac
-
 command="$*"
 
-script -qt1 "$tmpfile" bash -c "$command"
+case "$(uname -s)" in
+	Linux*)
+		tail_linux
+		script -q "$tmpfile" -c "$command"
+		;;
+	Darwin*)
+		tail_darwin
+		script -qt1 "$tmpfile" bash -c "$command"
+		;;
+	*) exit 1
+esac
+
 
 sleep 1
 
