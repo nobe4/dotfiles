@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #VERSION 0.0.1
-#/ Usage: note [FLAG] [COMMAND] [ARGUMENT]
+#/ Usage: note [FLAG] [COMMAND] [ARGUMENT+]
 #/
 #/ This is a base bash script with as many niceties included as possible.
 #/ See comments below for each parts.
@@ -11,10 +11,15 @@
 #/   -O|--no-open             Don't open the note after search
 #/
 #/ Commands (current: ${COMMAND}):
-#/   n|new     [TITLE]        Create a new note (current title: ${TITLE})
+#/   n|new     [ARGUMENT]     Create a new note (current title: ${TITLE})
 #/   s|search                 Search for a note
 #/   p|path                   Show notes path
 #/
+#/ Arguments:
+#/   The title of the new note
+
+# TODO:
+# - [ ] note should open fzf that
 
 set -e
 
@@ -60,7 +65,10 @@ case "${COMMAND}" in
 		"${EDITOR}" "${FILE}"
 		;;
 	s|search)
-		selection="$(cd "${ROOT}" && rg --line-number . | fzf --print0 --delimiter : --preview "cat ${ROOT}/{1}" --preview-window "up,+{2}-/2")"
+		selection="$(
+			cd "${ROOT}" \
+				&& rg --line-number --smart-case '\w' . \
+				| fzf --print0 --delimiter : --preview "cat ${ROOT}/{1}" --preview-window "up,+{2}-/2")"
 		file="${ROOT}/$(echo "${selection}" | cut -d: -f1)"
 		line="$(echo "${selection}" | cut -d: -f2)"
 
