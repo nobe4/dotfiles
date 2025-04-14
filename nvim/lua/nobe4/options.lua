@@ -2,7 +2,7 @@
 vim.opt.number = true
 vim.opt.list = true
 vim.opt.listchars = { tab = "· ", trail = "·", extends = "›", precedes = "‹", nbsp = "·" }
-vim.opt.fillchars = { vert = " ", fold = "-" }
+vim.opt.fillchars = { vert = " " }
 vim.opt.emoji = false -- Have all emojis take double-width, so it's possible to work with them.
 vim.opt.wrap = false
 vim.opt.scrolloff = 5
@@ -13,7 +13,7 @@ vim.opt.incsearch = true
 vim.opt.inccommand = "split"
 vim.opt.textwidth = 80
 vim.opt.cursorline = true
-vim.opt.conceallevel = 0
+-- vim.opt.conceallevel = 0
 
 vim.opt.termguicolors = true
 vim.cmd.colorscheme("mnml")
@@ -39,18 +39,21 @@ vim.opt.fileencoding = "utf-8"
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+
 -- UI
 -- Fold
 vim.opt.foldenable = false
 vim.opt.foldmethod = "expr"
-vim.opt.foldtext = "v:lua.vim.treesitter.foldtext()"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldtext = ""
 vim.opt.foldopen = { "insert", "percent", "quickfix", "tag", "search" }
 vim.opt.wildmode = { "longest", "list", "full" }
 vim.opt.winborder = "rounded"
 
 -- Menu
-vim.opt.completeopt = { "menu", "preview" }
+vim.opt.completeopt = { "menu", "preview", "fuzzy" }
 vim.opt.wildmenu = true
+vim.opt.wildmode = { "longest", "list", "full" }
 vim.opt.undofile = true
 vim.opt.wildignore:append([[*.pyc]])
 
