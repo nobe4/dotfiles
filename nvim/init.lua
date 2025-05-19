@@ -1,6 +1,6 @@
 require("nobe4.options")
 require("nobe4.mappings")
-require("nobe4.plugins")
+require("nobe4.lazy")
 require("nobe4.autocmds")
 require("nobe4.commands")
 require("nobe4.abbreviations")
