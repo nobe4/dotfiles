@@ -10,6 +10,7 @@ return {
 			formatters_by_ft = {
 				c = { "clang_format" },
 				cpp = { "clang_format" },
+				arduino = { "clang_format" },
 				python = { "black" },
 				go = { "gofmt", "goimports" },
 				graphql = { "prettier" },

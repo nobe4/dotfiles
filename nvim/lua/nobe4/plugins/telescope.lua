@@ -12,8 +12,10 @@ return {
 				defaults = {
 					border = false,
 					preview = {
-						treesitter = false,
+						treesitter = true,
 					},
+
+					layout_strategy = "flex",
 
 					mappings = {
 						i = {
