@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# vim: ft=bash
 
 out="tags"
 [ -d .git ] && out=".git/tags"
