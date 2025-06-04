@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Ref: https://github.com/deivid-rodriguez/pry-byebug#matching-byebug-behaviour
 
 Pry.editor = 'vim'

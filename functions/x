@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # search for an executable and run it
 command=$(
 	find . \
