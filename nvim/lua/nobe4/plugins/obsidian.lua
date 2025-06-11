@@ -1,7 +1,7 @@
 return {
 	{
 		-- dir = "~/dev/nobe4/obsidian.nvim",
-		"epwalsh/obsidian.nvim",
+		"obsidian-nvim/obsidian.nvim",
 		version = "*",
 		ft = "markdown",
 		dependencies = { "nvim-lua/plenary.nvim" },
