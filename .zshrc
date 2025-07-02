@@ -58,18 +58,21 @@ is_macos && {
 	fi
 }
 is_linux && {
-	if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
-		rm -f "$HOME/.zcompdump"
-		compinit -i
-	else
-		compinit -C
-	fi
+	# On nix, this seems to break the FPATH
+	# TODO: read about it
+	# if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
+	# 	rm -f "$HOME/.zcompdump"
+	# 	compinit -i
+	# else
+	# 	compinit -C
+	# fi
 }
 zmodload -i zsh/complist
 
 # shellcheck disable=SC2086 # doesn't find the functions if quoted
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
 # }
+
 # Prompt {
 # Default prompt is just current dir
 # shellcheck disable=SC2154 # colors are loaded somewhere else
@@ -104,6 +107,10 @@ is_macos && {
 	alias rm='echo "use /bin/rm or trash"'
 }
 # }
+
+alias xr="sudo nixos-rebuild"
+alias xs="nix-shell"
+alias waybar-restart="pkill waybar && hyprctl dispatch exec waybar"
 
 # Tmux {
 # Start tmux with unicode support (prevent trailing witespace for the prompt)

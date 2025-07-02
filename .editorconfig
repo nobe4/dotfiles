@@ -19,3 +19,8 @@ align_call_args = true
 [*.py]
 
 indent_style = space
+
+[*.nix]
+# conform to nixd
+indent_style = space
+indent_size = 2

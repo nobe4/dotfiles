@@ -3,7 +3,7 @@
 # vim: foldmarker={,} foldmethod=marker
 
 # Setup
-export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
+export DOTFILE_FOLDER="${HOME:?}/dev/nobe4/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
 
 # Disable the global .zshrc and .zshenv files.
@@ -19,22 +19,20 @@ PATH="$DOTFILE_FOLDER/private/bin:$DOTFILE_FOLDER/private/bin/commands:$PATH"
 PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 PATH="$HOME/.local/kitty.app/bin:$PATH"
 
-is_linux && { BREW_PREFIX="/home/linuxbrew/.linuxbrew" }
 is_macos && { BREW_PREFIX="/opt/homebrew/" }
-eval "$(${BREW_PREFIX}/bin/brew shellenv)"
 
 # macos Applications
 is_macos && {
   if [[ ! "$PATH" == *Applications* ]]; then
     PATH="$PATH:/Applications:$HOME/Applications"
   fi
-}
 
-# FZF
-if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-  PATH="$PATH:/usr/local/opt/fzf/bin"
-  export FZF_DEFAULT_OPTS='--no-mouse'
-fi
+  # FZF
+  if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+    PATH="$PATH:/usr/local/opt/fzf/bin"
+    export FZF_DEFAULT_OPTS='--no-mouse'
+  fi
+}
 
 # Go
 PATH="$PATH:/usr/local/go/bin:$HOME/go:$HOME/go/bin"

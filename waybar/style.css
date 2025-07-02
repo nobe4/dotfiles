@@ -1,0 +1,71 @@
+* {
+	/* `otf-font-awesome` is required to be installed for icons */
+	font-family: Hack, Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	color: #ffffff;
+}
+
+window#waybar {
+	background-color: #000000;
+}
+
+button {
+	/* Use box-shadow instead of border so the text isn't offset */
+	box-shadow: inset 0 -3px transparent;
+	/* Avoid rounded borders under each button name */
+	border: none;
+	border-radius: 0;
+}
+
+button:hover {
+	background: inherit;
+	box-shadow: inset 0 -2px #ffffff;
+}
+
+#workspaces button {
+	padding: 0 5px;
+}
+
+#workspaces button.active {
+	background-color: #64727d;
+}
+
+#workspaces button.focused {
+	box-shadow: inset 0 -3px #ffffff;
+}
+
+#workspaces button.urgent {
+	background-color: #eb4d4b;
+}
+
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#wireplumber,
+#tray,
+#mpd {
+	padding: 0 10px 0 10px;
+	border-right: 1px solid #ffffff;
+}
+
+#memory {
+	border-right: 0;
+	margin-right: 0;
+}
+
+#network.disconnected {
+	background-color: #f53c3c;
+}
+
+#privacy-item.screenshare {
+	background-color: #cf5700;
+}
+
+#privacy-item.audio-in {
+	background-color: #1ca000;
+}
+
+#privacy-item.audio-out {
+	background-color: #0069d4;
+}

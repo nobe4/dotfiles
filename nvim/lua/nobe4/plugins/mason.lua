@@ -22,33 +22,18 @@ return {
 				"clangd",
 
 				"goimports",
-				"golangci-lint",
-				"gopls",
 
 				"marksman",
-				"vale",
-				"vale-ls",
 
 				"prettier",
-
-				"solargraph",
-
-				"lua-language-server",
 
 				"css-lsp",
 				"html-lsp",
 				"json-lsp",
 				"emmet-ls",
 
-				"shellcheck",
-				"bash-language-server",
 
 				"python-lsp-server",
-				"black",
-
-				"yaml-language-server",
-				"yamlfmt",
-				"yamllint",
 			}
 
 			for _, package in ipairs(ensured_installed_packages) do

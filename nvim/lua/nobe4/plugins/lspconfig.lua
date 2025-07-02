@@ -33,6 +33,7 @@ return {
 		lspconfig.yamlls.setup(default_config)
 		lspconfig.marksman.setup(default_config)
 		lspconfig.pylsp.setup(default_config)
+		lspconfig.nixd.setup(default_config)
 
 		lspconfig.golangci_lint_ls.setup(default_config)
 		lspconfig.gopls.setup({

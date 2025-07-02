@@ -8,6 +8,7 @@ return {
 			},
 
 			formatters_by_ft = {
+				nix = { "nixfmt" },
 				c = { "clang_format" },
 				cpp = { "clang_format" },
 				arduino = { "clang_format" },
