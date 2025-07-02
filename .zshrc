@@ -108,7 +108,6 @@ is_macos && {
 }
 # }
 
-alias xr="sudo nixos-rebuild"
 alias xs="nix-shell"
 alias waybar-restart="pkill waybar && hyprctl dispatch exec waybar"
 
