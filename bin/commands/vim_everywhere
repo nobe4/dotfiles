@@ -14,7 +14,7 @@ file="${folder}/tmp.md"
 
 touch "${file}"
 
-cp "${HOME}/.config/dotfiles/.vale.ini" "${folder}/.vale.ini"
+cp "${DOTFILE_FOLDER}/.vale.ini" "${folder}/.vale.ini"
 
 nvim "${file}"
 
