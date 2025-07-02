@@ -12,3 +12,6 @@ Brewfile.lock.json
 nvim/lazy-lock.json
 
 vendor/
+
+# nixos-rebuild result
+result
