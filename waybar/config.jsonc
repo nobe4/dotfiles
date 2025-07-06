@@ -14,7 +14,8 @@
 		"pulseaudio",
 		"network",
 		"cpu",
-		"memory"
+		"memory",
+		"idle_inhibitor"
 	],
 	//
 	// Modules configuration
@@ -80,4 +81,11 @@
 		},
 		"on-click": "pavucontrol"
 	},
+	"idle_inhibitor": {
+		"format": "{icon}",
+		"format-icons": {
+			"activated": "",
+			"deactivated": ""
+		}
+	}
 }

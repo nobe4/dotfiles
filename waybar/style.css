@@ -49,9 +49,11 @@ button:hover {
 	border-right: 1px solid #ffffff;
 }
 
-#memory {
-	border-right: 0;
-	margin-right: 0;
+#idle_inhibitor {
+	padding: 0 10px 0 10px;
+}
+#idle_inhibitor.activated {
+	background-color: #f53c3c;
 }
 
 #network.disconnected {
