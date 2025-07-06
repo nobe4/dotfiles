@@ -62,7 +62,9 @@
     shell = pkgs.zsh;
 
     packages = with pkgs; [
+      prismlauncher
       steam
+
       kitty
       vlc
       gimp
