@@ -35,6 +35,12 @@
   i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "us";
 
+  # ref: https://nixos.wiki/wiki/Mullvad_VPN
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn; # enables the GUI
+  };
+
   services = {
     # Audio
 
