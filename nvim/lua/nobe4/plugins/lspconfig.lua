@@ -33,7 +33,17 @@ return {
 		lspconfig.yamlls.setup(default_config)
 		lspconfig.marksman.setup(default_config)
 		lspconfig.pylsp.setup(default_config)
-		lspconfig.nixd.setup(default_config)
+		lspconfig.nixd.setup({
+			settings = {
+				nixd = {
+					formatting = {
+						command = { "nixfmt" },
+					},
+				},
+			},
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
 
 		lspconfig.golangci_lint_ls.setup(default_config)
 		lspconfig.gopls.setup({
