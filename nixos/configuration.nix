@@ -1,7 +1,22 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  imports = [ /etc/nixos/hardware-configuration.nix ];
+  imports = [
+    /etc/nixos/hardware-configuration.nix
+
+    ./packages/allowed_unfree.nix
+
+    ./nix.nix
+    ./network.nix
+    ./dev.nix
+    ./gaming.nix
+
+    ./services/1password.nix
+    ./services/keyboard.nix
+    ./font.nix
+  ];
+
+  time.timeZone = "Europe/Berlin";
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -14,32 +29,12 @@
     enable32Bit = true;
   };
 
-  time.timeZone = "Europe/Berlin";
-
   # See https://github.com/NixOS/nixpkgs/blob/b15c73d61ccd7f86995da13ef45f399db53351f4/nixos/modules/services/x11/display-managers/default.nix#L39-L61
-  systemd.services.display-manager.environment.XDG_CURRENT_DESKTOP =
-    "X-NIXOS-SYSTEMD-AWARE";
+  systemd.services.display-manager.environment.XDG_CURRENT_DESKTOP = "X-NIXOS-SYSTEMD-AWARE";
 
-  # Some packages aren't free, but I still want them
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "steam-unwrapped"
-      "steam"
-      "apple_cursor"
-      "1password"
-      "1password-cli"
-      "1password-gui"
-    ];
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  console.keyMap = "us";
-
-  # ref: https://nixos.wiki/wiki/Mullvad_VPN
-  services.mullvad-vpn = {
-    enable = true;
-    package = pkgs.mullvad-vpn; # enables the GUI
-  };
+  allowedUnfree = [
+    "apple_cursor"
+  ];
 
   services = {
     # Audio
@@ -48,7 +43,9 @@
     pipewire = {
       enable = true;
 
-      wireplumber = { enable = true; };
+      wireplumber = {
+        enable = true;
+      };
     };
 
     displayManager.ly.enable = true;
@@ -62,9 +59,6 @@
     shell = pkgs.zsh;
 
     packages = with pkgs; [
-      prismlauncher
-      steam
-
       kitty
       vlc
       gimp
@@ -85,7 +79,7 @@
       # TODO: https://github.com/emersion/mako/blob/master/doc/mako.5.scd
       mako # wayland notification manager
       waybar # wayland status bar
-      rofi
+      rofi # windows switcher
       wev # Wayland event viewer, for debugging
 
       apple-cursor
@@ -98,51 +92,18 @@
 
       chromium # xbox-live doesn't support firefox
 
-      # TODO: find an alternative.
-      # used to set theme to dark
-      # https://github.com/nwg-piotr/nwg-look
+      nwg-look # NOTE: need to run it once to set the default values
 
-      gnumake
-      gcc
-      clang
-      mise
       fzf
       ripgrep
       gnupg
-      pinentry-tty
+
+      # Espanso is currently not working on NixOS/Wayland:
+      # https://github.com/espanso/espanso/issues/2313
+      # https://github.com/NixOS/nixpkgs/pull/328890
+      # espanso-wayland
 
       gh
-
-      # Rust
-      cargo
-
-      # Go
-      go
-      gopls
-      golangci-lint
-      hugo
-
-      # Prose
-      vale
-      vale-ls
-
-      # Lua
-      lua-language-server
-
-      # YAML
-      yaml-language-server
-      yamlfmt
-      yamllint
-
-      # Python
-      black
-
-      # Bash
-      shellcheck
-      bash-language-server
-
-      # Nix
-      nixd
     ];
   };
 
@@ -157,6 +118,7 @@
     unzip
     zip
     htop
+    entr
   ];
 
   programs.firefox.enable = true;
@@ -175,33 +137,12 @@
     # xwayland.enable = false;
   };
 
-  programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = [ "nobe4" ];
-  };
-
   security.polkit.enable = true;
-
-  fonts.packages = with pkgs; [ hack-font font-awesome ];
 
   # programs.mtr.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-  };
-
-  networking = {
-    hostName = "verdi";
-
-    # TODO: nixos comes with baked-in iptable rules, which I may want to change later.
-    firewall = { allowedTCPPorts = [ 8080 ]; };
-
-    wireless.iwd = {
-      # Do the config with iwctl
-      enable = true;
-      settings = { Settings.AutoConnect = true; };
-    };
   };
 
   # Copy the NixOS configuration file and link it from the resulting system
