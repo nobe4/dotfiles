@@ -18,9 +18,6 @@ return {
 			})
 
 			local ensured_installed_packages = {
-				"clang-format",
-				"clangd",
-
 				"goimports",
 
 				"marksman",
