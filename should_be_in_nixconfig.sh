@@ -6,20 +6,6 @@
 # 	fi
 # }
 
-# Fonts {
-# https://github.com/eigilnikolajsen/commit-mono/issues/15#issuecomment-1948102784
-unzip -q ./CommitMono.zip -d /tmp/commitmono/
-# install https://github.com/ryanoasis/nerd-fonts/releases
-
-is_macos && mv /tmp/commitmono/*.otf /Library/Fonts/
-is_linux && {
-	mkdir -p ~/.local/share/fonts
-	mv /tmp/commitmono/*.otf ~/.local/share/fonts/
-}
-
-rm -rf /tmp/commitmono/
-# }
-
 # Homebrew {
 if ! command -v brew &> /dev/null; then
 	open "https://brew.sh/"
@@ -58,5 +44,3 @@ fi
 # trash $HOME/Library/Application\ Support/espanso
 espanso service register || true
 espanso start
-
-tldr --update

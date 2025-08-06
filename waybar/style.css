@@ -1,7 +1,8 @@
 * {
 	/* `otf-font-awesome` is required to be installed for icons */
-	font-family: Hack, Helvetica, Arial, sans-serif;
-	font-size: 13px;
+	font-family: CommitMonoV142, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	font-weight: 500;
 	color: #ffffff;
 }
 

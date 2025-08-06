@@ -26,20 +26,14 @@ link "$DOTFILE_FOLDER/.pryrc" "$HOME/.pryrc"
 link "$DOTFILE_FOLDER/kitty/" "$HOME/.config/kitty"
 link "$DOTFILE_FOLDER/.ignore" "$HOME/.ignore"
 
-# Making `jq` available for all process tho it's installed as `gojq`.
-# This is somewhat easier than an alias or a function.
-ln -s "${BREW_PREFIX}/bin/gojq" "${BREW_PREFIX}/bin/jq"
 
 # ESPANSO_CONFIG="$(espanso path config)"
 # trash "${ESPANSO_CONFIG}" || true
 # link "$DOTFILE_FOLDER/espanso/" "${ESPANSO_CONFIG}"
 # }
 
-touch "$HOME/.z"
-
 mkdir -p "$HOME/.config/vale"
 link "$DOTFILE_FOLDER/.vale.ini" "$HOME/.config/vale/.vale.ini"
-# vale sync
 
 mkdir -p "$HOME/.config/gh"
 link "$DOTFILE_FOLDER/gh-config.yml" "$HOME/.config/gh/config.yml"
