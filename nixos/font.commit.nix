@@ -6,11 +6,16 @@
 
 stdenvNoCC.mkDerivation rec {
   pname = "commit-mono";
-  version = "1.143";
+
+  # version = "tags/v1.143";
+
+  # No release of the correct name exist yet.
+
+  version = "heads/main";
 
   src = fetchzip {
-    url = "https://github.com/eigilnikolajsen/commit-mono/archive/refs/tags/v${version}.zip";
-    sha256 = "sha256-FTN/kJgkCEeaPzbgKcXcR+mlUDO1/Rn7agD7oyWVeaM=";
+    url = "https://github.com/eigilnikolajsen/commit-mono/archive/refs/${version}.zip";
+    sha256 = "sha256-tfLBT2RPx0EzXrPaRqkHcs+E3sosyGyqu5RGt0sVNBc=";
   };
 
   installPhase = ''
