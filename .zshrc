@@ -45,10 +45,11 @@ export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
 # }
+source "${DOTFILE_FOLDER}/utils/setup_prompt.sh"
 
 # Functions {
 # Load compinit and check the cache only once a day
-autoload -Uz compinit
+autoload -Uz compinit && compinit -u
 is_macos && {
 	if [ "$(find "$HOME/.zcompdump" -mtime +1)" ]; then
 		rm -f "$HOME/.zcompdump"
@@ -58,6 +59,7 @@ is_macos && {
 	fi
 }
 is_linux && {
+	# compinit -u
 	# On nix, this seems to break the FPATH
 	# TODO: read about it
 	# if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
@@ -73,21 +75,11 @@ zmodload -i zsh/complist
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
 # }
 
-# Prompt {
-# Default prompt is just current dir
-# shellcheck disable=SC2154 # colors are loaded somewhere else
-PROMPT="%{${fg[green]}%}%c%{${reset_color}%} "
 
-# Add functions/prompt_precmd to the list of precmd_functions
-typeset -a precmd_functions
-precmd_functions+=(prompt_precmd)
-# }
-# }
 # Completion {
 # Enable completion from partial words
 # e.g. ~/men<TAB> => ~/Documents
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-
 zstyle ':completion:*' list-colors
 zstyle ':completion:*' menu select
 # }
@@ -111,16 +103,7 @@ is_macos && {
 alias xs="nix-shell"
 alias waybar-restart="pkill waybar && hyprctl dispatch exec waybar"
 
-# Tmux {
-# Start tmux with unicode support (prevent trailing witespace for the prompt)
-alias tmux='tmux -u'
-alias ta='tmux attach -t'
-alias ts='tmux new-session -s'
-alias tw='tmux switch -t'
-# }
-
 # Neovim {
-alias vi="nvim"
 alias vi="nvim"
 alias vim="nvim"
 alias vst='nvim +Git now' # Run Gstatus at vim startup
@@ -153,11 +136,8 @@ alias gcb='echo "DEPRECATED stop using git checkout for creating branch: use git
 alias dk="docker"
 alias bbox="docker run -it --rm busybox"
 alias dkclean="docker system prune --all --force --volumes"
-alias dksh="docker-ssh"
 
 alias dc="docker compose"
-alias dcr="docker compose run"
-alias dcsh="docker compose-ssh"
 # }
 
 # copy/paste{
@@ -199,7 +179,7 @@ alias p8='ping -v 8.8.8.8'                           # Ping 8.8.8.8
 alias pg='ps aux | grep'                             # ps and grep easily
 alias kk='killall'                                   # Quicker kill all
 alias hmac='openssl rand -hex 32'
-alias tmp='(cd `mktemp -d` && $SHELL)'
+alias tmp='(cd `mktemp -d` && $SHELL --login)'
 
 # GDB {
 alias gdb='gdb -q' # Silent GDB
@@ -222,10 +202,8 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 # Limit how many files can be used by the current session
 ulimit -S -n 10240
 
-eval "$(mise activate zsh)"
-
 # Restart espanso
-(&>/dev/null espanso restart &)
+# (&>/dev/null espanso restart &)
 # }
 
 # Private {
