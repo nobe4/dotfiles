@@ -61,7 +61,7 @@ return {
 		lspconfig.vale_ls.setup({
 			on_attach = on_attach,
 			capabilities = capabilities,
-			filetypes = { "markdown", "gitcommit" },
+			filetypes = { "markdown", "gitcommit", "text" },
 		})
 
 		-- https://github.com/Shopify/ruby-lsp/blob/main/EDITORS.md#neovim-lsp
