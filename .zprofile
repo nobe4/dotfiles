@@ -4,12 +4,16 @@
 
 # Setup
 export DOTFILE_FOLDER="${HOME:?}/dev/nobe4/dotfiles"
-source "$DOTFILE_FOLDER/utils.zsh"
+source "$DOTFILE_FOLDER/shell/utils.sh"
 
 # Disable the global .zshrc and .zshenv files.
 # This is especially important for macOS which likes to include its own into the
 # PATH.
 unsetopt GLOBAL_RCS
+
+export LANG="en_US.UTF-8"
+export LC_ALL="$LANG"
+export LC_CTYPE="$LANG"
 
 # PATH
 PATH="/usr/local/sbin:$PATH"
