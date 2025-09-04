@@ -8,5 +8,5 @@ is_macos && {
 }
 
 is_linux && {
-	echo "$1"
+	notify-send "$1" -t 1000
 }
