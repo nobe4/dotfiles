@@ -1,21 +1,31 @@
 #!/usr/bin/env bash
 
-# search for an executable and run it
-command=$(
+# Search for executables in the tree.
+cmds=$(
 	find . \
 		-type f \
 		\( -perm -u=x -o -perm -g=x -o -perm -o=x \) \
 		-not -path './vendor/*' \
 		-not -path './node_modules/*' \
-		-not -path './.git/*' \
+		-not -path './.git/*'
+)
+
+# devenv produces some additional commands not found in the tree.
+devenv_cmds=$(devenv info 2>/dev/null | awk '/# scripts/ {script=1; next;} /^$/ {script=0;} script {print $2;}')
+
+cmds="${cmds}\n${devenv_cmds}"
+
+cmd=$(
+	echo "${cmds}" \
 		| fzf \
 			--multi \
 			--select-1 \
 			--query="${1}"
 )
 
-command=${command//$'\n'/' && '}
+# Join each command with '&&'
+cmd=${cmd//$'\n'/' && '}
 
-print -s -- "${command}" # add to history
+print -s -- "${cmd}" # add to history
 
-bash -c "${command}"
+bash -c "${cmd}"
