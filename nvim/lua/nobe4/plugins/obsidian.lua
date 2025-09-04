@@ -1,6 +1,10 @@
+vim.api.nvim_create_autocmd("User", {
+	pattern = "ObsidianNoteEnter",
+	callback = require("nobe4.mappings").obsidian,
+})
+
 return {
 	{
-		-- dir = "~/dev/nobe4/obsidian.nvim",
 		"obsidian-nvim/obsidian.nvim",
 		version = "*",
 		ft = "markdown",
@@ -8,17 +12,12 @@ return {
 
 		config = function()
 			require("obsidian").setup({
+				legacy_commands = false,
 				ui = {
 					ignore_conceal_warn = true,
 					bullets = { char = "-", hl_group = "ObsidianBullet" },
 					hl_groups = {}, -- setup in mnml.lua
-					checkboxes = {
-						[" "] = { char = "󰄱", hl_group = "ObsidianTodo" },
-						["x"] = { char = "", hl_group = "ObsidianDone" },
-						["!"] = { char = "", hl_group = "ObsidianImportant" },
-					},
 				},
-				mappings = require("nobe4.mappings").obsidian,
 				workspaces = {
 					{
 						name = "private",

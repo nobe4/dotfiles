@@ -10,7 +10,6 @@ return {
 
 			telescope.setup({
 				defaults = {
-					border = false,
 					preview = {
 						treesitter = true,
 					},
