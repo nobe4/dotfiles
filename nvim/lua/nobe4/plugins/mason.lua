@@ -20,8 +20,6 @@ return {
 			local ensured_installed_packages = {
 				"goimports",
 
-				"marksman",
-
 				"prettier",
 
 				"css-lsp",

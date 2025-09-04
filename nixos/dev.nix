@@ -4,8 +4,17 @@
   # Required by devenv to update the nix store.
   nix.settings.trusted-users = [ "nobe4" ];
 
+  # TODO: how to ling `gojq` to `jq` for global use?
+  # Old way:
+  # # Making `jq` available for all process tho it's installed as `gojq`.
+  # # This is somewhat easier than an alias or a function.
+  # ln -s "${BREW_PREFIX}/bin/gojq" "${BREW_PREFIX}/bin/jq"
+
   users.users.nobe4.packages = with pkgs; [
+    direnv
     devenv
+    tldr
+    gojq
 
     # Eventually, most of those should live in the devenv.
 
@@ -17,14 +26,10 @@
     clang-tools
     clang
 
-    # Rust
-    cargo
-
     # Go
     go
     gopls
     golangci-lint
-    hugo
 
     # Prose
     vale
@@ -52,5 +57,7 @@
 
     # Nodejs
     nodejs_24
+
+    marksman
   ];
 }
