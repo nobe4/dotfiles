@@ -9,7 +9,7 @@
 	],
 	"modules-right": [
 		"tray",
-		"wireplumber",
+		// "wireplumber",
 		"pulseaudio",
 		"network",
 		"cpu",
