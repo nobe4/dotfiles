@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 sudo nixos-rebuild "$*"
-rm ./result
+[[ -L ./result ]] && rm -f ./result
