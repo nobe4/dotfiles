@@ -34,19 +34,19 @@ for _, command in pairs({ "n", "N", "*", "#" }) do
 end
 -- <CR> for search should also be snipped
 map("c", "<CR>", function()
-	local type = vim.fn.getcmdtype()
+		local type = vim.fn.getcmdtype()
 
-	-- send another <CR> to validate the search
-	vim.api.nvim_feedkeys(
-		vim.api.nvim_replace_termcodes("<CR>", true, true, true),
-		"n",
-		false
-	)
+		-- send another <CR> to validate the search
+		vim.api.nvim_feedkeys(
+			vim.api.nvim_replace_termcodes("<CR>", true, true, true),
+			"n",
+			false
+		)
 
-	if type == "/" or type == "?" then
-		snipe()
-	end
-end, { expr = true, silent = true })
+		if type == "/" or type == "?" then
+			snipe()
+		end
+	end, { expr = true, silent = true })
 
 map("n", "gp", "'[v']") -- Select last pasted zone
 map("v", "@", ":norm@") -- Replay mapping over visual
@@ -201,22 +201,13 @@ M.telescope = function(ts_builtin)
 end
 
 -- Obsidian
-M.obsidian = {
-	["<leader>f"] = {
-		action = function() vim.cmd(":ObsidianSearch") end,
-	},
-	["<leader>t"] = {
-		action = function() vim.cmd(":ObsidianTags") end,
-	},
-	["<leader>b"] = {
-		action = function() vim.cmd(":ObsidianBacklinks") end,
-	},
-	["<cr>"] = {
-		action = function()
+M.obsidian = function(ev)
+	map("n", "<leader>f", "<cmd>Obsidian search<CR>", { buffer = ev.buf })
+	map("n", "<leader>t", "<cmd>Obsidian tags<CR>", { buffer = ev.buf })
+	map("n", "<leader>b", "<cmd>Obsidian backlinks<CR>", { buffer = ev.buf })
+	map("n", "<leader>b", function()
 			return require("obsidian").util.smart_action()
-		end,
-		opts = { buffer = true, expr = true },
-	}
-}
+		end, { buffer = ev.buf })
+end
 
 return M
