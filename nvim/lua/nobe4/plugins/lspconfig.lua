@@ -24,6 +24,13 @@ return {
 		local default_config = { on_attach = on_attach, capabilities = capabilities }
 
 		lspconfig.bashls.setup(default_config)
+		lspconfig.rust_analyzer.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+			settings = {
+				["rust-analyzer"] = { check = { command = "clippy" } },
+			},
+		})
 		lspconfig.clangd.setup(default_config)
 		lspconfig.cssls.setup(default_config)
 		lspconfig.html.setup(default_config)
