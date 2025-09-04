@@ -1,4 +1,3 @@
-// -*- mode: jsonc -*-
 {
 	"layer": "bottom",
 	"spacing": 0,
@@ -38,7 +37,7 @@
 				// "months": "<span color='#ffead3'><b>{}</b></span>",
 				// "days": "<span color='#ecc6d9'><b>{}</b></span>",
 				"weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-				// "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+				"weekdays": "<span color='#ffcc66'><b>{}</b></span>",
 				"today": "<span color='#ff6699'><b><u>{}</u></b></span>"
 			}
 		}
@@ -53,17 +52,6 @@
 		"format-wifi": "{ipaddr} ",
 		"tooltip-format": "{essid} ({signalStrength}%)\n{ifname} via {gwaddr}",
 		"format-disconnected": "Disconnected ⚠"
-	},
-	"wireplumber": {
-		"format": "{volume}% {icon}",
-		"format-muted": "",
-		"on-click": "pavucontrol",
-		"tooltip": true,
-		"format-icons": [
-			"",
-			"",
-			""
-		]
 	},
 	"pulseaudio": {
 		"format": "{volume}% {icon} {format_source}",
