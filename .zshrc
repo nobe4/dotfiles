@@ -91,9 +91,7 @@ source "${DOTFILE_FOLDER}/shell/aliases.sh"
 # Limit how many files can be used by the current session
 ulimit -S -n 10240
 
-# Restart espanso
-# (&>/dev/null espanso restart &)
-# }
+eval "$(direnv hook zsh)"
 
 # Private {
 source "${DOTFILE_FOLDER}/private/.zshrc"
