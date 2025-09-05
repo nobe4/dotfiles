@@ -9,7 +9,6 @@
 	],
 	"modules-right": [
 		"tray",
-		// "wireplumber",
 		"pulseaudio",
 		"network",
 		"cpu",
@@ -49,9 +48,10 @@
 		"format": "{percentage:2}% "
 	},
 	"network": {
-		"format-wifi": "{ipaddr} ",
-		"tooltip-format": "{essid} ({signalStrength}%)\n{ifname} via {gwaddr}",
-		"format-disconnected": "Disconnected ⚠"
+		"format-wifi": "",
+		"format-disconnected": "⚠",
+		"tooltip-format": "{ipaddr} => {gwaddr}\n{ifname} on {essid} ({signalStrength}%)",
+		"on-click": "kitty --title waybar-iwctl iwctl"
 	},
 	"pulseaudio": {
 		"format": "{volume}% {icon} {format_source}",
