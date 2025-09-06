@@ -50,6 +50,10 @@ is_macos && {
 	link "$DOTFILE_FOLDER/hammerspoon/" "$HOME/.hammerspoon"
 }
 
+# Only linking the config, to keep the other files alive
+link "$DOTFILE_FOLDER/.gnupg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"
+
+
 # Private {
 ./private/install.sh
 # }
