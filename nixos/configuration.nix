@@ -94,8 +94,6 @@
 
       nwg-look # NOTE: need to run it once to set the default values
 
-      fzf
-      ripgrep
       gnupg
 
       # Espanso is currently not working on NixOS/Wayland:
