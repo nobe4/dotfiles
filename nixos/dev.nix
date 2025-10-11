@@ -20,6 +20,10 @@
     tldr
     gojq
 
+    pv
+
+    universal-ctags
+
     # Eventually, most of those should live in the devenv.
 
     # Build tools
