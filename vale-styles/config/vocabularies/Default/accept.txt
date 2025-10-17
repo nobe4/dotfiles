@@ -21,7 +21,9 @@ U?ID
 Youtube
 Yubico
 Yubikey
+Yubikeys?
 Zendesk
+[Cc]hatOps
 [Cc]hatops
 [Cc]onfig(uration)?
 [Cc]ron
@@ -32,10 +34,11 @@ Zendesk
 [Ff]ormatters?
 [Gg]ists?
 [Hh]ost(names?)?
-[Hh]ubber
+[Hh]ubbers?
 [Kk]illswitch
 [Nn]amespaces?
 [Oo]ffboard(ing)?
+[Oo]ffboardings?
 [Oo]nboarding
 [Rr]epo(sitor[y(ies)])?
 [Rr]ollout
