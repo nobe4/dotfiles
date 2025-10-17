@@ -122,6 +122,7 @@ alias vih='nvim +help\ ' # Jump to vim help
 alias vin='nvim -Nu NONE' # Vim without config
 alias vit='nvim +tj\ ' # Jump to tag
 alias vidir='nvim +":normal -"'
+alias vio='nvim -c "cbuffer | copen | bdelete! 1"'
 # }
 
 # Git {
@@ -164,7 +165,7 @@ is_linux && {
 # misc {
 alias n="gh not"
 alias nr="gh not --repl"
-alias ns="gh not sync --verbosity 4"
+alias ns="ght not sync --verbosity 4"
 alias l="sling"
 alias fex='$(fzf)'
 alias wspec="find . -name '*.rb' | entr sh -c 'clear && bundle exec rspec'"

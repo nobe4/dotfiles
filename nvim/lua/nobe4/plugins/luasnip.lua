@@ -92,6 +92,7 @@ for _, test := range tests {
 			ls.parser.parse_snippet("missing", "fix: remove missing team"),
 			ls.parser.parse_snippet("empty", "fix: remove empty team"),
 			ls.parser.parse_snippet("checksums", "chore: rebuild checksums"),
+			ls.parser.parse_snippet("flf", "fix(lint): format"),
 
 			-- https://www.conventionalcommits.org/en/v1.0.0/#specification
 			ms(
