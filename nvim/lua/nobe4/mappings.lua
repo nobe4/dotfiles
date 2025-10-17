@@ -176,6 +176,7 @@ M.lsp_mappings = function(bufnr)
 	map("n", "gd", vim.lsp.buf.definition, bufopts)
 	-- [l]sp [t]oggle diagnostics
 	map("n", "glt", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, bufopts)
+
 	deprecated("n", "gr", "grn")
 	deprecated("n", "gR", "grr")
 	deprecated("n", "gc", "gra")
@@ -208,6 +209,14 @@ M.obsidian = function(ev)
 	map("n", "<leader>b", function()
 			return require("obsidian").util.smart_action()
 		end, { buffer = ev.buf })
+end
+
+M.dap = function(dap, widgets)
+	map("n", "<leader>db", dap.toggle_breakpoint)
+	map("n", "<leader>dd", function()
+		dap.continue()
+		dap.repl.toggle({ height = 10 })
+	end)
 end
 
 return M
