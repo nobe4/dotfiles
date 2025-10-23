@@ -20,11 +20,14 @@ local function find_parent_test_function_name()
 end
 
 vim.keymap.set("n", "<leader>m", function()
-	local cmd = ":execute 'split term://go test -race -cover ./%:h"
+	local cmd = ":execute 'split term://go test -race -cover %:p:h"
+
 	local parent = find_parent_test_function_name()
 	if parent ~= "" then
 		cmd = cmd .. " -run " .. parent
 	end
+
 	cmd = cmd .. "'"
+
 	vim.cmd(cmd)
 end, { noremap = true, silent = false })
