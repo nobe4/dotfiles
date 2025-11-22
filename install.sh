@@ -25,6 +25,8 @@ link "$DOTFILE_FOLDER/.rubocop.yml" "$HOME/.rubocop.yml"
 link "$DOTFILE_FOLDER/.pryrc" "$HOME/.pryrc"
 link "$DOTFILE_FOLDER/kitty/" "$HOME/.config/kitty"
 link "$DOTFILE_FOLDER/.ignore" "$HOME/.ignore"
+link "$DOTFILE_FOLDER/.ctags.d" "$HOME/.ctags.d"
+link "$DOTFILE_FOLDER/mako" "$HOME/.config/mako"
 
 
 # ESPANSO_CONFIG="$(espanso path config)"
