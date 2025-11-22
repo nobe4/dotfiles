@@ -1,14 +1,13 @@
-@define-color fg #ffffff;
-@define-color bg #000000;
-@define-color red #eb4d4b;
-@define-color blue #0069d4;
+@define-color fg #CECDC3;
+@define-color bg #1d1f21;
+@define-color red #cc342b;
+@define-color blue #3971ed;
 
 * {
 	/* `otf-font-awesome` is required to be installed for icons */
 	font-family: CommitMonoV143, Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	font-weight: 500;
-	/* color: @fg; */
 }
 
 window#waybar {
@@ -56,6 +55,7 @@ button:hover {
 #idle_inhibitor {
 	padding: 0 10px 0 10px;
 }
+
 #idle_inhibitor.activated {
 	background-color: @red;
 }
