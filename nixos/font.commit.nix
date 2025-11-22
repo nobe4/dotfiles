@@ -15,7 +15,7 @@ stdenvNoCC.mkDerivation rec {
 
   src = fetchzip {
     url = "https://github.com/eigilnikolajsen/commit-mono/archive/refs/${version}.zip";
-    sha256 = "sha256-tfLBT2RPx0EzXrPaRqkHcs+E3sosyGyqu5RGt0sVNBc=";
+    sha256 = "sha256-ohVmVhzoJTtQDC0XZ1Y/0Oktxi+S3hpJ6IVXXjx/mrY=";
   };
 
   installPhase = ''

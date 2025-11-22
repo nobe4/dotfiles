@@ -11,6 +11,10 @@
   # ln -s "${BREW_PREFIX}/bin/gojq" "${BREW_PREFIX}/bin/jq"
 
   users.users.nobe4.packages = with pkgs; [
+    kitty
+
+    gh
+
     fzf
     ripgrep
 

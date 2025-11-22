@@ -59,7 +59,6 @@
     shell = pkgs.zsh;
 
     packages = with pkgs; [
-      kitty
       vlc
       gimp
       inkscape
@@ -96,12 +95,12 @@
 
       gnupg
 
+      signal-desktop
+
       # Espanso is currently not working on NixOS/Wayland:
       # https://github.com/espanso/espanso/issues/2313
       # https://github.com/NixOS/nixpkgs/pull/328890
       # espanso-wayland
-
-      gh
     ];
   };
 
