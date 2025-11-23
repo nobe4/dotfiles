@@ -1,6 +1,9 @@
-background-color=#3971edbb
+# c5
+background-color=#3971ed
+# c16
 text-color=#f1f3f5
-progress-color=#cc342bbb
+# c2
+progress-color=#cc342b
 border-size=0
 margin=1
 padding=10

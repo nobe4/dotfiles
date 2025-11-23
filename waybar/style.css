@@ -1,7 +1,15 @@
-@define-color fg #CECDC3;
+/* c9 */
+@define-color fg #878988;
+/* c1 */
 @define-color bg #1d1f21;
+/* c2 */
 @define-color red #cc342b;
+/* c5 */
 @define-color blue #3971ed;
+/* c4 */
+@define-color orange #fba922;
+/* c3 */
+@define-color green #14b363;
 
 * {
 	/* `otf-font-awesome` is required to be installed for icons */
@@ -49,7 +57,7 @@ button:hover {
 #tray,
 #mpd {
 	padding: 0 10px 0 10px;
-	border-right: 1px solid @fg;
+	border-right: 2px solid @fg;
 }
 
 #idle_inhibitor {
@@ -64,14 +72,29 @@ button:hover {
 	background-color: @red;
 }
 
+#privacy-item {
+	padding: 2px;
+	border-radius: 100px;
+	box-shadow: 0px -5px @bg inset, 0 5px @bg inset;
+}
+
 #privacy-item.screenshare {
-	background-color: #cf5700;
+	background-color: @orange;
 }
 
 #privacy-item.audio-in {
-	background-color: #1ca000;
+	background-color: @green;
 }
 
 #privacy-item.audio-out {
 	background-color: @blue;
+}
+
+tooltip {
+	background-color: @bg;
+	color: @fg;
+	border: solid 2px @fg;
+	border-radius: 0;
+	padding: 0px;
+	margin: 0px;
 }

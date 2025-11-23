@@ -223,6 +223,9 @@ local rules = {
 
 	-- LSP
 	-- { group = "LspInlayHint",                lk = "lred" },
+	-- Additional
+	{ group = "@number.float",               lk = "Number" },
+	{ group = "@boolean",                    lk = "Number" },
 
 	-- Comments
 	{ group = "@text.note",                  lk = "Todo" },
@@ -276,11 +279,22 @@ local index = {
 }
 
 local colors = {
-	-- see script/update-colors
-	-- marker: colors
-	"#1d1f21", "#cc342b", "#14b363", "#fba922", "#3971ed", "#b028e9", "#0abdae", "#CECDC3",
-	"#878988", "#c49c9a", "#93b6a4", "#c8b394", "#859acb", "#a884b8", "#7c9e9b", "#f1f3f5",
-	-- marker: colors
+	"#1d1f21", -- c1
+	"#cc342b", -- c2
+	"#14b363", -- c3
+	"#fba922", -- c4
+	"#3971ed", -- c5
+	"#5F0A87", -- c6
+	"#0abdae", -- c7
+	"#cecdc3", -- c8
+	"#878988", -- c9
+	"#c49c9a", -- c10
+	"#93b6a4", -- c11
+	"#c8b394", -- c12
+	"#859acb", -- c13
+	"#a884b8", -- c14
+	"#7c9e9b", -- c15
+	"#f1f3f5", -- c16
 }
 
 for i, color in ipairs(colors) do

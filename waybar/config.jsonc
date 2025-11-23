@@ -1,13 +1,12 @@
 {
-	"layer": "bottom",
-	"spacing": 0,
 	"modules-left": [
 		"hyprland/workspaces"
 	],
 	"modules-center": [
-		"clock"
+		"clock",
 	],
 	"modules-right": [
+		"privacy",
 		"tray",
 		"pulseaudio",
 		"network",
@@ -26,18 +25,17 @@
 	},
 	"clock": {
 		"format": "{:%Y-%m-%d %H:%M}",
-		"tooltip-format": "<tt>{calendar}</tt>",
+		"tooltip-format": "<tt><small>{calendar}</small></tt>",
 		"calendar": {
 			"mode": "year",
 			"mode-mon-col": 3,
 			"weeks-pos": "left",
-			"on-scroll": 1,
 			"format": {
 				// "months": "<span color='#ffead3'><b>{}</b></span>",
-				// "days": "<span color='#ecc6d9'><b>{}</b></span>",
-				"weeks": "<span color='#99ffdd'><b>W{}</b></span>",
-				"weekdays": "<span color='#ffcc66'><b>{}</b></span>",
-				"today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+				// "days": "<span color='#cecdc3'><b>{}</b></span>", // c8
+				"weeks": "<span color='#0abdae'><b>W{}</b></span>", // c7
+				"weekdays": "<span color='#fba922'><b>{}</b></span>", // c4
+				"today": "<span color='#cc342b'><b><u>{}</u></b></span>" // c2
 			}
 		}
 	},
@@ -48,12 +46,14 @@
 		"format": "{percentage:2}% "
 	},
 	"network": {
+		"cursor": false,
 		"format-wifi": "",
 		"format-disconnected": "⚠",
 		"tooltip-format": "{ipaddr} => {gwaddr}\n{ifname} on {essid} ({signalStrength}%)",
 		"on-click": "kitty --title waybar-iwctl iwctl"
 	},
 	"pulseaudio": {
+		"cursor": false,
 		"format": "{volume}% {icon} {format_source}",
 		"format-bluetooth": "{volume}% {icon} {format_source}",
 		"format-bluetooth-muted": "muted  {icon} {format_source}",
@@ -68,6 +68,28 @@
 			]
 		},
 		"on-click": "pavucontrol"
+	},
+	"privacy": {
+		"icon-spacing": 1,
+		"icon-size": 10,
+		"transition-duration": 250,
+		"modules": [
+			{
+				"type": "screenshare",
+				"tooltip": true,
+				"tooltip-icon-size": 24
+			},
+			{
+				"type": "audio-out",
+				"tooltip": true,
+				"tooltip-icon-size": 24
+			},
+			{
+				"type": "audio-in",
+				"tooltip": true,
+				"tooltip-icon-size": 24
+			}
+		]
 	},
 	"idle_inhibitor": {
 		"format": "{icon}",
