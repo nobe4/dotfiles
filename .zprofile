@@ -11,10 +11,6 @@ source "$DOTFILE_FOLDER/shell/utils.sh"
 # PATH.
 unsetopt GLOBAL_RCS
 
-export LANG="en_US.UTF-8"
-export LC_ALL="$LANG"
-export LC_CTYPE="$LANG"
-
 # PATH
 PATH="/usr/local/sbin:$PATH"
 PATH="/usr/local/bin:$PATH"
