@@ -1,5 +1,7 @@
+/* c16 */
+@define-color fg #f1f3f5;
 /* c9 */
-@define-color fg #878988;
+@define-color border #878988;
 /* c1 */
 @define-color bg #1d1f21;
 /* c2 */
@@ -11,27 +13,35 @@
 /* c3 */
 @define-color green #14b363;
 
+/* TODO: patch commitmono with https://www.nerdfonts.com/ */
 * {
 	/* `otf-font-awesome` is required to be installed for icons */
 	font-family: CommitMonoV143, Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	font-weight: 500;
+
+	border: none;
+	border-radius: 0;
+	background-image: none;
+	box-shadow: none;
+	text-shadow: none;
+	outline: none;
+	transition: none;
+	-gtk-icon-effect: none;
+	-gtk-icon-shadow: none;
 }
 
 window#waybar {
 	background-color: @bg;
 }
 
+
 button {
-	/* Use box-shadow instead of border so the text isn't offset */
-	/* box-shadow: inset 0 -3px transparent; */
-	/* Avoid rounded borders under each button name */
-	border: none;
-	border-radius: 0;
+	color: @fg;
 }
 
 button:hover {
-	background-color: @blue;
+	background-color: @fg;
 	color: @bg;
 }
 
@@ -39,12 +49,17 @@ button:hover {
 	padding: 0 5px;
 }
 
-#workspaces button.active {
-	background-color: @fg;
+
+button.active {
+	background-color: @border;
 	color: @bg;
 }
 
-#workspaces button.urgent {
+button.active:hover {
+	background-color: @fg;
+}
+
+button.urgent {
 	background-color: @red;
 	color: @bg;
 }
@@ -57,7 +72,7 @@ button:hover {
 #tray,
 #mpd {
 	padding: 0 10px 0 10px;
-	border-right: 2px solid @fg;
+	border-right: 2px solid @border;
 }
 
 #idle_inhibitor {
@@ -72,28 +87,27 @@ button:hover {
 	background-color: @red;
 }
 
-#privacy-item {
-	padding: 2px;
-	border-radius: 100px;
-	box-shadow: 0px -5px @bg inset, 0 5px @bg inset;
+#custom-audio-playback {
+	color: @blue;
 }
 
-#privacy-item.screenshare {
-	background-color: @orange;
+#custom-audio-recording {
+	color: @green;
 }
 
-#privacy-item.audio-in {
-	background-color: @green;
+#custom-webcam-recording {
+	color: @orange;
 }
 
-#privacy-item.audio-out {
-	background-color: @blue;
+#custom-screen-recording {
+	margin: 0;
+	color: @red;
 }
 
 tooltip {
 	background-color: @bg;
 	color: @fg;
-	border: solid 2px @fg;
+	border: solid 2px @border;
 	border-radius: 0;
 	padding: 0px;
 	margin: 0px;

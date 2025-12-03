@@ -6,7 +6,10 @@
 		"clock",
 	],
 	"modules-right": [
-		"privacy",
+		"custom/screen-recording",
+		"custom/webcam-recording",
+		"custom/audio-recording",
+		"custom/audio-playback",
 		"tray",
 		"pulseaudio",
 		"network",
@@ -40,7 +43,8 @@
 		}
 	},
 	"cpu": {
-		"format": "{load:2}% "
+		"format": "{load:2}% ",
+		"on-click": "kitty --title waybar-htop htop"
 	},
 	"memory": {
 		"format": "{percentage:2}% "
@@ -69,27 +73,26 @@
 		},
 		"on-click": "pavucontrol"
 	},
-	"privacy": {
-		"icon-spacing": 1,
-		"icon-size": 10,
-		"transition-duration": 250,
-		"modules": [
-			{
-				"type": "screenshare",
-				"tooltip": true,
-				"tooltip-icon-size": 24
-			},
-			{
-				"type": "audio-out",
-				"tooltip": true,
-				"tooltip-icon-size": 24
-			},
-			{
-				"type": "audio-in",
-				"tooltip": true,
-				"tooltip-icon-size": 24
-			}
-		]
+	"custom/screen-recording": {
+		// "on-click": "omarchy-cmd-screenrecord",
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/screen-recording.sh",
+		"return-type": "json",
+		"interval": 5
+	},
+	"custom/audio-playback": {
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/audio-playback.sh",
+		"return-type": "json",
+		"interval": 1
+	},
+	"custom/audio-recording": {
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/audio-recording.sh",
+		"return-type": "json",
+		"interval": 1
+	},
+	"custom/webcam-recording": {
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/webcam-recording.sh",
+		"return-type": "json",
+		"interval": 1
 	},
 	"idle_inhibitor": {
 		"format": "{icon}",
