@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# Usage: screenrecord [--stop]
+
+set -e
+
+OUTPUT_DIR="/tmp/screenrecordings"
+mkdir -p "${OUTPUT_DIR}"
+
+start(){
+	gpu-screen-recorder \
+		-w portal \
+		-o "${OUTPUT_DIR}/$(date +'%Y-%m-%d_%H-%M-%S').mp4" &
+}
+
+stop() {
+	pkill -SIGINT -f "gpu-screen-recorder"  # SIGINT required to save video properly
+
+	local count=0
+	while pgrep -f "gpu-screen-recorder" >/dev/null && [ $count -lt 50 ]; do
+		sleep 0.1
+		count=$((count + 1))
+	done
+
+	if pgrep -f "gpu-screen-recorder" >/dev/null; then
+		pkill -9 -f "gpu-screen-recorder"
+		notify-send "Screen recording" \
+			"Process force-killed, video may be corrupted." \
+			-u critical \
+			-t 5000
+	else
+		notify-send "Screen recording" \
+			"saved to ${OUTPUT_DIR}" \
+			-t 2000
+	fi
+}
+
+if [[ "$1" == "--stop" ]]; then
+	stop
+	exit 0
+fi
+
+start

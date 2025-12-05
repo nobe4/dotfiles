@@ -18,6 +18,7 @@ alias vih='nvim +help\ ' # Jump to vim help
 alias vin='nvim -Nu NONE' # Vim without config
 alias vit='nvim +tj\ ' # Jump to tag
 alias vidir='nvim +":normal -"'
+alias open='xdg-open'
 
 alias gd='git difftool'
 alias ga='git add'
@@ -70,7 +71,6 @@ alias gdb='gdb -q' # Silent GDB
 
 # ref: http://thexploit.com/secdev/turning-off-buffer-overflow-protections-in-gcc/
 alias gccunsafe='gcc -fno-stack-protector -D_FORTIFY_SOURCE=0'
-
 
 is_macos && {
   # Mac Catalina is breaking everything, thanks Tim Apple.

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+
+OUTPUT_DIR="/tmp/screenrecordings"
+mkdir -p "${OUTPUT_DIR}"
+
+file="${OUTPUT_DIR}/$(date +'%Y-%m-%d_%H-%M-%S').png"
+
+grim -g "$(slurp)" - \
+	| swappy -f - -o - \
+	| pngquant - \
+	| tee "${file}" \
+	| wl-copy
+
+notify-send "Screen shot" \
+	"saved to ${file}" \
+	-t 2000

@@ -74,11 +74,12 @@
       swappy # image edition
       pngquant # png compression
       grim # screenshot
+      gpu-screen-recorder # screenrecorder
 
       # TODO: https://github.com/emersion/mako/blob/master/doc/mako.5.scd
       mako # wayland notification manager
       waybar # wayland status bar
-      rofi # windows switcher
+      rofi # launcher
       wev # Wayland event viewer, for debugging
 
       apple-cursor

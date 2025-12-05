@@ -74,10 +74,10 @@
 		"on-click": "pavucontrol"
 	},
 	"custom/screen-recording": {
-		// "on-click": "omarchy-cmd-screenrecord",
 		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/screen-recording.sh",
 		"return-type": "json",
-		"interval": 5
+		"interval": 5,
+		"on-click": "/home/nobe4/dev/nobe4/dotfiles/bin/screenrecord --stop"
 	},
 	"custom/audio-playback": {
 		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/audio-playback.sh",

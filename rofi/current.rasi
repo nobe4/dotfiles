@@ -1,0 +1,89 @@
+* {
+	white:  #cecdc3; // c8
+	black:  #1d1f21; // c1
+	red:    #cc342b; // c2
+	blue:   #3971ed; // c5
+	lblack: #878988; // c9
+
+	text-color:       var(white);
+	border-color:     var(white);
+	background-color: transparent;
+
+	padding: 0;
+	border:  0;
+	spacing: 0;
+}
+
+window {
+	padding: 5px;
+	background-color: var(black);
+}
+
+mainbox {
+	padding: 5px;
+	border:  2px;
+}
+
+element {
+	padding: 2px;
+	cursor:  pointer;
+}
+
+element selected {
+	background-color: var(white);
+	text-color:       var(black);
+}
+
+element normal.urgent   { text-color:       var(red);  }
+element normal.active   { text-color:       var(blue); }
+element selected.urgent { background-color: var(red);  }
+element selected.active { background-color: var(blue); }
+
+element-text {
+	background-color: inherit;
+	cursor:           inherit;
+	highlight:        inherit;
+	text-color:       inherit;
+}
+
+element-icon {
+	cursor: inherit;
+	margin: 0 5px 0 0;
+}
+
+listview {
+	scrollbar:    false;
+}
+
+textbox-num-sep {
+	expand:     false;
+	str:        "/";
+}
+
+inputbar {
+	padding:    1px ;
+	spacing:    0px ;
+	children:   [
+		"prompt",
+		"textbox-prompt-colon",
+		"entry",
+		"overlay",
+		"num-filtered-rows",
+		"textbox-num-sep",
+		"num-rows"
+	];
+}
+
+
+entry {
+	cursor:            text;
+	spacing:           0;
+	placeholder-color: var(lblack);
+	placeholder:       "... filter ...";
+}
+
+textbox-prompt-colon {
+	margin:     0px 5px 0px 0px;
+	expand:     false;
+	str:        ":";
+}
