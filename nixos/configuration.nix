@@ -61,6 +61,8 @@
     packages = with pkgs; [
       vlc
       gimp
+      swappy
+      pngquant
       inkscape
 
       hyprcursor
@@ -68,19 +70,19 @@
       hyprpicker
       hypridle
       nix-search-tv
+      wev
 
-      wl-clipboard # clipboard
-      slurp # get screen coordinate
-      swappy # image edition
-      pngquant # png compression
-      grim # screenshot
-      gpu-screen-recorder # screenrecorder
+      wl-clipboard
+      slurp
+      grim
+      gpu-screen-recorder
 
-      # TODO: https://github.com/emersion/mako/blob/master/doc/mako.5.scd
-      mako # wayland notification manager
-      waybar # wayland status bar
-      rofi # launcher
-      wev # Wayland event viewer, for debugging
+      # Notifcations
+      mako
+      libnotify
+
+      waybar
+      rofi
 
       apple-cursor
 
