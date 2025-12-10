@@ -44,8 +44,6 @@ export DFT_CONTEXT=1
 FPATH="$DOTFILE_FOLDER/functions:$FPATH"
 MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 
-export GPG_TTY=$(tty)
-
 # Python
 unset PYTHONHOME
 unset PYTHONPATH

@@ -97,6 +97,7 @@
       nwg-look # NOTE: need to run it once to set the default values
 
       gnupg
+      pinentry-qt
 
       signal-desktop
 
@@ -143,6 +144,7 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+    pinentryPackage = pkgs.pinentry-qt;
   };
 
   # Copy the NixOS configuration file and link it from the resulting system
