@@ -1,0 +1,6 @@
+[options]
+loop_input = true
+
+[binds]
+r = rotate by 90
+d = exec mv "${imv_current_file}" "${imv_current_file}_TO_DELETE" && echo "Marking to delete: ${imv_current_file}"

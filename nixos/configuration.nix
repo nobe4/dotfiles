@@ -1,5 +1,4 @@
 { pkgs, ... }:
-
 {
   imports = [
     /etc/nixos/hardware-configuration.nix
@@ -9,6 +8,7 @@
     ./nix.nix
     ./network.nix
     ./dev.nix
+    ./media.nix
     ./gaming.nix
 
     ./services/1password.nix
@@ -59,12 +59,6 @@
     shell = pkgs.zsh;
 
     packages = with pkgs; [
-      vlc
-      gimp
-      swappy
-      pngquant
-      inkscape
-
       hyprcursor
       hyprlock
       hyprpicker
@@ -73,9 +67,6 @@
       wev
 
       wl-clipboard
-      slurp
-      grim
-      gpu-screen-recorder
 
       # Notifcations
       mako
@@ -85,6 +76,7 @@
       rofi
 
       apple-cursor
+      adwaita-icon-theme
 
       # will need to find a way to do without
       # currently the scarlite has 2 separate output, which should be merged into one.

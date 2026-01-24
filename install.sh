@@ -28,6 +28,7 @@ link "$DOTFILE_FOLDER/.ignore" "$HOME/.ignore"
 link "$DOTFILE_FOLDER/.ctags.d" "$HOME/.ctags.d"
 link "$DOTFILE_FOLDER/mako" "$HOME/.config/mako"
 link "$DOTFILE_FOLDER/rofi" "$HOME/.config/rofi"
+link "$DOTFILE_FOLDER/imv" "$HOME/.config/imv"
 
 
 # ESPANSO_CONFIG="$(espanso path config)"
