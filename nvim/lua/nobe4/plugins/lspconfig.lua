@@ -32,6 +32,7 @@ return {
 			},
 		})
 		lspconfig.clangd.setup(default_config)
+		lspconfig.arduino_language_server.setup(default_config)
 		lspconfig.cssls.setup(default_config)
 		lspconfig.html.setup(default_config)
 		lspconfig.jsonls.setup(default_config)
