@@ -1,5 +1,4 @@
 local cmd = vim.api.nvim_create_user_command
-local auc = vim.api.nvim_create_autocmd
 local opts = { bang = true }
 local M = {}
 
@@ -108,11 +107,6 @@ cmd("Glow",
 		cmd("GlowStop", cleanup, opts)
 	end, opts)
 
-auc({ "BufWritePost" }, {
-	callback = function()
-		vim.system({ "tags" }, { detach = true })
-	end,
-})
 
 M.telescope = function(ts_builtin)
 	vim.api.nvim_create_user_command("LSPReferences", ts_builtin.lsp_references, { bang = true })

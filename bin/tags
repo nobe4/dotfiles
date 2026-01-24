@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-out="tags"
-[ -d .git ] && out=".git/tags"
-
-ctags \
-	--recurse \
-	--exclude=@"$DOTFILE_FOLDER/.ctagsignore" \
-	-o "$out"
