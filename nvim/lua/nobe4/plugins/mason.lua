@@ -20,13 +20,10 @@ return {
 			local ensured_installed_packages = {
 				"goimports",
 
-				"prettier",
-
 				"css-lsp",
 				"html-lsp",
 				"json-lsp",
 				"emmet-ls",
-
 
 				"python-lsp-server",
 			}

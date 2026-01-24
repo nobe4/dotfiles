@@ -18,7 +18,6 @@ alias vih='nvim +help\ ' # Jump to vim help
 alias vin='nvim -Nu NONE' # Vim without config
 alias vit='nvim +tj\ ' # Jump to tag
 alias vidir='nvim +":normal -"'
-alias open='xdg-open'
 
 alias gd='git difftool'
 alias ga='git add'
@@ -60,6 +59,7 @@ alias x509='openssl x509 -text -noout'               # That's what I use all the
 alias re='exec zsh'                                  # Reload .zshrc
 alias als='alias | grep'                             # Search through aliases
 alias reverse-link='find -L /dir/to/start -samefile' # Find what is linked to a file
+alias ls='ls --color=auto'
 alias ll='ls -la'
 alias p8='ping -v 8.8.8.8'                           # Ping 8.8.8.8
 alias pg='ps aux | grep'                             # ps and grep easily

@@ -1,5 +1,4 @@
 [*]
-
 indent_style = tab
 indent_size = 4
 tab_width = 4
@@ -9,7 +8,6 @@ end_of_line = lf
 insert_final_newline = true
 
 [*.lua]
-
 quote_style = double
 table_separator_style = none
 trailing_table_separator = smart
@@ -17,7 +15,6 @@ continuation_indent_size = 8
 align_call_args = true
 
 [*.py]
-
 indent_style = space
 
 [*.nix]
