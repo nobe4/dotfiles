@@ -165,7 +165,8 @@ map("n", "go", function()
 		return
 	end
 
-	print("Don't know how to open:", word)
+	-- default to open
+	vim.cmd("!open " .. word)
 end)
 
 -- LSP

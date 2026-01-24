@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+source "${DOTFILE_FOLDER}/shell/utils.sh"
+
+is_macos && {
+	open "$@"
+}
+
+is_linux && {
+	xdg-open "$@"
+}
