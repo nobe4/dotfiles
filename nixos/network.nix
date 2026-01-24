@@ -7,6 +7,7 @@
 
   users.users.nobe4.packages = with pkgs; [
     dnsutils
+    unixtools.route
     winbox4
   ];
 
