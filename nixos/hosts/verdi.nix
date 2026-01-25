@@ -3,17 +3,17 @@
   imports = [
     /etc/nixos/hardware-configuration.nix
 
-    ./packages/allowed_unfree.nix
+    ../packages/allowed_unfree.nix
 
-    ./nix.nix
-    ./network.nix
-    ./dev.nix
-    ./media.nix
-    ./gaming.nix
+    ../nix.nix
+    ../network.nix
+    ../dev.nix
+    ../media.nix
+    ../gaming.nix
 
-    ./services/1password.nix
-    ./services/keyboard.nix
-    ./font.nix
+    ../services/1password.nix
+    ../services/keyboard.nix
+    ../font.nix
   ];
 
   time.timeZone = "Europe/Berlin";

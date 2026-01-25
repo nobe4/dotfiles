@@ -13,6 +13,8 @@
   users.users.nobe4.packages = with pkgs; [
     kitty
 
+    difftastic
+
     gh
 
     fzf
@@ -33,10 +35,6 @@
     # Build tools
     gnumake
     gcc
-
-    # C/C++
-    clang-tools
-    clang
 
     # Go
     go

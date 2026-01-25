@@ -5,16 +5,16 @@
 
 # Setup {
 export DOTFILE_FOLDER="${HOME:?}/dev/nobe4/dotfiles"
-source "$DOTFILE_FOLDER/utils.zsh"
+source "$DOTFILE_FOLDER/shell/utils.sh"
 # }
 
 mkdir -p "$HOME/.local/bin"
 
-link "$DOTFILE_FOLDER/nixos/" "$HOME/.config/nixos"
-link "$DOTFILE_FOLDER/rofi/" "$HOME/.config/rofi"
-link "$DOTFILE_FOLDER/hypr/" "$HOME/.config/hypr"
-link "$DOTFILE_FOLDER/waybar/" "$HOME/.config/waybar"
-link "$DOTFILE_FOLDER/uwsm/" "$HOME/.config/uwsm"
+# link "$DOTFILE_FOLDER/nixos/" "$HOME/.config/nixos"
+# link "$DOTFILE_FOLDER/rofi/" "$HOME/.config/rofi"
+# link "$DOTFILE_FOLDER/hypr/" "$HOME/.config/hypr"
+# link "$DOTFILE_FOLDER/waybar/" "$HOME/.config/waybar"
+# link "$DOTFILE_FOLDER/uwsm/" "$HOME/.config/uwsm"
 link "$DOTFILE_FOLDER/.zshrc" "$HOME/.zshrc"
 link "$DOTFILE_FOLDER/.zprofile" "$HOME/.zprofile"
 link "$DOTFILE_FOLDER/.bashrc" "$HOME/.bashrc"
@@ -26,9 +26,9 @@ link "$DOTFILE_FOLDER/.pryrc" "$HOME/.pryrc"
 link "$DOTFILE_FOLDER/kitty/" "$HOME/.config/kitty"
 link "$DOTFILE_FOLDER/.ignore" "$HOME/.ignore"
 link "$DOTFILE_FOLDER/.ctags.d" "$HOME/.ctags.d"
-link "$DOTFILE_FOLDER/mako" "$HOME/.config/mako"
-link "$DOTFILE_FOLDER/rofi" "$HOME/.config/rofi"
-link "$DOTFILE_FOLDER/imv" "$HOME/.config/imv"
+# link "$DOTFILE_FOLDER/mako" "$HOME/.config/mako"
+# link "$DOTFILE_FOLDER/rofi" "$HOME/.config/rofi"
+# link "$DOTFILE_FOLDER/imv" "$HOME/.config/imv"
 
 
 # ESPANSO_CONFIG="$(espanso path config)"
