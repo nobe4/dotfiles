@@ -4,6 +4,7 @@
 	],
 	"modules-center": [
 		"clock",
+		"custom/weather"
 	],
 	"modules-right": [
 		"custom/screen-recording",
@@ -72,6 +73,12 @@
 			]
 		},
 		"on-click": "pavucontrol"
+	},
+	"custom/weather": {
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/weather.sh",
+		"return-type": "text",
+		"interval": 600,
+		"on-click": "kitty --title weather --hold /home/nobe4/dev/nobe4/dotfiles/waybar/indicators/weather.sh --full"
 	},
 	"custom/screen-recording": {
 		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/screen-recording.sh",

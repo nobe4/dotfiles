@@ -70,12 +70,14 @@ button.urgent {
 #pulseaudio,
 #wireplumber,
 #tray,
-#mpd {
+#mpd,
+#clock {
 	padding: 0 10px 0 10px;
 	border-right: 2px solid @border;
 }
 
-#idle_inhibitor {
+#idle_inhibitor,
+#custom-weather {
 	padding: 0 10px 0 10px;
 }
 
