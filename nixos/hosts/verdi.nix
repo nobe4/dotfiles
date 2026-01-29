@@ -93,6 +93,9 @@
 
       signal-desktop
 
+      # needed for envsubst
+      gettext
+
       # Espanso is currently not working on NixOS/Wayland:
       # https://github.com/espanso/espanso/issues/2313
       # https://github.com/NixOS/nixpkgs/pull/328890
