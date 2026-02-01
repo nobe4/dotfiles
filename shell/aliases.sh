@@ -9,7 +9,6 @@ is_linux && {
 }
 
 alias xs="nix-shell"
-alias waybar-restart="pkill waybar ; hyprctl dispatch exec waybar"
 
 alias vi="nvim"
 alias vim="nvim"
