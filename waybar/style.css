@@ -13,9 +13,7 @@
 /* c3 */
 @define-color green #14b363;
 
-/* TODO: patch commitmono with https://www.nerdfonts.com/ */
 * {
-	/* `otf-font-awesome` is required to be installed for icons */
 	font-family: CommitMonoV143, Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	font-weight: 500;
@@ -34,7 +32,6 @@
 window#waybar {
 	background-color: @bg;
 }
-
 
 button {
 	color: @fg;
@@ -78,7 +75,7 @@ button.urgent {
 
 #idle_inhibitor,
 #custom-weather {
-	padding: 0 10px 0 10px;
+	padding: 2px 10px 0 10px;
 }
 
 #idle_inhibitor.activated {
@@ -110,7 +107,7 @@ tooltip {
 	background-color: @bg;
 	color: @fg;
 	border: solid 2px @border;
-	border-radius: 0;
-	padding: 0px;
+	border-radius: 0px;
+	padding: 4px;
 	margin: 0px;
 }
