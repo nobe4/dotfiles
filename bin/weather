@@ -4,9 +4,10 @@
 #/ Cache: ${CACHE}
 #/
 #/ Flags:
-#/  -h|--help   Show this help
-#/  -f|--full   Show in full
-#/  -w|--wait   Wait for a keypress before exiting
+#/  -h|--help     Show this help
+#/  -f|--full     Show in full
+#/  -r|--reload   Show in full
+#/  -w|--wait     Wait for a keypress before exiting
 
 set -e
 
@@ -18,12 +19,14 @@ CACHE="$HOME/.local/state/waybar/weather_cache"
 
 FULL=0
 WAIT=0
+RELOAD=0
 
 while [ "${#}" -gt 0 ]; do
 	case "${1}" in
 		-h|--help) show_help && exit 0 ;;
 		-f|--full) FULL=1 ;;
 		-w|--wait) WAIT=1 ;;
+		-r|--reload) RELOAD=1 ;;
 		-*)
 			echo "Unknown flag '${1}'"
 			show_help
@@ -37,7 +40,7 @@ while [ "${#}" -gt 0 ]; do
 done
 
 
-if [ ! -f "${CACHE}" ] || ! find "${CACHE}" -mmin 60; then
+if [ ! -f "${CACHE}" ] || ! find "${CACHE}" -mmin 60 || [[ "${RELOAD}" == 1 ]]; then
 	short=$(curl -s wttr.in/berlin?format=%f%20%c)
 	full=$(
 		curl -s wttr.in/berlin?format=v2d \
