@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -e
+
+args=("$@")
+
+if [[ ${#args[@]} -gt 0 && ${args[0]} == "switch" ]]; then
+	args+=("--install-bootloader")
+fi
+
+sudo nixos-rebuild "${args[@]}"
+[[ -L ./result ]] && rm -f ./result

@@ -51,12 +51,14 @@
 		"format": "{percentage:2}% "
 	},
 	"network": {
+		"cursor": false,
 		"format-wifi": "",
 		"format-disconnected": "⚠",
 		"tooltip-format": "{ipaddr} => {gwaddr}\n{ifname} on {essid} ({signalStrength}%)",
 		"on-click": "kitty --title waybar-iwctl iwctl"
 	},
 	"pulseaudio": {
+		"cursor": false,
 		"format": "{volume}% {icon} {format_source}",
 		"format-bluetooth": "{volume}% {icon} {format_source}",
 		"format-bluetooth-muted": "muted  {icon} {format_source}",

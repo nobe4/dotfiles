@@ -12,8 +12,6 @@
   ];
 
   networking = {
-    hostName = "verdi";
-
     # TODO: nixos comes with baked-in iptable rules, which I may want to change later.
     firewall = {
       allowedTCPPorts = [

@@ -20,4 +20,11 @@
     grim
     gpu-screen-recorder
   ];
+
+  ln = [
+    [
+      "$DOTFILE_FOLDER/imv"
+      "$HOME/.config/imv"
+    ]
+  ];
 }

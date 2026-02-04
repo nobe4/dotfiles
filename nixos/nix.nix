@@ -13,4 +13,11 @@
     dates = "weekly";
     options = "--delete-older-than 30d";
   };
+
+  ln = [
+    [
+      "$DOTFILE_FOLDER/nixos/"
+      "$HOME/.config/nixos"
+    ]
+  ];
 }

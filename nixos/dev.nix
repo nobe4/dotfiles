@@ -1,9 +1,6 @@
 # Defines all dependencies for development work.
 { pkgs, ... }:
 {
-  # Required by devenv to update the nix store.
-  nix.settings.trusted-users = [ "nobe4" ];
-
   # TODO: how to ling `gojq` to `jq` for global use?
   # Old way:
   # # Making `jq` available for all process tho it's installed as `gojq`.
@@ -69,5 +66,44 @@
     nodejs_24
 
     marksman
+  ];
+
+  ln = [
+    [
+      "$DOTFILE_FOLDER/nvim/"
+      "$HOME/.config/nvim"
+    ]
+    [
+      "$DOTFILE_FOLDER/.gitconfig"
+      "$HOME/.gitconfig"
+    ]
+    [
+      "$DOTFILE_FOLDER/.gitignore_global"
+      "$HOME/.gitignore_global"
+    ]
+    [
+      "$DOTFILE_FOLDER/.pryrc"
+      "$HOME/.pryrc"
+    ]
+    [
+      "$DOTFILE_FOLDER/kitty/"
+      "$HOME/.config/kitty"
+    ]
+    [
+      "$DOTFILE_FOLDER/.ignore"
+      "$HOME/.ignore"
+    ]
+    [
+      "$DOTFILE_FOLDER/.ctags.d"
+      "$HOME/.ctags.d"
+    ]
+    [
+      "$DOTFILE_FOLDER/.vale.ini"
+      "$HOME/.config/vale/.vale.ini"
+    ]
+    [
+      "$DOTFILE_FOLDER/gh-config.yml"
+      "$HOME/.config/gh/config.yml"
+    ]
   ];
 }

@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-sudo nixos-rebuild "$*"
-[[ -L ./result ]] && rm -f ./result

@@ -1,61 +1,41 @@
 # ln -sfv /Users/nobe4/dev/nobe4/dotfiles/nixos/hosts/brahms.nix /etc/nix-darwin/configuration.nix
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-imports = [
- ../dev.nix
-];
-
-nix = {
-
-extraOptions = ''
-    experimental-features = nix-command
-    '';
-  gc = {
-    automatic = true;
-    options = "--delete-older-than 30d";
-  };
-};
+  imports = [
+    ../nix.nix
+    ../dev.nix
+    ../packages/system.nix
+  ];
 
   networking = {
-	computerName = "brahms";
-	hostName = "brahms";
+    computerName = "brahms";
+    hostName = "brahms";
   };
-
-  environment.systemPackages = with pkgs; [ 
-	neovim
-	entr
-    fd
-    fzf
-    htop
-    moreutils
-    cmake
-    tree
-    ];
 
   users.users.nobe4.packages = with pkgs; [
     darwin.trash
     gnupg
   ];
-  
-  homebrew = {
-	# Following https://github.com/nix-darwin/nix-darwin?tab=readme-ov-file
-	# For brew
-	#     https://github.com/orgs/Homebrew/discussions/3227
-	#     `sudo chown -R $(whoami) /usr/local/share/zsh/site-functions`
-	#     + install brew from https://brew.sh/
 
-	  enable = true;
-	  casks = [
-		  "firefox"
-		  "1password"
-		  "1password-cli"
-		  "kitty"
-		  "notunes"
-		  "hammerspoon"
-		  "neovide"
-		  "qbittorrent"
-	  ];
+  homebrew = {
+    # Following https://github.com/nix-darwin/nix-darwin?tab=readme-ov-file
+    # For brew
+    #     https://github.com/orgs/Homebrew/discussions/3227
+    #     `sudo chown -R $(whoami) /usr/local/share/zsh/site-functions`
+    #     + install brew from https://brew.sh/
+
+    enable = true;
+    casks = [
+      "firefox"
+      "1password"
+      "1password-cli"
+      "kitty"
+      "notunes"
+      "hammerspoon"
+      "neovide"
+      "qbittorrent"
+    ];
   };
 
   system = {
@@ -65,38 +45,38 @@ extraOptions = ''
         AppleInterfaceStyle = "Dark";
         AppleShowAllExtensions = true;
         AppleShowAllFiles = true;
-	AppleEnableMouseSwipeNavigateWithScrolls = false;
-	AppleEnableSwipeNavigateWithScrolls = false;
+        AppleEnableMouseSwipeNavigateWithScrolls = false;
+        AppleEnableSwipeNavigateWithScrolls = false;
         "com.apple.sound.beep.feedback" = 1;
         "com.apple.swipescrolldirection" = false;
       };
       controlcenter = {
         BatteryShowPercentage = true;
-	Bluetooth = false;
-	Display = false;
+        Bluetooth = false;
+        Display = false;
       };
       dock = {
         autohide = true;
-	static-only = true;
+        static-only = true;
       };
       finder = {
         AppleShowAllExtensions = true;
         AppleShowAllFiles = true;
-	FXEnableExtensionChangeWarning = false;
-	FXPreferredViewStyle = "clmv";
-	NewWindowTarget = "Home";
-	ShowPathbar = true;
-	_FXShowPosixPathInTitle = true;
+        FXEnableExtensionChangeWarning = false;
+        FXPreferredViewStyle = "clmv";
+        NewWindowTarget = "Home";
+        ShowPathbar = true;
+        _FXShowPosixPathInTitle = true;
       };
       hitoolbox = {
         AppleFnUsageType = "Change Input Source";
       };
       loginwindow = {
         DisableConsoleAccess = true;
-      	GuestEnabled = false;
+        GuestEnabled = false;
       };
       trackpad = {
-      	Clicking = false;
+        Clicking = false;
       };
       ".GlobalPreferences" = {
         "com.apple.mouse.scaling" = 5.0;

@@ -3,20 +3,28 @@
   imports = [
     /etc/nixos/hardware-configuration.nix
 
-    ../packages/allowed_unfree.nix
+    ../utils/allowed_unfree.nix
+    ../utils/ln.nix
+
+    ../users/nobe4.nix
+
+    ../packages/system.nix
+    ../packages/wayland.nix
+    ../packages/gaming.nix
+    ../packages/1password.nix
+    ../packages/keyboard.nix
+    ../packages/font/font.nix
+    ../packages/network.nix
 
     ../nix.nix
-    ../network.nix
     ../dev.nix
     ../media.nix
-    ../gaming.nix
 
-    ../services/1password.nix
-    ../services/keyboard.nix
-    ../font.nix
   ];
 
   time.timeZone = "Europe/Berlin";
+
+  networking.hostName = "verdi";
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -36,57 +44,25 @@
     "apple_cursor"
   ];
 
-  services = {
-    # Audio
+  # Audio
+  # See pavucontrol for advanced
+  services.pipewire = {
+    enable = true;
 
-    # See pavucontrol for advanced
-    pipewire = {
+    wireplumber = {
       enable = true;
-
-      wireplumber = {
-        enable = true;
-      };
     };
-
-    displayManager.ly.enable = true;
   };
 
-  users.defaultUserShell = pkgs.zsh;
-
   users.users.nobe4 = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    shell = pkgs.zsh;
-
     packages = with pkgs; [
-      hyprcursor
-      hyprlock
-      hyprpicker
-      hypridle
       nix-search-tv
-      wev
-
-      wl-clipboard
-
-      # Notifcations
-      mako
-      libnotify
-
-      waybar
-      rofi
-
-      apple-cursor
-      adwaita-icon-theme
 
       # will need to find a way to do without
       # currently the scarlite has 2 separate output, which should be merged into one.
       # + how to integrate that in waybar
       pavucontrol
       playerctl # for media play-pause control
-
-      chromium # xbox-live doesn't support firefox
-
-      nwg-look # NOTE: need to run it once to set the default values
 
       gnupg
       pinentry-qt
@@ -95,47 +71,15 @@
 
       # needed for envsubst
       gettext
-
-      # Espanso is currently not working on NixOS/Wayland:
-      # https://github.com/espanso/espanso/issues/2313
-      # https://github.com/NixOS/nixpkgs/pull/328890
-      # espanso-wayland
     ];
   };
 
-  # List packages installed in system profile.
-  environment.systemPackages = with pkgs; [
-    neovim
-    file
-    tree
-    lsof
-    usbutils
-    git
-    unzip
-    zip
-    htop
-    entr
-  ];
-
+  # TODO: check why those are programs, and what benefits vs
+  # users.users.<x>.packages.
   programs.firefox.enable = true;
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-  };
-
-  environment.shells = with pkgs; [ zsh ];
-
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-
-    # This seems to be needed for steam
-    # xwayland.enable = false;
-  };
+  programs.chromium.enable = true;
 
   security.polkit.enable = true;
-
-  # programs.mtr.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
