@@ -6,7 +6,8 @@
 #/ Flags:
 #/  -h|--help     Show this help
 #/  -f|--full     Show in full
-#/  -r|--reload   Show in full
+#/  -r|--refresh  Force a refresh
+#/     --waybar   Show JSON for waybar
 #/  -w|--wait     Wait for a keypress before exiting
 
 set -e
@@ -19,14 +20,16 @@ CACHE="$HOME/.local/state/waybar/weather_cache"
 
 FULL=0
 WAIT=0
-RELOAD=0
+REFRESH=0
+WAYBAR=0
 
 while [ "${#}" -gt 0 ]; do
 	case "${1}" in
 		-h|--help) show_help && exit 0 ;;
 		-f|--full) FULL=1 ;;
 		-w|--wait) WAIT=1 ;;
-		-r|--reload) RELOAD=1 ;;
+		--waybar) WAYBAR=1 ;;
+		-r|--refresh) REFRESH=1 ;;
 		-*)
 			echo "Unknown flag '${1}'"
 			show_help
@@ -39,8 +42,7 @@ while [ "${#}" -gt 0 ]; do
 	shift 1
 done
 
-
-if [ ! -f "${CACHE}" ] || ! find "${CACHE}" -mmin 60 || [[ "${RELOAD}" == 1 ]]; then
+if [ ! -f "${CACHE}" ] || ! find "${CACHE}" -mmin 60 || [[ "${REFRESH}" == 1 ]]; then
 	short=$(curl -s wttr.in/berlin?format=%f%20%c)
 	full=$(
 		curl -s wttr.in/berlin?format=v2d \
@@ -53,6 +55,11 @@ if [ ! -f "${CACHE}" ] || ! find "${CACHE}" -mmin 60 || [[ "${RELOAD}" == 1 ]]; 
 		echo "${short}" > "${CACHE}"
 		echo "${full}" >> "${CACHE}"
 	fi
+fi
+
+if [[ "${WAYBAR}" == 1 ]]; then
+	echo "{\"text\": \"$(head -n 1 "${CACHE}")\", \"tooltip\": \"$(date -r "${CACHE}" +"%y-%m-%d %H:%M")\"}"
+	exit 0
 fi
 
 if [[ "${FULL}" == 1 ]]; then

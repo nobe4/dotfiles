@@ -75,8 +75,8 @@
 		"on-click": "pavucontrol"
 	},
 	"custom/weather": {
-		"exec": "/home/nobe4/dev/nobe4/dotfiles/bin/weather",
-		"return-type": "text",
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/bin/weather --waybar",
+		"return-type": "json",
 		"interval": 600,
 		"on-click": "kitty --title weather weather --full --wait"
 	},
