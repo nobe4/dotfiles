@@ -1,5 +1,8 @@
 # Defines all nix-related options.
-{ ... }:
+{ lib, pkgs, ... }:
+let
+  darwin = pkgs.stdenv.isDarwin;
+in
 {
   nix.settings = {
     experimental-features = [
@@ -10,9 +13,10 @@
 
   nix.gc = {
     automatic = true;
-    dates = "weekly";
     options = "--delete-older-than 30d";
-  };
+  }
+  // lib.optionalAttrs (!darwin) { dates = "weekly"; }
+  // lib.optionalAttrs darwin { interval = "weekly"; };
 
   ln = [
     [
