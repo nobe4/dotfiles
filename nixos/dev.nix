@@ -10,6 +10,9 @@
   users.users.nobe4.packages = with pkgs; [
     kitty
 
+    entr
+    fzf
+
     difftastic
 
     gh
