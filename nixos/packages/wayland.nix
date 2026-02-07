@@ -55,9 +55,5 @@
       "$DOTFILE_FOLDER/mako"
       "$HOME/.config/mako"
     ]
-    [
-      "$DOTFILE_FOLDER/rofi"
-      "$HOME/.config/rofi"
-    ]
   ];
 }
