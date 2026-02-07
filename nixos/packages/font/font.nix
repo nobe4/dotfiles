@@ -5,7 +5,6 @@ let
 in
 {
   fonts.packages = with pkgs; [
-    # font-awesome
     noto-fonts
     commit-mono
     nerd
