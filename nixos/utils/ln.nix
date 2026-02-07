@@ -28,11 +28,11 @@
       src = builtins.elemAt tuple 0;
       dst = builtins.elemAt tuple 1;
     in
-    # TODO: DOTFILE_FOLDER should be a variable
+    # TODO: DOTFILE_FOLDER should be a nix variable
     ''
       DOTFILE_FOLDER=$HOME/dev/nobe4/dotfiles
       mkdir -p "$(dirname ${dst})"
-      ln --verbose --force --symbolic "${src}" "${dst}" >> /tmp/ln-logs 2>&1
+      ln --verbose --force --symbolic --no-target-directory "${dst}" "${src}" >> /tmp/ln-logs 2>&1
     ''
   ) config.ln;
 
@@ -58,7 +58,7 @@
     in
     ''
       mkdir -p "$(dirname ${dst})"
-      ln --verbose --force --symbolic "${src}" "${dst}" >> /tmp/ln-root-logs 2>&1
+      ln --verbose --force --symbolic --no-target-directory "${dst}" "${src}" >> /tmp/ln-root-logs 2>&1
     ''
   ) config.ln-root;
 }
