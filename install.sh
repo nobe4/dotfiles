@@ -19,9 +19,6 @@ is_macos && {
 	echo "pinentry-program $BREW_PREFIX/bin/pinentry-mac" > "$HOME/.gnupg/gpg-agent.conf"
 	echo 'use-agent' > "$HOME/.gnupg/gpg.conf"
 	chmod 700 "$HOME/.gnupg"
-
-	# hammerspoon
-	link "$DOTFILE_FOLDER/hammerspoon/" "$HOME/.hammerspoon"
 }
 
 # Only linking the config, to keep the other files alive

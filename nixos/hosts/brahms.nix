@@ -1,11 +1,17 @@
+# TODO: how does this work accross machine?
+# I should be able to just link the adequate config to XDG_CONFIG
 # ln -sfv /Users/nobe4/dev/nobe4/dotfiles/nixos/hosts/brahms.nix /etc/nix-darwin/configuration.nix
 { pkgs, ... }:
 
 {
   imports = [
+    ../utils/ln-darwin.nix
+
     ../nix.nix
     ../dev.nix
+
     ../packages/system.nix
+    ../users/nobe4.nix
   ];
 
   networking = {
@@ -37,6 +43,12 @@
       "qbittorrent"
     ];
   };
+  ln = [
+    [
+      "$DOTFILE_FOLDER/hammerspoon/"
+      "$HOME/.hammerspoon"
+    ]
+  ];
 
   system = {
     primaryUser = "nobe4";

@@ -1,22 +1,29 @@
 # Defines all nix-related options.
 { lib, pkgs, ... }:
-let
-  darwin = pkgs.stdenv.isDarwin;
-in
+# TODO: use this instead of custom let in
+with pkgs.stdenv;
 {
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-  };
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
 
-  nix.gc = {
-    automatic = true;
-    options = "--delete-older-than 30d";
-  }
-  // lib.optionalAttrs (!darwin) { dates = "weekly"; }
-  // lib.optionalAttrs darwin { interval = "weekly"; };
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 30d";
+    }
+    // lib.optionalAttrs (!isDarwin) { dates = "weekly"; }
+    // lib.optionalAttrs isDarwin {
+      interval = {
+        Weekday = 7;
+        Hour = 0;
+        Minute = 0;
+      };
+    };
+  };
 
   ln = [
     [
