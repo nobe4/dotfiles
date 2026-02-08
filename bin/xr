@@ -2,12 +2,20 @@
 
 set -e
 
-args=("$@")
+source "$DOTFILE_FOLDER/shell/utils.sh"
 
-if [[ ${#args[@]} -gt 0 && ${args[0]} == "switch" ]]; then
-	echo "'switch' detected, injecting '--install-bootloader'"
-	args+=("--install-bootloader")
-fi
+is_linux && (
+	args=("$@")
 
-sudo nixos-rebuild "${args[@]}"
-[[ -L ./result ]] && rm -f ./result
+	if [[ ${#args[@]} -gt 0 && ${args[0]} == "switch" ]]; then
+		echo "'switch' detected, injecting '--install-bootloader'"
+		args+=("--install-bootloader")
+	fi
+
+	sudo nixos-rebuild "${args[@]}"
+	[[ -L ./result ]] && rm -f ./result
+)
+
+is_macos && (
+	sudo darwin-rebuild switch
+)
