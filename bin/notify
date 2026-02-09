@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$DOTFILE_FOLDER/utils.zsh"
+source "$DOTFILE_FOLDER/shell/utils.sh"
 
 is_macos && {
 	command="display notification \"$1\" with title \"notify\""
@@ -8,5 +8,5 @@ is_macos && {
 }
 
 is_linux && {
-	notify-send "$1" -t 1000
+	notify-send "$@"
 }
