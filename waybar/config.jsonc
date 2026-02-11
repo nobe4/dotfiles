@@ -75,10 +75,10 @@
 		"on-click": "pavucontrol"
 	},
 	"custom/weather": {
-		"exec": "/home/nobe4/dev/nobe4/dotfiles/bin/weather --waybar",
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/bin/weather --waybar --refresh",
 		"return-type": "json",
 		"interval": 600,
-		"on-click": "kitty --title weather weather --full --wait"
+		"on-click": "kitty --title weather weather --wait"
 	},
 	"custom/screen-recording": {
 		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/screen-recording.sh",
