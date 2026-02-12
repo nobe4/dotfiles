@@ -28,39 +28,20 @@ WAIT=0
 REFRESH=0
 WAYBAR=0
 
-weather_to_emoji() {
-	case $1 in
-		"clear")   echo "☀️" ;;
-		"cloud")   echo "☁️" ;;
-		"mist")    echo "  " ;; # can't find a good mist emoji
-		"rain")    echo "🌧️" ;;
-		"snow")    echo "❄️" ;;
-		"drizzle") echo "🌦️" ;;
-		"thunder") echo "⛈️" ;;
-		*) echo "" ;;
-	esac
-}
-
 # From:
 # curl https://www.weatherapi.com/docs/weather_conditions.json | gojq '.[] | "\(.code) \(.day)"'
-condition_to_weather(){
+condition_to_emoji(){
 	case "${1}" in
-		"1000") echo "clear" ;;
-		"1003" | "1006" | "1009") echo "cloud" ;;
-		"1030" | "1135" | "1147") echo "mist" ;;
-		"1066" | "1069" | "1072" | "1114" | "1117" | "1168" | "1171" | "1198" | "1201" | "1204" | "1207" | "1210" | "1213" | "1216" | "1219" | "1222" | "1225" | "1237" | "1249" | "1252" | "1255" | "1258" | "1261" | "1264") echo "snow" ;;
-		"1087" | "1273" | "1276" | "1279" | "1282") echo "thunder" ;;
-		"1063" | "1150" | "1153" | "1180" | "1183") echo "drizzle" ;;
-		"1186" | "1189" | "1192" | "1195" | "1240" | "1243" | "1246") echo "rain" ;;
+		"1000") echo "☀️" ;;
+		"1003" | "1006" | "1009") echo "⛅" ;; # cloud
+		"1030" | "1135" | "1147") echo "☁️" ;; # mist
+		"1066" | "1069" | "1072" | "1114" | "1117" | "1168" | "1171" | "1198" | "1201" | "1204" | "1207" | "1210" | "1213" | "1216" | "1219" | "1222" | "1225" | "1237" | "1249" | "1252" | "1255" | "1258" | "1261" | "1264") echo "❄️" ;; # snow
+		"1087" | "1273" | "1276" | "1279" | "1282") echo "⛈️" ;; # thunder
+		"1063" | "1150" | "1153" | "1180" | "1183") echo "🌦️" ;; # drizzle
+		"1186" | "1189" | "1192" | "1195" | "1240" | "1243" | "1246") echo "🌧️" ;; # rain
 		*) echo "unknown: ${1}" ;;
 	esac
 }
-
-# TODO: refactor
-condition_to_emoji() {
-	weather_to_emoji $(condition_to_weather "${1}")
-}
-
 
 while [ "${#}" -gt 0 ]; do
 	case "${1}" in
@@ -87,40 +68,25 @@ if [ ! -f "${CACHE}" ] || ! find "${CACHE}" -mmin 60 || [[ "${REFRESH}" == 1 ]];
 	curl --silent \
 		-o "${CACHE}" \
 		"http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=3&aqi=no&alerts=no"
-
 fi
 
+feels=$(gojq -r '.current.feelslike_c' "${CACHE}")
+code=$(gojq -r '.current.condition.code' "${CACHE}")
+emoji=$(condition_to_emoji "${code}")
+last_updated=$(gojq -r '.current.last_updated' "${CACHE}")
+
 if [[ "${WAYBAR}" == 1 ]]; then
-	gojq -r '.current | "\(.feelslike_c) \(.condition.code) \(.last_updated)"' "${CACHE}" \
-		| while read -r feels code updated; do
-		emoji=$(condition_to_emoji "${code}")
-		echo "{\"text\": \"${feels}°C ${emoji}\", \"tooltip\": \"${updated}\"}"
-	done
+	echo "{\"text\": \"${feels}°C ${emoji}\", \"tooltip\": \"${last_updated}\"}"
 	exit 0
 fi
 
 # Full from here down
 
-gojq -r '.current | "\(.feelslike_c) \(.condition.code) \(.last_updated)"' "${CACHE}" \
-	| while read -r feels code updated; do
-	emoji=$(condition_to_emoji "${code}")
-	echo "Current: ${feels}°C ${emoji}"
-done
+echo "Current: ${feels}°C ${emoji}"
 printf "\n\n"
 
 # Dates
-printf "    "
-gojq -j '
-.forecast.forecastday[].hour[].time | split(" ") | .[1] as $t |
-	if $t == "23:00" then
-		"       |"
-	elif $t == "06:00" then
-		"      \(.[0])"
-	else
-		""
-	end
-	' "${CACHE}"
-	printf "\n"
+printf "            $(date +"%Y-%m-%d")       |      $(date +%Y-%m-%d -d '+1 day')       |      $(date +%Y-%m-%d -d '+2 day')      \n"
 
 # Temperature graph
 min=$(gojq '[.forecast.forecastday[].hour[].feelslike_c] | min | floor' "${CACHE}")
@@ -176,37 +142,24 @@ cat "${CACHE}" \
 		printf "${emoji}"
 done
 printf "\n"
-
-
+# Print timeline with custom marker for right now.
+current_h=$(date +%H)
 printf "     "
 gojq -j '
-.forecast.forecastday[].hour[].time | split(" ") | .[1] as $t |
-	if $t == "00:00" then
+.forecast.forecastday[0].hour[].time | split(" ")[1] | split(":")[0] as $t |
+	if $t == "'"${current_h}"'" then
+		"\u001b[31m█\u001b[m"
+	elif $t == "00" then
 		"|"
-	elif $t == "12:00" then
+	elif $t == "12" then
 		"+"
 	else
 		"-"
 	end
 ' "${CACHE}"
-printf "\n"
 
-printf "     "
-gojq -j '
-.forecast.forecastday[].hour[].time | split(" ") | .[1] as $t |
-	if $t == "00:00" then
-		"0     "
-	elif $t == "06:00" then
-		"6     "
-	elif $t == "12:00" then
-		"12    "
-	elif $t == "18:00" then
-		"18    "
-	else
-		""
-	end
-' "${CACHE}"
-printf "\n"
+printf "|-----------+-----------|-----------+-----------\n"
+printf "     0     6     12    18    0     6     12    18    0     6     12    18    \n"
 
 # Print precipitation graph
 for i in $(seq 0 0.1 1); do
@@ -224,7 +177,7 @@ for i in $(seq 0 0.1 1); do
 	printf "\n"
 done
 
-	echo "Refreshed at $(gojq -j '.current.last_updated' "${CACHE}")"
+echo "Refreshed at ${last_updated}"
 
 if [[ "${WAIT}" == 1 ]]; then
 	read -k 1 '?press any key to continue'
