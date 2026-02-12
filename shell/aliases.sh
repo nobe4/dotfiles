@@ -3,11 +3,6 @@ is_macos && {
 	alias rm='echo "use /bin/rm or trash"'
 }
 
-is_linux && {
-	alias pbcopy='xsel --clipboard --input'
-	alias pbpaste='xsel --clipboard --output'
-}
-
 alias xs="nix-shell"
 
 alias vi="nvim"
