@@ -32,7 +32,7 @@
     ''
       DOTFILE_FOLDER=$HOME/dev/nobe4/dotfiles
       mkdir -p "$(dirname ${dst})"
-      ln --verbose --force --symbolic --no-target-directory "${dst}" "${src}" >> /tmp/ln-logs 2>&1
+      ln --verbose --force --symbolic --no-target-directory "${src}" "${dst}" >> /tmp/ln-logs 2>&1
     ''
   ) config.ln;
 
@@ -58,7 +58,7 @@
     in
     ''
       mkdir -p "$(dirname ${dst})"
-      ln --verbose --force --symbolic --no-target-directory "${dst}" "${src}" >> /tmp/ln-root-logs 2>&1
+      ln --verbose --force --symbolic --no-target-directory "${src}" "${dst}" >> /tmp/ln-root-logs 2>&1
     ''
   ) config.ln-root;
 }
