@@ -6,11 +6,6 @@ in
   # Required by devenv to update the nix store.
   nix.settings.trusted-users = [ "nobe4" ];
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-  };
-
   # https://wiki.nixos.org/wiki/User_management
   # https://nixos.org/manual/nixos/stable/options#opt-users.users
   # https://nix-darwin.github.io/nix-darwin/manual/#opt-users.users
@@ -24,6 +19,10 @@ in
     isNormalUser = true;
     extraGroups = [ "wheel" ];
   };
+
+  imports = [
+    ../packages/shell/shell.nix
+  ];
 
   ln = [
     [

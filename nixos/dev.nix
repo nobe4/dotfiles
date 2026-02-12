@@ -71,6 +71,12 @@
     marksman
   ];
 
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+  };
+
   ln = [
     [
       "$DOTFILE_FOLDER/nvim/"

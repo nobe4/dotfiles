@@ -3,39 +3,12 @@
 
 source "${DOTFILE_FOLDER}/shell/utils.sh"
 
-setopt ALWAYS_TO_END
-setopt INTERACTIVE_COMMENTS
-setopt AUTO_CD
-setopt AUTO_LIST
-setopt AUTO_MENU
-setopt AUTO_PUSHD
-setopt COMPLETE_IN_WORD
-setopt NO_BEEP
-setopt PROMPT_SUBST
-setopt PUSHD_IGNORE_DUPS
-
-setopt APPEND_HISTORY
-setopt EXTENDED_HISTORY
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_FIND_NO_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
-setopt HIST_VERIFY
-setopt INC_APPEND_HISTORY
-setopt SHARE_HISTORY
-
-# TODO: how to have a common bash/zsh history?
-export HISTFILE="$HOME/.zsh_history"
-# TODO: read docs on those values
-export HISTSIZE=10000000
-export SAVEHIST=10000000
-
 # Colors {
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
 # }
+
 source "${DOTFILE_FOLDER}/shell/prompt.sh"
 
 # Functions {
@@ -66,7 +39,6 @@ zmodload -i zsh/complist
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
 # }
 
-
 # Completion {
 # Enable completion from partial words
 # e.g. ~/men<TAB> => ~/Documents
@@ -86,12 +58,8 @@ bindkey "^E" end-of-line
 
 export FZF_DEFAULT_COMMAND="rg --files --follow"
 
-source "${DOTFILE_FOLDER}/shell/aliases.sh"
-
 # Limit how many files can be used by the current session
 ulimit -S -n 10240
-
-eval "$(direnv hook zsh)"
 
 # Private {
 source "${DOTFILE_FOLDER}/private/.zshrc"
