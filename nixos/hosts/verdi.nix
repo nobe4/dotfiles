@@ -71,13 +71,13 @@
 
       # needed for envsubst
       gettext
+      chromium # Seems that `programs.chromium` doesn't get it done
     ];
   };
 
   # TODO: check why those are programs, and what benefits vs
   # users.users.<x>.packages.
   programs.firefox.enable = true;
-  programs.chromium.enable = true;
 
   security.polkit.enable = true;
   programs.gnupg.agent = {
