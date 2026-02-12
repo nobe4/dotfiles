@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-source "$DOTFILE_FOLDER/shell/utils.sh"
-
-is_macos && {
-	command="display notification \"$1\" with title \"notify\""
-	osascript -e "$command"
-}
-
-is_linux && {
+if command -v notify-send >/dev/null 2>&1; then
 	notify-send "$@"
-}
+elif command -v osascript >/dev/null 2>&1; then
+	osascript -e "display notification \"$1\" with title \"notify\""
+else
+	echo "No notification utility found." >&2
+	exit 1
+fi
