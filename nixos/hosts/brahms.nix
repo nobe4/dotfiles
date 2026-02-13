@@ -4,8 +4,15 @@
 { pkgs, ... }:
 
 {
+  disabledModules = [
+    "programs/zsh"
+    "programs/bash"
+  ];
+
   imports = [
     ../utils/ln-darwin.nix
+    ../modules/darwin/zsh.nix
+    ../modules/darwin/bash.nix
 
     ../nix.nix
     ../dev.nix
@@ -43,6 +50,7 @@
       "qbittorrent"
     ];
   };
+
   ln = [
     [
       "$DOTFILE_FOLDER/hammerspoon/"
@@ -52,6 +60,7 @@
 
   system = {
     primaryUser = "nobe4";
+
     defaults = {
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";
