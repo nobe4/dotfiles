@@ -11,6 +11,7 @@
 #/  -h|--help     Show this help
 #/  -r|--refresh  Force a refresh
 #/     --waybar   Show JSON for waybar
+#/     --simple   Show only simple
 #/  -w|--wait     Wait for a keypress before exiting
 
 set -e
@@ -27,6 +28,7 @@ API_KEY_PATH="$HOME/.local/state/waybar/weather_cache.key"
 WAIT=0
 REFRESH=0
 WAYBAR=0
+SIMPLE=0
 
 # From:
 # curl https://www.weatherapi.com/docs/weather_conditions.json | gojq '.[] | "\(.code) \(.day)"'
@@ -48,6 +50,7 @@ while [ "${#}" -gt 0 ]; do
 		-h|--help) show_help && exit 0 ;;
 		-w|--wait) WAIT=1 ;;
 		--waybar) WAYBAR=1 ;;
+		--simple) SIMPLE=1 ;;
 		-r|--refresh) REFRESH=1 ;;
 		-*)
 			echo "Unknown flag '${1}'"
@@ -77,6 +80,11 @@ last_updated=$(gojq -r '.current.last_updated' "${CACHE}")
 
 if [[ "${WAYBAR}" == 1 ]]; then
 	echo "{\"text\": \"${feels}°C ${emoji}\", \"tooltip\": \"${last_updated}\"}"
+	exit 0
+fi
+
+if [[ "${SIMPLE}" == 1 ]]; then
+	echo "${feels}°C ${emoji}"
 	exit 0
 fi
 
