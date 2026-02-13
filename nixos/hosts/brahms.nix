@@ -6,6 +6,7 @@
 {
   imports = [
     ../utils/ln-darwin.nix
+    ../modules/darwin-shell.nix
 
     ../nix.nix
     ../dev.nix
@@ -43,6 +44,7 @@
       "qbittorrent"
     ];
   };
+
   ln = [
     [
       "$DOTFILE_FOLDER/hammerspoon/"
@@ -52,6 +54,7 @@
 
   system = {
     primaryUser = "nobe4";
+
     defaults = {
       NSGlobalDomain = {
         AppleInterfaceStyle = "Dark";

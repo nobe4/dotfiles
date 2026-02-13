@@ -11,6 +11,7 @@ in
     enableCompletion = false;
 
     setOptions = [
+      # https://zsh.sourceforge.io/Doc/Release/Options.html
       "ALWAYS_TO_END"
       "INTERACTIVE_COMMENTS"
       "AUTO_CD"
@@ -33,12 +34,11 @@ in
       "SHARE_HISTORY"
     ];
 
-    shellAliases = shellAliases;
+    # shellAliases = shellAliases;
   };
 
-  programs.bash = {
-    enable = true;
-    shellAliases = shellAliases;
-  };
-
+  # programs.bash = {
+  #   enable = true;
+  #   shellAliases = shellAliases;
+  # };
 }
