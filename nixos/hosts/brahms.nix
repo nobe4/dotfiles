@@ -6,11 +6,13 @@
 {
   disabledModules = [
     "programs/zsh"
+    "programs/bash"
   ];
 
   imports = [
     ../utils/ln-darwin.nix
-    ../modules/darwin-shell.nix
+    ../modules/darwin/zsh.nix
+    ../modules/darwin/bash.nix
 
     ../nix.nix
     ../dev.nix

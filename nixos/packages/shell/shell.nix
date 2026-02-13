@@ -34,11 +34,11 @@ in
       "SHARE_HISTORY"
     ];
 
-    # shellAliases = shellAliases;
+    shellAliases = shellAliases;
   };
 
-  # programs.bash = {
-  #   enable = true;
-  #   shellAliases = shellAliases;
-  # };
+  programs.bash = {
+    enable = true;
+    shellAliases = shellAliases;
+  };
 }

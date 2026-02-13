@@ -9,9 +9,10 @@ source "$DOTFILE_FOLDER/shell/utils.sh"
 # Disable the global .zshrc and .zshenv files.
 # This is especially important for macOS which likes to include its own into the
 # PATH.
-is_macos && {
-	unsetopt GLOBAL_RCS
-}
+# TODO: check if still needed after moving to darwin
+# is_macos && {
+# 	unsetopt GLOBAL_RCS
+# }
 
 # PATH
 PATH="/usr/local/sbin:$PATH"

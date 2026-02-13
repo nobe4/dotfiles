@@ -14,6 +14,12 @@ let
 
   zshVariables = mapAttrsToList (n: v: ''${n}="${v}"'') cfg.variables;
 
+  zshAliases = builtins.concatStringsSep "\n" (
+    lib.mapAttrsToList (k: v: "alias -- ${k}=${lib.escapeShellArg v}") (
+      lib.filterAttrs (k: v: v != null) cfg.shellAliases
+    )
+  );
+
   fzfCompletion = ./fzf-completion.zsh;
   fzfGit = ./fzf-git.zsh;
   fzfHistory = ./fzf-history.zsh;
@@ -38,6 +44,15 @@ in
         characters.
       '';
       apply = mapAttrs (n: v: if isList v then concatStringsSep ":" v else v);
+    };
+
+    programs.zsh.shellAliases = lib.mkOption {
+      default = { };
+      description = ''
+        Set of aliases for zsh shell, which overrides {option}`environment.shellAliases`.
+        See {option}`environment.shellAliases` for an option format description.
+      '';
+      type = with lib.types; attrsOf (nullOr (either str path));
     };
 
     programs.zsh.shellInit = mkOption {
@@ -253,6 +268,9 @@ in
       ${optionalString cfg.enableFzfCompletion "source ${fzfCompletion}"}
       ${optionalString cfg.enableFzfGit "source ${fzfGit}"}
       ${optionalString cfg.enableFzfHistory "source ${fzfHistory}"}
+
+      # Setup aliases.
+      ${zshAliases}
 
       # Read system-wide modifications.
       if test -f /etc/zshrc.local; then
