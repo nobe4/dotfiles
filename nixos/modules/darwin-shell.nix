@@ -6,6 +6,7 @@
 let
   cfge = config.environment;
   cfg = config.programs.zsh;
+  zshrc = config.environment.etc.zshrc.text;
 in
 {
   options = {
@@ -31,11 +32,17 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    environment.etc.zshrc.text = lib.mkAfter ''
-      ${lib.optionalString (cfg.setOptions != [ ]) ''
-        # Set zsh options.
-        setopt ${builtins.concatStringsSep " " cfg.setOptions}
-      ''}
-    '';
+    environment.etc.zshrc.text =
+      builtins.replaceStrings
+        [ "setopt HIST_IGNORE_DUPS SHARE_HISTORY HIST_FCNTL_LOCK" ]
+        [
+          ''
+            ${lib.optionalString (cfg.setOptions != [ ]) ''
+              # Set zsh options.
+              setopt ${builtins.concatStringsSep " " cfg.setOptions}
+            ''}
+          ''
+        ]
+        zshrc;
   };
 }
