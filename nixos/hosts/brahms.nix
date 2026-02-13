@@ -4,6 +4,10 @@
 { pkgs, ... }:
 
 {
+  disabledModules = [
+    "programs/zsh"
+  ];
+
   imports = [
     ../utils/ln-darwin.nix
     ../modules/darwin-shell.nix
