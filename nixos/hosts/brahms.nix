@@ -12,6 +12,7 @@
 
     ../packages/system.nix
     ../users/nobe4.nix
+    ../modules/bash.nix
   ];
 
   networking = {
