@@ -59,12 +59,10 @@
 	},
 	"pulseaudio": {
 		"cursor": false,
-		"format": "{volume}% {icon} {format_source}",
-		"format-bluetooth": "{volume}% {icon} {format_source}",
-		"format-bluetooth-muted": "muted  {icon} {format_source}",
-		"format-muted": "muted  {format_source}",
-		"format-source": "{volume}% ",
-		"format-source-muted": "",
+		"format": "{volume}% {icon}",
+		"format-bluetooth": "{volume}% {icon} <span color='#3971ed'></span>", // c5
+		"format-bluetooth-muted": "<span color='#cc342b'></span>", // c2
+		"format-muted": "<span color='#cc342b'></span>", // c2
 		"format-icons": {
 			"default": [
 				"",
@@ -75,9 +73,9 @@
 		"on-click": "pavucontrol"
 	},
 	"custom/weather": {
-		"exec": "/home/nobe4/dev/nobe4/dotfiles/bin/weather --waybar --refresh",
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/bin/weather --waybar 2>&1 | tee -a /tmp/waybar-logs",
 		"return-type": "json",
-		"interval": 600,
+		"interval": 60,
 		"on-click": "kitty --title weather weather --wait"
 	},
 	"custom/screen-recording": {
