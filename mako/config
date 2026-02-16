@@ -2,6 +2,7 @@ border-size=0
 margin=0
 max-visible=-1
 anchor=top-right
+height=2000 # shrinks to fit the text
 
 # c16
 text-color=#f1f3f5
