@@ -1,3 +1,4 @@
+# XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
 {
   config,
   lib,

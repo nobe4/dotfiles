@@ -1,3 +1,5 @@
+# Temporary module until https://github.com/nix-darwin/nix-darwin/issues/1695 is
+# solved.
 {
   config,
   lib,

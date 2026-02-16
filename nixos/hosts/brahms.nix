@@ -4,6 +4,7 @@
 { pkgs, ... }:
 
 {
+  # XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
   disabledModules = [
     "programs/zsh"
     "programs/bash"
@@ -11,6 +12,8 @@
 
   imports = [
     ../utils/ln-darwin.nix
+
+    # XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
     ../modules/darwin/zsh.nix
     ../modules/darwin/bash.nix
 
