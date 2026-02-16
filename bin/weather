@@ -33,8 +33,11 @@ SIMPLE=0
 # From:
 # curl https://www.weatherapi.com/docs/weather_conditions.json | gojq '.[] | "\(.code) \(.day)"'
 condition_to_emoji(){
+	code=${1}
+	is_day=${2:-1}
+
 	case "${1}" in
-		"1000") echo "☀️" ;;
+		"1000") [[ "${is_day}" -eq "1" ]] && echo "☀️" || echo "🌙";;
 		"1003" | "1006" | "1009") echo "⛅" ;; # cloud
 		"1030" | "1135" | "1147") echo "☁️" ;; # mist
 		"1066" | "1069" | "1072" | "1114" | "1117" | "1168" | "1171" | "1198" | "1201" | "1204" | "1207" | "1210" | "1213" | "1216" | "1219" | "1222" | "1225" | "1237" | "1249" | "1252" | "1255" | "1258" | "1261" | "1264") echo "❄️" ;; # snow
@@ -64,7 +67,7 @@ while [ "${#}" -gt 0 ]; do
 	shift 1
 done
 
-if [ ! -f "${CACHE}" ] || ! find "${CACHE}" -mmin 60 || [[ "${REFRESH}" == 1 ]]; then
+if [ ! -f "${CACHE}" ] || [ -n "$(find "${CACHE}" -mmin +60 -print -quit)" ] || [[ "${REFRESH}" == 1 ]]; then
 	API_KEY="$(cat "${API_KEY_PATH}")"
 	LOCATION="BERLIN"
 
@@ -75,7 +78,8 @@ fi
 
 feels=$(gojq -r '.current.feelslike_c' "${CACHE}")
 code=$(gojq -r '.current.condition.code' "${CACHE}")
-emoji=$(condition_to_emoji "${code}")
+is_day=$(gojq -r '.current.condition.is_day' "${CACHE}")
+emoji=$(condition_to_emoji "${code}" "${is_day}")
 last_updated=$(gojq -r '.current.last_updated' "${CACHE}")
 
 if [[ "${WAYBAR}" == 1 ]]; then
@@ -144,12 +148,13 @@ for i in $(seq 0 10); do
 # Print weather emojis
 printf "     "
 cat "${CACHE}" \
-	| gojq -r '.forecast.forecastday[].hour[].condition.code' \
-	| while read -r code; read -r discard; do
-		emoji=$(condition_to_emoji "${code}")
+	| gojq -r '.forecast.forecastday[].hour[] | "\(.condition.code) \(.is_day)"' \
+	| while read -r code is_day; read -r discard discard; do
+		emoji=$(condition_to_emoji "${code}" "${is_day}")
 		printf "${emoji}"
 done
 printf "\n"
+
 # Print timeline with custom marker for right now.
 current_h=$(date +%H)
 printf "     "
