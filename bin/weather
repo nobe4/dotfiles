@@ -31,7 +31,7 @@ WAYBAR=0
 SIMPLE=0
 
 # From:
-# curl https://www.weatherapi.com/docs/weather_conditions.json | gojq '.[] | "\(.code) \(.day)"'
+# curl https://www.weatherapi.com/docs/weather_conditions.json | jq '.[] | "\(.code) \(.day)"'
 condition_to_emoji(){
 	code=${1}
 	is_day=${2:-1}
@@ -76,11 +76,11 @@ if [ ! -f "${CACHE}" ] || [ -n "$(find "${CACHE}" -mmin +60 -print -quit)" ] || 
 		"http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=3&aqi=no&alerts=no"
 fi
 
-feels=$(gojq -r '.current.feelslike_c' "${CACHE}")
-code=$(gojq -r '.current.condition.code' "${CACHE}")
-is_day=$(gojq -r '.current.condition.is_day' "${CACHE}")
+feels=$(jq -r '.current.feelslike_c' "${CACHE}")
+code=$(jq -r '.current.condition.code' "${CACHE}")
+is_day=$(jq -r '.current.condition.is_day' "${CACHE}")
 emoji=$(condition_to_emoji "${code}" "${is_day}")
-last_updated=$(gojq -r '.current.last_updated' "${CACHE}")
+last_updated=$(jq -r '.current.last_updated' "${CACHE}")
 
 if [[ "${WAYBAR}" == 1 ]]; then
 	echo "{\"text\": \"${feels}°C ${emoji}\", \"tooltip\": \"${last_updated}\"}"
@@ -101,9 +101,9 @@ printf "\n\n"
 printf "            $(date +"%Y-%m-%d")       |      $(date +%Y-%m-%d -d '+1 day')       |      $(date +%Y-%m-%d -d '+2 day')      \n"
 
 # Temperature graph
-min=$(gojq '[.forecast.forecastday[].hour[].feelslike_c] | min | floor' "${CACHE}")
-max=$(gojq '[.forecast.forecastday[].hour[].feelslike_c] | max | ceil' "${CACHE}")
-div=$(gojq '[.forecast.forecastday[].hour[].feelslike_c] | ((max | ceil) - (min | floor))/10.0' "${CACHE}")
+min=$(jq '[.forecast.forecastday[].hour[].feelslike_c] | min | floor' "${CACHE}")
+max=$(jq '[.forecast.forecastday[].hour[].feelslike_c] | max | ceil' "${CACHE}")
+div=$(jq '[.forecast.forecastday[].hour[].feelslike_c] | ((max | ceil) - (min | floor))/10.0' "${CACHE}")
 
 for i in $(seq 0 10); do
 	# Floating point here requires zsh
@@ -121,8 +121,8 @@ for i in $(seq 0 10); do
 		printf "     "
 	fi
 
-	# shellcheck disable=SC2016 # $f is the gojq variable
-	gojq -j '
+	# shellcheck disable=SC2016 # $f is the jq variable
+	jq -j '
 	.forecast.forecastday[].hour[].feelslike_c as $f |
 		if ('"${low}"' <= $f and $f <= '"${high}"') then
 			if $f <= -5 then
@@ -148,7 +148,7 @@ for i in $(seq 0 10); do
 # Print weather emojis
 printf "     "
 cat "${CACHE}" \
-	| gojq -r '.forecast.forecastday[].hour[] | "\(.condition.code) \(.is_day)"' \
+	| jq -r '.forecast.forecastday[].hour[] | "\(.condition.code) \(.is_day)"' \
 	| while read -r code is_day; read -r discard discard; do
 		emoji=$(condition_to_emoji "${code}" "${is_day}")
 		printf "${emoji}"
@@ -158,7 +158,7 @@ printf "\n"
 # Print timeline with custom marker for right now.
 current_h=$(date +%H)
 printf "     "
-gojq -j '
+jq -j '
 .forecast.forecastday[0].hour[].time | split(" ")[1] | split(":")[0] as $t |
 	if $t == "'"${current_h}"'" then
 		"\u001b[31m█\u001b[m"
@@ -178,8 +178,8 @@ printf "     0     6     12    18    0     6     12    18    0     6     12    1
 for i in $(seq 0 0.1 1); do
 	printf "     "
 
-	# shellcheck disable=SC2016 # $f is the gojq variable
-	gojq -j '
+	# shellcheck disable=SC2016 # $f is the jq variable
+	jq -j '
 	.forecast.forecastday[].hour[].precip_mm as $f |
 		if ('"${i}"' < $f) then
 			"\u001b[34m█\u001b[m"

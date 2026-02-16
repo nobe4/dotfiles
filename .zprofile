@@ -6,20 +6,13 @@
 export DOTFILE_FOLDER="${HOME:?}/dev/nobe4/dotfiles"
 source "$DOTFILE_FOLDER/shell/utils.sh"
 
-# Disable the global .zshrc and .zshenv files.
-# This is especially important for macOS which likes to include its own into the
-# PATH.
-# TODO: check if still needed after moving to darwin
-# is_macos && {
-# 	unsetopt GLOBAL_RCS
-# }
-
 # PATH
 PATH="/usr/local/sbin:$PATH"
 PATH="/usr/local/bin:$PATH"
+PATH="/usr/local/bin:$PATH"
+PATH="/usr/bin:$PATH"
 PATH="$DOTFILE_FOLDER/bin/commands:$DOTFILE_FOLDER/bin:$PATH"
 PATH="$DOTFILE_FOLDER/private/bin:$DOTFILE_FOLDER/private/bin/commands:$PATH"
-PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 PATH="$HOME/.local/kitty.app/bin:$PATH"
 
 is_macos && { BREW_PREFIX="/opt/homebrew/" }

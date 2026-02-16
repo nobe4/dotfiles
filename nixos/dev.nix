@@ -30,45 +30,19 @@
 
     universal-ctags
 
-    # Eventually, most of those should live in the devenv.
-
-    # Build tools
-    gnumake
-    gcc
-
-    # Go
-    go
-    gopls
-    golangci-lint
-
-    # Prose
-    vale
-    vale-ls
-
-    # Lua
-    lua-language-server
-
-    # YAML
-    yaml-language-server
-    yamlfmt
-    yamllint
-
-    # Python
-    python314
-    black
-
-    # Bash
-    shellcheck
-    bash-language-server
-
-    # Nix
-    nixd
-    nixfmt-rfc-style
-
-    # Nodejs
-    nodejs_24
-
-    marksman
+    # # Build tools
+    # gnumake
+    # gcc
+    #
+    # # Go
+    # go
+    # gopls
+    # golangci-lint
+    #
+    # # YAML
+    # yaml-language-server
+    # yamlfmt
+    # yamllint
   ];
 
   programs.direnv = {
@@ -113,6 +87,13 @@
     [
       "$DOTFILE_FOLDER/gh-config.yml"
       "$HOME/.config/gh/config.yml"
+    ]
+  ];
+
+  ln-root = [
+    [
+      "${pkgs.gojq}/bin/gojq"
+      "/usr/bin/jq"
     ]
   ];
 }
