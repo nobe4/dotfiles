@@ -1,34 +1,29 @@
 # Defines all dependencies for development work.
 { pkgs, ... }:
 {
-  # TODO: how to ling `gojq` to `jq` for global use?
-  # Old way:
-  # # Making `jq` available for all process tho it's installed as `gojq`.
-  # # This is somewhat easier than an alias or a function.
-  # ln -s "${BREW_PREFIX}/bin/gojq" "${BREW_PREFIX}/bin/jq"
-
   users.users.nobe4.packages = with pkgs; [
     kitty
 
     entr
     fzf
 
+    git
     difftastic
-
     gh
 
     fzf
     ripgrep
+    pv
+    universal-ctags
 
     direnv
     devenv
 
     tldr
     gojq
+    yq-go # Doesn't support all that gojq do, but is usefull for non-json languages
 
-    pv
-
-    universal-ctags
+    nodejs # needed globally to run the copilot lsp
 
     # # Build tools
     # gnumake
