@@ -15,8 +15,6 @@ PATH="$DOTFILE_FOLDER/bin/commands:$DOTFILE_FOLDER/bin:$PATH"
 PATH="$DOTFILE_FOLDER/private/bin:$DOTFILE_FOLDER/private/bin/commands:$PATH"
 PATH="$HOME/.local/kitty.app/bin:$PATH"
 
-is_macos && { BREW_PREFIX="/opt/homebrew/" }
-
 # macos Applications
 is_macos && {
   if [[ ! "$PATH" == *Applications* ]]; then

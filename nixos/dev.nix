@@ -6,6 +6,7 @@
 
     entr
     fzf
+    fd
 
     git
     difftastic

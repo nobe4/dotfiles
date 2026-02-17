@@ -21,6 +21,8 @@
     ../dev.nix
 
     ../packages/system.nix
+    ../packages/1password.nix
+
     ../users/nobe4.nix
   ];
 
