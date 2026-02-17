@@ -21,10 +21,21 @@
     devenv
 
     tldr
-    gojq
-    yq-go # Doesn't support all that gojq do, but is usefull for non-json languages
 
     nodejs # needed globally to run the copilot lsp
+
+    gojq
+    # Make gojq available as jq to all scripts
+    (stdenv.mkDerivation {
+      name = "jq";
+      buildCommand = ''
+        mkdir -p $out/bin
+        ln -s ${pkgs.gojq}/bin/gojq $out/bin/jq
+      '';
+    })
+
+    # Doesn't support all that gojq do, but is usefull for non-json languages.
+    yq-go
 
     # # Build tools
     # gnumake
@@ -83,13 +94,6 @@
     [
       "$DOTFILE_FOLDER/gh-config.yml"
       "$HOME/.config/gh/config.yml"
-    ]
-  ];
-
-  ln-root = [
-    [
-      "${pkgs.gojq}/bin/gojq"
-      "/usr/bin/jq"
     ]
   ];
 }
