@@ -37,6 +37,9 @@
     # Doesn't support all that gojq do, but is usefull for non-json languages.
     yq-go
 
+    nixd
+    nixfmt
+
     # # Build tools
     # gnumake
     # gcc
