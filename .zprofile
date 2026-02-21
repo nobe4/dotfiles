@@ -4,7 +4,6 @@
 
 # Setup
 export DOTFILE_FOLDER="${HOME:?}/dev/nobe4/dotfiles"
-source "$DOTFILE_FOLDER/shell/utils.sh"
 
 # PATH
 PATH="/usr/local/sbin:$PATH"

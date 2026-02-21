@@ -2,8 +2,6 @@
 
 set -e
 
-source "$DOTFILE_FOLDER/shell/utils.sh"
-
 is_linux && (
 	args=("$@")
 

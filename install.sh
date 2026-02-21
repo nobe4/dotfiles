@@ -5,7 +5,6 @@
 
 # Setup {
 export DOTFILE_FOLDER="${HOME:?}/dev/nobe4/dotfiles"
-source "$DOTFILE_FOLDER/shell/utils.sh"
 # }
 
 # TODO: port and verify this

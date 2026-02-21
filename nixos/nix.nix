@@ -1,6 +1,5 @@
 # Defines all nix-related options.
 { lib, pkgs, ... }:
-# TODO: use this instead of custom let in
 with pkgs.stdenv;
 {
   nix = {

@@ -6,6 +6,8 @@ let
   };
 in
 {
+
+  imports = [ ../is_linux.nix ];
   programs.zsh = {
     enable = true;
     enableCompletion = false;

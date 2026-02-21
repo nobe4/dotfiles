@@ -1,8 +1,6 @@
 #!/usr/bin/env zsh
 # shellcheck shell=bash
 
-source "${DOTFILE_FOLDER}/shell/utils.sh"
-
 # Colors {
 export CLICOLOR=1
 export LSCOLORS=exfxcxdxbxegedabagacad

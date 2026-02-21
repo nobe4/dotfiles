@@ -44,6 +44,7 @@
     #     + install brew from https://brew.sh/
 
     enable = true;
+    # TODO: check what can be removed here
     casks = [
       "firefox"
       "1password"

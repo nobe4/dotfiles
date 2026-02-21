@@ -1,6 +1,10 @@
 # Defines all dependencies for development work.
 { pkgs, ... }:
 {
+  imports = [
+    ./packages/jq.nix
+  ];
+
   users.users.nobe4.packages = with pkgs; [
     kitty
 
@@ -22,21 +26,10 @@
 
     tldr
 
-    nodejs # needed globally to run the copilot lsp
+    # Needed globally to run the copilot lsp
+    nodejs
 
-    gojq
-    # Make gojq available as jq to all scripts
-    (stdenv.mkDerivation {
-      name = "jq";
-      buildCommand = ''
-        mkdir -p $out/bin
-        ln -s ${pkgs.gojq}/bin/gojq $out/bin/jq
-      '';
-    })
-
-    # Doesn't support all that gojq do, but is usefull for non-json languages.
-    yq-go
-
+    # Needed globally to format devenv files
     nixd
     nixfmt
 

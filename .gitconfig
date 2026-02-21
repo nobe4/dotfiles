@@ -17,7 +17,6 @@
 	program = gpg
 
 [core]
-	hooksPath = ~/dev/nobe4/dotfiles/git-hooks
 	editor = nvim
 	excludesFile = ~/.gitignore_global
 

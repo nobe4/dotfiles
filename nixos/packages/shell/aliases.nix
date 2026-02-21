@@ -1,6 +1,5 @@
 { lib, pkgs, ... }:
 {
-
   "ls" = "ls --color=auto";
   "ll" = "ls -la";
 

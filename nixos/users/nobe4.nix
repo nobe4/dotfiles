@@ -1,7 +1,5 @@
 { pkgs, lib, ... }:
-let
-  darwin = pkgs.stdenv.isDarwin;
-in
+with pkgs.stdenv;
 {
   # Required by devenv to update the nix store.
   nix.settings.trusted-users = [ "nobe4" ];
@@ -12,16 +10,16 @@ in
   users.users.nobe4 = {
     description = "nobe4";
     shell = pkgs.zsh;
-    home = if darwin then "/Users/nobe4" else "/home/nobe4";
+    home = if isDarwin then "/Users/nobe4" else "/home/nobe4";
   }
   # Linux-only
-  // lib.optionalAttrs (!darwin) {
+  // lib.optionalAttrs (!isDarwin) {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
   };
 
   imports = [
-    ../packages/shell/shell.nix
+    ../packages/shell
   ];
 
   ln = [

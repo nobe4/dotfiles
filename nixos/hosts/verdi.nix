@@ -13,7 +13,7 @@
     ../packages/gaming.nix
     ../packages/1password.nix
     ../packages/keyboard.nix
-    ../packages/font/font.nix
+    ../packages/font
     ../packages/network.nix
 
     ../nix.nix
