@@ -218,9 +218,10 @@ alias gpg='GPG_TTY="$(tty)" gpg'
 ulimit -S -n 10240
 
 eval "$(mise activate zsh)"
+eval "$(direnv hook zsh)"
 
 # Restart espanso
-(&>/dev/null espanso restart &)
+# (&>/dev/null espanso restart &)
 # }
 
 # Private {

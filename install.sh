@@ -81,11 +81,6 @@ fi
 # }
 
 # Ruby {
-# Configure ruby with rbenv
-ruby_latest="$(rbenv install -l | grep -v - | tail -1)"
-rbenv install --skip-existing "$ruby_latest"
-rbenv global "$ruby_latest"
-
 link "$DOTFILE_FOLDER/.rubocop.yml" "$HOME/.rubocop.yml"
 link "$DOTFILE_FOLDER/.pryrc" "$HOME/.pryrc"
 # }
