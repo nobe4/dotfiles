@@ -3,7 +3,7 @@ vim.opt.number = true
 vim.opt.list = true
 vim.opt.listchars = { tab = "· ", trail = "·", extends = "›", precedes = "‹", nbsp = "·" }
 vim.opt.fillchars = { vert = " " }
-vim.opt.emoji = false -- Have all emojis take double-width, so it's possible to work with them.
+vim.opt.emoji = true
 vim.opt.wrap = false
 vim.opt.scrolloff = 5
 vim.opt.sidescroll = 1

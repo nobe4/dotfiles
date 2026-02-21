@@ -76,14 +76,24 @@ func Test${1:Name}(t *testing.T) {
 	})
 }
 ]]),
-			ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {${2:t.Skip("TODO")}})'),
+			ls.parser.parse_snippet("run", [[
+t.Run("$1", func(t *testing.T) {
+	t.Parallel()
+
+	${2:t.Skip("TODO")}
+})
+]]),
 			ls.parser.parse_snippet("test_cases", [[
 tests := []struct{
 	// TODO
 }{}
 
 for _, test := range tests {
-	$1
+	t.Run("", func(t *testing.T) {
+		t.Parallel()
+
+		${1:t.Skip("TODO")}
+	})
 }
 ]]),
 		})

@@ -191,6 +191,9 @@ M.telescope = function(ts_builtin)
 	map("n", [[\]], ts_builtin.grep_string)
 	map("n", "|", function() ts_builtin.live_grep({ additional_args = { "-j1" } }) end)
 
+	-- see lsp's mappings
+	map("n", "grr", ts_builtin.lsp_references)
+
 	-- Notational
 	-- TODO: find a way to search for the filename as well
 	-- map("n", "<Leader>n", function()
@@ -213,10 +216,11 @@ end
 
 M.dap = function(dap, widgets)
 	map("n", "<leader>db", dap.toggle_breakpoint)
-	map("n", "<leader>dd", function()
-		dap.continue()
-		dap.repl.toggle({ height = 10 })
-	end)
+	map("n", "<leader>dc", dap.continue)
+	map("n", "<leader>di", dap.step_into)
+	map("n", "<leader>dn", dap.step_over) -- "next"
+	map("n", "<leader>do", dap.step_out)
+	map("n", "<leader>dk", widgets.hover)
 end
 
 return M
