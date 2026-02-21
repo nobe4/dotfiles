@@ -78,7 +78,7 @@ function p_green() { printf "\033[0;32m✓ %s\033[0m\n" "${*}"; }
 function p_yellow() { printf "\033[0;33m* %s\033[0m\n" "${*}"; }
 
 function check_ci_green(){
-	gh pr checks "${URL}" && checks_passed=0 || checks_passed=1
+	GH_PAGER='cat' gh pr checks "${URL}" && checks_passed=0 || checks_passed=1
 
 	if [ "${checks_passed}" == "0" ]; then
 		p_green "PR CI is green"
@@ -90,7 +90,7 @@ function check_ci_green(){
 }
 
 function check_ci_completed(){
-	gh pr checks "${URL}"
+	GH_PAGER='cat' gh pr checks "${URL}"
 	gh pr view --json statusCheckRollup \
 		-q '.statusCheckRollup[].status' "${URL}" \
 		| grep 'IN_PROGRESS' >/dev/null && ci_completed=1 || ci_completed=0
