@@ -1,4 +1,5 @@
 local cmd = vim.api.nvim_create_user_command
+local auc = vim.api.nvim_create_autocmd
 local opts = { bang = true }
 local M = {}
 
@@ -32,7 +33,6 @@ cmd("Mouse",
 	]])
 	end, opts)
 
-cmd("Format", function() vim.lsp.buf.formatting() end, opts)
 cmd("Browse", function(o) vim.fn.system { "open", o.fargs[1] } end, { nargs = 1, bang = true })
 
 cmd("Todo", "silent grep -e TODO -e XXX -e FIXME", opts)
@@ -107,9 +107,20 @@ cmd("Glow",
 		cmd("GlowStop", cleanup, opts)
 	end, opts)
 
+-- auc({ "BufWritePost" }, {
+-- 	callback = function()
+-- 		vim.system({ "tags" }, { detach = true })
+-- 	end,
+-- })
 
 M.telescope = function(ts_builtin)
 	vim.api.nvim_create_user_command("LSPReferences", ts_builtin.lsp_references, { bang = true })
+	vim.api.nvim_create_user_command("LSPImplementations", ts_builtin.lsp_references, { bang = true })
+end
+
+M.lsp = function()
+	cmd("LspInfo", ":checkhealth vim.lsp", opts)
+	cmd("Format", function() vim.lsp.buf.formatting() end, opts)
 end
 
 if vim.g.neovide then

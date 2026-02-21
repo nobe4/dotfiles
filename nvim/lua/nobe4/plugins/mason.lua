@@ -18,6 +18,7 @@ return {
 			})
 
 			local ensured_installed_packages = {
+				-- TODO: check which can be removed and added to nix
 				"goimports",
 
 				"css-lsp",

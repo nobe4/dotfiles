@@ -165,8 +165,7 @@ map("n", "go", function()
 		return
 	end
 
-	-- default to open
-	vim.cmd("!open " .. word)
+	print("Don't know how to open:", word)
 end)
 
 -- LSP
@@ -177,6 +176,7 @@ M.lsp_mappings = function(bufnr)
 	map("n", "gd", vim.lsp.buf.definition, bufopts)
 	-- [l]sp [t]oggle diagnostics
 	map("n", "glt", function() vim.diagnostic.enable(not vim.diagnostic.is_enabled()) end, bufopts)
+
 	deprecated("n", "gr", "grn")
 	deprecated("n", "gR", "grr")
 	deprecated("n", "gc", "gra")
@@ -190,6 +190,9 @@ M.telescope = function(ts_builtin)
 	map("n", "<Leader>?", ts_builtin.help_tags)
 	map("n", [[\]], ts_builtin.grep_string)
 	map("n", "|", function() ts_builtin.live_grep({ additional_args = { "-j1" } }) end)
+
+	-- see lsp's mappings
+	map("n", "grr", ts_builtin.lsp_references)
 
 	-- Notational
 	-- TODO: find a way to search for the filename as well
@@ -209,6 +212,15 @@ M.obsidian = function(ev)
 	map("n", "<leader>b", function()
 			return require("obsidian").util.smart_action()
 		end, { buffer = ev.buf })
+end
+
+M.dap = function(dap, widgets)
+	map("n", "<leader>db", dap.toggle_breakpoint)
+	map("n", "<leader>dc", dap.continue)
+	map("n", "<leader>di", dap.step_into)
+	map("n", "<leader>dn", dap.step_over) -- "next"
+	map("n", "<leader>do", dap.step_out)
+	map("n", "<leader>dk", widgets.hover)
 end
 
 return M

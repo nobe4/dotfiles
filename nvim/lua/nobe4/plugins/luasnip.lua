@@ -76,14 +76,24 @@ func Test${1:Name}(t *testing.T) {
 	})
 }
 ]]),
-			ls.parser.parse_snippet("run", 't.Run("$1", func(t *testing.T) {${2:t.Skip("TODO")}})'),
+			ls.parser.parse_snippet("run", [[
+t.Run("$1", func(t *testing.T) {
+	t.Parallel()
+
+	${2:t.Skip("TODO")}
+})
+]]),
 			ls.parser.parse_snippet("test_cases", [[
 tests := []struct{
 	// TODO
 }{}
 
 for _, test := range tests {
-	$1
+	t.Run("", func(t *testing.T) {
+		t.Parallel()
+
+		${1:t.Skip("TODO")}
+	})
 }
 ]]),
 		})
@@ -92,6 +102,7 @@ for _, test := range tests {
 			ls.parser.parse_snippet("missing", "fix: remove missing team"),
 			ls.parser.parse_snippet("empty", "fix: remove empty team"),
 			ls.parser.parse_snippet("checksums", "chore: rebuild checksums"),
+			ls.parser.parse_snippet("flf", "fix(lint): format"),
 
 			-- https://www.conventionalcommits.org/en/v1.0.0/#specification
 			ms(
