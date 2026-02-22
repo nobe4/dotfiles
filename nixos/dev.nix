@@ -47,6 +47,10 @@
     # yaml-language-server
     # yamlfmt
     # yamllint
+    #
+    # Web
+    # vscode-langservers-extracted
+    # emmet-language-server
   ];
 
   programs.direnv = {
