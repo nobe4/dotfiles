@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  vnc = {
+  vnc-server = {
     addr = "127.0.0.1";
     port = 5900;
   };
@@ -16,11 +16,11 @@ in
     novnc
 
     (pkgs.writeShellScriptBin "vnc-start" ''
-      systemctl --user start vnc
+      systemctl --user start vnc-server
       systemctl --user start vnc-client
     '')
     (pkgs.writeShellScriptBin "vnc-stop" ''
-      systemctl --user stop vnc
+      systemctl --user stop vnc-server
       systemctl --user stop vnc-client
     '')
   ];
@@ -30,14 +30,14 @@ in
   ];
 
   systemd.user.services = {
-    vnc = {
+    vnc-server = {
       description = "VNC server";
       serviceConfig = {
         ExecStart = ''
           ${pkgs.wayvnc}/bin/wayvnc \
             --show-performance \
             --render-cursor \
-            ${vnc.addr} ${toString vnc.port}
+            ${vnc-server.addr} ${toString vnc-server.port}
         '';
       };
     };
@@ -51,7 +51,7 @@ in
         ExecStart = ''
           ${pkgs.novnc}/bin/novnc \
             --listen ${vnc-client.addr}:${toString vnc-client.port} \
-            --vnc ${vnc.addr}:${toString vnc.port} \
+            --vnc ${vnc-server.addr}:${toString vnc-server.port} \
             --file-only
         '';
       };
