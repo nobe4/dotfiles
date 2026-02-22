@@ -15,13 +15,8 @@ in
     wayvnc
     novnc
 
-    (pkgs.writeShellScriptBin "vnc-start" ''
-      systemctl --user start vnc-server
-      systemctl --user start vnc-client
-    '')
-    (pkgs.writeShellScriptBin "vnc-stop" ''
-      systemctl --user stop vnc-server
-      systemctl --user stop vnc-client
+    (pkgs.writeShellScriptBin "vnc" ''
+      systemctl --user ''${1:?} vnc-server vnc-client
     '')
   ];
 
