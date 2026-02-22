@@ -15,6 +15,7 @@
     ../packages/keyboard.nix
     ../packages/font
     ../packages/network.nix
+    ../packages/vnc.nix
 
     ../service/check_vitamines_availability.nix
 
