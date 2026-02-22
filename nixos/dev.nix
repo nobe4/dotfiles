@@ -1,9 +1,12 @@
 # Defines all dependencies for development work.
-{ pkgs, ... }:
+{ pkgs, config, ... }:
+let
+  copy = import ./packages/copy.nix { inherit pkgs config; };
+  paste = import ./packages/paste.nix { inherit pkgs config; };
+in
 {
   imports = [
     ./packages/jq.nix
-    ./packages/copy-paste.nix
   ];
 
   users.users.nobe4.packages = with pkgs; [
@@ -26,6 +29,9 @@
     devenv
 
     tldr
+
+    copy
+    paste
 
     # Needed globally to run the copilot lsp
     nodejs
