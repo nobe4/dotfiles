@@ -3,6 +3,7 @@
 {
   imports = [
     ./packages/jq.nix
+    ./packages/copy-paste.nix
   ];
 
   users.users.nobe4.packages = with pkgs; [
