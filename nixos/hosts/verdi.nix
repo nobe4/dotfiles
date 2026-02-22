@@ -16,6 +16,8 @@
     ../packages/font
     ../packages/network.nix
 
+    ../service/check_vitamines_availability.nix
+
     ../nix.nix
     ../dev.nix
     ../media.nix

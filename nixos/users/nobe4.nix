@@ -1,4 +1,12 @@
-{ pkgs, lib, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  notify = import ../packages/notify.nix { inherit pkgs config; };
+in
 with pkgs.stdenv;
 {
   # Required by devenv to update the nix store.
@@ -11,6 +19,10 @@ with pkgs.stdenv;
     description = "nobe4";
     shell = pkgs.zsh;
     home = if isDarwin then "/Users/nobe4" else "/home/nobe4";
+
+    packages = [
+      notify
+    ];
   }
   # Linux-only
   // lib.optionalAttrs (!isDarwin) {
