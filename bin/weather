@@ -3,6 +3,8 @@
 #/ Usage: weather [FLAG]
 #/
 #/ Powered by https://www.weatherapi.com/
+#/ TODO: if it's not working, convert to use
+#https://docs.tomorrow.io/reference/weather-forecast
 #/
 #/ Cache:   ${CACHE}
 #/ Api Key: ${API_KEY_PATH}
@@ -12,6 +14,7 @@
 #/  -r|--refresh  Force a refresh
 #/     --waybar   Show JSON for waybar
 #/     --simple   Show only simple
+#/     --debug    set -x /!\ will log secrets
 #/  -w|--wait     Wait for a keypress before exiting
 
 set -e
@@ -54,6 +57,7 @@ while [ "${#}" -gt 0 ]; do
 		-w|--wait) WAIT=1 ;;
 		--waybar) WAYBAR=1 ;;
 		--simple) SIMPLE=1 ;;
+		--debug) set -x ;;
 		-r|--refresh) REFRESH=1 ;;
 		-*)
 			echo "Unknown flag '${1}'"
