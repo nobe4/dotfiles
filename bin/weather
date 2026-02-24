@@ -32,6 +32,7 @@ WAIT=0
 REFRESH=0
 WAYBAR=0
 SIMPLE=0
+CURL_VERBOSITY="--silent"
 
 # From:
 # curl https://www.weatherapi.com/docs/weather_conditions.json | jq '.[] | "\(.code) \(.day)"'
@@ -57,7 +58,10 @@ while [ "${#}" -gt 0 ]; do
 		-w|--wait) WAIT=1 ;;
 		--waybar) WAYBAR=1 ;;
 		--simple) SIMPLE=1 ;;
-		--debug) set -x ;;
+		--debug)
+			set -x
+			CURL_VERBOSITY="--verbose"
+			;;
 		-r|--refresh) REFRESH=1 ;;
 		-*)
 			echo "Unknown flag '${1}'"
@@ -75,7 +79,7 @@ if [ ! -f "${CACHE}" ] || [ -n "$(find "${CACHE}" -mmin +60 -print -quit)" ] || 
 	API_KEY="$(cat "${API_KEY_PATH}")"
 	LOCATION="BERLIN"
 
-	curl --silent \
+	curl "${CURL_VERBOSITY}" \
 		-o "${CACHE}" \
 		"http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=3&aqi=no&alerts=no"
 fi
