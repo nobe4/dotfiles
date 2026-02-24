@@ -1,16 +1,18 @@
-{ config, pkgs, ... }:
-pkgs.writeShellScriptBin "notify" (
-  if pkgs.stdenv.isDarwin then
-    ''
+{ pkgs, ... }:
+if pkgs.stdenv.isDarwin then
+  pkgs.writeShellApplication {
+    name = "notify";
+    text = ''
       osascript -e "display notification \"$1\" with title \"notify\""
-    ''
-  else if config.programs.hyprland.enable then
-    ''
-      ${pkgs.libnotify}/bin/notify-send "$@"
-    ''
-  else
-    ''
-      echo "notify not supported"
-      exit 1
-    ''
-)
+    '';
+  }
+else if pkgs ? libnotify then
+  pkgs.writeShellApplication {
+    name = "paste";
+    runtimeInputs = [ pkgs.libnotify ];
+    text = ''
+      notify-send "$@"
+    '';
+  }
+else
+  builtins.throw "notify not supported"

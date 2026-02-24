@@ -1,16 +1,14 @@
-{ config, pkgs, ... }:
-pkgs.writeShellScriptBin "paste" (
-  if pkgs.stdenv.isDarwin then
-    ''
-      pbpaste
-    ''
-  else if config.programs.hyprland.enable then
-    ''
-      ${pkgs.wl-clipboard}/bin/wl-paste
-    ''
-  else
-    ''
-      echo "paste not supported"
-      exit 1
-    ''
-)
+{ pkgs, ... }:
+if pkgs.stdenv.isDarwin then
+  pkgs.writeShellApplication {
+    name = "paste";
+    text = "pbpaste";
+  }
+else if pkgs ? wl-clipboard then
+  pkgs.writeShellApplication {
+    name = "paste";
+    runtimeInputs = [ pkgs.wl-clipboard ];
+    text = "wl-paste";
+  }
+else
+  builtins.throw "paste is not supported"
