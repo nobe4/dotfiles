@@ -11,10 +11,4 @@ else if config.programs.hyprland.enable then
     text = "wl-copy";
   }
 else
-  pkgs.writeShellApplication {
-    name = "copy";
-    text = ''
-      echo "copy not supported"
-      exit 1
-    '';
-  }
+  builtins.throw "copy is not supported"
