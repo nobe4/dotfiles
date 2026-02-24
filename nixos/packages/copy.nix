@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 if pkgs.stdenv.isDarwin then
   pkgs.writeShellApplication {
     name = "copy";
     text = "pbcopy";
   }
-else if config.programs.hyprland.enable then
+else if pkgs ? wl-clipboard then
   pkgs.writeShellApplication {
     name = "copy";
     runtimeInputs = [ pkgs.wl-clipboard ];
