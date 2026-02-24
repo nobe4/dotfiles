@@ -13,7 +13,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		local bufnr = args.buf
 
 		-- Show diagnosis float text
-		vim.diagnostic.config({ virtual_lines = true })
+		vim.diagnostic.config({
+			virtual_text = {
+				prefix = '.',
+				virt_text_pos = 'right_align',
+			},
+			signs = true,
+			underline = true,
+			update_in_insert = false,
+			severity_sort = true,
+		})
 
 		-- Enable completion triggered by <c-x><c-o>
 		vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
