@@ -1,9 +1,5 @@
 # Defines all dependencies for development work.
 { pkgs, config, ... }:
-let
-  copy = import ./packages/copy.nix { inherit pkgs config; };
-  paste = import ./packages/paste.nix { inherit pkgs config; };
-in
 {
   imports = [
     ./packages/jq.nix
@@ -30,8 +26,8 @@ in
 
     tldr
 
-    copy
-    paste
+    (import ./packages/copy.nix { inherit pkgs config; })
+    (import ./packages/paste.nix { inherit pkgs config; })
 
     # Needed globally to run the copilot lsp
     nodejs

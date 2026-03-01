@@ -5,9 +5,8 @@
   ...
 }:
 let
-  notify = import ../packages/notify.nix { inherit pkgs config; };
+  isDarwin = pkgs.stdenv.isDarwin;
 in
-with pkgs.stdenv;
 {
   # Required by devenv to update the nix store.
   nix.settings.trusted-users = [ "nobe4" ];
@@ -21,7 +20,7 @@ with pkgs.stdenv;
     home = if isDarwin then "/Users/nobe4" else "/home/nobe4";
 
     packages = [
-      notify
+      (import ../packages/notify.nix { inherit pkgs config; })
     ];
   }
   # Linux-only
