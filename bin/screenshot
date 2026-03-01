@@ -13,6 +13,6 @@ grim -g "$(slurp)" - \
 	| tee "${file}" \
 	| wl-copy
 
-notify-send "Screen shot" \
+notify "Screen shot" \
 	"saved to ${file}" \
 	-t 2000

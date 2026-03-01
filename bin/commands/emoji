@@ -48,5 +48,5 @@ fi
 emoji=$(echo "${selection}" | cut -d' ' -f1)
 
 # TODO: rofi doesn't get the environment setup correctly.
-"${HOME}/dev/nobe4/dotfiles/bin/notify" "Emoji copied to clipboard" "${emoji}" -t 1000
-echo "${emoji}" | "${HOME}/dev/nobe4/dotfiles/bin/copy"
+notify "Emoji copied to clipboard" "${emoji}" -t 1000
+echo "${emoji}" | copy

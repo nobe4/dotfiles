@@ -11,7 +11,7 @@ else if pkgs ? libnotify then
     name = "paste";
     runtimeInputs = [ pkgs.libnotify ];
     text = ''
-      notify-send "$@"
+      notify "$@"
     '';
   }
 else

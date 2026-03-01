@@ -23,12 +23,12 @@ stop() {
 
 	if pgrep -f "gpu-screen-recorder" >/dev/null; then
 		pkill -9 -f "gpu-screen-recorder"
-		notify-send "Screen recording" \
+		notify "Screen recording" \
 			"Process force-killed, video may be corrupted." \
 			-u critical \
 			-t 5000
 	else
-		notify-send "Screen recording" \
+		notify "Screen recording" \
 			"saved to ${OUTPUT_DIR}" \
 			-t 2000
 	fi
