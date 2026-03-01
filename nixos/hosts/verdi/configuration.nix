@@ -3,25 +3,25 @@
   imports = [
     /etc/nixos/hardware-configuration.nix
 
-    ../utils/allowed_unfree.nix
-    ../utils/ln.nix
+    ../../utils/allowed_unfree.nix
+    ../../utils/ln.nix
 
-    ../users/nobe4.nix
+    ../../users/nobe4.nix
 
-    ../packages/system.nix
-    ../packages/wayland.nix
-    ../packages/gaming.nix
-    ../packages/1password.nix
-    ../packages/keyboard.nix
-    ../packages/font
-    ../packages/network.nix
-    ../packages/vnc.nix
+    ../../packages/system.nix
+    ../../packages/wayland.nix
+    ../../packages/gaming.nix
+    ../../packages/1password.nix
+    ../../packages/keyboard.nix
+    ../../packages/font
+    ../../packages/network.nix
+    ../../packages/vnc.nix
+    ../../packages/nix
 
-    ../service/check_vitamines_availability.nix
+    ../../service/check_vitamines_availability.nix
 
-    ../nix.nix
-    ../dev.nix
-    ../media.nix
+    ../../dev.nix
+    ../../media.nix
 
   ];
 
@@ -59,8 +59,6 @@
 
   users.users.nobe4 = {
     packages = with pkgs; [
-      nix-search-tv
-
       # will need to find a way to do without
       # currently the scarlite has 2 separate output, which should be merged into one.
       # + how to integrate that in waybar

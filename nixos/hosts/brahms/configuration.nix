@@ -11,19 +11,19 @@
   ];
 
   imports = [
-    ../utils/ln-darwin.nix
+    ../../utils/ln-darwin.nix
 
     # XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
-    ../modules/darwin/zsh.nix
-    ../modules/darwin/bash.nix
+    ../../modules/darwin/zsh.nix
+    ../../modules/darwin/bash.nix
 
-    ../nix.nix
-    ../dev.nix
+    ../../packages/nix
+    ../../dev.nix
 
-    ../packages/system.nix
-    ../packages/1password.nix
+    ../../packages/system.nix
+    ../../packages/1password.nix
 
-    ../users/nobe4.nix
+    ../../users/nobe4.nix
   ];
 
   networking = {
