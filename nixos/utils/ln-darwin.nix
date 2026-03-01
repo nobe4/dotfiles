@@ -28,7 +28,7 @@
     default = [ ];
     description = ''
       List of root symlinks to create as [ src, dst ] tuples.
-      $HOME is available.
+      $HOME and $DOTFILE_FOLDER are available.
 
       E.g.
       ln-root = [

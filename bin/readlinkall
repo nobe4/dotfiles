@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -e
+
+file="${1}"
+
+while [[ -n "${file}" ]]; do
+	echo "${file}"
+	file=$(readlink "${file}")
+done
