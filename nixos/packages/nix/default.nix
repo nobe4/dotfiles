@@ -37,22 +37,17 @@ in
     (import ./nix-rebuild.nix { inherit pkgs config; })
   ];
 
-  ln-root = [
-    (
-      if isDarwin then
+  ln-root =
+    [ ]
+    ++
+      # nix-darwin ship an environment.darwinConfig that is enough
+      (lib.optional (!isDarwin)
         # TODO: how to store some common paths in the config.
         # E.g. `DOTFILE_FOLDER`, `NIXOS_FOLDER`, ...
-        # TODO: check if darwin requires root.
-        [
-          "$DOTFILE_FOLDER/nixos/hosts/${config.networking.hostName}/configuration.nix"
-          "/etc/nix-darwin/configuration.nix"
-        ]
-      else
         [
           "/home/nobe4/dev/nobe4/dotfiles/nixos/hosts/${config.networking.hostName}/configuration.nix"
           "/etc/nixos/configuration.nix"
         ]
-    )
+      );
 
-  ];
 }

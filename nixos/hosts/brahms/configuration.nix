@@ -17,6 +17,8 @@
     ../../modules/darwin/zsh.nix
     ../../modules/darwin/bash.nix
 
+    ../../utils/allowed_unfree.nix
+
     ../../packages/nix
     ../../dev.nix
 
