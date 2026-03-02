@@ -28,6 +28,7 @@
 
     (import ./packages/copy.nix { inherit pkgs config; })
     (import ./packages/paste.nix { inherit pkgs config; })
+    tree-sitter
 
     # Needed globally to run the copilot lsp
     nodejs
