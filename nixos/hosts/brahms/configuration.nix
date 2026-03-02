@@ -1,9 +1,7 @@
-# TODO: how does this work accross machine?
-# I should be able to just link the adequate config to XDG_CONFIG
-# ln -sfv /Users/nobe4/dev/nobe4/dotfiles/nixos/hosts/brahms.nix /etc/nix-darwin/configuration.nix
 { pkgs, ... }:
-
 {
+  environment.darwinConfig = "/Users/nobe4/dev/nobe4/dotfiles/nixos/hosts/brahms/configuration.nix";
+
   # XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
   disabledModules = [
     "programs/zsh"
@@ -27,6 +25,7 @@
 
     ../../users/nobe4.nix
   ];
+
 
   networking = {
     computerName = "brahms";
