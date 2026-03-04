@@ -2,14 +2,9 @@ return {
 	{
 		"williamboman/mason.nvim",
 
-		dependencies = {
-			"williamboman/mason-lspconfig.nvim",
-		},
-
 		config = function()
 			local mason = require("mason")
 			local registry = require("mason-registry")
-			local lsp_config = require("mason-lspconfig")
 
 			mason.setup({
 				ui = {
@@ -58,8 +53,6 @@ return {
 					p:install()
 				end
 			end
-
-			lsp_config.setup()
 		end,
 	},
 }
