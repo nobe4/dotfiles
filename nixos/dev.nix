@@ -1,60 +1,51 @@
 # Defines all dependencies for development work.
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
-  imports = [
-    ./packages/jq.nix
-  ];
+  users.users.nobe4.packages =
+    with pkgs;
+    [
+      kitty
 
-  users.users.nobe4.packages = with pkgs; [
-    kitty
+      entr
+      fzf
+      fd
 
-    entr
-    fzf
-    fd
+      git
+      difftastic
+      gh
 
-    git
-    difftastic
-    gh
+      fzf
+      ripgrep
+      pv
+      universal-ctags
 
-    fzf
-    ripgrep
-    pv
-    universal-ctags
+      devenv
 
-    direnv
-    devenv
+      tldr
+      tree-sitter
 
-    tldr
+      # Needed globally to run the copilot lsp
+      nodejs
 
-    (import ./packages/copy.nix { inherit pkgs config; })
-    (import ./packages/paste.nix { inherit pkgs config; })
-    tree-sitter
+      tree-sitter
 
-    # Needed globally to run the copilot lsp
-    nodejs
+      # Needed globally to run the copilot lsp
+      nodejs
 
-    # Needed globally to format devenv files
-    nixd
-    nixfmt
+      # Needed globally to format devenv files
+      nixd
+      nixfmt
 
-    # # Build tools
-    # gnumake
-    # gcc
-    #
-    # # Go
-    # go
-    # gopls
-    # golangci-lint
-    #
-    # # YAML
-    # yaml-language-server
-    # yamlfmt
-    # yamllint
-    #
-    # Web
-    # vscode-langservers-extracted
-    # emmet-language-server
-  ];
+      # # YAML
+      # yaml-language-server
+      # yamlfmt
+      # yamllint
+      #
+      # Web
+      # vscode-langservers-extracted
+      # emmet-language-server
+    ]
+    ++ (import ./packages/jq.nix { inherit pkgs; });
 
   programs.direnv = {
     enable = true;
