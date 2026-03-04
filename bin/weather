@@ -38,10 +38,9 @@ CURL_VERBOSITY="--silent"
 # curl https://www.weatherapi.com/docs/weather_conditions.json | jq '.[] | "\(.code) \(.day)"'
 condition_to_emoji(){
 	code=${1}
-	is_day=${2:-1}
 
 	case "${1}" in
-		"1000") [[ "${is_day}" -eq "1" ]] && echo "☀️" || echo "🌙";;
+		"1000") echo "☀️" ;; # clear
 		"1003" | "1006" | "1009") echo "⛅" ;; # cloud
 		"1030" | "1135" | "1147") echo "☁️" ;; # mist
 		"1066" | "1069" | "1072" | "1114" | "1117" | "1168" | "1171" | "1198" | "1201" | "1204" | "1207" | "1210" | "1213" | "1216" | "1219" | "1222" | "1225" | "1237" | "1249" | "1252" | "1255" | "1258" | "1261" | "1264") echo "❄️" ;; # snow
@@ -86,8 +85,7 @@ fi
 
 feels=$(jq -r '.current.feelslike_c' "${CACHE}")
 code=$(jq -r '.current.condition.code' "${CACHE}")
-is_day=$(jq -r '.current.condition.is_day' "${CACHE}")
-emoji=$(condition_to_emoji "${code}" "${is_day}")
+emoji=$(condition_to_emoji "${code}")
 last_updated=$(jq -r '.current.last_updated' "${CACHE}")
 
 if [[ "${WAYBAR}" == 1 ]]; then
@@ -156,9 +154,9 @@ for i in $(seq 0 10); do
 # Print weather emojis
 printf "     "
 cat "${CACHE}" \
-	| jq -r '.forecast.forecastday[].hour[] | "\(.condition.code) \(.is_day)"' \
-	| while read -r code is_day; read -r discard discard; do
-		emoji=$(condition_to_emoji "${code}" "${is_day}")
+	| jq -r '.forecast.forecastday[].hour[] | "\(.condition.code)"' \
+	| while read -r code; read -r discard; do
+		emoji=$(condition_to_emoji "${code}")
 		printf "${emoji}"
 done
 printf "\n"
