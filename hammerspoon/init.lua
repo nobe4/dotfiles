@@ -14,6 +14,6 @@ hs.hotkey.bind({ "shift" }, "space", function()
 	app:activate()
 	app:focusedWindow():centerOnScreen(nil, true)
 
-	hs.eventtap.keyStrokes("clear ; sling ; kitty @ close-window --self", app)
+	hs.eventtap.keyStrokes(" clear ; sling ; kitty @ close-window --self", app)
 	hs.eventtap.keyStroke({}, "return")
 end)
