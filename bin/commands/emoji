@@ -47,6 +47,5 @@ fi
 
 emoji=$(echo "${selection}" | cut -d' ' -f1)
 
-# TODO: rofi doesn't get the environment setup correctly.
 notify "Emoji copied to clipboard" "${emoji}" -t 1000
 echo "${emoji}" | copy
