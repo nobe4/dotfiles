@@ -27,8 +27,6 @@
       # Needed globally to run the copilot lsp
       nodejs
 
-      (import ./packages/copy.nix { inherit pkgs config; })
-      (import ./packages/paste.nix { inherit pkgs config; })
       tree-sitter
 
       # Needed globally to run the copilot lsp
@@ -47,6 +45,7 @@
       # vscode-langservers-extracted
       # emmet-language-server
     ]
+    ++ (import ./packages/copy_paste.nix { inherit pkgs config; })
     ++ (import ./packages/jq.nix { inherit pkgs; });
 
   programs.direnv = {
