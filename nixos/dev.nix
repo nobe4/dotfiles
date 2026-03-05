@@ -1,5 +1,5 @@
 # Defines all dependencies for development work.
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   users.users.nobe4.packages =
     with pkgs;
@@ -27,6 +27,8 @@
       # Needed globally to run the copilot lsp
       nodejs
 
+      (import ./packages/copy.nix { inherit pkgs config; })
+      (import ./packages/paste.nix { inherit pkgs config; })
       tree-sitter
 
       # Needed globally to run the copilot lsp

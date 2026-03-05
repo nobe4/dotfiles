@@ -8,10 +8,10 @@ if pkgs.stdenv.isDarwin then
   }
 else if pkgs ? libnotify then
   pkgs.writeShellApplication {
-    name = "paste";
+    name = "notify";
     runtimeInputs = [ pkgs.libnotify ];
     text = ''
-      notify "$@"
+      notify-send "$@"
     '';
   }
 else
