@@ -24,6 +24,8 @@
     ../../packages/1password.nix
 
     ../../users/nobe4.nix
+
+    ./code.nix
   ];
 
 
@@ -110,9 +112,20 @@
         "com.apple.mouse.scaling" = 5.0;
       };
     };
+
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToEscape = true;
+
+      shortcuts = {
+        Dock.hiding.enable = false;
+        MissionControl.missionControl.mods = [ "control" "shift" ];
+        InputSources.prevInputSource = {
+          enable = true;
+          mods = [ "control" ];
+        };
+        Spotlight.search.mods = [ "option" ];
+      };
     };
   };
 
