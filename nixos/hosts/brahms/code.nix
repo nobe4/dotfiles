@@ -478,13 +478,13 @@ let
     {
       id,
       name,
-      enabled ? true,
+      enabled ? false,
       mods ? [ ],
       key,
     }:
     lib.mkOption {
       description = "${name} (Apple shortcut ID: ${toString id}).";
-      default = {};
+      default = { };
       type = lib.types.submodule {
         options = {
           id = lib.mkOption {
@@ -499,6 +499,8 @@ let
             readOnly = true;
             description = "Shortcut description.";
           };
+          #  TODO call that enabled, or change enable to enabled, see what nix
+          #  does
           enable = lib.mkOption {
             type = lib.types.bool;
             default = enabled;
@@ -517,61 +519,118 @@ let
         };
       };
     };
-  encodeShortcut = sc:
+  encodeShortcut =
+    sc:
     let
       kc = keycodes.${sc.key};
       modSum = builtins.foldl' (acc: mod: acc + modMasks.${mod}) 0 sc.mods;
-    in {
-      name = toString sc.id;
-      value = {
-        enabled = sc.enable;
-        value = {
-          parameters = [
-            kc.ascii
-            kc.decimal
-            modSum
-          ];
-          type = "standard";
-        };
-      };
-    };
+      enabled = if sc.enable then "1" else "0";
+      modsStr = if sc.mods == [ ] then "" else lib.concatStringsSep "+" sc.mods;
+      enabledStr = if sc.enable then "enabled" else "disabled";
+    in
+    ''
+      # ${sc.name} (${enabledStr}, ${modsStr}+${sc.key})
+      defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add ${toString sc.id} "{enabled = ${enabled}; value = { parameters = (${toString kc.ascii}, ${toString kc.decimal}, ${toString modSum}); type = 'standard'; }; }";
+    '';
 
   cfg = config.system.keyboard.shortcuts;
 in
 {
   options.system.keyboard.shortcuts = {
+    # All options and their default values, should roughly match what's
+    # happening when you press "Restore Defaults".
     Dock = {
-      hiding = mkShortcut { id = 52; name = "Turn Dock hiding on/off"; mods = [ "command" "option" ]; key = "d"; };
+      hiding = mkShortcut {
+        id = 52;
+        name = "Turn Dock hiding on/off";
+        mods = [
+          "command"
+          "option"
+        ];
+        key = "d";
+      };
     };
 
     Display = {
-      decreaseBrightness = mkShortcut { id = 53; name = "Decrease display brightness"; enabled = false; key = "F1"; };
-      increaseBrightness = mkShortcut { id = 54; name = "Increase display brightness"; enabled = false; key = "F2"; };
+      decreaseBrightness = mkShortcut {
+        id = 53;
+        name = "Decrease display brightness";
+        enabled = false;
+        key = "F1";
+      };
+      increaseBrightness = mkShortcut {
+        id = 54;
+        name = "Increase display brightness";
+        enabled = false;
+        key = "F2";
+      };
     };
 
     MissionControl = {
-      missionControl = mkShortcut { id = 32; name = "Mission Control"; mods = [ "control" ]; key = "UpArrow"; };
-      showDesktop = mkShortcut { id = 36; name = "Show Desktop"; key = "F11"; };
-      moveLeftSpace = mkShortcut { id = 79; name = "Move left a space"; mods = [ "control" ]; key = "LeftArrow"; };
-      moveRightSpace = mkShortcut { id = 81; name = "Move right a space"; mods = [ "control" ]; key = "RightArrow"; };
+      missionControl = mkShortcut {
+        id = 32;
+        name = "Mission Control";
+        mods = [ "control" ];
+        key = "UpArrow";
+      };
+      showDesktop = mkShortcut {
+        id = 36;
+        name = "Show Desktop";
+        key = "F11";
+      };
+      moveLeftSpace = mkShortcut {
+        id = 79;
+        name = "Move left a space";
+        mods = [ "control" ];
+        key = "LeftArrow";
+      };
+      moveRightSpace = mkShortcut {
+        id = 81;
+        name = "Move right a space";
+        mods = [ "control" ];
+        key = "RightArrow";
+      };
     };
 
     InputSources = {
-      prevInputSource = mkShortcut { id = 60; name = "Select the previous input source"; enabled = false; key = "Space"; };
-      nextInputSource = mkShortcut { id = 61; name = "Select the next source in input menu"; enabled = false; key = "Space"; };
+      prevInputSource = mkShortcut {
+        id = 60;
+        name = "Select the previous input source";
+        enabled = false;
+        key = "Space";
+      };
+      nextInputSource = mkShortcut {
+        id = 61;
+        name = "Select the next source in input menu";
+        enabled = false;
+        key = "Space";
+      };
     };
 
     Spotlight = {
-      search = mkShortcut { id = 64; name = "Show Spotlight search"; mods = [ "command" ]; key = "Space"; };
-      finderSearch = mkShortcut { id = 65; name = "Show Finder search window"; mods = [ "command" "option" ]; key = "Space"; };
+      search = mkShortcut {
+        id = 64;
+        name = "Show Spotlight search";
+        mods = [ "command" ];
+        key = "Space";
+      };
+      finderSearch = mkShortcut {
+        id = 65;
+        name = "Show Finder search window";
+        mods = [
+          "command"
+          "option"
+        ];
+        key = "Space";
+      };
     };
   };
 
-  config.environment.etc."shortcuts.json".text =
+  config.environment.etc."shortcuts.sh".text =
     let
-      allShortcuts = lib.concatLists (lib.mapAttrsToList (_: section:
-        lib.mapAttrsToList (_: sc: encodeShortcut sc) section
-      ) cfg);
+      allShortcuts = lib.concatLists (
+        lib.mapAttrsToList (_: section: lib.mapAttrsToList (_: sc: encodeShortcut sc) section) cfg
+      );
     in
-    builtins.toJSON (builtins.listToAttrs allShortcuts);
+    lib.concatStringsSep "\n" allShortcuts;
 }

@@ -1,0 +1,47 @@
+Dock
+52 = Turn Dock hiding on/off
+
+Display
+53 = Decrease display brightness
+54 = Increase display brightness
+
+Mission Control
+32 = Mission Control
+163 = Show Notification Center
+175 = Turn Do Not Disturb on/off
+33 = Application windows
+36 = Show Desktop
+222 = Turn Stage Manager on/off
+79 = Move left a space
+81 = Move right a space
+118 = Switch to Desktop 1
+119 = Switch to Desktop 2
+120 = Switch to Desktop 3
+190 = Quick Note
+260 = Game Overlay
+
+Windows
+TODO
+
+Keyboard
+13 = Change the way Tab moves focus
+TODO
+
+Input Sources
+60 = Select the previous input source
+61 = Select the next source in input menu
+
+Screenshots
+TODO
+
+Presenter Overlay
+TODO
+
+Services
+TODO
+
+Spotlight
+64 = Show Spotlight search
+65 = Show Finder search window
+160 = Show Apps
+

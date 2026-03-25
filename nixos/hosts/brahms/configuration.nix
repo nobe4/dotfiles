@@ -28,7 +28,6 @@
     ./code.nix
   ];
 
-
   networking = {
     computerName = "brahms";
     hostName = "brahms";
@@ -118,13 +117,18 @@
       remapCapsLockToEscape = true;
 
       shortcuts = {
-        Dock.hiding.enable = false;
-        MissionControl.missionControl.mods = [ "control" "shift" ];
-        InputSources.prevInputSource = {
+        Display.decreaseBrightness = {
           enable = true;
-          mods = [ "control" ];
+          key = "b";
+          mods = ["control"];
         };
-        Spotlight.search.mods = [ "option" ];
+        # Dock.hiding.enable = false;
+        # MissionControl.missionControl.mods = [ "control" "shift" ];
+        # InputSources.prevInputSource = {
+        #   enable = true;
+        #   mods = [ "control" ];
+        # };
+        # Spotlight.search.mods = [ "option" ];
       };
     };
   };
