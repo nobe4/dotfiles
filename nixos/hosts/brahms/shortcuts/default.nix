@@ -92,15 +92,21 @@ in
       default = false;
       description = "Whether to disable all keyboard shortcuts, ignoring individual enable settings.";
     };
-  }
-  // (import ./default-shortcuts.nix) mkShortcut;
+    binds = (import ./defaults.nix) mkShortcut;
+  };
 
-  config.environment.etc."shortcuts.sh".text =
+  config.system.activationScripts.shortcuts.text =
     let
       allShortcuts = lib.concatLists (
-        lib.mapAttrsToList (_: section: lib.mapAttrsToList (_: sc: encodeShortcut sc) section) cfg
+        lib.mapAttrsToList (
+          _: section: lib.mapAttrsToList (_: sc: encodeShortcut sc) section
+        ) cfg.binds
       );
     in
     lib.concatStringsSep "\n" allShortcuts
     + "\n/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u\n";
+
+  config.system.activationScripts.postActivation.text = lib.mkAfter ''
+    ${config.system.activationScripts.shortcuts.text}
+  '';
 }

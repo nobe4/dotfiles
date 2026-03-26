@@ -25,7 +25,7 @@
 
     ../../users/nobe4.nix
 
-    ./code.nix
+    ./shortcuts
   ];
 
   networking = {
@@ -117,18 +117,20 @@
       remapCapsLockToEscape = true;
 
       shortcuts = {
-        Display.decreaseBrightness = {
-          enable = true;
-          key = "b";
-          mods = ["control"];
+        binds = {
+          Display.decreaseBrightness = {
+            enable = true;
+            key = "b";
+            mods = [ "control" ];
+          };
+          # Dock.hiding.enable = false;
+          # MissionControl.missionControl.mods = [ "control" "shift" ];
+          # InputSources.prevInputSource = {
+          #   enable = true;
+          #   mods = [ "control" ];
+          # };
+          # Spotlight.search.mods = [ "option" ];
         };
-        # Dock.hiding.enable = false;
-        # MissionControl.missionControl.mods = [ "control" "shift" ];
-        # InputSources.prevInputSource = {
-        #   enable = true;
-        #   mods = [ "control" ];
-        # };
-        # Spotlight.search.mods = [ "option" ];
       };
     };
   };
