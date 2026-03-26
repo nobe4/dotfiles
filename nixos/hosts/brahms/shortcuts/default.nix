@@ -27,9 +27,7 @@ let
             readOnly = true;
             description = "Shortcut description.";
           };
-          #  TODO call that enabled, or change enable to enabled, see what nix
-          #  does
-          enable = lib.mkOption {
+          enabled = lib.mkOption {
             type = lib.types.bool;
             default = if cfg.disableAll then false else enabled;
             description = "Whether to enable '${name}'.";
@@ -53,8 +51,8 @@ let
       kc = if sc.key != null then keycodes.${sc.key} else null;
       modSum = builtins.foldl' (acc: mod: acc + modMasks.${mod}) 0 sc.mods;
       modsStr = if sc.mods == [ ] then "" else lib.concatStringsSep "+" sc.mods;
-      enabledTag = if sc.key != null && sc.enable then "<true/>" else "<false/>";
-      enabledStr = if sc.key != null && sc.enable then "enabled" else "disabled";
+      enabledTag = if sc.key != null && sc.enabled then "<true/>" else "<false/>";
+      enabledStr = if sc.key != null && sc.enabled then "enabled" else "disabled";
     in
     ''
       # ${sc.name} (${enabledStr}, ${modsStr}+${toString sc.key})
@@ -90,7 +88,7 @@ in
     disableAll = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Whether to disable all keyboard shortcuts, ignoring individual enable settings.";
+      description = "Whether to disable all keyboard shortcuts, ignoring individual enabled settings.";
     };
     binds = (import ./defaults.nix) mkShortcut;
   };

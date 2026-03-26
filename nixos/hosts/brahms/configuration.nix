@@ -119,17 +119,10 @@
       shortcuts = {
         binds = {
           Display.decreaseBrightness = {
-            enable = true;
+            enabled = false;
             key = "b";
             mods = [ "control" ];
           };
-          # Dock.hiding.enable = false;
-          # MissionControl.missionControl.mods = [ "control" "shift" ];
-          # InputSources.prevInputSource = {
-          #   enable = true;
-          #   mods = [ "control" ];
-          # };
-          # Spotlight.search.mods = [ "option" ];
         };
       };
     };
