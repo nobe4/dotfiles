@@ -5,6 +5,7 @@
     control = 262144; # 0x00040000
     option = 524288; # 0x00080000
     command = 1048576; # 0x00100000
+    fn = 8388608; # 0x00800000
   };
 
   # /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Carbon.framework/Frameworks/HIToolbox.framework/Headers/Events.h

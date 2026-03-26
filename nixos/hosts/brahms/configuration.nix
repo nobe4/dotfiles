@@ -117,11 +117,11 @@
       remapCapsLockToEscape = true;
 
       shortcuts = {
+        disableAll = true;
+
         binds = {
-          Display.decreaseBrightness = {
-            enabled = false;
-            key = "b";
-            mods = [ "control" ];
+          Spotlight.search = {
+            enabled = true;
           };
         };
       };

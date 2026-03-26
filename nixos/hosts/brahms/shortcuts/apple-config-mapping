@@ -1,74 +1,82 @@
 Dock
-52  ; Turn Dock hiding on/off              ; option command d       ; enabled
+52  ; Turn Dock hiding on/off                        ; option command d        ; enabled
 
 Display
-53  ; Decrease display brightness          ; f14                    ; enabled
-54  ; Increase display brightness          ; f15                    ; enabled
+53  ; Decrease display brightness                    ; f14                     ; enabled
+54  ; Increase display brightness                    ; f15                     ; enabled
 
 Mission Control
-32  ; Mission Control                      ; control up             ; enabled
-163 ; Show Notification Center             ;                        ; enabled
-175 ; Turn Do Not Disturb on/off           ;                        ; enabled
-33  ; Application windows                  ; control down           ; enabled
-36  ; Show Desktop                         ; f11                    ; enabled
-222 ; Turn Stage Manager on/off            ;                        ; enabled
-79  ; Move left a space                    ; control left           ; enabled
-81  ; Move right a space                   ; control right          ; enabled
-118 ; Switch to Desktop 1                  ; control 1              ; enabled
-119 ; Switch to Desktop 2                  ; control 2              ; enabled
-120 ; Switch to Desktop 3                  ; control 3              ; enabled
-190 ; Quick Note                           ; fn q                   ; enabled
-260 ; Game Overlay                         ; command escape         ; enabled
+32  ; Mission Control                                ; control up              ; enabled
+163 ; Show Notification Center                       ;                         ; enabled
+175 ; Turn Do Not Disturb on/off                     ;                         ; enabled
+33  ; Application windows                            ; control down            ; enabled
+36  ; Show Desktop                                   ; f11                     ; enabled
+222 ; Turn Stage Manager on/off                      ;                         ; enabled
+79  ; Move left a space                              ; control left            ; enabled
+81  ; Move right a space                             ; control right           ; enabled
+118 ; Switch to Desktop 1                            ; control 1               ; enabled
+119 ; Switch to Desktop 2                            ; control 2               ; enabled
+120 ; Switch to Desktop 3                            ; control 3               ; enabled
+190 ; Quick Note                                     ; fn q                    ; enabled
+260 ; Game Overlay                                   ; command escape          ; enabled
 
 Windows
-233 ; Minimize                             ; command m              ; enabled
-235 ; Zoom                                 ;                        ; enabled
-237 ; Fill                                 ; control fn f           ; enabled
-238 ; Center                               ; control fn c           ; enabled
-239 ; Return to Previous Size              ; control fn R           ; enabled
-240 ; Tile Left Half                       ; control fn left        ; enabled
-241 ; Tile Right Half                      ; control fn right       ; enabled
-242 ; Tile Top Half                        ; control fn up          ; enabled
-243 ; Tile Bottom Half                     ; control fn down        ; enabled
-244 ; Tile Top Left Quarter                ;                        ; enabled
-245 ; Tile Top Right Quarter               ;                        ; enabled
-246 ; Tile Bottom Left Quarter             ;                        ; enabled
-247 ; Tile Bottom Right Quarter            ;                        ; enabled
-248 ; Arrange Left and Right               ; control shift fn left  ; enabled
-249 ; Arrange Right and Left               ; control shift fn right ; enabled
-250 ; Arrange Top and Bottom               ; control shift fn up    ; enabled
-251 ; Arrange Bottom and Top               ; control shift fn down  ; enabled
-256 ; Arrange in Quarters                  ;                        ; disabled
-257 ; Full Screen Tile Left                ;                        ; disabled
-258 ; Full Screen Tile Right               ;                        ; disabled
+233 ; Minimize                                       ; command m               ; enabled
+235 ; Zoom                                           ;                         ; enabled
+237 ; Fill                                           ; control fn f            ; enabled
+238 ; Center                                         ; control fn c            ; enabled
+239 ; Return to Previous Size                        ; control fn R            ; enabled
+240 ; Tile Left Half                                 ; control fn left         ; enabled
+241 ; Tile Right Half                                ; control fn right        ; enabled
+242 ; Tile Top Half                                  ; control fn up           ; enabled
+243 ; Tile Bottom Half                               ; control fn down         ; enabled
+244 ; Tile Top Left Quarter                          ;                         ; enabled
+245 ; Tile Top Right Quarter                         ;                         ; enabled
+246 ; Tile Bottom Left Quarter                       ;                         ; enabled
+247 ; Tile Bottom Right Quarter                      ;                         ; enabled
+248 ; Arrange Left and Right                         ; control shift fn left   ; enabled
+249 ; Arrange Right and Left                         ; control shift fn right  ; enabled
+250 ; Arrange Top and Bottom                         ; control shift fn up     ; enabled
+251 ; Arrange Bottom and Top                         ; control shift fn down   ; enabled
+256 ; Arrange in Quarters                            ;                         ; disabled
+257 ; Full Screen Tile Left                          ;                         ; disabled
+258 ; Full Screen Tile Right                         ;                         ; disabled
 
 Keyboard
-13  ; Change the way Tab moves focus       ; control f7             ; enabled
-12  ; Turn keyboard access on or off       ; control f1             ; enabled
-7   ;Move focus to the menu bar            ; control f2             ; enabled
-8   ;Move focus to the Dock                ; control f3             ; enabled
-9   ;Move focus to active or next window   ; control f4             ; enabled
-10  ;Move focus to window toolbar          ; control f5             ; enabled
-11  ;Move focus to floating window         ; control f6             ; enabled
-27  ; Move focus to next window            ; command `              ; enabled
-57  ;Move focus to status menus            ; control f8             ; enabled
-159 ;Show contextual menu                  ; control f8             ; enabled
+13  ; Change the way Tab moves focus                 ; control f7              ; enabled
+12  ; Turn keyboard access on or off                 ; control f1              ; enabled
+7   ; Move focus to the menu bar                     ; control f2              ; enabled
+8   ; Move focus to the Dock                         ; control f3              ; enabled
+9   ; Move focus to active or next window            ; control f4              ; enabled
+10  ; Move focus to window toolbar                   ; control f5              ; enabled
+11  ; Move focus to floating window                  ; control f6              ; enabled
+27  ; Move focus to next window                      ; command `               ; enabled
+57  ; Move focus to status menus                     ; control f8              ; enabled
+159 ; Show contextual menu                           ; control f8              ; enabled
 
 Input Sources
-60  ; Select the previous input source     ; control space          ; enabled
-61  ; Select the next source in input menu ; control option space   ; enabled
+60  ; Select the previous input source               ; control space           ; enabled
+61  ; Select the next source in input menu           ; control option space    ; enabled
 
 Screenshots
-TODO
+28  ; Save picture of screen as file                 ; shift command 3         ; enabled
+29  ; Copy picture of screen to the clipboard        ; control shift command 3 ; enabled
+30  ; Save picture of selected area as file          ; shift command 4         ; enabled
+31  ; Copy picture of selected area to the clipboard ; control shift command 4 ; enabled
+184 ; Screenshot and recording options               ; shift command 5         ; enabled
 
 Presenter Overlay
-TODO
+224 ; Turn Presenter Overlay (small) on or off       ;                         ; disabled
+223 ; Turn Presenter Overlay (large) on or off       ;                         ; disabled
 
 Services
-TODO
+# it's unclear how those map, especially since there are special apps there,
+# ignoring for now
 
 Spotlight
-64  ; Show Spotlight search
-65  ; Show Finder search window
-160 ; Show Apps
+64  ; Show Spotlight search                          ; command space           ; enabled
+65  ; Show Finder search window                      ; option command space    ; enabled
+160 ; Show Apps                                      ;                         ; enabled
 
+Accessibility
+TODO
