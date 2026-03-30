@@ -35,14 +35,12 @@ mkShortcut: {
     decreaseBrightness = mkShortcut {
       id = 53;
       name = "Decrease display brightness";
-      enabled = false;
-      key = "F1";
+      key = "F14";
     };
     increaseBrightness = mkShortcut {
       id = 54;
       name = "Increase display brightness";
-      enabled = false;
-      key = "F2";
+      key = "F15";
     };
   };
 
@@ -334,13 +332,16 @@ mkShortcut: {
     prevInputSource = mkShortcut {
       id = 60;
       name = "Select the previous input source";
-      enabled = false;
+      mods = [ "control" ];
       key = "Space";
     };
     nextInputSource = mkShortcut {
       id = 61;
       name = "Select the next source in input menu";
-      enabled = false;
+      mods = [
+        "control"
+        "option"
+      ];
       key = "Space";
     };
   };
@@ -393,6 +394,25 @@ mkShortcut: {
       ];
       key = "5";
     };
+    saveTouchBar = mkShortcut {
+      id = 181;
+      name = "Save picture of the Touch Bar as a file";
+      mods = [
+        "shift"
+        "command"
+      ];
+      key = "6";
+    };
+    copyTouchBar = mkShortcut {
+      id = 182;
+      name = "Copy picture of the Touch Bar to the clipboard";
+      mods = [
+        "control"
+        "shift"
+        "command"
+      ];
+      key = "6";
+    };
   };
 
   PresenterOverlay = {
@@ -427,6 +447,137 @@ mkShortcut: {
     showApps = mkShortcut {
       id = 160;
       name = "Show Apps";
+    };
+  };
+
+  Accessibility = {
+    increaseContrast = mkShortcut {
+      id = 25;
+      name = "Increase contrast";
+      enabled = false;
+      mods = [
+        "control"
+        "option"
+        "command"
+      ];
+      key = ".";
+    };
+    decreaseContrast = mkShortcut {
+      id = 26;
+      name = "Decrease contrast";
+      enabled = false;
+      mods = [
+        "control"
+        "option"
+        "command"
+      ];
+      key = ",";
+    };
+    invertColors = mkShortcut {
+      id = 21;
+      name = "Invert colors";
+      enabled = false;
+      mods = [
+        "control"
+        "option"
+        "command"
+      ];
+      key = "8";
+    };
+    toggleLiveSpeech = mkShortcut {
+      id = 225;
+      name = "Toggle Live Speech on or off";
+    };
+    toggleLiveSpeechVisibility = mkShortcut {
+      id = 226;
+      name = "Toggle Live Speech visibility";
+    };
+    pauseResumeSpeech = mkShortcut {
+      id = 227;
+      name = "Pause or resume speech";
+    };
+    cancelSpeech = mkShortcut {
+      id = 228;
+      name = "Cancel speech";
+    };
+    hideShowPhrases = mkShortcut {
+      id = 229;
+      name = "Hide or show phrases";
+    };
+    showAccessibilityControls = mkShortcut {
+      id = 162;
+      name = "Show Accessibility controls";
+      mods = [
+        "option"
+        "command"
+      ];
+      key = "F5";
+    };
+    speakItemUnderPointer = mkShortcut {
+      id = 231;
+      name = "Turn speak item under the pointer on or off";
+      enabled = false;
+    };
+    speakSelection = mkShortcut {
+      id = 230;
+      name = "Turn speak selection on or off";
+      enabled = false;
+    };
+    typingFeedback = mkShortcut {
+      id = 232;
+      name = "Turn typing feedback on or off";
+      enabled = false;
+    };
+    voiceOver = mkShortcut {
+      id = 59;
+      name = "Turn VoiceOver on or off";
+      mods = [ "command" ];
+      key = "F5";
+    };
+    turnZoom = mkShortcut {
+      id = 15;
+      name = "Turn zoom on or off";
+      enabled = false;
+      mods = [
+        "option"
+        "command"
+      ];
+      key = "8";
+    };
+    imageSmoothing = mkShortcut {
+      id = 23;
+      name = "Turn image smoothing on or off";
+      enabled = false;
+      mods = [
+        "option"
+        "command"
+      ];
+      key = "\\";
+    };
+    zoomIn = mkShortcut {
+      id = 19;
+      name = "Zoom in";
+      enabled = false;
+      mods = [
+        "option"
+        "command"
+      ];
+      key = "-";
+    };
+    zoomOut = mkShortcut {
+      id = 17;
+      name = "Zoom out";
+      enabled = false;
+      mods = [
+        "option"
+        "command"
+      ];
+      key = "=";
+    };
+    focusFollowing = mkShortcut {
+      id = 179;
+      name = "Turn focus following on or off";
+      enabled = false;
     };
   };
 }
