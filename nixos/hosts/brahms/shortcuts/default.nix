@@ -96,17 +96,15 @@ in
   config.system.activationScripts.shortcuts.text =
     let
       allShortcuts = lib.concatLists (
-        lib.mapAttrsToList (
-          _: section: lib.mapAttrsToList (_: sc: encodeShortcut sc) section
-        ) cfg.binds
+        lib.mapAttrsToList (_: section: lib.mapAttrsToList (_: sc: encodeShortcut sc) section) cfg.binds
       );
     in
     lib.concatStringsSep "\n" allShortcuts
     + ''
-    # force a refresh
-    # see https://zameermanji.com/blog/2021/6/8/applying-com-apple-symbolichotkeys-changes-instantaneously/
-    /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    ''
+      # force a refresh
+      # see https://zameermanji.com/blog/2021/6/8/applying-com-apple-symbolichotkeys-changes-instantaneously/
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    '';
 
   config.system.activationScripts.postActivation.text = lib.mkAfter ''
     ${config.system.activationScripts.shortcuts.text}
