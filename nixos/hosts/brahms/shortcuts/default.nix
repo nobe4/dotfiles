@@ -85,6 +85,11 @@ let
 in
 {
   options.system.keyboard.shortcuts = {
+    enable = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Whether to enable keyboard shortcut management.";
+    };
     disableAll = lib.mkOption {
       type = lib.types.bool;
       default = false;
@@ -93,20 +98,22 @@ in
     binds = (import ./defaults.nix) mkShortcut;
   };
 
-  config.system.activationScripts.shortcuts.text =
-    let
-      allShortcuts = lib.concatLists (
-        lib.mapAttrsToList (_: section: lib.mapAttrsToList (_: sc: encodeShortcut sc) section) cfg.binds
-      );
-    in
-    lib.concatStringsSep "\n" allShortcuts
-    + ''
-      # force a refresh
-      # see https://zameermanji.com/blog/2021/6/8/applying-com-apple-symbolichotkeys-changes-instantaneously/
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    '';
+  config = lib.mkIf cfg.enable {
+    system.activationScripts.shortcuts.text =
+      let
+        allShortcuts = lib.concatLists (
+          lib.mapAttrsToList (_: section: lib.mapAttrsToList (_: sc: encodeShortcut sc) section) cfg.binds
+        );
+      in
+      lib.concatStringsSep "\n" allShortcuts
+      + ''
+        # Force a refresh
+        # see https://zameermanji.com/blog/2021/6/8/applying-com-apple-symbolichotkeys-changes-instantaneously/
+        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+      '';
 
-  config.system.activationScripts.postActivation.text = lib.mkAfter ''
-    ${config.system.activationScripts.shortcuts.text}
-  '';
+    system.activationScripts.postActivation.text = lib.mkAfter ''
+      ${config.system.activationScripts.shortcuts.text}
+    '';
+  };
 }

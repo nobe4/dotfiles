@@ -117,6 +117,7 @@
       remapCapsLockToEscape = true;
 
       shortcuts = {
+        enable = true;
         disableAll = true;
 
         binds = {
