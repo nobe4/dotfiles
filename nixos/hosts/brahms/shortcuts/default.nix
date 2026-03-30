@@ -102,7 +102,11 @@ in
       );
     in
     lib.concatStringsSep "\n" allShortcuts
-    + "\n/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u\n";
+    + ''
+    # force a refresh
+    # see https://zameermanji.com/blog/2021/6/8/applying-com-apple-symbolichotkeys-changes-instantaneously/
+    /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    ''
 
   config.system.activationScripts.postActivation.text = lib.mkAfter ''
     ${config.system.activationScripts.shortcuts.text}

@@ -1,5 +1,23 @@
 # All options and their default values, should roughly match what's
 # happening when you press "Restore Defaults".
+#
+# This file was built by:
+# 1. Open System Preferences > Keyboard > Keyboard Shortcuts
+# 2. Clicking 'Restore Defaults' on all sections
+# 3. Running `defaults read com.apple.symbolichotkeys AppleSymbolicHotKeys > defaults.plist`
+# 4. Making a change
+# 5. Running `diff -U 5 defaults.plist <(defaults read com.apple.symbolichotkeys AppleSymbolicHotKeys)`
+# 6. Making a note of the change
+# 7. Going back to 4
+#
+# Notes:
+# - The follwoing sections don't correspond to entries in
+#   'com.apple.symbolichotkeys' and have been ignored:
+#   - 'Services'
+#   - 'App Shortucts'
+#   - 'Function Keys'
+#   - 'Modifier Keys' see 'system.keyboard.remap*'
+# Inspired by https://gist.github.com/mkhl/455002
 mkShortcut: {
   Dock = {
     hiding = mkShortcut {
