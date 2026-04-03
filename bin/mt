@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#/ Usage: mt [FLAGS]
+#/
+#/ Flags:
+#/   -h|--help  Show this help
+
+
+mountdir="/tmp/mount"
+
+set -e
+
+show_help() { grep ^#/ <"${0}" |cut -c4- | envsubst ; }
+
+while [ "${#}" -gt 0 ]; do
+	case "${1}" in
+		-h|--help) show_help && exit 0 ;;
+		*)
+			echo "Unknown flag '${1}'"
+			show_help
+			exit 1
+			;;
+	esac
+	shift 1
+done
+
+blk=$(
+	lsblk -A -Q 'TYPE=="part" && PATH!~"/nvme"' -o PATH,LABEL,SIZE,MOUNTPOINTS \
+	| fzf --header-lines=1
+)
+label=$(echo "$blk" | awk '{print $2}')
+safe_label=$(echo "$label" | tr -d '[:space:]')
+new_mount="${mountdir}/${safe_label}"
+existing_mount=$(echo "$blk" | awk '{print $4}')
+
+confirm(){
+	result=1
+	read -p "$1 [y/N]" -n 1 -r
+	if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
+		result=0
+	fi
+	echo
+	return $result
+}
+
+if [ -n "$existing_mount" ]; then
+	if confirm "${label} is currently mounted at ${existing_mount}. Do you want to unmount it?"; then
+		echo "Unmounting $label from $existing_mount"
+		sudo umount "/dev/disk/by-label/${label}"
+	fi
+else
+	if confirm "${label} is not mounted. Mount to ${new_mount}"; then
+		echo "Mounting ${label} to ${new_mount}"
+		mkdir -p "${new_mount}"
+		sudo mount -o "uid=$(id -u),gid=$(id -g)" "/dev/disk/by-label/${label}" "${new_mount}"
+	fi
+fi
