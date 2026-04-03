@@ -14,10 +14,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		-- Show diagnosis float text
 		vim.diagnostic.config({
-			virtual_text = {
-				prefix = '.',
-				virt_text_pos = 'right_align',
-			},
+			virtual_lines = true,
 			signs = true,
 			underline = true,
 			update_in_insert = false,
