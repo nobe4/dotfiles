@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+CACHE="${HOME}/.local/state/hyprsunset-toggle"
+SETTINGS="$(cat "${CACHE}" 2>/dev/null || echo "0")"
+
+if [[ "$SETTINGS" == "0" ]]; then
+	hyprctl hyprsunset reset
+	echo "1" > "${CACHE}"
+else
+	hyprctl hyprsunset identity
+	echo "0" > "${CACHE}"
+fi

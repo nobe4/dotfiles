@@ -16,6 +16,7 @@
 		"network",
 		"cpu",
 		"memory",
+		"custom/hyprsunset-toggle",
 		"idle_inhibitor"
 	],
 	//
@@ -98,6 +99,10 @@
 		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/webcam-recording.sh",
 		"return-type": "json",
 		"interval": 1
+	},
+	"custom/hyprsunset-toggle": {
+		"on-click": "/home/nobe4/dev/nobe4/dotfiles/bin/hyprsunset-toggle",
+		"format": "💡"
 	},
 	"idle_inhibitor": {
 		"format": "{icon}",
