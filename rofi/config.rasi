@@ -1,6 +1,6 @@
 // https://davatorium.github.io/rofi/current/rofi.1/#configuration
 configuration {
-	modes: "drun";
+	modes: "drun,run,window,ssh";
 
 	font: "CommitMonoV143 12";
 	fixed-num-lines: true;
@@ -8,13 +8,18 @@ configuration {
 
 	show-icons: true;
 	icon-theme: "adwaita";
+
 	drun-show-actions: false;
 	drun-display-format: "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
+
 	sort: true;
 	sorting-method: "normal";
 	case-smart: true;
 	cycle: true;
 	hover-select: false;
+
+	run-shell-command: "kitty --hold -e {cmd}";
+	ssh-command: "kitty --hold -e {ssh-client} {host}";
 
 	// Ref: https://davatorium.github.io/rofi/current/rofi-keys.5/#keyboard-bindings
 	kb-cancel: "Escape";
