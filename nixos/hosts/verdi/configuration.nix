@@ -8,6 +8,8 @@
 
     ../../users/nobe4.nix
 
+    ../../packages/nix
+    ../../packages/shell
     ../../packages/system.nix
     ../../packages/wayland.nix
     ../../packages/gaming.nix
@@ -16,7 +18,6 @@
     ../../packages/font
     ../../packages/network.nix
     ../../packages/vnc.nix
-    ../../packages/nix
 
     ../../service/check_vitamines_availability.nix
 
@@ -39,9 +40,6 @@
     enable = true;
     enable32Bit = true;
   };
-
-  # See https://github.com/NixOS/nixpkgs/blob/b15c73d61ccd7f86995da13ef45f399db53351f4/nixos/modules/services/x11/display-managers/default.nix#L39-L61
-  systemd.services.display-manager.environment.XDG_CURRENT_DESKTOP = "X-NIXOS-SYSTEMD-AWARE";
 
   allowedUnfree = [
     "apple_cursor"

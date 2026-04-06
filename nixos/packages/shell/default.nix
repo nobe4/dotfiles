@@ -8,6 +8,7 @@ in
 {
 
   imports = [ ../is_linux.nix ];
+
   programs.zsh = {
     enable = true;
     enableCompletion = false;
@@ -43,4 +44,19 @@ in
     enable = true;
     inherit shellAliases;
   };
+
+  ln = [
+    [
+      "$DOTFILE_FOLDER/.zshrc"
+      "$HOME/.zshrc"
+    ]
+    [
+      "$DOTFILE_FOLDER/.zprofile"
+      "$HOME/.zprofile"
+    ]
+    [
+      "$DOTFILE_FOLDER/.bashrc"
+      "$HOME/.bashrc"
+    ]
+  ];
 }

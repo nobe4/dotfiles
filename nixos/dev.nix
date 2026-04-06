@@ -46,6 +46,7 @@
       # emmet-language-server
     ]
     ++ (import ./packages/copy_paste.nix { inherit pkgs config; })
+    ++ [ (import ./packages/notify.nix { inherit pkgs config; }) ]
     ++ (import ./packages/jq.nix { inherit pkgs; });
 
   programs.direnv = {

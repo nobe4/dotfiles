@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  config,
+  options,
   ...
 }:
 let
@@ -16,35 +16,19 @@ in
   # https://nix-darwin.github.io/nix-darwin/manual/#opt-users.users
   users.users.nobe4 = {
     description = "nobe4";
-    shell = pkgs.zsh;
     home = if isDarwin then "/Users/nobe4" else "/home/nobe4";
-
-    packages = [
-      (import ../packages/notify.nix { inherit pkgs config; })
-    ];
+  }
+  // lib.optionalAttrs (options.programs.zsh.enable == true) {
+    shell = pkgs.zsh;
   }
   # Linux-only
   // lib.optionalAttrs (!isDarwin) {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
+    openssh.authorizedKeys.keys = [
+      # TODO: how to manage ssh keys properly? one pre host, one per identity,
+      # ...?
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkBqUZ30Oh8l+Ifpb9ibWG4brDeC1a3cplV+h3e6/Ba"
+    ];
   };
-
-  imports = [
-    ../packages/shell
-  ];
-
-  ln = [
-    [
-      "$DOTFILE_FOLDER/.zshrc"
-      "$HOME/.zshrc"
-    ]
-    [
-      "$DOTFILE_FOLDER/.zprofile"
-      "$HOME/.zprofile"
-    ]
-    [
-      "$DOTFILE_FOLDER/.bashrc"
-      "$HOME/.bashrc"
-    ]
-  ];
 }
