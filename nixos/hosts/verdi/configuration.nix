@@ -18,6 +18,7 @@
     ../../packages/font
     ../../packages/network.nix
     ../../packages/vnc.nix
+    ../../packages/cross-compile.nix
 
     ../../service/check_vitamines_availability.nix
 
