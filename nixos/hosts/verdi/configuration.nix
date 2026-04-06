@@ -36,9 +36,13 @@
 
   # Enable Graphical stuff to happen.
   boot.initrd.kernelModules = [ "amdgpu" ];
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
+  hardware = {
+    # Allow control of screens
+    i2c.enable = true;
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
   };
 
   allowedUnfree = [
