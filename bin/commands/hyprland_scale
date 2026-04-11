@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -e
+
+HYPRLAND_CONF="${DOTFILE_FOLDER}/hypr/hyprland.conf"
+
+# format: monitor = <NAME>, <SIZE>, <POSITION>, <SCALE>
+monitor_line="$(grep "^monitor" "${HYPRLAND_CONF}" | fzf)"
+
+scale="$(echo "${monitor_line}" | awk -F, '{print $4}' | xargs)"
+
+echo   "Current scale: ${scale}"
+printf "New scale:     "
+read -r new_scale < /dev/tty
+
+new_monitor_line="$(
+	echo "${monitor_line}" \
+	| awk -F, -v new_scale="${new_scale}" 'BEGIN{OFS=","}{$4=" "new_scale; print}'
+)"
+
+sed -i "s|${monitor_line}|${new_monitor_line}|" "${HYPRLAND_CONF}"
