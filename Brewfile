@@ -37,9 +37,9 @@ cask_args appdir: "~/Applications", require_sha: true
 
 cask "1password" , args: { appdir: "/Applications" }
 cask "1password-cli"
-cask "docker"
+cask "docker-desktop"
 cask "espanso"
 cask "hammerspoon"
 cask "kitty"
-cask "neovide"
+cask "neovide-app"
 cask "notunes"
