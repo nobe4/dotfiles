@@ -214,6 +214,8 @@ is_macos && {
 # Misc {
 alias gpg='GPG_TTY="$(tty)" gpg'
 
+alias copilot="/opt/homebrew/bin/copilot --add-dir '${DOTFILE_FOLDER}/copilot/skills/grug/' --interactive '/skills add ${DOTFILE_FOLDER}/copilot/skills/grug/' --interactive '/grug'"
+
 # Limit how many files can be used by the current session
 ulimit -S -n 10240
 
