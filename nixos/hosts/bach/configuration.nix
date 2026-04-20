@@ -1,4 +1,5 @@
 {
+  pkgs,
   options,
   ...
 }:
@@ -20,6 +21,29 @@
 
   environment.etc."nixos/configuration.nix" = {
     text = builtins.readFile ./configuration.nix;
+  };
+
+  # Lingering means that nobe4's systemd will start at boot
+  users.users.nobe4.linger = true;
+  # Test for auto-starting services
+  systemd.user = {
+    services.startup-test =
+      let
+        script = pkgs.writeShellScript "startup-test" ''
+          #!/bin/sh
+          ${pkgs.coreutils}/bin/date >> /tmp/startup-time.log
+        '';
+      in
+      {
+        enable = true;
+        description = "ensure that startup can run scripts";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = script;
+          RemainAfterExit = true;
+        };
+        wantedBy = [ "default.target" ];
+      };
   };
 
   system.stateVersion = "25.05"; # Do not change
