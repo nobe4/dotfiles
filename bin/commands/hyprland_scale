@@ -5,17 +5,31 @@ set -e
 HYPRLAND_CONF="${DOTFILE_FOLDER}/hypr/hyprland.conf"
 
 # format: monitor = <NAME>, <SIZE>, <POSITION>, <SCALE>
-monitor_line="$(grep "^monitor" "${HYPRLAND_CONF}" | fzf)"
+monitor_line="$(
+	grep "^monitor" "${HYPRLAND_CONF}" \
+	| grep -v "<ignore scale>" \
+	| fzf
+)"
 
 scale="$(echo "${monitor_line}" | awk -F, '{print $4}' | xargs)"
 
-echo   "Current scale: ${scale}"
-printf "New scale:     "
-read -r new_scale < /dev/tty
+echo "Enter an empty scale to confirm"
+echo "Current scale: ${scale}"
 
-new_monitor_line="$(
-	echo "${monitor_line}" \
-	| awk -F, -v new_scale="${new_scale}" 'BEGIN{OFS=","}{$4=" "new_scale; print}'
-)"
+while true; do
+	printf "New scale:     "
+	read -r new_scale < /dev/tty
 
-sed -i "s|${monitor_line}|${new_monitor_line}|" "${HYPRLAND_CONF}"
+	if [[ -z "${new_scale}" ]]; then
+		break
+	fi
+
+	new_monitor_line="$(
+		echo "${monitor_line}" \
+		| awk -F, -v new_scale="${new_scale}" 'BEGIN{OFS=","}{$4=" "new_scale; print}'
+	)"
+
+	sed -i "s|${monitor_line}|${new_monitor_line}|" "${HYPRLAND_CONF}"
+
+	monitor_line="${new_monitor_line}"
+done
