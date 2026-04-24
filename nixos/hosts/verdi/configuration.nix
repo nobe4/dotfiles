@@ -19,6 +19,7 @@
     ../../packages/network.nix
     ../../packages/vnc.nix
     ../../packages/cross-compile.nix
+    ../../packages/virtualization
 
     ../../service/check_vitamines_availability.nix
 
@@ -76,8 +77,6 @@
       # needed for envsubst
       gettext
       chromium # Seems that `programs.chromium` doesn't get it done
-
-      localsend
     ];
   };
 
