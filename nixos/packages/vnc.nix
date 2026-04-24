@@ -13,10 +13,14 @@ in
 {
   users.users.nobe4.packages = with pkgs; [
     wayvnc
+    # TODO: copy the `vnc.html` to `index.html` so that the webserver finds it
+    # by default.
     novnc
 
     (pkgs.writeShellScriptBin "vnc" ''
       systemctl --user ''${1:?} vnc-server vnc-client
+      echo 'see port ${toString vnc-client.port} on'
+      ip a | grep 10.0.0 | awk '{ print $2; }'
     '')
   ];
 
