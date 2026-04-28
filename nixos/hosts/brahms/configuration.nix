@@ -24,8 +24,9 @@
     ../../packages/1password.nix
 
     ../../users/nobe4.nix
-  ];
 
+    ./shortcuts
+  ];
 
   networking = {
     computerName = "brahms";
@@ -110,9 +111,21 @@
         "com.apple.mouse.scaling" = 5.0;
       };
     };
+
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToEscape = true;
+
+      shortcuts = {
+        enable = true;
+        disableAll = true;
+
+        binds = {
+          Spotlight.search = {
+            enabled = true;
+          };
+        };
+      };
     };
   };
 
