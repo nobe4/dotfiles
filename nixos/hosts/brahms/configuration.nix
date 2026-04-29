@@ -17,13 +17,12 @@
     ../../utils/ln-darwin.nix
 
     ../../users/nobe4.nix
-    ../../packages/shell
 
+    ../../packages/shell
     ../../packages/system.nix
     ../../packages/1password.nix
-
     ../../packages/nix
-    ../../dev.nix
+    ../../packages/dev.nix
 
     ./shortcuts
   ];

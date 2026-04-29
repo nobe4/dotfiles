@@ -11,6 +11,7 @@
     {
       imports = [
         <nixpkgs/nixos/modules/installer/sd-card/sd-image-aarch64.nix>
+        ../../packages/mdns.nix
       ];
 
       sdImage.compressImage = false;
@@ -38,20 +39,6 @@
               pskRaw = "${psk}";
             };
           };
-        };
-      };
-
-      services.avahi = {
-        enable = true;
-        nssmdns4 = true;
-        openFirewall = true;
-        publish = {
-          enable = true;
-          domain = true;
-          addresses = true;
-          hinfo = true;
-          userServices = true;
-          workstation = true;
         };
       };
 

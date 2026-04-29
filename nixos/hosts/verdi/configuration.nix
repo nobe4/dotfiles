@@ -20,26 +20,17 @@
     ../../packages/vnc.nix
     ../../packages/cross-compile.nix
     ../../packages/virtualization
+    ../../packages/mdns.nix
+    ../../packges/dev.nix
 
     ../../service/check_vitamines_availability.nix
 
-    ../../dev.nix
-    ../../media.nix
-
+    ./media.nix
   ];
 
   time.timeZone = "Europe/Berlin";
 
   networking.hostName = "verdi";
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true;
-    openFirewall = true;
-    publish = {
-      enable = true;
-      domain = true;
-    };
-  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
