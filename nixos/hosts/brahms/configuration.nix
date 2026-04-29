@@ -9,21 +9,21 @@
   ];
 
   imports = [
-    ../../utils/ln-darwin.nix
-
     # XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
     ../../modules/darwin/zsh.nix
     ../../modules/darwin/bash.nix
 
     ../../utils/allowed_unfree.nix
+    ../../utils/ln-darwin.nix
 
-    ../../packages/nix
-    ../../dev.nix
+    ../../users/nobe4.nix
+    ../../packages/shell
 
     ../../packages/system.nix
     ../../packages/1password.nix
 
-    ../../users/nobe4.nix
+    ../../packages/nix
+    ../../dev.nix
 
     ./shortcuts
   ];
