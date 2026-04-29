@@ -59,4 +59,4 @@ done
 # To verify the key on the rpi, run
 # ssh-keyscan localhost | ssh-keygen -lf -
 echo "Fetching the ssh key for ${hostname}, to add to agenix"
-ssh "${hostname}.local" cat /etc/ssh/ssh_host_ed25519_key.pub
+ssh "root@${hostname}.local" 'cat /etc/ssh/*.pub'

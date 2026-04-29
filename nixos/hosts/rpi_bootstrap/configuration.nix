@@ -11,20 +11,24 @@
     {
       imports = [
         <nixpkgs/nixos/modules/installer/sd-card/sd-image-aarch64.nix>
-        ../../users/nobe4.nix
       ];
 
       sdImage.compressImage = false;
       image.fileName = "${config.networking.hostName}.img";
 
-      # TODO: temporary test
-      users.users.nobe4.password = "n";
+      users.users.root.openssh.authorizedKeys.keys = [
+        # TODO: how to manage ssh keys properly? one pre host, one per identity,
+        # ...?
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkBqUZ30Oh8l+Ifpb9ibWG4brDeC1a3cplV+h3e6/Ba"
+      ];
 
       services.openssh = {
         enable = true;
+        settings = {
+          PermitRootLogin = "prohibit-password";
+        };
       };
 
-      time.timeZone = "Europe/Berlin";
       networking = {
         inherit hostName;
         wireless = {
@@ -36,6 +40,7 @@
           };
         };
       };
+
       services.avahi = {
         enable = true;
         nssmdns4 = true;
@@ -49,34 +54,6 @@
           workstation = true;
         };
       };
-
-      # TODO: run `sudo nix-channel --update` at boot
-      # environment.etc."nixos/configuration.nix" = {
-      #   text = builtins.readFile ./configuration.nix;
-      # };
-
-      # # Lingering means that nobe4's systemd will start at boot
-      # users.users.nobe4.linger = true;
-      # # Test for auto-starting services
-      # systemd.user = {
-      #   services.startup-test =
-      #     let
-      #       script = pkgs.writeShellScript "startup-test" ''
-      #         #!/bin/sh
-      #         ${pkgs.coreutils}/bin/date >> /tmp/startup-time.log
-      #       '';
-      #     in
-      #     {
-      #       enable = true;
-      #       description = "ensure that startup can run scripts";
-      #       serviceConfig = {
-      #         Type = "oneshot";
-      #         ExecStart = script;
-      #         RemainAfterExit = true;
-      #       };
-      #       wantedBy = [ "default.target" ];
-      #     };
-      # };
 
       system.stateVersion = "25.05"; # Do not change
     };
