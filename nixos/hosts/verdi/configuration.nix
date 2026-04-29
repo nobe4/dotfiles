@@ -77,6 +77,8 @@
       # needed for envsubst
       gettext
       chromium # Seems that `programs.chromium` doesn't get it done
+
+      (import ../../packages/deck.nix pkgs)
     ];
   };
 
