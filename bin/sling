@@ -9,7 +9,7 @@ show_help() { grep ^#/ <"${0}" | cut -c4-; }
 COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
 PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
 
-LOG_FILE="${HOME}/Library/Logs/launsh.log"
+LOG_FILE="/tmp/sling.log"
 BECOME_COMMAND="
 	FROM_SLING=1 \
 	{} 2> >(tee -a ${LOG_FILE} >&2) \
