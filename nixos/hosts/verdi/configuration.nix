@@ -31,6 +31,15 @@
   time.timeZone = "Europe/Berlin";
 
   networking.hostName = "verdi";
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+    publish = {
+      enable = true;
+      domain = true;
+    };
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
