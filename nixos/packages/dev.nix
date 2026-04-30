@@ -45,9 +45,9 @@
       # vscode-langservers-extracted
       # emmet-language-server
     ]
-    ++ (import ./packages/copy_paste.nix { inherit pkgs config; })
-    ++ [ (import ./packages/notify.nix { inherit pkgs config; }) ]
-    ++ (import ./packages/jq.nix { inherit pkgs; });
+    ++ (import ./copy_paste.nix { inherit pkgs config; })
+    ++ [ (import ./notify.nix { inherit pkgs config; }) ]
+    ++ (import ./jq.nix { inherit pkgs; });
 
   programs.direnv = {
     enable = true;

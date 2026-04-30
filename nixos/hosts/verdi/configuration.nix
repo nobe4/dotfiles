@@ -21,7 +21,7 @@
     ../../packages/cross-compile.nix
     ../../packages/virtualization
     ../../packages/mdns.nix
-    ../../packges/dev.nix
+    ../../packages/dev.nix
 
     ../../service/check_vitamines_availability.nix
 
