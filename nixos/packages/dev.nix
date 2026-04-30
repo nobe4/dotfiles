@@ -13,6 +13,7 @@
       git
       difftastic
       gh
+      github-copilot-cli
 
       fzf
       ripgrep
@@ -54,6 +55,10 @@
     enableZshIntegration = true;
     enableBashIntegration = true;
   };
+
+  allowedUnfree = [
+    "github-copilot-cli"
+  ];
 
   ln = [
     [
