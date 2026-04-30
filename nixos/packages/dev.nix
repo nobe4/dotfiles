@@ -1,6 +1,15 @@
 # Defines all dependencies for development work.
-{ pkgs, config, ... }:
 {
+  pkgs,
+  pkgs-unstable,
+  config,
+  ...
+}:
+{
+  allowedUnstableUnfree = [
+    "github-copilot-cli"
+  ];
+
   users.users.nobe4.packages =
     with pkgs;
     [
@@ -13,7 +22,6 @@
       git
       difftastic
       gh
-      github-copilot-cli
 
       fzf
       ripgrep
@@ -46,6 +54,9 @@
       # vscode-langservers-extracted
       # emmet-language-server
     ]
+    ++ [
+      pkgs-unstable.github-copilot-cli
+    ]
     ++ (import ./copy_paste.nix { inherit pkgs config; })
     ++ [ (import ./notify.nix { inherit pkgs config; }) ]
     ++ (import ./jq.nix { inherit pkgs; });
@@ -55,10 +66,6 @@
     enableZshIntegration = true;
     enableBashIntegration = true;
   };
-
-  allowedUnfree = [
-    "github-copilot-cli"
-  ];
 
   ln = [
     [

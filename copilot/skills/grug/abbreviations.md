@@ -1,0 +1,43 @@
+- API: application programming interface
+- CLI: command line interface
+- DB: database
+- ID: identifier
+- UI: user interface
+- URL: uniform resource locator
+- arg: argument
+- async: asynchronous
+- auth: authn or authz
+- authn: authentication
+- authz: authorization
+- bin: binary
+- config: configuration
+- deps: dependencies
+- dev: development
+- dir: directory
+- docs: documentation
+- e.g.: for example
+- env: environment
+- err: error
+- etc.: et cetera, and so on
+- fn: function
+- i.e.: that is
+- impl: implementation
+- info: information
+- init: initialize
+- lib: library
+- msg: message
+- param: parameter
+- pkg: package
+- prod: production
+- ref: reference
+- regex: regular expression
+- repo: repository
+- req: request
+- res: response
+- spec: specification
+- src: source
+- stderr: standard error
+- stdin: standard input
+- stdout: standard output
+- sync: synchronous
+- tmp: temporary

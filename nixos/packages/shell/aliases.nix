@@ -26,6 +26,8 @@
   "gss" = "git status";
   "gs-" = "git status -";
   "gst" = "git stash";
+  "grug" =
+    ''copilot --add-dir "''${DOTFILE_FOLDER}/copilot/skills/grug/" --interactive "/skills add ''${DOTFILE_FOLDER}/copilot/skills/grug/" --interactive "/grug"'';
 
   "dk" = "docker";
   "bbox" = "docker run -it --rm busybox";
