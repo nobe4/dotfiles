@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
-  environment.darwinConfig = "/Users/nobe4/dev/nobe4/dotfiles/nixos/hosts/brahms/configuration.nix";
+  environment.darwinConfig = "${config.dotfiles}/nixos/hosts/brahms/configuration.nix";
 
   # XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
   disabledModules = [
@@ -58,10 +58,10 @@
     ];
   };
 
-  ln = [
+  ln = with config; [
     [
-      "$DOTFILE_FOLDER/hammerspoon/"
-      "$HOME/.hammerspoon"
+      "${dotfiles}/hammerspoon/"
+      "${home}/.hammerspoon"
     ]
   ];
 

@@ -8,16 +8,18 @@
   ...
 }:
 {
+  imports = [ ./dotfiles.nix ];
+
   options.ln = lib.mkOption {
     type = with lib.types; listOf (listOf str);
     default = [ ];
     description = ''
       List of user symlinks to create as [ src, dst ] tuples.
-      $HOME and $DOTFILE_FOLDER are available.
+      Use config.dotfiles and config.home for paths.
 
       E.g.
       ln = [
-        [ "src" "$HOME/dst" ]
+        [ "''${config.dotfiles}/src" "''${config.home}/dst" ]
       ]
     '';
   };
@@ -28,9 +30,7 @@
       src = builtins.elemAt tuple 0;
       dst = builtins.elemAt tuple 1;
     in
-    # TODO: DOTFILE_FOLDER should be a nix variable
     ''
-      DOTFILE_FOLDER=$HOME/dev/nobe4/dotfiles
       mkdir -p "$(dirname ${dst})"
       ln --verbose --force --symbolic --no-target-directory "${src}" "${dst}" >> /tmp/ln-logs 2>&1
     ''
@@ -41,11 +41,11 @@
     default = [ ];
     description = ''
       List of root symlinks to create as [ src, dst ] tuples.
-      $HOME is available.
+      Use config.dotfiles and config.home for paths.
 
       E.g.
       ln-root = [
-        [ "src" "/bin/dst" ]
+        [ "''${config.dotfiles}/src" "/bin/dst" ]
       ]
     '';
   };

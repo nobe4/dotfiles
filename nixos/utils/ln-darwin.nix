@@ -9,16 +9,18 @@
   ...
 }:
 {
+  imports = [ ./dotfiles.nix ];
+
   options.ln = lib.mkOption {
     type = with lib.types; listOf (listOf str);
     default = [ ];
     description = ''
       List of user symlinks to create as [ src, dst ] tuples.
-      $HOME and $DOTFILE_FOLDER are available.
+      Use config.dotfiles and config.home for paths.
 
       E.g.
       ln = [
-        [ "src" "$HOME/dst" ]
+        [ "''${config.dotfiles}/src" "''${config.home}/dst" ]
       ]
     '';
   };
@@ -28,11 +30,11 @@
     default = [ ];
     description = ''
       List of root symlinks to create as [ src, dst ] tuples.
-      $HOME and $DOTFILE_FOLDER are available.
+      Use config.dotfiles and config.home for paths.
 
       E.g.
       ln-root = [
-        [ "src" "/bin/dst" ]
+        [ "''${config.dotfiles}/src" "/bin/dst" ]
       ]
     '';
   };
@@ -49,11 +51,10 @@
           dst = builtins.elemAt tuple 1;
         in
         ''
-          # Need to override HOME and DOTFILE_FOLDER just for this execution, and
+          # Need to override HOME just for this execution, and
           # we cannot do `X=a Y=b ln ...` because of https://www.shellcheck.net/wiki/SC2097
           (
-            HOME=/Users/nobe4
-            DOTFILE_FOLDER=$HOME/dev/nobe4/dotfiles
+            HOME=${config.home}
             mkdir -p "$(dirname ${dst})"
             ln --verbose --force --symbolic --no-target-directory "${src}" "${dst}" 1>&2
           )

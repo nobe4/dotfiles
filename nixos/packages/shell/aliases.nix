@@ -1,4 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
+let
+  inherit (config) dotfiles;
+in
 {
   "ls" = "ls --color=auto";
   "ll" = "ls -la";
@@ -27,7 +30,7 @@
   "gs-" = "git status -";
   "gst" = "git stash";
   "grug" =
-    ''copilot --add-dir "''${DOTFILE_FOLDER}/copilot/skills/grug/" --interactive "/skills add ''${DOTFILE_FOLDER}/copilot/skills/grug/" --interactive "/grug"'';
+    ''copilot --add-dir "${dotfiles}/copilot/skills/grug/" --interactive "/skills add ${dotfiles}/copilot/skills/grug/" --interactive "/grug"'';
 
   "dk" = "docker";
   "bbox" = "docker run -it --rm busybox";

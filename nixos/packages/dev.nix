@@ -1,8 +1,8 @@
 # Defines all dependencies for development work.
 {
+  config,
   pkgs,
   pkgs-unstable,
-  config,
   ...
 }:
 {
@@ -67,42 +67,42 @@
     enableBashIntegration = true;
   };
 
-  ln = [
+  ln = with config; [
     [
-      "$DOTFILE_FOLDER/nvim/"
-      "$HOME/.config/nvim"
+      "${dotfiles}/nvim/"
+      "${home}/.config/nvim"
     ]
     [
-      "$DOTFILE_FOLDER/.gitconfig"
-      "$HOME/.gitconfig"
+      "${dotfiles}/.gitconfig"
+      "${home}/.gitconfig"
     ]
     [
-      "$DOTFILE_FOLDER/.gitignore_global"
-      "$HOME/.gitignore_global"
+      "${dotfiles}/.gitignore_global"
+      "${home}/.gitignore_global"
     ]
     [
-      "$DOTFILE_FOLDER/.pryrc"
-      "$HOME/.pryrc"
+      "${dotfiles}/.pryrc"
+      "${home}/.pryrc"
     ]
     [
-      "$DOTFILE_FOLDER/kitty/"
-      "$HOME/.config/kitty"
+      "${dotfiles}/kitty/"
+      "${home}/.config/kitty"
     ]
     [
-      "$DOTFILE_FOLDER/.ignore"
-      "$HOME/.ignore"
+      "${dotfiles}/.ignore"
+      "${home}/.ignore"
     ]
     [
-      "$DOTFILE_FOLDER/.ctags.d"
-      "$HOME/.ctags.d"
+      "${dotfiles}/.ctags.d"
+      "${home}/.ctags.d"
     ]
     [
-      "$DOTFILE_FOLDER/.vale.ini"
-      "$HOME/.config/vale/.vale.ini"
+      "${dotfiles}/.vale.ini"
+      "${home}/.config/vale/.vale.ini"
     ]
     [
-      "$DOTFILE_FOLDER/gh-config.yml"
-      "$HOME/.config/gh/config.yml"
+      "${dotfiles}/gh-config.yml"
+      "${home}/.config/gh/config.yml"
     ]
   ];
 }

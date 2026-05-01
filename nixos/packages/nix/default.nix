@@ -42,10 +42,8 @@ in
     ++
       # nix-darwin ship an environment.darwinConfig that is enough
       (lib.optional (!isDarwin)
-        # TODO: how to store some common paths in the config.
-        # E.g. `DOTFILE_FOLDER`, `NIXOS_FOLDER`, ...
         [
-          "/home/nobe4/dev/nobe4/dotfiles/nixos/hosts/${config.networking.hostName}/configuration.nix"
+          "${config.dotfiles}/nixos/hosts/${config.networking.hostName}/configuration.nix"
           "/etc/nixos/configuration.nix"
         ]
       );

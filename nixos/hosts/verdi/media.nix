@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   users.users.nobe4.packages = with pkgs; [
     # Video
@@ -21,10 +21,10 @@
     gpu-screen-recorder
   ];
 
-  ln = [
+  ln = with config; [
     [
-      "$DOTFILE_FOLDER/imv"
-      "$HOME/.config/imv"
+      "${dotfiles}/imv"
+      "${home}/.config/imv"
     ]
   ];
 }
