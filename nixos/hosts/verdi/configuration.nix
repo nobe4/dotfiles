@@ -1,4 +1,7 @@
 { pkgs, ... }:
+let
+  agenix = import ../../packages/age.nix { inherit pkgs; };
+in
 {
   imports = [
     /etc/nixos/hardware-configuration.nix
@@ -22,13 +25,12 @@
     ../../packages/virtualization
     ../../packages/mdns.nix
     ../../packages/dev.nix
+    agenix.module
 
     ../../service/check_vitamines_availability.nix
 
     ./media.nix
   ];
-
-  time.timeZone = "Europe/Berlin";
 
   networking.hostName = "verdi";
 
@@ -71,6 +73,9 @@
 
       gnupg
       pinentry-qt
+
+      age
+      agenix.cli
 
       signal-desktop
 
