@@ -11,7 +11,10 @@ let
 in
 {
 
-  imports = [ ../is_linux.nix ];
+  imports = [
+    ../is_linux.nix
+    ../../utils/ln.nix
+  ];
 
   programs.zsh = {
     enable = true;
