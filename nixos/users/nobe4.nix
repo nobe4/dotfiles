@@ -8,6 +8,8 @@ let
   isDarwin = pkgs.stdenv.isDarwin;
 in
 {
+  time.timeZone = "Europe/Berlin";
+
   # Required by devenv to update the nix store.
   nix.settings.trusted-users = [ "nobe4" ];
 
