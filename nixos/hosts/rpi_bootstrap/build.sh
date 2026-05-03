@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Use this script to bootstrap a _new_ rpi sd card.
 
 set -e
 
@@ -16,8 +17,8 @@ lsblk
 read -r -p "Enter the device name of your SD card (e.g. for /dev/sdX: sdX): " dev
 
 if [[ ! -b "/dev/${dev}" ]]; then
-    echo "Error: Device /dev/${dev} does not exist or is not a block device!" >&2
-    exit 1
+	echo "Error: Device /dev/${dev} does not exist or is not a block device!" >&2
+	exit 1
 fi
 
 sudo -K
@@ -28,10 +29,10 @@ psk=$(sudo grep PreSharedKey "/var/lib/iwd/${ssid}.psk" | cut -d= -f2)
 
 echo "Building SD image with Nix..."
 nix-build \
-  --argstr hostName "${hostname}" \
-  --argstr ssid "${ssid}" \
-  --argstr psk "${psk}" \
-  "$DIR/configuration.nix"
+	--argstr hostName "${hostname}" \
+	--argstr ssid "${ssid}" \
+	--argstr psk "${psk}" \
+	"$DIR/configuration.nix"
 
 echo ""
 
@@ -53,8 +54,11 @@ fi
 notify "Flashing complete" "The SD card has been flashed successfully."
 
 until avahi-resolve -n4 "${hostname}.local" | grep -q .; do
-  sleep 2
+	sleep 2
 done
+
+# Making a new key invalidates the know ssh key, so remove it if it exists.
+ssh-keygen -R "${hostname}.local" || true
 
 # To verify the key on the rpi, run
 # ssh-keyscan localhost | ssh-keygen -lf -
