@@ -74,6 +74,38 @@ if(contact) {
     if(isInactive && isFamilyOrFriend) {
 ```
 
+## Reader is expert
+
+No:
+```go
+// Create a map to store user ages
+ages := make(map[string]int)
+// Loop through the users slice
+for _, u := range users {
+    // Assign the age to the map using the name as key
+    ages[u.Name] = u.Age
+}
+```
+
+Yes:
+```go
+ages := make(map[string]int)
+for _, u := range users {
+    ages[u.Name] = u.Age
+}
+```
+
+No:
+```python
+# Use list comprehension to filter active users
+active = [u for u in users if u.active]
+```
+
+Yes:
+```python
+active = [u for u in users if u.active]
+```
+
 ## Layer APIs
 
 No: "First create a Builder, then set the Strategy, then

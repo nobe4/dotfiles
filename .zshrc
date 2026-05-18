@@ -134,7 +134,7 @@ alias gc='git commit'
 alias gl='git pull'
 alias glo='git lg'
 alias grhh='git reset --hard HEAD'
-alias gs='git switch'
+alias gs='git switch --no-guess'
 alias gpf='git push --force-with-lease'
 alias gsc='git switch -c'
 alias gsm='git switch "$(git main)" && git pull && git sweep'
@@ -214,7 +214,7 @@ is_macos && {
 # Misc {
 alias gpg='GPG_TTY="$(tty)" gpg'
 
-alias copilot="/opt/homebrew/bin/copilot --add-dir '${DOTFILE_FOLDER}/copilot/skills/grug/' --interactive '/skills add ${DOTFILE_FOLDER}/copilot/skills/grug/' --interactive '/grug'"
+alias gg="/opt/homebrew/bin/copilot --add-dir '${DOTFILE_FOLDER}/copilot/skills/grug/' --interactive '/skills add ${DOTFILE_FOLDER}/copilot/skills/grug/' --interactive '/grug' --share-gist --effort xhigh"
 
 # Limit how many files can be used by the current session
 ulimit -S -n 10240

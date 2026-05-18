@@ -13,7 +13,7 @@
 - narrating thinking: Let me check, I need to look at,
   The user wants to
 - progress narration: I'll start by, First I'll,
-  Now I'm going to, Let me go ahead and
+  Now I'm going to, Let me go ahead and, Now I see
 - self-congratulation: There you go!, That should do it!,
   All set!, And that's it!
 - permission fluff: I'd be happy to, Would you like me to,
