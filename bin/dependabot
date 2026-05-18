@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+#/ Usage: dependabot [FLAGS] [COMMAND]+
+#/
+#/ Requirements:
+#/   - owned-repos that list all the owned repos (<owner>/<repo>)
+#/
+#/ Config:
+#/   ${CONFIG_DIR}/filters (e.g. dependabot ^app/dependabot)
+#/   ${CONFIG_DIR}/commands (e.g. combine gh workflow run --repo="owner/repo" combine_prs.yml)
+#/
+#/ Flags:
+#/   -h|--help              Show this help
+#/   -r|--refresh           Force a refresh
+#/   -f|--filter [NAME]     Filter PRs by name (no value lists filters)
+#/   -q|--query QUERY       Filter PRs by raw pattern
+#/
+#/ Built-in commands (default: list):
+#/   c|cache            Open the cache file in $EDITOR
+#/   e|edit             Open the current file in $EDITOR
+#/   l|list             List all open PRs and pull if the cache is older than a day.
+#/   o|open             Open the first 10 PRs in the browser.
+#/   r|refresh          Check included PRs and remove closed/merged ones.
+#/
+#/ ---
+#/
+
+set -e
+
+FORCE=0
+FILTER=""
+QUERY=""
+
+STATE_DIR="${XDG_CACHE_HOME:-$HOME/.local}/state/dependabot"
+CACHE_FILE="${STATE_DIR}/cache"
+CURRENT_FILE="${STATE_DIR}/current"
+
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/dependabot"
+COMMANDS_FILE="${CONFIG_DIR}/commands"
+FILTERS_FILE="${CONFIG_DIR}/filters"
+
+mkdir -p "${STATE_DIR}" "${CONFIG_DIR}"
+touch "${CACHE_FILE}" "${CURRENT_FILE}" "${COMMANDS_FILE}" "${FILTERS_FILE}"
+
+show_help() {
+	export CONFIG_DIR
+	grep ^#/ <"${0}" |cut -c4- | envsubst
+	echo "Commands:"
+	cat "${COMMANDS_FILE}" | sed 's/^/  /'
+	echo ""
+	echo "Filters:"
+	cat "${FILTERS_FILE}" | sed 's/^/  /'
+}
+
+lookup() {
+	local type="${1}" key="${2}" file="${3}"
+	result=$(grep "^${key} " "${file}" | cut -d' ' -f2-)
+	if [ -z "${result}" ]; then
+		echo "Unknown ${type} '${key}'." >&2
+		return 1
+	fi
+	echo "${result}"
+}
+
+parse_filter() {
+	if [ -z "${2:-}" ] || [[ "${2}" == -* ]]; then
+		cat "${FILTERS_FILE}"
+		exit 0
+	fi
+	FILTER="${2}"
+}
+
+while [ "${#}" -gt 0 ]; do
+	case "${1}" in
+		-h|--help) show_help && exit 0 ;;
+		-r|--refresh) FORCE=1 ;;
+		-f|--filter) parse_filter "$@" && shift 1 ;;
+		-q|--query) shift 1 && QUERY="${1}" ;;
+		-*)
+			echo "Unknown flag '${1}'"
+			show_help
+			exit 1
+			;;
+		*)  break ;;
+	esac
+	shift 1
+done
+
+prefetch_prs(){
+	echo "Prefetching PRs..." >&2
+
+	owned-repos | xargs -P 8 -I {} gh --repo="{}" \
+		pr list --search "is:open" \
+		--json url,author,title \
+		-q '.[] | "\(.author.login) \(.url) \(.title)"' \
+		2>/dev/null \
+	| grep . | sort -u > "${CACHE_FILE}"
+}
+
+ensure_cache(){
+	if [ "${FORCE}" == 1 ] || [ ! -f "${CACHE_FILE}" ] || [ "$(find "${CACHE_FILE}" -not -newermt "1 day ago")" ]; then
+		prefetch_prs
+	fi
+}
+
+list() {
+	ensure_cache
+
+	if [ "${FILTER}" != "" ]; then
+		QUERY="$(lookup "filter" "${FILTER}" "${FILTERS_FILE}")" || exit 1
+	fi
+
+	if [ "${QUERY}" != "" ]; then
+		echo "Filtering PRs matching '${QUERY}'" >&2
+		grep "${QUERY}" "${CACHE_FILE}" | cut -d' ' -f2 | sort -u > "${CURRENT_FILE}"
+	fi
+
+	cat "${CURRENT_FILE}"
+
+	echo "${CURRENT_FILE} ; $(wc -l < "${CURRENT_FILE}" | bc) ; $(date -r "${CURRENT_FILE}")" >&2
+}
+
+refresh(){
+	tmpfile=$(mktemp)
+
+	while IFS= read -r pr; do
+		printf "[?] %s" "${pr}" >&2
+		if gh pr view "${pr}" --json state --jq '.state' | grep -q OPEN; then
+			printf "\r\033[0;32m[✓] %s\033[0m\n" "${pr}" >&2
+			echo "${pr}" >> "${tmpfile}"
+		else
+			printf "\r\033[0;31m[x] %s\033[0m\n" "${pr}" >&2
+			# remove closed PR from cache too
+			sed -i '' "\| ${pr} |d" "${CACHE_FILE}"
+		fi
+	done < "${CURRENT_FILE}"
+
+	cat "${tmpfile}" > "${CURRENT_FILE}"
+}
+
+run_custom_command() {
+	cmd=$(lookup "command" "${1}" "${COMMANDS_FILE}") || exit 1
+	eval "${cmd}"
+}
+
+[ "${#}" -eq 0 ] && list
+
+# Parse commands
+while [ "${#}" -gt 0 ]; do
+	case "${1}" in
+		c|cache) "${EDITOR}" "${CACHE_FILE}" ;;
+		e|edit) "${EDITOR}" "${CURRENT_FILE}" ;;
+		l|list) list ;;
+		o|open) head -n 10 "${CURRENT_FILE}" | xargs -I {} open --background {} ;;
+		r|refresh) refresh ;;
+		*) run_custom_command "${1}" ;;
+		esac
+	shift 1
+done
