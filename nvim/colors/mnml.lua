@@ -221,6 +221,9 @@ local rules = {
 	{ group = "CmpItemKindEnum",             lk = "CmpItemKindClass" },
 	{ group = "CmpItemKindStruct",           lk = "CmpItemKindClass" },
 
+	-- JSON
+	{ group = "jsonBoolean",                 lk = "Number" },
+
 	-- LSP
 	-- { group = "LspInlayHint",                lk = "lred" },
 
