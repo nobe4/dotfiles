@@ -34,7 +34,6 @@ in
       serviceConfig = {
         ExecStart = ''
           ${pkgs.wayvnc}/bin/wayvnc \
-            --show-performance \
             --render-cursor \
             ${vnc-server.addr} ${toString vnc-server.port}
         '';
