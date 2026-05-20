@@ -1,11 +1,12 @@
 { pkgs, config, ... }:
 let
   notify = import ../packages/notify.nix { inherit pkgs config; };
+  enable = false;
 in
 {
   systemd.user = {
     services.check-if-vitamines-are-available = {
-      enable = true;
+      inherit enable;
       description = "check if vitamines are available";
       path = [
         pkgs.bash
@@ -14,7 +15,7 @@ in
       ];
 
       serviceConfig = {
-        Type = ''oneshot'';
+        Type = "oneshot";
         ExecStart = ''
           ${pkgs.bash}/bin/bash -c /home/nobe4/dev/nobe4/dotfiles/bin/check_if_vitamines_are_available.sh
         '';
@@ -22,7 +23,7 @@ in
     };
 
     timers.check-if-vitamines-are-available = {
-      enable = true;
+      inherit enable;
       after = [ "network.target" ];
       wantedBy = [ "timers.target" ];
       timerConfig = {
