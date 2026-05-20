@@ -30,6 +30,7 @@
   networking = {
     computerName = "brahms";
     hostName = "brahms";
+    localHostName = "brahms";
   };
 
   users.users.nobe4.packages = with pkgs; [
@@ -45,16 +46,19 @@
     #     + install brew from https://brew.sh/
 
     enable = true;
+    brews = [
+      "pinentry-mac"
+    ];
+
     # TODO: check what can be removed here
     casks = [
       "firefox"
-      "1password"
-      "1password-cli"
+      # "1password"
+      # "1password-cli"
       "kitty"
       "notunes"
       "hammerspoon"
       "neovide"
-      "qbittorrent"
     ];
   };
 
@@ -76,6 +80,7 @@
         AppleEnableMouseSwipeNavigateWithScrolls = false;
         AppleEnableSwipeNavigateWithScrolls = false;
         "com.apple.sound.beep.feedback" = 1;
+        # Not working?
         "com.apple.swipescrolldirection" = false;
       };
       controlcenter = {

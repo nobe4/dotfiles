@@ -13,7 +13,6 @@ in
 
   imports = [
     ../is_linux.nix
-    ../../utils/ln.nix
   ];
 
   programs.zsh = {
