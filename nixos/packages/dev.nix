@@ -1,6 +1,7 @@
 # Defines all dependencies for development work.
 {
   config,
+  lib,
   pkgs,
   pkgs-unstable,
   ...
@@ -20,22 +21,15 @@
       fd
 
       git
-      difftastic
       gh
+      difftastic
 
       fzf
       ripgrep
       pv
       universal-ctags
 
-      devenv
-
       tldr
-      tree-sitter
-
-      # Needed globally to run the copilot lsp
-      nodejs
-
       tree-sitter
 
       # Needed globally to run the copilot lsp
@@ -59,10 +53,13 @@
     ]
     ++ (import ./copy_paste.nix { inherit pkgs config; })
     ++ [ (import ./notify.nix { inherit pkgs config; }) ]
-    ++ (import ./jq.nix { inherit pkgs; });
+    ++ (import ./jq.nix { inherit pkgs; })
+    ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+      devenv
+    ];
 
   programs.direnv = {
-    enable = true;
+    enable = !pkgs.stdenv.isDarwin;
     enableZshIntegration = true;
     enableBashIntegration = true;
   };
