@@ -3,13 +3,11 @@ set -e
 
 [[ "$*" == "-h" ]] && cat "${0}" && exit 0
 
-prs=${*:-$(get_pr "Enter PR URLs to push an empty commit to:")}
-
-for pr in "${prs[@]}"; do
-	clear
+get_prs "Enter PR URL(s) to push an empty commit to:" "$@" | while read -r pr; do
 	cd "$(mktemp -d)"
 	echo "Pushing empty commit to PR: ${pr}"
-	eval "$(gh pr view "${pr}" --json headRepository,headRepositoryOwner,headRefName -q '"gh clone \(.headRepositoryOwner.login)/\(.headRepository.name) . -- --single-branch --branch \(.headRefName)"')"
+	gh repo clone "${pr}" .
+	gh pr checkout "${pr}"
 	git commit --allow-empty -m 'chore: push empty commit to trigger ci'
 	git push
 done

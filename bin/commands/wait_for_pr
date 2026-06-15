@@ -71,7 +71,7 @@ shift 1 || true
 
 URL="${*}"
 if [ -z "${URL}" ]; then
-	URL="$(get_pr "Enter PR URL to wait to be ${CONDITION}:")"
+	URL="$(get_prs "Enter PR URL(s) to wait to be ${CONDITION}:")"
 fi
 
 function p_green() { printf "\033[0;32m✓ %s\033[0m\n" "${*}"; }
@@ -91,14 +91,15 @@ function check_ci_green(){
 
 function check_ci_completed(){
 	GH_PAGER='cat' gh pr checks "${URL}"
-	gh pr view --json statusCheckRollup \
-		-q '.statusCheckRollup[].status' "${URL}" \
-		| grep 'IN_PROGRESS' >/dev/null && ci_completed=1 || ci_completed=0
+	in_progress="$(gh pr view --json statusCheckRollup \
+		-q '.statusCheckRollup | any(.status == "IN_PROGRESS")' "${URL}")"
 
-	if [ "${ci_completed}" == "0" ]; then
-		p_green "PR CI has completed"
-	else
+	if [ "${in_progress}" == "true" ]; then
+		ci_completed=1
 		p_yellow "PR CI has not completed"
+	else
+		ci_completed=0
+		p_green "PR CI has completed"
 	fi
 
 	return "${ci_completed}"
