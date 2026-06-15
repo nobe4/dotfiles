@@ -3,13 +3,15 @@
 
 set -e
 
-show_help() { grep ^#/ <"${0}" | cut -c4-; }
-[ "${*}" == "-h" ] && show_help && exit 0
-
 COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
 PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
 
-LOG_FILE="${HOME}/Library/Logs/launsh.log"
+LOG_FILE="/tmp/sling.log"
+
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/sling"
+CACHE_FILE="${CACHE_DIR}/commands"
+mkdir -p "${CACHE_DIR}"
+
 BECOME_COMMAND="
 	FROM_SLING=1 \
 	{} 2> >(tee -a ${LOG_FILE} >&2) \
@@ -22,11 +24,15 @@ BECOME_COMMAND="
 		)
 "
 
-find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
-	-type f \
-	-exec basename {} \; \
-	| sort \
-	| fzf \
-		--preview-window="bottom" \
-		--preview="{} -h" \
-		--bind="enter:become(${BECOME_COMMAND})"
+if [ ! -f "${CACHE_FILE}" ] || [ "$(find "${CACHE_FILE}" -not -newermt "1 hour ago")" ]; then
+	find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
+		-type f \
+		-exec basename {} \; \
+		| sort > "${CACHE_FILE}"
+fi
+
+fzf \
+	--preview-window="bottom" \
+	--preview="{} -h" \
+	--bind="enter:become(${BECOME_COMMAND})" \
+	< "${CACHE_FILE}"
