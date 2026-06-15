@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+#/ Usage: cache COMMAND NAME KEY [TTL]
+#/
+#/ Manages cache files under ${XDG_CACHE_HOME:-$HOME/.cache}/<NAME>/<KEY>.
+#/ TTL is a value used by `find -newermt` (e.g. "1 hour", "1 day" (default), "7 day").
+#/
+#/ Commands:
+#/   path     Print cache file path.
+#/   fresh    Exit 0 if cache exists and is younger than TTL.
+#/   clear    Remove cache file.
+#/   edit     Open in $EDITOR.
+
+set -e
+
+show_help() { grep ^#/ <"${0}" | cut -c4-; }
+
+if [ "${#}" -eq 0 ] || [[ "${1}" == "-h" || "${1}" == "--help" ]]; then
+	show_help >&2
+	exit 0
+fi
+
+if [ "${#}" -lt 3 ]; then
+	echo "Missing args" >&2
+	show_help >&2
+	exit 2
+fi
+
+CMD="${1}"
+FILE="${XDG_CACHE_HOME:-$HOME/.cache}/${2}/${3}"
+mkdir -p "$(dirname "${FILE}")"
+
+TTL="${4:-1 day}"
+
+case "${CMD}" in
+	path) echo "${FILE}" ;;
+	fresh) [ -n "$(find "${FILE}" -newermt "${TTL} ago" 2>/dev/null)" ] ;;
+	clear) rm -f "${FILE}" ;;
+	edit) "${EDITOR}" "${FILE}" ;;
+
+	*)
+		echo "Unknown command '${1}'" >&2
+		show_help >&2
+		exit 1
+		;;
+esac

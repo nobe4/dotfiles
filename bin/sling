@@ -7,10 +7,7 @@ COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
 PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
 
 LOG_FILE="/tmp/sling.log"
-
-CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/sling"
-CACHE_FILE="${CACHE_DIR}/commands"
-mkdir -p "${CACHE_DIR}"
+CACHE_FILE="$(cache path sling commands)"
 
 BECOME_COMMAND="
 	FROM_SLING=1 \
@@ -24,7 +21,7 @@ BECOME_COMMAND="
 		)
 "
 
-if [ ! -f "${CACHE_FILE}" ] || [ "$(find "${CACHE_FILE}" -not -newermt "1 hour ago")" ]; then
+if ! cache fresh sling commands; then
 	find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
 		-type f \
 		-exec basename {} \; \

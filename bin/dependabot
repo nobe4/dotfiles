@@ -30,8 +30,8 @@ FORCE=0
 FILTER=""
 QUERY=""
 
-STATE_DIR="${XDG_CACHE_HOME:-$HOME/.local}/state/dependabot"
-CACHE_FILE="${STATE_DIR}/cache"
+STATE_DIR="${HOME}/.local/state/dependabot"
+CACHE_FILE="$(cache path dependabot prs)"
 CURRENT_FILE="${STATE_DIR}/current"
 
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/dependabot"
@@ -39,7 +39,7 @@ COMMANDS_FILE="${CONFIG_DIR}/commands"
 FILTERS_FILE="${CONFIG_DIR}/filters"
 
 mkdir -p "${STATE_DIR}" "${CONFIG_DIR}"
-touch "${CACHE_FILE}" "${CURRENT_FILE}" "${COMMANDS_FILE}" "${FILTERS_FILE}"
+touch "${CURRENT_FILE}" "${COMMANDS_FILE}" "${FILTERS_FILE}"
 
 show_help() {
 	export CONFIG_DIR
@@ -97,7 +97,7 @@ prefetch_prs(){
 }
 
 ensure_cache(){
-	if [ "${FORCE}" == 1 ] || [ ! -f "${CACHE_FILE}" ] || [ "$(find "${CACHE_FILE}" -not -newermt "1 day ago")" ]; then
+	if [ "${FORCE}" == 1 ] || ! cache fresh dependabot prs; then
 		prefetch_prs
 	fi
 }
