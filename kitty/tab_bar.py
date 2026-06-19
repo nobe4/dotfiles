@@ -12,7 +12,6 @@ from kitty.tab_bar import (
     TabBarData,
     as_rgb,
     draw_attributed_string,
-    draw_title,
 )
 
 opts = get_options()
@@ -63,7 +62,7 @@ def _draw_left_status(
     if index == 1:
         screen.draw(f"[{get_boss().mappings.current_keyboard_mode_name}]")
 
-    draw_title(draw_data, screen, tab, index)
+    screen.draw(f" {tab.title} ")
 
 
 def _redraw_tab_bar(_):

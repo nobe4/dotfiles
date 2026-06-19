@@ -78,6 +78,11 @@ PROMPT="%{${fg[green]}%}%c%{${reset_color}%} "
 # Add functions/prompt_precmd to the list of precmd_functions
 typeset -a precmd_functions
 precmd_functions+=(prompt_precmd)
+
+# Set tab title on dir change and prompt
+precmd_functions+=(set_tab_title)
+chpwd_functions+=(set_tab_title)
+preexec_functions+=(set_tab_title)
 # }
 # }
 # Completion {
