@@ -1,7 +1,10 @@
+#!/usr/bin/env zsh
 # Set tab title to: <path> <process>
 # path is "owner/repo:branch" if in a git repo, otherwise shortened cwd
 # TODO: figure out how to remove homebrew from here.
 
+# NOTE: all the local here prevent from bleeding into the global context, as
+# this is a zsh function it must behave as one.
 local cwd="$PWD"
 local path=""
 
