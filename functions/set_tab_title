@@ -41,4 +41,4 @@ fi
 # foreground process name
 local proc="${1:-${ZSH_NAME:-zsh}}"
 
-print -Pn "\e]0;${path} ${proc}\a"
+printf '\e]0;%s %s\a' "${path}" "${proc}"
