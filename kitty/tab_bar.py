@@ -19,7 +19,7 @@ clock_color = as_rgb(color_as_int(opts.color15))
 
 REFRESH_TIME_SECONDS = 1
 timer_id = None
-battery_path = (f"{environ["HOME"]}/dev/nobe4/dotfiles/bin/battery_percent",)
+battery_path = (f"{environ["HOME"]}/.config/dotfiles/bin/battery_percent",)
 
 
 def _draw_right_status(
