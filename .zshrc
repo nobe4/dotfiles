@@ -120,7 +120,6 @@ alias tw='tmux switch -t'
 
 # Neovim {
 alias vi="nvim"
-alias vi="nvim"
 alias vim="nvim"
 alias vst='nvim +Git now' # Run Gstatus at vim startup
 alias vih='nvim +help\ ' # Jump to vim help
@@ -136,17 +135,22 @@ alias ga='git add'
 alias gb='git branch'
 alias gbm='git branch -M'
 alias gc='git commit'
+alias gcc='git checkout'
 alias gl='git pull'
 alias glo='git lg'
 alias grhh='git reset --hard HEAD'
-alias gs='git switch --no-guess'
+
+alias gt='git-worktree'
+alias gs='git-switch'
+alias gsa='cd $(gt -p add)'
+alias gsm='cd $(gt path $(git main))'
+
 alias gpf='git push --force-with-lease'
-alias gsc='git switch -c'
-alias gsm='git switch "$(git main)" && git pull && git sweep'
 alias gss='git status'
 alias gs-='git status -'
 alias gst='git stash'
 alias gcb='echo "DEPRECATED stop using git checkout for creating branch: use git switch for that (alias is gsc)"'
+alias pr='projector'
 # }
 
 # Docker {

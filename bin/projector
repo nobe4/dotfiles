@@ -1,0 +1,276 @@
+#!/usr/bin/env bash
+#/ Usage: projector [FLAGS] [COMMAND] [QUERY]
+#/
+#/ Select a local or remote repo to switch to.
+#/
+#/ Local repos are repos cloned (bare) in ${DEV_PATH}.
+#/ After picking a repo, select one of its worktrees.
+#/ Remote repos are repositories you contributed to.
+#/
+#/ Status indications in the FZF search:
+#/   - '-'  Last repo
+#/   - '*'  Recent repo
+#/   - '+'  Cloned repo
+#/   - '?'  Remote repo
+#/
+#/ Requirements:
+#/   - fzf
+#/   - gh
+#/   - kitty (with 'allow_remote_control yes')
+#/
+#/ Flags:
+#/   -h|--help      Display this help.
+#/   -r|--refresh   Refresh cache.
+#/   -v|--verbose   Set -x
+#/
+#/ Commands (default: 'switch'):
+#/   debug          Print some debug information.
+#/   history        Display repos in order of last access.
+#/   -|last         Switch to last repo ('${LAST_REPO}').
+#/   l|list         List all local repos.
+#/   n|new          Clone a repo not in the contribution list.
+#/                  Needs the 'owner/repo' or URL in QUERY.
+#/   o|output       Output the name of the selected repo.
+#/   s|switch       Switch to selected repo.
+#/   w|web          Open selected repo in your browser.
+#/
+#/ Environment variables:
+#/   PR_CACHE_TTL_DAYS      Number of days after which the cache needs to refresh.
+#/                          Set to -1 to always refresh.
+#/                          Value: '${PR_CACHE_TTL_DAYS}'
+#/
+#/   PR_STATE_PATH          Path to the state folder.
+#/                          Uses XDG_STATE_HOME if set.
+#/                          value: '${PR_STATE_PATH}'
+
+# NOTE: The global variables REPO and BRANCH are read/written directly, to
+# simplify their usage.
+
+set -e
+
+DEV_PATH="${DEV_PATH:?}"
+
+PR_STATE_PATH="${PR_STATE_PATH:-${XDG_STATE_HOME:-${HOME:?}/.local/state}/pr}"
+mkdir -p "${PR_STATE_PATH}"
+
+# Don't touch the cache file to preserve last modification date.
+touch "${PR_STATE_PATH:?}/"{current,history,ignored,last}
+
+PR_CACHE_TTL_DAYS="${PR_CACHE_TTL_DAYS:-7}"
+
+LAST_REPO="$(<"${PR_STATE_PATH}/last")"
+
+show_help() {
+	export LAST_REPO DEV_PATH PR_CACHE_TTL_DAYS PR_STATE_PATH
+	grep ^#/ <"${0}" | cut -c4- | envsubst
+}
+
+debug () {
+	find "${PR_STATE_PATH}" -type f \
+		-exec bash -c 'echo -e "$1\n$(cat "$1" | sort | uniq -c | sort -nr)\n"' \
+		shell {} \; \
+			| less
+}
+
+default_branch(){ git -C "${DEV_PATH}/${REPO}" main ; }
+
+refresh_cache(){
+	if [ -f "${PR_STATE_PATH}/cache" ]; then
+		cache_age_in_days="$((( $(date +%s) - $(date -r "${PR_STATE_PATH}/cache" +%s)) / 86400))"
+		[ "${cache_age_in_days}" -lt "${PR_CACHE_TTL_DAYS}" ] && return
+	fi
+
+	echo "Writing repo list to ${PR_STATE_PATH}/cache in the background." >&2
+	sleep 1
+
+	# shellcheck disable=SC2016
+	gh api graphql \
+		--paginate \
+		-f query='
+			query($endCursor: String) {
+				viewer {
+					repositoriesContributedTo(first: 100, isLocked: false, includeUserRepositories: true, after: $endCursor) {
+						nodes { nameWithOwner }
+						pageInfo { hasNextPage endCursor }
+					}
+				}
+			}
+			' \
+		--jq '.[].viewer.repositoriesContributedTo.nodes[].nameWithOwner' \
+		> "${PR_STATE_PATH}/cache" \
+		&
+}
+
+get_repos(){
+	if [ "${LAST_REPO}" != "" ]; then
+		echo "- ${LAST_REPO}"
+	fi
+
+	recent_repos="$(
+		sort < "${PR_STATE_PATH}/history" \
+			| grep -v '^$' \
+			| grep -v "${LAST_REPO}" \
+			| uniq -c \
+			| sort -nr \
+			| sed 's/ *[0-9]* //'
+	)"
+
+	echo "${recent_repos}" \
+		| grep -v '^$' \
+		| sed 's/^/* /'
+
+	local_repos="$(git-repos)"
+	comm -23 \
+		<(echo "${local_repos}" | sort) \
+		<(echo -e "${recent_repos}\n${LAST_REPO}" | sort) \
+		| grep -v '^$' \
+		| sed 's/^/+ /'
+
+	refresh_cache
+	remote_repos="$(cat "${PR_STATE_PATH}/cache")"
+	all_repos="$(echo -e "${remote_repos}" | sort -u)"
+
+	ignored_repos="$(cat "${PR_STATE_PATH}/ignored")"
+	repos_to_reject="$(echo -e "${ignored_repos}\n${recent_repos}\n$(git-repos)" | sort -u)"
+
+	comm -23 \
+		<(echo "${all_repos}") \
+		<(echo "${repos_to_reject}") \
+		| grep -v '^$' \
+		| sed 's/^/? /'
+}
+
+select_repo(){
+	# TODO: inline get_repos
+	echo "${1}" \
+		| fzf \
+			--no-sort \
+			--info=inline \
+			--select-1 \
+			--nth=2 \
+			--query="${2}" \
+			--prompt="${3}" \
+			--preview-window=up:85%:border-bottom:wrap \
+			--preview="GH_FORCE_TTY=\${FZF_PREVIEW_COLUMNS} gh repo view {2}" \
+			--no-mouse \
+			--bind="ctrl-o:execute-silent(gh repo view --web {2})" \
+			--bind="ctrl-i:execute-silent(echo {2} >> ${PR_STATE_PATH}/ignored)" \
+		| awk '{print $2}' \
+		|| true # prevent fzf from failing on exit
+}
+
+
+clone_repo(){
+	repo_path="${DEV_PATH}/${REPO}"
+	[ -d "${repo_path}" ] && return
+
+	# The origin fetch is needed because bare repos don't have remotes set by default.
+	gh repo clone "${REPO}" "${repo_path}" -- --bare --config=remote.origin.fetch='+refs/heads/*:refs/remotes/origin/*'
+	git -C "${repo_path}" fetch origin
+
+	git-worktree --repo "${repo_path}" new "$(default_branch)"
+}
+
+switch(){
+	title="${REPO}:${BRANCH}"
+
+	# TODO: if the os-window already exist, create a new tab?
+	# Focus the os-window by its title OR create a new one
+	kitty @ focus-window \
+		--match="title:${title}" \
+		2> /dev/null \
+		||
+	kitty @ launch \
+		--type=os-window \
+		--no-response \
+		--title="${title}" \
+		--os-window-title="${title}" \
+		--os-window-state=fullscreen \
+		--cwd="${DEV_PATH}/${REPO}/worktree/${BRANCH}"
+}
+
+record_repo(){
+	current_repo="$(<"${PR_STATE_PATH}/current")"
+	echo "${REPO}" >> "${PR_STATE_PATH}/history"
+	echo "${REPO}" > "${PR_STATE_PATH}/current"
+	if [ "${current_repo}" != "${REPO}" ]; then
+		echo "${current_repo}" > "${PR_STATE_PATH}/last"
+	fi
+}
+
+open_repo(){
+	clone_repo
+	record_repo
+	BRANCH="${BRANCH:-$(default_branch)}"
+	switch
+}
+
+select_repo_branch(){
+	REPO="$(select_repo "$(get_repos)" "${1}" "${2}")"
+	if [ -z "${REPO}" ]; then exit 0; fi
+
+	BRANCH="$(git-worktree --repo "${DEV_PATH}/${REPO}")"
+	if [ -z "${BRANCH}" ]; then exit 0; fi
+}
+
+while [ "${#}" -gt 0 ]; do
+	case "${1}" in
+		-h|--help) show_help && exit 0 ;;
+		-r|--reload) PR_CACHE_TTL_DAYS=-1 ;;
+		-v|--verbose) set -x ;;
+		-) break ;;
+		-*)
+			echo "Unknown flag '${1}'"
+			show_help
+			exit 1
+			;;
+		*) break ;;
+	esac
+
+	shift 1
+done
+
+COMMAND="${1:-"switch"}"
+query="${*:2}"
+
+case "${COMMAND}" in
+	s|switch)
+		select_repo_branch "${query}" "Switch to "
+		open_repo
+		;;
+
+	debug) debug ;;
+
+	history) tac "${PR_STATE_PATH}/history" | awk '!l[$0]++' ;;
+
+	l|list) git-repos ;;
+
+	-|last)
+		[ -z "${LAST_REPO}" ] && exit 0
+		REPO="${LAST_REPO}"
+		open_repo
+		;;
+
+	n|new)
+		REPO=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' "${query}")
+		open_repo
+		;;
+
+	o|output)
+		select_repo_branch "${query}" "Output "
+		echo "${REPO}:${BRANCH}"
+		;;
+
+	w|web)
+		REPO="$(select_repo "$(get_repos)" "${query}" "Open ")"
+		[ -z "${REPO}" ] && exit 0
+		gh repo view --web "${REPO}"
+		# TODO: open a specific branch?
+		# gh repo view --web "${repo}" --branch "${branch}"
+		;;
+
+	*)
+		select_repo_branch "${COMMAND}" "Switch to "
+		open_repo
+		;;
+esac

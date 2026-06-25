@@ -27,7 +27,7 @@
 [alias]
 	alias = !git-alias
 
-	main = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
+	main = !git -C "$(git rev-parse --path-format=absolute --git-common-dir)" symbolic-ref --short HEAD
 
 	df = difftool
 	last-tag = !git describe --abbrev=0 || git describe --tags
@@ -38,8 +38,6 @@
 	oops = !git commit -a --fixup=HEAD && GIT_EDITOR=true git rebase -i --autosquash HEAD~2
 
 	safe-pull = !git-safe-pull
-
-	rebase-main = !"git fetch; git rebase origin/$(git main)"
 	sweep = !git-sweep
 	recent-branches = branch --sort=-committerdate --format="%(committerdate:relative)%09%(refname:short)"
 

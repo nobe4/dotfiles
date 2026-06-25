@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+find "${DEV_PATH}/" \
+	-type d \
+	-maxdepth 2 \
+	-mindepth 2 \
+	| sed "s#^${DEV_PATH}/##"

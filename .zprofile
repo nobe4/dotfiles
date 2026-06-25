@@ -11,6 +11,8 @@ source "$DOTFILE_FOLDER/utils.zsh"
 # PATH.
 unsetopt GLOBAL_RCS
 
+export DEV_PATH="${HOME:?}/dev"
+
 # PATH
 PATH="/usr/local/sbin:$PATH"
 PATH="/usr/local/bin:$PATH"
