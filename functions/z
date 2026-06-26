@@ -1,4 +1,17 @@
 #!/usr/bin/env bash
 
-repo=$(git-repos | fzf --select-1 --query "${*}")
-cd "$(git-worktree -p --repo "${DEV_PATH}/${repo}")" || exit
+selection=$(
+	{
+		git-repos
+		find "${HOME}" -maxdepth 1 -mindepth 1 -type d | sed "s#^${HOME}#~#"
+	} | fzf --select-1 --query "${*}"
+)
+
+[ -z "${selection}" ] && return
+
+# no expansion of ~ is ok
+# shellcheck disable=2088
+case "${selection}" in
+	"~/"*) cd "${selection}" || exit ;;
+	*) cd "$(git-worktree -p --repo "${DEV_PATH}/${selection}")" || exit ;;
+esac
