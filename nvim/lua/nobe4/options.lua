@@ -65,10 +65,9 @@ vim.opt.mouse = ""
 vim.opt.signcolumn = "number"
 
 -- Misc
--- vim.opt.tags:append(".git/tags")
 vim.opt.switchbuf = { "useopen", "usetab", "newtab" }
 -- vim.opt.errorformat:append "[error] %f: %m (%l:%c)"
-vim.opt.tags = { ".git/tags" }
+-- vim.opt.tags:append(".git/tags")
 
 -- ripgrep
 if vim.fn.executable("rg") == 1 then
