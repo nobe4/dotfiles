@@ -19,6 +19,7 @@ clock_color = as_rgb(color_as_int(opts.color15))
 
 REFRESH_TIME_SECONDS = 1
 timer_id = None
+# Using the full path because the tab bar doesn't get the custom PATH.
 battery_path = (f"{environ["HOME"]}/.config/dotfiles/bin/battery_percent",)
 
 
