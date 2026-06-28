@@ -1,10 +1,15 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   inherit (config) dotfiles;
 in
 {
   "ls" = "ls --color=auto";
-  "ll" = "ls -la";
+  "ll" = "ls -lah";
 
   "vi" = "nvim";
   "vim" = "nvim";
