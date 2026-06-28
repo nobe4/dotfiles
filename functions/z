@@ -7,6 +7,11 @@ choices="$(
 		-maxdepth 2 \
 		-type d &&
 	find \
+		"/tmp/mount/" \
+		-mindepth 1 \
+		-maxdepth 1 \
+		-type d &&
+	find \
 		"${HOME}" \
 		-mindepth 1 \
 		-maxdepth 1 \
