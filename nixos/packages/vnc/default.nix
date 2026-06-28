@@ -9,12 +9,17 @@ let
     addr = "0.0.0.0";
     port = 5901;
   };
+
+  novnc = pkgs.novnc.overrideAttrs (old: {
+    postInstall = (old.postInstall or "") + ''
+      ln -s $out/share/webapps/novnc/vnc.html $out/share/webapps/novnc/index.html
+    '';
+  });
+
 in
 {
-  users.users.nobe4.packages = with pkgs; [
-    wayvnc
-    # TODO: copy the `vnc.html` to `index.html` so that the webserver finds it
-    # by default.
+  users.users.nobe4.packages = [
+    pkgs.wayvnc
     novnc
 
     (pkgs.writeShellScriptBin "vnc" ''
@@ -47,7 +52,7 @@ in
       ];
       serviceConfig = {
         ExecStart = ''
-          ${pkgs.novnc}/bin/novnc \
+          ${novnc}/bin/novnc \
             --listen ${vnc-client.addr}:${toString vnc-client.port} \
             --vnc ${vnc-server.addr}:${toString vnc-server.port} \
             --file-only

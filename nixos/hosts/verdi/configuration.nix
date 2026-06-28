@@ -20,7 +20,7 @@ in
     ../../packages/keyboard.nix
     ../../packages/font
     ../../packages/network.nix
-    ../../packages/vnc.nix
+    ../../packages/vnc
     ../../packages/cross-compile.nix
     ../../packages/virtualization
     ../../packages/mdns.nix
