@@ -40,7 +40,7 @@
     waybar
     rofi
 
-    apple-cursor
+    # apple-cursor
     adwaita-icon-theme
 
     nwg-look # NOTE: need to run it once to set the default values
