@@ -89,7 +89,15 @@ in
 
   # TODO: check why those are programs, and what benefits vs
   # users.users.<x>.packages.
-  programs.firefox.enable = true;
+  programs.firefox = {
+    enable = true;
+
+    preferences = {
+      # Rendering extensions on a scaled wayland seems to cause the popup to
+      # distort. Disabling this fixed the view.
+      "widget.wayland.fractional-scale.enabled" = false;
+    };
+  };
 
   security.polkit.enable = true;
   programs.gnupg.agent = {
