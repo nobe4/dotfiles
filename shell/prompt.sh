@@ -30,6 +30,7 @@ bash_prompt() { PS1="$(prompt)"; }
 
 zsh_prompt() {
 	# shellcheck disable=SC2317
+	# shellcheck disable=SC2329
 	prompt_on_load_callback() {
 		# Gets the new prompt value from the "$(prompt)" call.
 		PS1="$(<&"$1")"
