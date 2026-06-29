@@ -12,6 +12,6 @@ selection=$(
 # no expansion of ~ is ok
 # shellcheck disable=2088
 case "${selection}" in
-	"~/"*) cd "${selection}" || exit ;;
-	*) cd "$(git-worktree -p --repo "${DEV_PATH}/${selection}")" || exit ;;
+	"~/"*) cd "${selection/#\~/${HOME}}" || { echo "z: cd failed: ${selection}" >&2; return 1; } ;;
+	*) cd "$(git-worktree -p --repo "${DEV_PATH}/${selection}")" || { echo "z: cd failed: ${selection}" >&2; return 1; } ;;
 esac
