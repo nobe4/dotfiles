@@ -8,11 +8,11 @@
 #/ Remote repos are repositories you contributed to.
 #/
 #/ Status indications in the FZF search:
-#/   - '-'  Last repo
-#/   - '*'  Recent repo
-#/   - '+'  Cloned repo
-#/   - '?'  Remote repo
-#/   - '>'  Open in a kitty tab
+#/   - '-'  Last
+#/   - '>'  Open
+#/   - '*'  Recent
+#/   - 'v'  Cloned
+#/   - '^'  Remote
 #/
 #/ Requirements:
 #/   - fzf
@@ -128,7 +128,7 @@ get_repos(){
 			| sed 's/^ *[0-9]* /* /'
 
 		# Local
-		git-repos | grep -v '^$' | sed 's/^/+ /'
+		git-repos | grep -v '^$' | sed 's/^/v /'
 
 		refresh_cache
 
@@ -139,7 +139,7 @@ get_repos(){
 			<(echo "${remote_repos}") \
 			<(echo "${ignored_repos}") \
 			| grep -v '^$' \
-			| sed 's/^/? /'
+			| sed 's/^/^ /'
 	} | first_only 2
 }
 
