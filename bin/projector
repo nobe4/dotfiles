@@ -12,6 +12,7 @@
 #/   - '*'  Recent repo
 #/   - '+'  Cloned repo
 #/   - '?'  Remote repo
+#/   - '>'  Open in a kitty tab
 #/
 #/ Requirements:
 #/   - fzf
@@ -72,6 +73,9 @@ debug () {
 			| less
 }
 
+# Keep only the first line per key. Key is field ${1} (default: whole line).
+first_only(){ awk "!seen[\$${1:-0}]++" ; }
+
 default_branch(){ git -C "${DEV_PATH}/${REPO}" main ; }
 
 refresh_cache(){
@@ -101,43 +105,42 @@ refresh_cache(){
 		&
 }
 
-get_repos(){
-	if [ "${LAST_REPO}" != "" ]; then
-		echo "- ${LAST_REPO}"
-	fi
+open_repos(){
+	kitty @ ls 2>/dev/null \
+		| jq -r '.[].tabs[].title | split(":")[0]'
+}
 
-	recent_repos="$(
+get_repos(){
+	{
+		# Last
+		if [ "${LAST_REPO}" != "" ]; then
+			echo "- ${LAST_REPO}"
+		fi
+
+		# Currently open
+		open_repos | grep -v '^$' | sed 's/^/> /'
+
+		# Recent
 		sort < "${PR_STATE_PATH}/history" \
 			| grep -v '^$' \
-			| grep -v "${LAST_REPO}" \
 			| uniq -c \
 			| sort -nr \
-			| sed 's/ *[0-9]* //'
-	)"
+			| sed 's/^ *[0-9]* /* /'
 
-	echo "${recent_repos}" \
-		| grep -v '^$' \
-		| sed 's/^/* /'
+		# Local
+		git-repos | grep -v '^$' | sed 's/^/+ /'
 
-	local_repos="$(git-repos)"
-	comm -23 \
-		<(echo "${local_repos}" | sort) \
-		<(echo -e "${recent_repos}\n${LAST_REPO}" | sort) \
-		| grep -v '^$' \
-		| sed 's/^/+ /'
+		refresh_cache
 
-	refresh_cache
-	remote_repos="$(cat "${PR_STATE_PATH}/cache")"
-	all_repos="$(echo -e "${remote_repos}" | sort -u)"
-
-	ignored_repos="$(cat "${PR_STATE_PATH}/ignored")"
-	repos_to_reject="$(echo -e "${ignored_repos}\n${recent_repos}\n$(git-repos)" | sort -u)"
-
-	comm -23 \
-		<(echo "${all_repos}") \
-		<(echo "${repos_to_reject}") \
-		| grep -v '^$' \
-		| sed 's/^/? /'
+		# Remote, excluding ignored
+		remote_repos="$(sort -u < "${PR_STATE_PATH}/cache")"
+		ignored_repos="$(sort -u < "${PR_STATE_PATH}/ignored")"
+		comm -23 \
+			<(echo "${remote_repos}") \
+			<(echo "${ignored_repos}") \
+			| grep -v '^$' \
+			| sed 's/^/? /'
+	} | first_only 2
 }
 
 select_repo(){
@@ -173,23 +176,39 @@ clone_repo(){
 
 switch(){
 	title="${REPO}:${BRANCH}"
+	cwd="${DEV_PATH}/${REPO}/worktree/${BRANCH}"
 
-	# TODO: if the os-window already exist, create a new tab?
-	# Focus the os-window by its title OR create a new one
-	kitty @ focus-window \
-		--match="title:${title}" \
-		2> /dev/null \
-		||
+	# Worktree tab already open: focus it.
+	if kitty @ focus-tab \
+		--match="cwd:^${cwd}$" \
+		2> /dev/null; then
+		return
+	fi
+
+	# Repo window open: add the worktree as a new tab.
+	if kitty @ launch \
+		--type=tab \
+		--match="cwd:^${DEV_PATH}/${REPO}/" \
+		--title="${title}" \
+		--tab-title="${title}" \
+		--cwd="${cwd}" \
+		2> /dev/null; then
+		return
+	fi
+
+	# No window for repo: create one.
 	kitty @ launch \
 		--type=os-window \
 		--no-response \
 		--title="${title}" \
-		--os-window-title="${title}" \
+		--tab-title="${title}" \
+		--os-window-title="${REPO}" \
 		--os-window-state=fullscreen \
-		--cwd="${DEV_PATH}/${REPO}/worktree/${BRANCH}"
+		--cwd="${cwd}"
 }
 
 record_repo(){
+	[ -z "${REPO}" ] && return
 	current_repo="$(<"${PR_STATE_PATH}/current")"
 	echo "${REPO}" >> "${PR_STATE_PATH}/history"
 	echo "${REPO}" > "${PR_STATE_PATH}/current"
@@ -209,6 +228,8 @@ select_repo_branch(){
 	REPO="$(select_repo "$(get_repos)" "${1}" "${2}")"
 	if [ -z "${REPO}" ]; then exit 0; fi
 
+	clone_repo
+
 	BRANCH="$(git-worktree --repo "${DEV_PATH}/${REPO}")"
 	if [ -z "${BRANCH}" ]; then exit 0; fi
 }
@@ -216,7 +237,7 @@ select_repo_branch(){
 while [ "${#}" -gt 0 ]; do
 	case "${1}" in
 		-h|--help) show_help && exit 0 ;;
-		-r|--reload) PR_CACHE_TTL_DAYS=-1 ;;
+		-r|--refresh) PR_CACHE_TTL_DAYS=-1 ;;
 		-v|--verbose) set -x ;;
 		-) break ;;
 		-*)
@@ -241,7 +262,7 @@ case "${COMMAND}" in
 
 	debug) debug ;;
 
-	history) tac "${PR_STATE_PATH}/history" | awk '!l[$0]++' ;;
+	history) tail -r "${PR_STATE_PATH}/history" | first_only ;;
 
 	l|list) git-repos ;;
 
