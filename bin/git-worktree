@@ -10,11 +10,13 @@
 #/   -h|--help        Print this help.
 #/
 #/ Commands (default: list):
-#/   n|new BRANCH       Add a worktree at worktree/BRANCH.
-#/   l|list [QUERY]     Pick a worktree with fzf.
-#/   p|path [BRANCH]    Print the full path to worktree/BRANCH
-#/   r|remove [BRANCH]  Remove worktree/BRANCH
-#/   rename NEW [OLD]   Rename worktree/OLD and its branch to NEW.
+#/   n|new BRANCH [COMMITISH]  Add a worktree at worktree/BRANCH.
+#/                             Without: reuse existing BRANCH, or pick a
+#/                             base from existing worktrees.
+#/   l|list [QUERY]            Pick a worktree with fzf.
+#/   p|path [BRANCH]           Print the full path to worktree/BRANCH
+#/   r|remove [BRANCH]         Remove worktree/BRANCH
+#/   rename NEW [OLD]          Rename worktree/OLD and its branch to NEW.
 #/
 #/ In list:
 #/   <C-n>   Add a worktree from the typed branch.
@@ -35,41 +37,47 @@ worktrees() {
 		done
 }
 
-root(){ git -C "${REPO}" rev-parse --path-format=absolute --git-common-dir ; }
 
 print_branch() {
 	if [ "${FULLPATH}" = 1 ]; then
-		echo "${1}/worktree/${2}"
+		echo "${ROOT}/worktree/${1}"
 	else
-		echo "${2}"
+		echo "${1}"
 	fi
 }
 
 new() {
 	local branch="${1}"
 	[ -n "${branch}" ] || { show_help >&2; exit 1; }
+	local commitish="${2}"
 
-	root=$(root)
-	git -C "${root}" worktree add "worktree/${branch}" "${branch}" \
-		|| git -C "${root}" worktree add -b "${branch}" "worktree/${branch}"
+	if [ -n "${commitish}" ]; then
+		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "${commitish}"
+	elif git -C "${ROOT}" worktree add "worktree/${branch}" "${branch}" 2>/dev/null; then
+		: # Reused an existing branch.
+	else
+		commitish=$(select_branch --prompt="Base for ${branch} ")
+		[ -z "${commitish}" ] && return
 
-	print_branch "${root}" "${branch}"
+		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "${commitish}"
+	fi
+
+	print_branch "${branch}"
 }
 
 remove() {
 	local branch="${1:-$(select_branch --prompt="Branch to delete ")}"
 	[ -z "${branch}" ] && return
 
-	root=$(root)
-	git -C "${root}" worktree remove "worktree/${branch}"
-	git -C "${root}" branch -D "${branch}"
+	git -C "${ROOT}" worktree remove "worktree/${branch}"
+	git -C "${ROOT}" branch -D "${branch}"
 }
 
 path() {
 	local branch="${1:-$(select_branch --prompt="Branch path ")}"
 	[ -z "${branch}" ] && return
 
-	print_branch "$(root)" "${branch}"
+	print_branch "${branch}"
 }
 
 rename() {
@@ -78,11 +86,10 @@ rename() {
 	local old="${2:-$(select_branch --prompt="Branch to rename ")}"
 	[ -z "${old}" ] && return
 
-	root=$(root)
-	git -C "${root}" branch -m "${old}" "${new}"
-	git -C "${root}" worktree move "worktree/${old}" "worktree/${new}"
+	git -C "${ROOT}" branch -m "${old}" "${new}"
+	git -C "${ROOT}" worktree move "worktree/${old}" "worktree/${new}"
 
-	print_branch "${root}" "${new}"
+	print_branch "${new}"
 }
 
 select_branch() {
@@ -102,7 +109,7 @@ list() {
 
 	[ -z "${branch}" ] && return
 
-	print_branch "$(root)" "${branch}"
+	print_branch "${branch}"
 }
 
 REPO="."
@@ -123,6 +130,8 @@ while [ "${#}" -gt 0 ]; do
 	esac
 	shift 1
 done
+
+ROOT=$(git -C "${REPO}" rev-parse --path-format=absolute --git-common-dir)
 
 [ "${#}" -eq 0 ] && { list; exit 0; }
 
