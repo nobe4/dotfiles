@@ -35,7 +35,7 @@ is_macos && {
 # FZF
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
   PATH="$PATH:/usr/local/opt/fzf/bin"
-  export FZF_DEFAULT_OPTS='--no-mouse'
+  export FZF_DEFAULT_OPTS='--no-mouse --color=16,fg+:15,bg+:-1,gutter:0,hl:2,hl+:4,pointer:4,marker:10,prompt:7,info:8,spinner:5,header:4'
 fi
 
 # Go
