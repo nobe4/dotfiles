@@ -10,6 +10,8 @@ LOG_FILE="/tmp/sling.log"
 CACHE_FILE="$(cache path sling commands)"
 
 BECOME_COMMAND="
+	# Update the title
+	printf '\033]2;%s\007' {} && \
 	FROM_SLING=1 \
 	{} 2> >(tee -a ${LOG_FILE} >&2) \
 	|| \
