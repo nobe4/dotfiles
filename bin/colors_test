@@ -5,9 +5,9 @@
 echo ""
 printf "   "
 for x in {0..15}; do
-	printf "\e[48;5;%dm      \e[0m" $x
+	printf "\e[48;5;%dm      \e[0m" "$x"
 done
-echo "\n"
+echo ""
 
 for x in {0..15}; do
 	printf "   "

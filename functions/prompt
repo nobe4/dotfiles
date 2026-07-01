@@ -9,8 +9,12 @@ if [ "$(git rev-parse --git-dir 2> /dev/null)" != "$(git rev-parse --git-common-
 	dir="$(basename "$(git rev-parse --path-format=absolute --git-common-dir 2> /dev/null)")"
 fi
 
+# cwd is green
 # shellcheck disable=1087
-prompt="%{$fg[green]%}${dir}%{$fg[red]%}"
+prompt="%F{2}${dir}"
+
+# git is red
+prompt="${prompt}%F{1}"
 
 if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = "false" ]; then
 	prompt="${prompt}bare"
@@ -30,9 +34,10 @@ else
 	fi
 fi
 
-[ -n "$RBENV_SHELL" ] && prompt="${prompt}%{${fg[blue]%}rbenv%{$reset_color%}"
-[ -n "$NODENV_SHELL" ] && prompt="${prompt}%{${fg[blue]%}nodenv%{$reset_color%}"
-[ -n "$PIPENV_ACTIVE" ] && prompt="${prompt}%{${fg[blue]%}pipenv%{$reset_color%}"
-[ -n "$VIRTUAL_ENV_PROMPT" ] && prompt="${prompt}%{${fg[blue]%}${VIRTUAL_ENV_PROMPT}%{$reset_color%}"
+# env is blue
+[ -n "$RBENV_SHELL" ] && prompt="${prompt}%F{4}rbenv"
+[ -n "$NODENV_SHELL" ] && prompt="${prompt}%F{4}nodenv"
+[ -n "$PIPENV_ACTIVE" ] && prompt="${prompt}%F{4}pipenv"
+[ -n "$VIRTUAL_ENV_PROMPT" ] && prompt="${prompt}%F{4}${VIRTUAL_ENV_PROMPT}"
 
 echo "$prompt%{$reset_color%} "

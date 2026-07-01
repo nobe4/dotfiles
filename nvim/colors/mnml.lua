@@ -12,7 +12,7 @@ local rules = {
 	-- Cursor
 	{ group = "Cursor",                      ef = "reverse" },
 	{ group = "CursorLine",                  ef = "bold" },
-	{ group = "CursorLineNr",                fg = "lwhite",                  ef = "bold" },
+	{ group = "CursorLineNr",                lk = "Normal",                  ef = "bold" },
 
 	-- Diff
 	{ group = "DiffAdd",                     fg = "green" },
@@ -279,11 +279,22 @@ local index = {
 }
 
 local colors = {
-	-- see script/update-colors
-	-- marker: colors
-	"#1d1f21", "#cc342b", "#14b363", "#fba922", "#3971ed", "#b028e9", "#0abdae", "#CECDC3",
-	"#878988", "#c49c9a", "#93b6a4", "#c8b394", "#859acb", "#a884b8", "#7c9e9b", "#f1f3f5",
-	-- marker: colors
+	"#101010", -- c1
+	"#c75c66", -- c2
+	"#08904b", -- c3
+	"#e7d13d", -- c4
+	"#41a6d3", -- c5
+	"#5F0A87", -- c6
+	"#19acac", -- c7
+	"#d0d0d0", -- c8
+	"#7a7a7a", -- c9
+	"#cf7280", -- c10
+	"#3aaf7d", -- c11
+	"#eedf77", -- c12
+	"#7ac1e0", -- c13
+	"#c58bc4", -- c14
+	"#5ec5c5", -- c15
+	"#e9e9e9", -- c16
 }
 
 for i, color in ipairs(colors) do
