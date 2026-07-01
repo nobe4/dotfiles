@@ -107,7 +107,11 @@ refresh_cache(){
 
 open_repos(){
 	kitty @ ls 2>/dev/null \
-		| jq -r '.[].tabs[].title | split(":")[0]'
+		| jq -r '
+			.[].tabs[].title
+		    | select(test("^[^ ]+/[^ ]+:")) # exclude titles that do not have a path
+			| split(":")[0]
+		'
 }
 
 get_repos(){
