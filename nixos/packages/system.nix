@@ -2,7 +2,6 @@
 {
   environment.systemPackages = with pkgs; [
     cmake
-    fd
     file
     git
     htop
@@ -13,5 +12,6 @@
     zip
     unzip
     usbutils
+    pv # really useful for checking progress instead of cat or dd
   ];
 }

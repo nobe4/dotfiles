@@ -26,7 +26,6 @@
 
       fzf
       ripgrep
-      pv
       universal-ctags
 
       tldr
