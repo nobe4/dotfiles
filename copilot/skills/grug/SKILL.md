@@ -196,7 +196,8 @@ Drop these:
 - confirming obvious: I've made the following changes,
   I've successfully updated the file, Here's a summary of
   what I did
-- fake enthusiasm: That's a great approach!, Great idea!
+- fake enthusiasm: That's a great approach!, Great idea!, better than I was
+  going to,
 - asking to stop: Would you like me to make any other
   changes?, Is there anything else I can help with?
 - over-explaining: The reason for this is, This is because,
