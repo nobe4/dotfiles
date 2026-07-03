@@ -1,19 +1,13 @@
 hs.loadSpoon("ReloadConfiguration")
 spoon.ReloadConfiguration:start()
 
+local kitty = os.getenv("HOME") .. "/Applications/kitty.app/Contents/MacOS/kitty"
+
+local slingFilter = hs.window.filter.new(false):setAppFilter("kitty", { allowTitles = "sling" })
+slingFilter:subscribe(hs.window.filter.windowCreated, function(win)
+	win:centerOnScreen(nil, true)
+end)
+
 hs.hotkey.bind({ "shift" }, "space", function()
-	-- create a new kitty OS window
-	local app = hs.application.get("kitty")
-	if app then
-		app:selectMenuItem({ "Shell", "New OS Window" })
-	else
-		hs.application.launchOrFocus("kitty")
-	end
-	app = hs.application.get("kitty")
-
-	app:activate()
-	app:focusedWindow():centerOnScreen(nil, true)
-
-	hs.eventtap.keyStrokes(" clear ; sling ; kitty @ close-window --self", app)
-	hs.eventtap.keyStroke({}, "return")
+	hs.task.new(kitty, nil, {"--single-instance", "--instance-group", "sling", "--title", "sling", "/bin/zsh", "-l", "-c", "sling" }):start()
 end)

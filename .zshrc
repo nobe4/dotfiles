@@ -47,24 +47,18 @@ autoload -U colors && colors
 # }
 
 # Functions {
-# Load compinit and check the cache only once a day
+# Load compinit fast from the cached dump on every shell (-C skips the security
+# audit). When the dump is stale (>7d) or missing, rebuild it in the background
+# so the interactive shell never blocks on the slow compinit rebuild.
 autoload -Uz compinit
-is_macos && {
-	if [ "$(find "$HOME/.zcompdump" -mtime +1)" ]; then
-		rm -f "$HOME/.zcompdump"
-		compinit -i
-	else
-		compinit -C
-	fi
-}
-is_linux && {
-	if [[ -n $HOME/.zcompdump(#qN.mh+24) ]]; then
-		rm -f "$HOME/.zcompdump"
-		compinit -i
-	else
-		compinit -C
-	fi
-}
+if [[ -f $HOME/.zcompdump ]]; then
+	compinit -C
+else
+	compinit -i
+fi
+if [[ -n $HOME/.zcompdump(#qN.mh+168) ]]; then
+	{ compinit -i && zcompile "$HOME/.zcompdump" } &!
+fi
 zmodload -i zsh/complist
 
 # shellcheck disable=SC2086 # doesn't find the functions if quoted
@@ -228,8 +222,27 @@ alias gg="/opt/homebrew/bin/copilot --add-dir '${DOTFILE_FOLDER}/copilot/skills/
 # Limit how many files can be used by the current session
 ulimit -S -n 10240
 
-eval "$(mise activate zsh)"
-eval "$(direnv hook zsh)"
+mise_cache="${XDG_CACHE_HOME:-$HOME/.cache}/mise-shims.zsh"
+if [[ ! -f $mise_cache || $commands[mise] -nt $mise_cache ]]; then
+	mise activate zsh --shims > "$mise_cache"
+fi
+source "$mise_cache"
+
+# Shims don't auto-update on tool changes, so reshim after commands that add or
+# remove tools.
+mise() {
+	command mise "$@"
+	local ret=$?
+	case $1 in install|i|use|u|uninstall|rm|remove) command mise reshim ;; esac
+	return $ret
+}
+
+# Cache `direnv hook` output; refresh when the direnv binary is newer.
+direnv_cache="${XDG_CACHE_HOME:-$HOME/.cache}/direnv-hook.zsh"
+if [[ ! -f $direnv_cache || $commands[direnv] -nt $direnv_cache ]]; then
+	direnv hook zsh > "$direnv_cache"
+fi
+source "$direnv_cache"
 
 # Restart espanso
 # (&>/dev/null espanso restart &)
