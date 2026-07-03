@@ -26,6 +26,7 @@
 #/
 #/ Commands (default: 'switch'):
 #/   debug          Print some debug information.
+#/   f|forget       Forget selected repo (remove from cache, history, ...).
 #/   history        Display repos in order of last access.
 #/   -|last         Switch to last repo ('${LAST_REPO}').
 #/   l|list         List all local repos.
@@ -106,10 +107,10 @@ refresh_cache(){
 }
 
 open_repos(){
-	kitty @ ls 2>/dev/null \
-		| jq -r '
+	kitty @ ls 2>/dev/null |
+		jq -r '
 			.[].tabs[].title
-		    | select(test("^[^ ]+/[^ ]+:")) # exclude titles that do not have a path
+			| select(test("^[^ ]+/[^ ]+:")) # exclude titles that do not have a path
 			| split(":")[0]
 		'
 }
@@ -221,6 +222,16 @@ record_repo(){
 	fi
 }
 
+forget_repo(){
+	[ -z "${REPO}" ] && return
+	for f in cache history current last; do
+		path="${PR_STATE_PATH}/${f}"
+		grep -vFx "${REPO}" "${path}" > "${path}.tmp" || true
+		touch -r "${path}" "${path}.tmp" # preserve mtime (cache TTL)
+		mv "${path}.tmp" "${path}"
+	done
+}
+
 open_repo(){
 	clone_repo
 	record_repo
@@ -265,6 +276,12 @@ case "${COMMAND}" in
 		;;
 
 	debug) debug ;;
+
+	f|forget)
+		REPO="$(select_repo "$(get_repos)" "${query}" "Forget ")"
+		[ -z "${REPO}" ] && exit 0
+		forget_repo
+		;;
 
 	history) tail -r "${PR_STATE_PATH}/history" | first_only ;;
 
