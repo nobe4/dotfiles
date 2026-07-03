@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+#/ Usage: owned-repos [COMMAND]
+#/
+#/ Requirements:
+#/   - get_owned_repos that lists all the owned repos (<owner>/<repo>)
+#/   - cache (see ./cache)
+#/   - rg
+#/
+#/ Env:
+#/   OWNED_REPO_TEAM  Team to fetch for (required)
+#/
+#/ Commands (default: list, refresh if cache older than 7 days):
+#/   l|list                     List owned repos.
+#/   r|refresh                  Force a refresh (clone all repos, quite slow).
+#/   p|path                     Output the path to the cache tree.
+#/   c|cat    PATH              Cat content.
+#/   s|search PATH [PATTERN]    Search for PATH [PATTERN].
+#/
+#/ Flags:
+#/   -h|--help                  Show this help.
+
+set -e
+
+TEAM="${OWNED_REPO_TEAM:?set OWNED_REPO_TEAM to the team to fetch for}"
+
+TEAM_CACHE_FILE="$(cache path owned-repos "${TEAM}")"
+TEAM_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/owned-repos/${TEAM}"
+
+show_help() { grep ^#/ <"${0}" |cut -c4- ; }
+
+refresh(){
+	get_owned_repos > "${TEAM_CACHE_FILE}"
+
+	echo "⚠️ Cleaning the cache for ${TEAM}: ${TEAM_CACHE_DIR}."
+	/bin/rm -rf "${TEAM_CACHE_DIR}"
+	mkdir -p "${TEAM_CACHE_DIR}"
+
+	echo "Cloning all the repos for ${TEAM}, this will take some time."
+	echo "⚠️ Do not do anything until this is done ⚠️"
+	<"${TEAM_CACHE_FILE}" xargs -S2048 -P8 -n1 -I{} bash -c "
+		DIR=\"${TEAM_CACHE_DIR}/{}\"
+		echo \"Cloning {}\"
+		mkdir -p \${DIR}
+		git clone --depth=1 --quiet git@github.com:{}.git \${DIR}
+	" || true # Cloning might fail, but that's OK.
+}
+
+list(){
+	if ! cache fresh owned-repos "${TEAM}" "7 day"; then
+		refresh
+	fi
+
+	cat "${TEAM_CACHE_FILE}"
+}
+
+search(){
+	cd "${TEAM_CACHE_DIR}"
+
+	if [ -z "${2}" ]; then
+		rg --follow --glob "*${1}*" --files .
+		return
+	fi
+
+	rg --follow --glob "*${1}*" --vimgrep "${2}" .
+}
+
+cat_content(){
+	cd "${TEAM_CACHE_DIR}"
+
+	rg --follow --glob "*${1}*" --files . \
+		| xargs -I{} bash -c 'echo "==> {}" && cat {}'
+}
+
+CMD="${1:-list}"
+shift || true
+
+case "${CMD}" in
+	-h|--help) show_help ;;
+	r|refresh) refresh ;;
+	p|path) echo "${TEAM_CACHE_DIR}" ;;
+	c|cat) cat_content "${1:?cat needs a PATH}" ;;
+	s|search) search "${1:?search needs a PATH}" "${2}" ;;
+	l|list) list ;;
+	*)
+		echo "Unknown command '${CMD}'"
+		show_help
+		exit 1
+		;;
+esac
