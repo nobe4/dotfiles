@@ -12,7 +12,8 @@
 #/ Commands (default: list):
 #/   n|new BRANCH [COMMITISH]  Add a worktree at worktree/BRANCH.
 #/                             Without: reuse existing BRANCH, or pick a
-#/                             base from existing worktrees.
+#/                             base from existing worktrees. When the base
+#/                             is dirty, offer to copy its diff into BRANCH.
 #/   l|list [QUERY]            Pick a worktree with fzf.
 #/   p|path [BRANCH]           Print the full path to worktree/BRANCH
 #/   r|remove [BRANCH]         Remove worktree/BRANCH
@@ -55,14 +56,64 @@ new() {
 		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "${commitish}"
 	elif git -C "${ROOT}" worktree add "worktree/${branch}" "${branch}" 2>/dev/null; then
 		: # Reused an existing branch.
+	elif git -C "${ROOT}" ls-remote --exit-code --heads origin "${branch}" >/dev/null 2>&1; then
+		# Use remote if it exist
+		git -C "${ROOT}" fetch origin "${branch}"
+		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "origin/${branch}"
 	else
-		commitish=$(select_branch --prompt="Base for ${branch} ")
-		[ -z "${commitish}" ] && return
+		local base
+		base=$(select_branch --prompt="Base for ${branch} ")
+		[ -z "${base}" ] && return
 
-		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "${commitish}"
+		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "${base}"
+		take_diff "${base}" "${branch}"
 	fi
 
+	set_upstream "${branch}"
 	print_branch "${branch}"
+}
+
+copy_changes() {
+	local src="${1}" dst="${2}"
+
+	local snap
+	snap="$(git -C "${src}" stash create)"
+	if [ -n "${snap}" ]; then
+		git -C "${dst}" stash apply "${snap}" >&2
+	fi
+
+	# stash create only snapshots tracked changes; copy untracked by hand.
+	git -C "${src}" ls-files --others --exclude-standard -z \
+		| while IFS= read -r -d '' f; do
+			mkdir -p "${dst}/$(dirname "${f}")"
+			cp -p "${src}/${f}" "${dst}/${f}"
+		done
+}
+
+take_diff() {
+	local base="${1}" branch="${2}"
+	local src="${ROOT}/worktree/${base}"
+	local dst="${ROOT}/worktree/${branch}"
+
+	local status
+	status="$(git -C "${src}" -c color.ui=always status --short)"
+	[ -n "${status}" ] || return
+
+	echo "${status}" > /dev/tty
+	printf 'Take the diff from %s? [y/N] ' "${base}" > /dev/tty
+	local answer
+	read -r answer < /dev/tty
+	case "${answer}" in
+		[yY]*) copy_changes "${src}" "${dst}" ;;
+	esac
+}
+
+# Track origin/BRANCH if that remote branch exists, so `git pull` just works.
+set_upstream() {
+	local branch="${1}"
+	if git -C "${ROOT}" show-ref --verify --quiet "refs/remotes/origin/${branch}"; then
+		git -C "${ROOT}" branch --set-upstream-to="origin/${branch}" "${branch}" >&2
+	fi
 }
 
 remove() {
