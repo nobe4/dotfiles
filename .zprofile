@@ -55,6 +55,8 @@ export DFT_CONTEXT=1
 FPATH="$DOTFILE_FOLDER/functions:$FPATH"
 MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 
+source "$DOTFILE_FOLDER/private/.zprofile"
+
 # Python
 unset PYTHONHOME
 unset PYTHONPATH
