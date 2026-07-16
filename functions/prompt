@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=2154
-# Colors are defined.
-
 # In a worktree the cwd is the branch name, so show the repo name instead.
 dir="%c"
 if [ "$(git rev-parse --git-dir 2> /dev/null)" != "$(git rev-parse --git-common-dir 2> /dev/null)" ]; then
@@ -40,4 +37,4 @@ fi
 [ -n "$PIPENV_ACTIVE" ] && prompt="${prompt}%F{4}pipenv"
 [ -n "$VIRTUAL_ENV_PROMPT" ] && prompt="${prompt}%F{4}${VIRTUAL_ENV_PROMPT}"
 
-echo "$prompt%{$reset_color%} "
+echo "$prompt%f "
