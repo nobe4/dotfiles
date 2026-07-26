@@ -2,31 +2,29 @@
 # We need the floating point math of zsh
 #/ Usage: weather [FLAG]
 #/
-#/ Powered by https://www.weatherapi.com/
-#/ TODO: if it's not working, convert to use
-#https://docs.tomorrow.io/reference/weather-forecast
+#/ Powered by https://open-meteo.com/
 #/
-#/ Cache:   ${CACHE}
-#/ Api Key: ${API_KEY_PATH}
+#/ Cache: ${CACHE}
 #/
 #/ Flags:
 #/  -h|--help     Show this help
 #/  -r|--refresh  Force a refresh
 #/     --waybar   Show JSON for waybar
 #/     --simple   Show only simple
-#/     --debug    set -x /!\ will log secrets
+#/     --debug    set -x
 #/  -w|--wait     Wait for a keypress before exiting
 
 set -e
 
 SRC="${0}"
 show_help() {
-	export CACHE API_KEY_PATH
+	export CACHE
 	grep ^#/ <"${SRC}" | cut -c4- | envsubst
 }
 
 CACHE="$HOME/.local/state/waybar/weather_cache.json"
-API_KEY_PATH="$HOME/.local/state/waybar/weather_cache.key"
+
+API_URL="https://api.open-meteo.com/v1/forecast?latitude=52.5244&longitude=13.4105&hourly=temperature_2m,weather_code,precipitation,surface_pressure&current=temperature_2m,weather_code&timezone=Europe%2FBerlin&forecast_days=3"
 
 WAIT=0
 REFRESH=0
@@ -34,20 +32,18 @@ WAYBAR=0
 SIMPLE=0
 CURL_VERBOSITY="--silent"
 
-# From:
-# curl https://www.weatherapi.com/docs/weather_conditions.json | jq '.[] | "\(.code) \(.day)"'
+# WMO weather interpretation codes
+# https://github.com/open-meteo/open-meteo/blob/main/Sources/App/Helper/WeatherCode.swift
 condition_to_emoji(){
-	code=${1}
-
 	case "${1}" in
-		"1000") echo "☀️" ;; # clear
-		"1003" | "1006" | "1009") echo "⛅" ;; # cloud
-		"1030" | "1135" | "1147") echo "☁️" ;; # mist
-		"1066" | "1069" | "1072" | "1114" | "1117" | "1168" | "1171" | "1198" | "1201" | "1204" | "1207" | "1210" | "1213" | "1216" | "1219" | "1222" | "1225" | "1237" | "1249" | "1252" | "1255" | "1258" | "1261" | "1264") echo "❄️" ;; # snow
-		"1087" | "1273" | "1276" | "1279" | "1282") echo "⛈️" ;; # thunder
-		"1063" | "1150" | "1153" | "1180" | "1183") echo "🌦️" ;; # drizzle
-		"1186" | "1189" | "1192" | "1195" | "1240" | "1243" | "1246") echo "🌧️" ;; # rain
-		*) echo "unknown: ${1}" ;;
+		0) echo "☀️" ;; # clear sky
+		1 | 2 | 3) echo "⛅" ;; # mainly clear, partly cloudy, overcast
+		45 | 48) echo "☁️" ;; # fog
+		51 | 53 | 55 | 56 | 57) echo "🌦️" ;; # drizzle
+		61 | 63 | 65 | 66 | 67 | 80 | 81 | 82) echo "🌧️" ;; # rain
+		71 | 73 | 75 | 77 | 85 | 86) echo "❄️" ;; # snow
+		95 | 96 | 99) echo "⛈️" ;; # thunderstorm
+		*) echo "?" ;;
 	esac
 }
 
@@ -74,42 +70,43 @@ while [ "${#}" -gt 0 ]; do
 	shift 1
 done
 
-if [ ! -f "${CACHE}" ] || [ -n "$(find "${CACHE}" -mmin +60 -print -quit)" ] || [[ "${REFRESH}" == 1 ]]; then
-	API_KEY="$(cat "${API_KEY_PATH}")"
-	LOCATION="BERLIN"
 
+if [ ! -f "${CACHE}" ] || [ -n "$(find "${CACHE}" -mmin +60 -print -quit)" ] || [[ "${REFRESH}" == 1 ]]; then
 	curl "${CURL_VERBOSITY}" \
 		-o "${CACHE}" \
-		"http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${LOCATION}&days=3&aqi=no&alerts=no"
+		"${API_URL}"
 fi
 
-feels=$(jq -r '.current.feelslike_c' "${CACHE}")
-code=$(jq -r '.current.condition.code' "${CACHE}")
+eval "$(
+	jq -r '.current | "temp=\(.temperature_2m) code=\(.weather_code) last_updated=\(.time)"' \
+	"${CACHE}"
+)"
 emoji=$(condition_to_emoji "${code}")
-last_updated=$(jq -r '.current.last_updated' "${CACHE}")
 
 if [[ "${WAYBAR}" == 1 ]]; then
-	echo "{\"text\": \"${feels}°C ${emoji}\", \"tooltip\": \"${last_updated}\"}"
+	echo "{\"text\": \"${temp}°C ${emoji}\", \"tooltip\": \"${last_updated}\"}"
 	exit 0
 fi
 
 if [[ "${SIMPLE}" == 1 ]]; then
-	echo "${feels}°C ${emoji}"
+	echo "${temp}°C ${emoji}"
 	exit 0
 fi
 
 # Full from here down
 
-echo "Current: ${feels}°C ${emoji}"
+echo "Current: ${temp}°C ${emoji}"
+echo "Refreshed at ${last_updated}"
 printf "\n\n"
 
 # Dates
 printf "            $(date +"%Y-%m-%d")       |      $(date +%Y-%m-%d -d '+1 day')       |      $(date +%Y-%m-%d -d '+2 day')      \n"
 
 # Temperature graph
-min=$(jq '[.forecast.forecastday[].hour[].feelslike_c] | min | floor' "${CACHE}")
-max=$(jq '[.forecast.forecastday[].hour[].feelslike_c] | max | ceil' "${CACHE}")
-div=$(jq '[.forecast.forecastday[].hour[].feelslike_c] | ((max | ceil) - (min | floor))/10.0' "${CACHE}")
+eval "$(
+	jq -r '.hourly.temperature_2m | "min=\(min | floor) max=\(max | ceil) div=\(((max | ceil) - (min | floor))/10.0)"' \
+	"${CACHE}"
+)"
 
 for i in $(seq 0 10); do
 	# Floating point here requires zsh
@@ -129,15 +126,15 @@ for i in $(seq 0 10); do
 
 	# shellcheck disable=SC2016 # $f is the jq variable
 	jq -j '
-	.forecast.forecastday[].hour[].feelslike_c as $f |
+	.hourly.temperature_2m[] as $f |
 		if ('"${low}"' <= $f and $f <= '"${high}"') then
 			if $f <= -5 then
 				"\u001b[36m█\u001b[m"
 			elif $f <= 0 then
 				"\u001b[34m█\u001b[m"
-			elif $f <= 5 then
-				"\u001b[32m█\u001b[m"
 			elif $f <= 10 then
+				"\u001b[32m█\u001b[m"
+			elif $f <= 20 then
 				"\u001b[33m█\u001b[m"
 			else
 				"\u001b[31m█\u001b[m"
@@ -153,8 +150,7 @@ for i in $(seq 0 10); do
 
 # Print weather emojis
 printf "     "
-cat "${CACHE}" \
-	| jq -r '.forecast.forecastday[].hour[] | "\(.condition.code)"' \
+jq -r '.hourly.weather_code[]' "${CACHE}" \
 	| while read -r code; read -r discard; do
 		emoji=$(condition_to_emoji "${code}")
 		printf "${emoji}"
@@ -162,41 +158,57 @@ done
 printf "\n"
 
 # Print timeline with custom marker for right now.
-current_h=$(date +%H)
+current_dt=$(date +"%Y-%m-%dT%H:00")
 printf "     "
 jq -j '
-.forecast.forecastday[0].hour[].time | split(" ")[1] | split(":")[0] as $t |
-	if $t == "'"${current_h}"'" then
+.hourly.time[] as $t |
+	if $t == "'"${current_dt}"'" then
 		"\u001b[31m█\u001b[m"
-	elif $t == "00" then
+	elif ($t | split("T")[1] | split(":")[0]) == "00" then
 		"|"
-	elif $t == "12" then
+	elif ($t | split("T")[1] | split(":")[0]) == "12" then
 		"+"
 	else
 		"-"
 	end
 ' "${CACHE}"
 
-printf "|-----------+-----------|-----------+-----------\n"
-printf "     0     6     12    18    0     6     12    18    0     6     12    18    \n"
+printf "\n     0     6     12    18    0     6     12    18    0     6     12    18    \n"
 
-# Print precipitation graph
-for i in $(seq 0 0.1 1); do
+# Print precipitation graph with pressure overlay
+eval "$(
+	jq -r '.hourly.surface_pressure | "p_min=\(min) p_max=\(max)"' \
+	"${CACHE}"
+)"
+
+for i in $(seq 0 10); do
 	printf "     "
 
-	# shellcheck disable=SC2016 # $f is the jq variable
-	jq -j '
-	.forecast.forecastday[].hour[].precip_mm as $f |
-		if ('"${i}"' < $f) then
+	# Row 0 = top (high precip / low pressure), row 10 = bottom
+
+	# shellcheck disable=SC2016 # jq variables
+	jq -j --argjson row "${i}" --argjson pmin "${p_min}" --argjson pmax "${p_max}" '
+	((10 - $row) * 0.1) as $pt |
+	(if $pmax == $pmin then 1 else ($pmax - $pmin) end) as $prange |
+	[.hourly.precipitation, .hourly.surface_pressure] | transpose[] | .[0] as $f | .[1] as $p |
+		((($p - $pmin) / $prange * 10) | round) as $p_row |
+		(10 - $p_row) as $p_inv |
+		if ($p_inv == $row) then
+			if ($pt < $f) then
+				"\u001b[32m█\u001b[m"
+			else
+				"\u001b[32m-\u001b[m"
+			end
+		elif ($pt < $f) then
 			"\u001b[34m█\u001b[m"
 		else
 			" "
 		end
-		' "${CACHE}"
+	' "${CACHE}"
 	printf "\n"
 done
 
-echo "Refreshed at ${last_updated}"
+printf "\n"
 
 if [[ "${WAIT}" == 1 ]]; then
 	read -k 1 '?press any key to continue'
