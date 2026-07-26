@@ -1,4 +1,7 @@
 { pkgs, config, ... }:
+let
+  keys = import ../packages/ssh_keys.nix;
+in
 {
   age.secrets = {
     wifi-nwf-psk.file = ../../secrets/wifi-nwf-psk.age;
@@ -37,9 +40,7 @@
   users = {
     mutableUsers = false;
     users.root = {
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkBqUZ30Oh8l+Ifpb9ibWG4brDeC1a3cplV+h3e6/Ba"
-      ];
+      openssh.authorizedKeys.keys = [ keys.nobe4_verdi ];
     };
 
     users.nobe4 = {

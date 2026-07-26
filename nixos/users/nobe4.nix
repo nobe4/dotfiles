@@ -6,6 +6,7 @@
 }:
 let
   isDarwin = pkgs.stdenv.isDarwin;
+  keys = import ../packages/ssh_keys.nix;
 in
 {
   time.timeZone = "Europe/Berlin";
@@ -27,10 +28,6 @@ in
   // lib.optionalAttrs (!isDarwin) {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    openssh.authorizedKeys.keys = [
-      # TODO: how to manage ssh keys properly? one pre host, one per identity,
-      # ...?
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIkBqUZ30Oh8l+Ifpb9ibWG4brDeC1a3cplV+h3e6/Ba"
-    ];
+    openssh.authorizedKeys.keys = [ keys.nobe4_verdi ];
   };
 }
