@@ -9,7 +9,7 @@ with pkgs;
     version = gojq.version;
     buildCommand = ''
       mkdir -p $out/bin
-      ln -s ${gojq}/bin/gojq $out/bin/jq
+      ln -s ${lib.getExe gojq} $out/bin/jq
     '';
   })
 

@@ -25,6 +25,8 @@ in
     ../../packages/virtualization
     ../../packages/mdns.nix
     ../../packages/dev.nix
+    ../../packages/i2c.nix
+
     agenix.module
 
     ../../service/check_vitamines_availability.nix
@@ -41,8 +43,6 @@ in
   # Enable Graphical stuff to happen.
   boot.initrd.kernelModules = [ "amdgpu" ];
   hardware = {
-    # Allow control of screens
-    i2c.enable = true;
     graphics = {
       enable = true;
       enable32Bit = true;
@@ -51,6 +51,7 @@ in
 
   allowedUnfree = [
     "apple_cursor"
+    "discord"
   ];
 
   # Audio
@@ -78,10 +79,13 @@ in
       agenix.cli
 
       signal-desktop
+      discord
 
       # needed for envsubst
       gettext
       chromium # Seems that `programs.chromium` doesn't get it done
+
+      anki
 
       (import ../../packages/deck.nix pkgs)
     ];
