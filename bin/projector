@@ -18,6 +18,7 @@
 #/   - fzf
 #/   - gh
 #/   - kitty (with 'allow_remote_control yes')
+#/   - owned-repos
 #/
 #/ Flags:
 #/   -h|--help      Display this help.
@@ -31,7 +32,8 @@
 #/   -|last         Switch to last repo ('${LAST_REPO}').
 #/   l|list         List all local repos.
 #/   n|new          Clone a repo not in the contribution list.
-#/                  Needs the 'owner/repo' or URL in QUERY.
+#/                  With QUERY: clone the 'owner/repo' or URL.
+#/                  Without QUERY: select from 'owned-repos'.
 #/   o|output       Output the name of the selected repo.
 #/   s|switch       Switch to selected repo.
 #/   w|web          Open selected repo in your browser.
@@ -294,7 +296,12 @@ case "${COMMAND}" in
 		;;
 
 	n|new)
-		REPO=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' "${query}")
+		if [ -z "${query}" ]; then
+			REPO="$(select_repo "$(owned-repos list | sed 's/^/^ /')" "" "Clone ")"
+			[ -z "${REPO}" ] && exit 0
+		else
+			REPO=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' "${query}")
+		fi
 		open_repo
 		;;
 
