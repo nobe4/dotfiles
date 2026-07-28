@@ -90,10 +90,11 @@ prefetch_prs(){
 
 	owned-repos | xargs -P 8 -I {} gh --repo="{}" \
 		pr list --search "is:open" \
+		--limit 100 \
 		--json url,author,title \
 		-q '.[] | "\(.author.login) \(.url) \(.title)"' \
 		2>/dev/null \
-	| grep . | sort -u > "${CACHE_FILE}"
+	| grep . | sort -u | tee "${CACHE_FILE}"
 }
 
 ensure_cache(){
