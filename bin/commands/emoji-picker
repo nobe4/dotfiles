@@ -3,12 +3,17 @@
 #/
 #/ Flags:
 #/   --refresh   Refresh the emojis list
+#/
+#/ Cache: ${LIST}
 
 set -e
 
 LIST="${HOME}/.local/share/emojis.txt"
 
-show_help() { grep ^#/ <"${0}" | cut -c4-; }
+show_help() {
+	export LIST
+	grep ^#/ <"${0}" | cut -c4- | envsubst
+}
 [ "${*}" == "-h" ] && show_help && exit 0
 
 if [ "${*}" == "--refresh" ]; then
