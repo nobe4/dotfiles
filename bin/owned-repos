@@ -57,17 +57,17 @@ search(){
 	cd "${TEAM_CACHE_DIR}"
 
 	if [ -z "${2}" ]; then
-		rg --follow --glob "*${1}*" --files .
+		rg --follow --glob "**/*${1}*" --files .
 		return
 	fi
 
-	rg --follow --glob "*${1}*" --vimgrep "${2}" .
+	rg --follow --glob "**/*${1}*" --vimgrep "${2}" .
 }
 
 cat_content(){
 	cd "${TEAM_CACHE_DIR}"
 
-	rg --follow --glob "*${1}*" --files . \
+	rg --follow --glob "**/*${1}*" --files . \
 		| xargs -I{} bash -c 'echo "==> {}" && cat {}'
 }
 
