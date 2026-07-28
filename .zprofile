@@ -6,11 +6,6 @@
 export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/utils.zsh"
 
-# Disable the global .zshrc and .zshenv files.
-# This is especially important for macOS which likes to include its own into the
-# PATH.
-unsetopt GLOBAL_RCS
-
 export DEV_PATH="${HOME:?}/dev"
 
 # PATH
@@ -65,6 +60,7 @@ export PYTHONDONTWRITEBYTECODE=1
 export EDITOR='nvim'
 export VISUAL='nvim'
 export MANPAGER='nvim +Man!'
+export PAGER='less'
 
 export FPATH
 export MANPATH
