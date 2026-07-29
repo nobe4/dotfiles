@@ -87,6 +87,8 @@ in
 
       anki
 
+      colmena
+
       (import ../../packages/deck.nix pkgs)
     ];
   };

@@ -8,39 +8,45 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ./brcm
+
     "${builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/apple/t2"
 
     ../../utils/ln.nix
 
+    ../../packages/mdns.nix
+
     ../../users/nobe4.nix
   ];
 
-  # TODO: move to a module with the import.
-  # macos t2 specific
-  hardware.firmware = [
-    (pkgs.stdenvNoCC.mkDerivation (final: {
-      name = "brcm-firmware";
-      src = ./firmware.tar;
-      dontUnpack = true;
-      installPhase = ''
-        mkdir -p $out/lib/firmware/brcm
-        tar -xf ${final.src} -C $out/lib/firmware/brcm
-      '';
-    }))
+  # Don't require a password for sudo for nobe4.
+  # This is important for colmena apply to work.
+  security.sudo.extraRules = [
+    {
+      users = [ "nobe4" ];
+      commands = [
+        {
+          command = "ALL";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
   ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.efiSysMountPoint = "/boot";
+  boot.loader = {
+    systemd-boot = {
+      enable = true;
 
-  # Prevent a nixos-switch to stop those services, loosing connections from an
-  # ssh build.
-  systemd.services = {
-    NetworkManager.stopIfChanged = false;
-    dbus-broker.stopIfChanged = false;
+      # macOS's boot is 100MB, so we need to limit the size.
+      configurationLimit = 5;
+
+      # on T2, EFI vars are blocked, so we can't confirm that the install was
+      # successful. But it still installs the new version.
+      graceful = true;
+    };
+    efi.efiSysMountPoint = "/boot";
   };
-
-  # TODO: end move
 
   users.users.nobe4 = {
     openssh.authorizedKeys.keys = [ keys.nobe4_verdi ];
@@ -57,7 +63,6 @@ in
 
   environment.systemPackages = with pkgs; [
     vim
-    wget
     git
     htop
   ];
@@ -65,6 +70,6 @@ in
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "26.11"; # Did you read the comment?
+  # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion.
+  system.stateVersion = "26.05"; # Did you read the comment?
 }
