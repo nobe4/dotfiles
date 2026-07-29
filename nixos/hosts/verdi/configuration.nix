@@ -6,7 +6,6 @@ in
   imports = [
     /etc/nixos/hardware-configuration.nix
 
-    ../../utils/allowed_unfree.nix
     ../../utils/ln.nix
 
     ../../users/nobe4.nix
@@ -48,11 +47,6 @@ in
       enable32Bit = true;
     };
   };
-
-  allowedUnfree = [
-    "apple_cursor"
-    "discord"
-  ];
 
   # Audio
   # See pavucontrol for advanced

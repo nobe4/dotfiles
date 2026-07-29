@@ -1,9 +1,6 @@
 # Define all things network related.
 { pkgs, ... }:
 {
-  allowedUnfree = [
-    "winbox"
-  ];
 
   users.users.nobe4.packages = with pkgs; [
     dnsutils

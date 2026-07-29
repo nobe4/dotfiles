@@ -13,7 +13,6 @@
     ../../modules/darwin/zsh.nix
     ../../modules/darwin/bash.nix
 
-    ../../utils/allowed_unfree.nix
     ../../utils/ln-darwin.nix
 
     ../../users/nobe4.nix

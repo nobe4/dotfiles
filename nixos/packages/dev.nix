@@ -7,9 +7,6 @@
   ...
 }:
 {
-  allowedUnstableUnfree = [
-    "github-copilot-cli"
-  ];
 
   users.users.nobe4.packages =
     with pkgs;
@@ -54,7 +51,7 @@
     ++ [ (import ./notify.nix { inherit pkgs config; }) ]
     ++ (import ./jq.nix { inherit pkgs; })
     ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-      devenv
+      pkgs-unstable.devenv
     ];
 
   programs.direnv = {
