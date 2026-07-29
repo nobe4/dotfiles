@@ -58,10 +58,6 @@ in
   # See pavucontrol for advanced
   services.pipewire = {
     enable = true;
-
-    wireplumber = {
-      enable = true;
-    };
   };
 
   users.users.nobe4 = {
