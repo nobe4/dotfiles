@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 {
-  environment.darwinConfig = "${config.dotfiles}/nixos/hosts/brahms/configuration.nix";
+  # TODO: move that to main, or remove altogether if colemna can also handle it
+  environment.darwinConfig = "${config.dotfiles}/worktree/main/nixos/hosts/wagner/configuration.nix";
 
   # XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
   disabledModules = [
@@ -27,14 +28,42 @@
   ];
 
   networking = {
-    computerName = "brahms";
-    hostName = "brahms";
-    localHostName = "brahms";
+    computerName = "wagner";
+    hostName = "wagner";
+    localHostName = "wagner";
   };
 
   users.users.nobe4.packages = with pkgs; [
     darwin.trash
     gnupg
+
+    # TODO: deduplicate with dev.nix
+    cmake
+    age
+    difftastic
+    fd
+    fzf
+    gh
+    glow
+    gnupg
+    gnupg2
+    go
+    gojq
+    htop
+    moreutils
+    neovim
+    pinentry-mac
+    ripgrep
+    tealdeer
+    trash
+    tree
+    universal-ctags
+    xq
+    mise
+    pipenv
+    pyenv
+    rbenv
+    nodenv
   ];
 
   homebrew = {
@@ -52,8 +81,9 @@
     # TODO: check what can be removed here
     casks = [
       "firefox"
-      # "1password"
-      # "1password-cli"
+      "docker-desktop"
+      "1password"
+      "1password-cli"
       "kitty"
       "notunes"
       "hammerspoon"
@@ -79,7 +109,7 @@
         AppleEnableMouseSwipeNavigateWithScrolls = false;
         AppleEnableSwipeNavigateWithScrolls = false;
         "com.apple.sound.beep.feedback" = 1;
-        # Not working?
+        # XXX: Not working?
         "com.apple.swipescrolldirection" = false;
       };
       controlcenter = {
