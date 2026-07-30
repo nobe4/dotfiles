@@ -12,6 +12,10 @@ return {
 
 			telescope.setup({
 				defaults = {
+					preview = {
+						treesitter = true,
+					},
+
 					layout_strategy = "flex",
 
 					mappings = {

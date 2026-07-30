@@ -1,4 +1,5 @@
 return {
+	-- TODO: check the master branch and see what the new setup is
 	{
 		'nvim-treesitter/nvim-treesitter',
 		lazy = false,
