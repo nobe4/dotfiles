@@ -10,7 +10,11 @@ COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
 PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
 
 LOG_FILE="/tmp/sling.log"
+CACHE_FILE="$(cache path sling commands)"
+
 BECOME_COMMAND="
+	# Update the title
+	printf '\033]2;%s\007' {} && \
 	FROM_SLING=1 \
 	{} 2> >(tee -a ${LOG_FILE} >&2) \
 	|| \
@@ -22,11 +26,15 @@ BECOME_COMMAND="
 		)
 "
 
-find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
-	-type f \
-	-exec basename {} \; \
-	| sort \
-	| fzf \
-		--preview-window="bottom" \
-		--preview="{} -h" \
-		--bind="enter:become(${BECOME_COMMAND})"
+if ! cache fresh sling commands; then
+	find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
+		-type f \
+		-exec basename {} \; \
+		| sort > "${CACHE_FILE}"
+fi
+
+fzf \
+	--preview-window="bottom" \
+	--preview="{} -h" \
+	--bind="enter:become(${BECOME_COMMAND})" \
+	< "${CACHE_FILE}"

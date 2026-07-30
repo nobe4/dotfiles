@@ -32,10 +32,13 @@ while [ "${#}" -gt 0 ]; do
 done
 
 if [ ! -f "${CACHE}" ] || [[ "${REFRESH}" == 1 ]]; then
-	curl https://raw.githubusercontent.com/muan/emojilib/v4.0.0/dist/emoji-en-US.json \
-		| gojq --raw-output \
-			'. | to_entries | .[] | .key + " " + (.value | join(" ") | sub("_"; " "; "g"))' \
-			> "${CACHE}"
+	curl https://unicode.org/Public/emoji/latest/emoji-test.txt |
+		grep 'E\d.' |
+		sed -r 's/.+# +([^ ]+) E[^ ]+ (.+)/\1 \2/' |
+		grep . \
+		> "${LIST}"
+
+	echo "List refreshed at ${LIST}"
 	exit 0
 fi
 

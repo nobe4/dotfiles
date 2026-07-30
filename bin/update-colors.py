@@ -7,25 +7,28 @@ import select
 
 # Base16 definitions
 
-# Custom Monokai
+# Custom pastel
 colors = [
-    "#1d1f21",
-    "#cc342b",
-    "#14b363",
-    "#fba922",
-    "#3971ed",
-    "#b028e9",
-    "#0abdae",
-    "#cecdc3",
-    "#878988",
-    "#c49c9a",
-    "#93b6a4",
-    "#c8b394",
-    "#859acb",
-    "#a884b8",
-    "#7c9e9b",
-    "#f1f3f5",
+    "#101010",
+    "#c75c66",
+    "#08904b",
+    "#e7d13d",
+    "#41a6d3",
+    "#af60ae",
+    "#19acac",
+    "#d0d0d0",
+    "#7a7a7a",
+    "#cf7280",
+    "#3aaf7d",
+    "#eedf77",
+    "#7ac1e0",
+    "#c58bc4",
+    "#5ec5c5",
+    "#e9e9e9",
 ]
+
+# Custom Monokai
+# colors = [ "#1d1f21", "#cc342b", "#14b363", "#fba922", "#3971ed", "#b028e9", "#0abdae", "#cecdc3", "#878988", "#c49c9a", "#93b6a4", "#c8b394", "#859acb", "#a884b8", "#7c9e9b", "#f1f3f5", ]
 
 # Xterm defaults
 # colors = [ "#000000", "#800000", "#008000", "#808000", "#000080", "#800080", "#008080", "#c0c0c0", "#808080", "#ff0000", "#00ff00", "#ffff00", "#0000ff", "#ff00ff", "#00ffff", "#ffffff", ]
