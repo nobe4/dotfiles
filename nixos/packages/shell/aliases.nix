@@ -27,7 +27,12 @@ in
   "gl" = "git pull";
   "glo" = "git lg";
   "grhh" = "git reset --hard HEAD";
-  "gs" = "git switch";
+
+  "gt"="git-worktree",
+  "gs"="git-switch",
+  "gsa"="cd $(gt -p add)",
+  "gsm"="cd $(gt path $(git main))",
+
   "gpf" = "git push --force-with-lease";
   "gsc" = "git switch -c";
   "gsm" = "git switch \"$(git main)\" && git pull && git sweep";
@@ -35,7 +40,7 @@ in
   "gs-" = "git status -";
   "gst" = "git stash";
   "grug" =
-    ''copilot --add-dir "${dotfiles}/copilot/skills/grug/" --interactive "/skills add ${dotfiles}/copilot/skills/grug/" --interactive "/grug"'';
+    ''copilot --add-dir "${dotfiles}/copilot/skills/grug/" --interactive "/skills add ${dotfiles}/copilot/skills/grug/" --interactive "/grug" --effort xhigh'';
 
   "dk" = "docker";
   "bbox" = "docker run -it --rm busybox";
