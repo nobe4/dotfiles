@@ -8,6 +8,7 @@ hl.monitor({
 	position = "auto",
 	scale    = "auto",
 })
+
 hl.monitor({
 	output   = "DP-1",
 	mode     = "preferred",
@@ -18,15 +19,6 @@ hl.monitor({
 local terminal = "kitty"
 
 -- Environment variables are set in ~/.config/uwsm/env
-
--------------------
----- AUTOSTART ----
--------------------
-
-hl.on("hyprland.start", function()
-	hl.exec_cmd("waybar")
-	hl.exec_cmd("hypridle")
-end)
 
 -- TODO
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Permissions/
