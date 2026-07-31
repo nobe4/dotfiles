@@ -36,6 +36,13 @@
       nixd
       nixfmt
 
+      xq
+
+      age
+      agenix.cli
+
+      gnupg
+
       # # YAML
       # yaml-language-server
       # yamlfmt

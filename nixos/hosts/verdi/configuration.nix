@@ -62,11 +62,7 @@ in
       pavucontrol
       playerctl # for media play-pause control
 
-      gnupg
       pinentry-qt
-
-      age
-      agenix.cli
 
       signal-desktop
       discord
@@ -76,8 +72,6 @@ in
       chromium # Seems that `programs.chromium` doesn't get it done
 
       anki
-
-      colmena
 
       (import ../../packages/deck.nix pkgs)
     ];

@@ -43,31 +43,12 @@
 
   users.users.nobe4.packages = with pkgs; [
     darwin.trash
-    gnupg
 
-    # TODO: deduplicate with dev.nix
-    cmake
-    age
-    difftastic
-    fd
-    fzf
-    gh
-    glow
-    go
-    gojq
-    htop
-    moreutils
-    neovim
-    ripgrep
-    tree
-    universal-ctags
-    xq
-    mise
+    # all those should go in favor of devenv and direnv
     pipenv
     pyenv
     rbenv
     nodenv
-    colmena
   ];
 
   homebrew = {

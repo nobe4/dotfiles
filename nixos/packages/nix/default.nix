@@ -34,6 +34,8 @@ in
   users.users.nobe4.packages = with pkgs; [
     nix-search-tv
 
+    colmena
+
     (import ./nix-rebuild.nix { inherit pkgs config; })
   ];
 
@@ -41,11 +43,9 @@ in
     [ ]
     ++
       # nix-darwin ship an environment.darwinConfig that is enough
-      (lib.optional (!isDarwin)
-        [
-          "${config.dotfiles}/nixos/hosts/${config.networking.hostName}/configuration.nix"
-          "/etc/nixos/configuration.nix"
-        ]
-      );
+      (lib.optional (!isDarwin) [
+        "${config.dotfiles}/nixos/hosts/${config.networking.hostName}/configuration.nix"
+        "/etc/nixos/configuration.nix"
+      ]);
 
 }
