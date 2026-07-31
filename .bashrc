@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-export DOTFILE_FOLDER="${HOME:?}/dev/nobe4/dotfiles"
+export DOTFILE_FOLDER="${HOME:?}/.config/dotfiles"
 
 source "${DOTFILE_FOLDER}/shell/prompt.sh"

@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 {
   # TODO: move that to main, or remove altogether if colemna can also handle it
-  environment.darwinConfig = "${config.dotfiles}/worktree/main/nixos/hosts/wagner/configuration.nix";
+  environment.darwinConfig = "${config.dotfiles}/nixos/hosts/wagner/configuration.nix";
 
   # XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
   disabledModules = [
@@ -19,9 +24,12 @@
     ../../users/nobe4.nix
 
     ../../packages/shell
+
     ../../packages/system.nix
-    ../../packages/1password.nix
+    # XXX
+    # ../../packages/1password.nix
     ../../packages/nix
+    # XXX: Need pkgs-unstable
     ../../packages/dev.nix
 
     ./shortcuts
@@ -45,17 +53,12 @@
     fzf
     gh
     glow
-    gnupg
-    gnupg2
     go
     gojq
     htop
     moreutils
     neovim
-    pinentry-mac
     ripgrep
-    tealdeer
-    trash
     tree
     universal-ctags
     xq
@@ -64,6 +67,7 @@
     pyenv
     rbenv
     nodenv
+    colmena
   ];
 
   homebrew = {
@@ -76,18 +80,20 @@
     enable = true;
     brews = [
       "pinentry-mac"
+      "trash"
     ];
 
     # TODO: check what can be removed here
     casks = [
       "firefox"
       "docker-desktop"
-      "1password"
-      "1password-cli"
+      # XXX
+      # "1password"
+      # "1password-cli"
       "kitty"
       "notunes"
       "hammerspoon"
-      "neovide"
+      "neovide-app"
     ];
   };
 
@@ -99,6 +105,11 @@
   ];
 
   system = {
+    # apply the changes without logout/login
+    activationScripts.postActivation.text = lib.mkAfter ''
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    '';
+
     primaryUser = "nobe4";
 
     defaults = {

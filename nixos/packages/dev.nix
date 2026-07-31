@@ -3,7 +3,8 @@
   config,
   lib,
   pkgs,
-  pkgs-unstable,
+  # XXX
+  # pkgs-unstable,
   ...
 }:
 {
@@ -45,13 +46,13 @@
       # emmet-language-server
     ]
     ++ [
-      pkgs-unstable.github-copilot-cli
+      # pkgs-unstable.github-copilot-cli
     ]
     ++ (import ./copy_paste.nix { inherit pkgs config; })
     ++ [ (import ./notify.nix { inherit pkgs config; }) ]
     ++ (import ./jq.nix { inherit pkgs; })
     ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-      pkgs-unstable.devenv
+      # pkgs-unstable.devenv
     ];
 
   programs.direnv = {

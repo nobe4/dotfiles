@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-is_macos && {
-	open "$@"
-}
-
-is_linux && {
-	xdg-open "$@"
-}

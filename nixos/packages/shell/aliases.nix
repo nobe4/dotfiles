@@ -28,14 +28,14 @@ in
   "glo" = "git lg";
   "grhh" = "git reset --hard HEAD";
 
-  "gt"="git-worktree",
-  "gs"="git-switch",
-  "gsa"="cd $(gt -p add)",
-  "gsm"="cd $(gt path $(git main))",
+  "gt"="git-worktree";
+  "gs"="git-switch";
+  "gsa"="cd $(gt -p add)";
+  "gsm"="cd $(gt path $(git main))";
+  # "gsm" = "git switch \"$(git main)\" && git pull && git sweep";
 
   "gpf" = "git push --force-with-lease";
   "gsc" = "git switch -c";
-  "gsm" = "git switch \"$(git main)\" && git pull && git sweep";
   "gss" = "git status";
   "gs-" = "git status -";
   "gst" = "git stash";

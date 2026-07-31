@@ -6,19 +6,19 @@ anchor=top-right
 height=2000
 
 # c16
-text-color=#f1f3f5
+text-color=#e9e9e9
 # c16
-border-color=#f1f3f5
+border-color=#e9e9e9
 
 [urgency=low]
 # c1
-background-color=#1d1f21
+background-color=#101010
 border-size=1
 
 [urgency=normal]
 # c5
-background-color=#3971ed
+background-color=#41a6d3
 
 [urgency=high]
 # c2
-background-color=#cc342b
+background-color=#c75c66

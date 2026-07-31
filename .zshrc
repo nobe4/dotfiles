@@ -7,7 +7,6 @@ export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
 # }
 
-
 # Functions {
 # Load compinit fast from the cached dump on every shell (-C skips the security
 # audit). When the dump is stale (>7d) or missing, rebuild it in the background
