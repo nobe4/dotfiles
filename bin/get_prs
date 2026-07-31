@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Usage: get_prs [PROMPT [URL...]]
+#
+# Prints selected PR URLs, one per line.
+# If URLs are given as args, prints them.
+# Else prompts (with PR found in cwd or pbpaste as default).
+
+set -e
+
+[ "$*" == "-h" ] && cat "${0}" && exit 0
+
+PROMPT="${1:-Enter PR URL(s):}"
+shift || true
+
+if [ "${#}" -gt 0 ]; then
+	out="$*"
+else
+	pr0="$(gh pr view --json url -q '.url' 2>/dev/null || true)"
+	pr1="$(pbpaste | grep 'https://github.com/.\+/pull/\d\+' || true)"
+
+	echo "${PROMPT}" >&2
+
+	[ -z "${pr0}" ] && pr0="${pr1}"
+	[ "${pr0}" = "${pr1}" ] && pr1=""
+	[ -n "${pr0}" ] && echo "or <CR>: '${pr0}'" >&2
+	[ -n "${pr1}" ] && echo "or 1: '${pr1}'" >&2
+
+	printf '> ' >&2
+	read -r input < /dev/tty
+
+	case "${input}" in
+		""|0) out="${pr0}" ;;
+		1)    out="${pr1}" ;;
+		*)    out="${input}" ;;
+	esac
+fi
+
+echo "${out}" | tr ' ' '\n' | grep -v '^$'

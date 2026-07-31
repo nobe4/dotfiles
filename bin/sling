@@ -3,9 +3,6 @@
 
 set -e
 
-show_help() { grep ^#/ <"${0}" | cut -c4-; }
-[ "${*}" == "-h" ] && show_help && exit 0
-
 COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
 PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
 

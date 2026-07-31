@@ -21,7 +21,7 @@ return {
 				workspaces = {
 					{
 						name = "private",
-						path = "~/dev/nobe4/dotfiles/private/notes/",
+						path = "~/.config/dotfiles/private/notes/",
 					},
 				},
 			})

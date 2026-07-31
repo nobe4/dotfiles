@@ -7,14 +7,6 @@ export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
 # }
 
-# TODO: rework the prompt between prompt.sh, prompt_precmd, and dotfiles_prompt.
-source "${DOTFILE_FOLDER}/shell/prompt.sh"
-
-# Set tab title on dir change and prompt
-# TODO: make sure this is ported
-# precmd_functions+=(set_tab_title)
-# chpwd_functions+=(set_tab_title)
-# preexec_functions+=(set_tab_title)
 
 # Functions {
 # Load compinit fast from the cached dump on every shell (-C skips the security
@@ -30,12 +22,25 @@ if [[ -n $HOME/.zcompdump(#qN.mh+168) ]]; then
 	{ compinit -i && zcompile "$HOME/.zcompdump" } &!
 fi
 zmodload -i zsh/complist
-zmodload -i zsh/complist
 
 # shellcheck disable=SC2086 # doesn't find the functions if quoted
 autoload -U $DOTFILE_FOLDER/functions/*(:t)
 # }
 
+# TODO: rework the prompt between prompt.sh, prompt_precmd, and dotfiles_prompt.
+source "${DOTFILE_FOLDER}/shell/prompt.sh"
+
+# # Add functions/prompt_precmd to the list of precmd_functions
+# typeset -a precmd_functions
+# precmd_functions+=(prompt_precmd)
+#
+# # Set tab title on dir change and prompt
+# TODO: make sure this is ported
+# precmd_functions+=(set_tab_title)
+# chpwd_functions+=(set_tab_title)
+# preexec_functions+=(set_tab_title)
+# # }
+# }
 # Completion {
 # Enable completion from partial words
 # e.g. ~/men<TAB> => ~/Documents

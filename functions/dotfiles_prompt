@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# In a worktree the cwd is the branch name, so show the repo name instead.
+dir="%c"
+if [ "$(git rev-parse --git-dir 2> /dev/null)" != "$(git rev-parse --git-common-dir 2> /dev/null)" ]; then
+	dir="$(basename "$(git rev-parse --path-format=absolute --git-common-dir 2> /dev/null)")"
+fi
+
+# cwd is green
+# shellcheck disable=1087
+prompt="%F{2}${dir}"
+
+# git is red
+prompt="${prompt}%F{1}"
+
+if [ "$(git rev-parse --is-inside-work-tree 2> /dev/null)" = "false" ]; then
+	prompt="${prompt}bare"
+else
+	branch="$( (git symbolic-ref -q HEAD --short || git name-rev --name-only --no-undefined --always HEAD) 2> /dev/null | xargs)"
+	if [ -n "$branch" ]; then
+
+		stash_count="$(git stash list 2> /dev/null | wc -l | tr -d ' ')"
+		[ "${stash_count}" = "0" ] && stash_count=""
+
+		git update-index --refresh > /dev/null 2>&1
+		if ! git diff-index --no-ext-diff --quiet --exit-code HEAD -- 2> /dev/null; then
+			dirty="*"
+		fi
+
+		prompt="${prompt}${branch}${stash_count}${dirty}"
+	fi
+fi
+
+# env is blue
+[ -n "$RBENV_SHELL" ] && prompt="${prompt}%F{4}rbenv"
+[ -n "$NODENV_SHELL" ] && prompt="${prompt}%F{4}nodenv"
+[ -n "$PIPENV_ACTIVE" ] && prompt="${prompt}%F{4}pipenv"
+[ -n "$VIRTUAL_ENV_PROMPT" ] && prompt="${prompt}%F{4}${VIRTUAL_ENV_PROMPT}"
+
+echo "$prompt%f "

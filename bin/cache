@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+#/ Usage: cache COMMAND [NAME [KEY]] [TTL]
+#/
+#/ TTL is a value used by `find -newermt` (e.g. "1 hour", "1 day" (default), "7 day").
+#/
+#/ Commands:
+#/   list     List cache files (optionally under NAME) as usable args.
+#/   path     Print cache file path.
+#/   fresh    Exit 0 if cache exists and is younger than TTL.
+#/   clear    Remove cache file.
+#/   edit     Open in $EDITOR.
+
+set -e
+
+show_help() { grep ^#/ <"${0}" | cut -c4-; }
+
+# Doing one extra 'cache' so it doesn't conflict with other tool's cache.
+BASE="${XDG_CACHE_HOME:-$HOME/.cache}/cache"
+
+# List cache files as 'NAME KEY', optionally filtered by NAME.
+list_caches() {
+	local dir="${BASE}/${1:-}"
+	[ -d "${dir}" ] || return 0
+	find "${dir}" -type f | sed "s|${BASE}/||; s|/| |"
+}
+
+if [ "${#}" -eq 0 ] || [[ "${1}" == "-h" || "${1}" == "--help" ]]; then
+	show_help >&2
+	exit 0
+fi
+
+if [ "${1}" == "list" ]; then
+	list_caches "${2:-}"
+	exit 0
+fi
+
+CMD="${1}"
+NAME="${2}"
+KEY="${3}"
+
+# No NAME/KEY given: pick one from the existing caches.
+if [ -z "${NAME}" ] || [ -z "${KEY}" ]; then
+	sel="$(list_caches | fzf --select-1 --exit-0 --query "${NAME:-}" || true)"
+	[ -z "${sel}" ] && echo "no selection" >&2 && exit 1
+	read -r NAME KEY <<< "${sel}"
+fi
+
+FILE="${BASE}/${NAME}/${KEY}"
+mkdir -p "$(dirname "${FILE}")"
+
+TTL="${4:-1 day}"
+
+case "${CMD}" in
+	path) echo "${FILE}" ;;
+	fresh) [ -n "$(find "${FILE}" -newermt "${TTL} ago" 2>/dev/null)" ] ;;
+	clear) rm -f "${FILE}" ;;
+	edit) "${EDITOR}" "${FILE}" ;;
+
+	*)
+		echo "Unknown command '${1}'" >&2
+		show_help >&2
+		exit 1
+		;;
+esac

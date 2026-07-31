@@ -1,0 +1,44 @@
+#!/usr/bin/env zsh
+# Set tab title to: <path> <process>
+# path is "owner/repo:branch" if in a git repo, otherwise shortened cwd
+# TODO: figure out how to remove homebrew from here.
+
+# NOTE: all the local here prevent from bleeding into the global context, as
+# this is a zsh function it must behave as one.
+local cwd="$PWD"
+local path=""
+
+local remote branch
+remote=$(/opt/homebrew/bin/git remote get-url origin 2>/dev/null)
+
+if [[ -n "${remote}" ]]; then
+  branch=$(/opt/homebrew/bin/git branch --show-current 2>/dev/null)
+
+  remote="${remote%.git}"
+  if [[ "${remote}" == *@*:* ]]; then
+    # git@<forge>:owner/repo
+    path="${remote##*:}:${branch}"
+  else
+    # https://<forge>/owner/repo
+    local owner_repo="${remote%/*}"
+    owner_repo="${owner_repo##*/}/${remote##*/}"
+    path="${owner_repo}:${branch}"
+  fi
+else
+  # shorten path: ~/dev/nobe4/dotfiles -> ~/d/n/dotfiles
+  local short="${cwd/#$HOME/~}"
+  local parts=("${(@s:/:)short}")
+  local last="${parts[-1]}"
+  local result=""
+
+  for ((i=1; i<${#parts[@]}; i++)); do
+    result+="${parts[$i][1]}/"
+  done
+
+  path="${result}${last}"
+fi
+
+# foreground process name
+local proc="${1:-${ZSH_NAME:-zsh}}"
+
+printf '\e]0;%s %s\a' "${path}" "${proc}"

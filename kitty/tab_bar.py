@@ -12,7 +12,6 @@ from kitty.tab_bar import (
     TabBarData,
     as_rgb,
     draw_attributed_string,
-    draw_title,
 )
 
 opts = get_options()
@@ -20,7 +19,8 @@ clock_color = as_rgb(color_as_int(opts.color15))
 
 REFRESH_TIME_SECONDS = 1
 timer_id = None
-battery_path = (f"{environ["HOME"]}/dev/nobe4/dotfiles/bin/battery_percent",)
+# Using the full path because the tab bar doesn't get the custom PATH.
+battery_path = (f"{environ["HOME"]}/.config/dotfiles/bin/battery_percent",)
 
 
 def _draw_right_status(
@@ -63,7 +63,7 @@ def _draw_left_status(
     if index == 1:
         screen.draw(f"[{get_boss().mappings.current_keyboard_mode_name}]")
 
-    draw_title(draw_data, screen, tab, index)
+    screen.draw(f" {tab.title} ")
 
 
 def _redraw_tab_bar(_):
