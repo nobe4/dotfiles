@@ -109,7 +109,8 @@ in
       + ''
         # Force a refresh
         # see https://zameermanji.com/blog/2021/6/8/applying-com-apple-symbolichotkeys-changes-instantaneously/
-        /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+        /usr/bin/sudo -u ${lib.escapeShellArg config.system.primaryUser} \
+          /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
       '';
 
     system.activationScripts.postActivation.text = lib.mkAfter ''

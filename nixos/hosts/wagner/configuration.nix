@@ -5,7 +5,13 @@
   ...
 }:
 {
-  # TODO: move that to main, or remove altogether if colemna can also handle it
+  # Manually load the pkgs-unstable from the channel.
+  _module.args.pkgs-unstable = import <pkgs-unstable> {
+    system = pkgs.stdenv.hostPlatform.system;
+    config.allowUnfreePredicate = (import ../../utils/unfree.nix).unstable;
+  };
+
+  # NOTE: Colmena doesn't work on non-NixOS hosts, so we're stuck with this.
   environment.darwinConfig = "${config.dotfiles}/nixos/hosts/wagner/configuration.nix";
 
   # XXX: https://github.com/nix-darwin/nix-darwin/issues/1695
@@ -29,7 +35,6 @@
     # XXX
     # ../../packages/1password.nix
     ../../packages/nix
-    # XXX: Need pkgs-unstable
     ../../packages/dev.nix
 
     ./shortcuts
@@ -86,11 +91,6 @@
   ];
 
   system = {
-    # apply the changes without logout/login
-    activationScripts.postActivation.text = lib.mkAfter ''
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-    '';
-
     primaryUser = "nobe4";
 
     defaults = {

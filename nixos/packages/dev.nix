@@ -3,8 +3,7 @@
   config,
   lib,
   pkgs,
-  # XXX
-  # pkgs-unstable,
+  pkgs-unstable,
   ...
 }:
 {
@@ -38,9 +37,6 @@
 
       xq
 
-      age
-      agenix.cli
-
       gnupg
 
       # # YAML
@@ -53,14 +49,12 @@
       # emmet-language-server
     ]
     ++ [
-      # pkgs-unstable.github-copilot-cli
+      pkgs-unstable.github-copilot-cli
+      pkgs-unstable.devenv
     ]
     ++ (import ./copy_paste.nix { inherit pkgs config; })
     ++ [ (import ./notify.nix { inherit pkgs config; }) ]
-    ++ (import ./jq.nix { inherit pkgs; })
-    ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-      # pkgs-unstable.devenv
-    ];
+    ++ (import ./jq.nix { inherit pkgs; });
 
   programs.direnv = {
     enable = !pkgs.stdenv.isDarwin;
