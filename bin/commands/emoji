@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+#/ usage: emoji [FLAGS] [QUERY]
+#/
+#/ Flags:
+#/   -r|--refresh   Refresh the emojis list
+#/   --rofi         Start a rofi window (default to fzf)
+
+set -e
+
+CACHE="${HOME}/.local/state/emojis.txt"
+
+show_help() { grep ^#/ <"${0}" | cut -c4-; }
+
+REFRESH=0
+ROFI=0
+
+while [ "${#}" -gt 0 ]; do
+	case "${1}" in
+		-h|--help) show_help && exit 0 ;;
+		-r|--refresh) REFRESH=1 ;;
+		--rofi) ROFI=1 ;;
+		-*)
+			echo "Unknown flag '${1}'"
+			show_help
+			exit 1
+			;;
+
+		# Break on non-flags
+		*)  break ;;
+	esac
+	shift 1
+done
+
+if [ ! -f "${CACHE}" ] || [[ "${REFRESH}" == 1 ]]; then
+	curl https://unicode.org/Public/emoji/latest/emoji-test.txt |
+		grep 'E\d.' |
+		sed -r 's/.+# +([^ ]+) E[^ ]+ (.+)/\1 \2/' |
+		grep . \
+		> "${LIST}"
+
+	echo "List refreshed at ${LIST}"
+	exit 0
+fi
+
+if [[ "${ROFI}" == 1 ]]; then
+	selection=$(rofi -dmenu -i -p "Emoji" < "${CACHE}")
+else
+	selection=$(fzf --nth='2..' --query="${*}" < "${CACHE}")
+fi
+
+emoji=$(echo "${selection}" | cut -d' ' -f1)
+
+notify "Emoji copied to clipboard" "${emoji}" -t 1000
+echo "${emoji}" | copy

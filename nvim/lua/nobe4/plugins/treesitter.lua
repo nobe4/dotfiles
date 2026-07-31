@@ -1,9 +1,10 @@
 return {
+
 	{
-		"nvim-treesitter/nvim-treesitter",
-		branch = "main",
-		-- dependencies = { "nvim-treesitter/playground" },
-		build = ":TSUpdate",
+		'nvim-treesitter/nvim-treesitter',
+		lazy = false,
+		build = ':TSUpdate'
+		branch = 'main',
 
 		config = function()
 			local ts = require("nvim-treesitter")
@@ -23,16 +24,15 @@ return {
 					vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 					vim.wo[0][0].foldmethod = 'expr'
 					vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-
 				end,
 			})
 		end,
-	},
+	}
 
-	-- {
-	-- 	"nvim-treesitter/nvim-treesitter-context",
-	-- 	config = function()
-	-- 		require("treesitter-context").setup({ separator = "-" })
-	-- 	end,
-	-- },
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		config = function()
+			require("treesitter-context").setup({ separator = "-" })
+		end,
+	},
 }

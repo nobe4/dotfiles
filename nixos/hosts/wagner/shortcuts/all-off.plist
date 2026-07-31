@@ -1,0 +1,962 @@
+{
+    10 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    11 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    118 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    119 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    12 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    120 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    13 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    15 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    159 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    16 =     {
+        enabled = 0;
+    };
+    160 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    162 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    163 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    164 =     {
+        enabled = 1;
+        value =         {
+            parameters =             (
+                262144,
+                4294705151
+            );
+            type = modifier;
+        };
+    };
+    17 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    175 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    179 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    18 =     {
+        enabled = 0;
+    };
+    181 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    182 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    184 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    19 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    190 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    20 =     {
+        enabled = 0;
+    };
+    21 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    22 =     {
+        enabled = 0;
+    };
+    222 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    223 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    224 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    225 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    226 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    227 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    228 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    229 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    23 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    230 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    231 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    232 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    233 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    235 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    237 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    238 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    239 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    24 =     {
+        enabled = 0;
+    };
+    240 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    241 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    242 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    243 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    244 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    245 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    246 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    247 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    248 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    249 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    25 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    250 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    251 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    256 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    257 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    258 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    26 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    260 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    27 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    28 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    29 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    30 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    31 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    32 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    33 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    34 =     {
+        enabled = 1;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1179648
+            );
+            type = standard;
+        };
+    };
+    35 =     {
+        enabled = 1;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1179648
+            );
+            type = standard;
+        };
+    };
+    36 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    37 =     {
+        enabled = 1;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1179648
+            );
+            type = standard;
+        };
+    };
+    52 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    53 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    54 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    55 =     {
+        enabled = 1;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1572864
+            );
+            type = standard;
+        };
+    };
+    56 =     {
+        enabled = 1;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1572864
+            );
+            type = standard;
+        };
+    };
+    57 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    59 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    60 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    61 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    64 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    65 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    7 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    79 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    8 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    80 =     {
+        enabled = 1;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1179648
+            );
+            type = standard;
+        };
+    };
+    81 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+    82 =     {
+        enabled = 1;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1179648
+            );
+            type = standard;
+        };
+    };
+    9 =     {
+        enabled = 0;
+        value =         {
+            parameters =             (
+                97,
+                0,
+                1048576
+            );
+            type = standard;
+        };
+    };
+}

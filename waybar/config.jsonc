@@ -1,0 +1,114 @@
+{
+	"modules-left": [
+		"hyprland/workspaces"
+	],
+	"modules-center": [
+		"clock",
+		"custom/weather"
+	],
+	"modules-right": [
+		"custom/screen-recording",
+		"custom/webcam-recording",
+		"custom/audio-recording",
+		"custom/audio-playback",
+		"tray",
+		"pulseaudio",
+		"network",
+		"cpu",
+		"memory",
+		"custom/hyprsunset-toggle",
+		"idle_inhibitor"
+	],
+	//
+	// Modules configuration
+	//
+	"hyprland/workspaces": {
+		"all-outputs": true
+	},
+	"tray": {
+		"spacing": 10
+	},
+	"clock": {
+		"format": "{:%Y-%m-%d %H:%M}",
+		"tooltip-format": "<tt><small>{calendar}</small></tt>",
+		"calendar": {
+			"mode": "year",
+			"mode-mon-col": 3,
+			"weeks-pos": "left",
+			"format": {
+				// "months": "<span color='#ffead3'><b>{}</b></span>",
+				// "days": "<span color='#cecdc3'><b>{}</b></span>", // c8
+				"weeks": "<span color='#0abdae'><b>W{}</b></span>", // c7
+				"weekdays": "<span color='#fba922'><b>{}</b></span>", // c4
+				"today": "<span color='#cc342b'><b><u>{}</u></b></span>" // c2
+			}
+		}
+	},
+	"cpu": {
+		"format": "{load:2}% ",
+		"on-click": "kitty --title waybar-htop htop"
+	},
+	"memory": {
+		"format": "{percentage:2}% "
+	},
+	"network": {
+		"cursor": false,
+		"format-wifi": "",
+		"format-disconnected": "⚠",
+		"tooltip-format": "{ipaddr} => {gwaddr}\n{ifname} on {essid} ({signalStrength}%)",
+		"on-click": "kitty --title waybar-iwctl iwctl"
+	},
+	"pulseaudio": {
+		"cursor": false,
+		"format": "{volume}% {icon}",
+		"format-bluetooth": "{volume}% {icon} <span color='#3971ed'></span>", // c5
+		"format-bluetooth-muted": "<span color='#cc342b'></span>", // c2
+		"format-muted": "<span color='#cc342b'></span>", // c2
+		"format-icons": {
+			"default": [
+				"",
+				"",
+				""
+			]
+		},
+		"on-click": "pavucontrol"
+	},
+	"custom/weather": {
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/bin/weather --waybar 2>&1 | tee -a /tmp/waybar-logs",
+		"return-type": "json",
+		"interval": 60,
+		"on-click": "kitty --title weather weather --wait"
+	},
+	"custom/screen-recording": {
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/screen-recording.sh",
+		"return-type": "json",
+		"interval": 5,
+		"on-click": "/home/nobe4/dev/nobe4/dotfiles/bin/screenrecord --stop"
+	},
+	"custom/audio-playback": {
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/audio-playback.sh",
+		"return-type": "json",
+		"interval": 1
+	},
+	"custom/audio-recording": {
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/audio-recording.sh",
+		"return-type": "json",
+		"interval": 1
+	},
+	"custom/webcam-recording": {
+		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/webcam-recording.sh",
+		"return-type": "json",
+		"interval": 1
+	},
+	"custom/hyprsunset-toggle": {
+		"on-click": "/home/nobe4/dev/nobe4/dotfiles/bin/hyprsunset-toggle",
+		"format": "💡"
+	},
+	"idle_inhibitor": {
+		"format": "{icon}",
+		"format-icons": {
+			"activated": "",
+			"deactivated": ""
+		}
+	}
+}

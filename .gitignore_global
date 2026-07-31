@@ -48,3 +48,4 @@ n4_env
 .mise.toml
 !.github
 !.golangci.yaml
+.idea*

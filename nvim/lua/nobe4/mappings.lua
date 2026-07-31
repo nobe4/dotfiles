@@ -135,7 +135,8 @@ map("n", "[q", function()
 	snipe()
 end)
 
-map("n", "[o", vim.diagnostic.open_float)
+-- Like <Shift>k
+map("n", "D", vim.diagnostic.open_float, bufopts)
 
 map("n", "T", function() require("trouble").toggle("diagnostics") end)
 

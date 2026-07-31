@@ -226,6 +226,9 @@ local rules = {
 
 	-- LSP
 	-- { group = "LspInlayHint",                lk = "lred" },
+	-- Additional
+	{ group = "@number.float",               lk = "Number" },
+	{ group = "@boolean",                    lk = "Number" },
 
 	-- Comments
 	{ group = "@text.note",                  lk = "Todo" },

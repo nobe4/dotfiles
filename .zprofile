@@ -4,41 +4,41 @@
 
 # Setup
 export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
-source "$DOTFILE_FOLDER/utils.zsh"
 
 export DEV_PATH="${HOME:?}/dev"
 
 # PATH
 PATH="/usr/local/sbin:$PATH"
 PATH="/usr/local/bin:$PATH"
+PATH="/usr/local/bin:$PATH"
+PATH="/usr/bin:$PATH"
 PATH="$DOTFILE_FOLDER/bin/commands:$DOTFILE_FOLDER/bin:$PATH"
 PATH="$DOTFILE_FOLDER/private/bin:$DOTFILE_FOLDER/private/bin/commands:$PATH"
-PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 PATH="$HOME/.local/kitty.app/bin:$PATH"
-
-is_linux && { BREW_PREFIX="/home/linuxbrew/.linuxbrew" }
-is_macos && { BREW_PREFIX="/opt/homebrew/" }
-
-# Cache `brew shellenv` so we don't spawn brew on every login. Refresh when the
-# brew binary is newer than the cache.
-brew_cache="${XDG_CACHE_HOME:-$HOME/.cache}/brew-shellenv.zsh"
-if [[ ! -f $brew_cache || ${BREW_PREFIX}/bin/brew -nt $brew_cache ]]; then
-  "${BREW_PREFIX}/bin/brew" shellenv > "$brew_cache"
-fi
-source "$brew_cache"
 
 # macos Applications
 is_macos && {
-  if [[ ! "$PATH" == *Applications* ]]; then
-    PATH="$PATH:/Applications:$HOME/Applications"
-  fi
+	if [[ ! "$PATH" == *Applications* ]]; then
+		PATH="$PATH:/Applications:$HOME/Applications"
+	fi
+
+	BREW_PREFIX="/opt/homebrew/"
+
+	# Cache `brew shellenv` so we don't spawn brew on every login. Refresh when the
+	# brew binary is newer than the cache.
+	brew_cache="${XDG_CACHE_HOME:-$HOME/.cache}/brew-shellenv.zsh"
+	if [[ ! -f $brew_cache || ${BREW_PREFIX}/bin/brew -nt $brew_cache ]]; then
+		"${BREW_PREFIX}/bin/brew" shellenv > "$brew_cache"
+	fi
+	source "$brew_cache"
 }
 
 # FZF
 if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
   PATH="$PATH:/usr/local/opt/fzf/bin"
-  export FZF_DEFAULT_OPTS='--no-mouse --color=16,fg+:15,bg+:-1,gutter:0,hl:2,hl+:4,pointer:4,marker:10,prompt:7,info:8,spinner:5,header:4'
 fi
+export FZF_DEFAULT_COMMAND="rg --files --follow"
+  export FZF_DEFAULT_OPTS='--no-mouse --color=16,fg+:15,bg+:-1,gutter:0,hl:2,hl+:4,pointer:4,marker:10,prompt:7,info:8,spinner:5,header:4'
 
 # Go
 PATH="$PATH:/usr/local/go/bin:$HOME/go:$HOME/go/bin"

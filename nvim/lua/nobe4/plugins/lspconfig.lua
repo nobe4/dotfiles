@@ -1,13 +1,4 @@
 return {
-	-- LSP LEFT TO MOVE
-	-- SEE https://github.com/neovim/nvim-lspconfig/tree/master/lsp
-
-	-- lspconfig.bashls.setup(default_config)
-	-- lspconfig.clangd.setup(default_config)
-	-- lspconfig.cssls.setup(default_config)
-	-- lspconfig.jsonls.setup(default_config)
-	-- lspconfig.pylsp.setup(default_config)
-	-- lspconfig.ts_ls.setup(default_config)
 	-- lspconfig.lua_ls.setup({
 	-- 	on_attach = on_attach,
 	-- 	capabilities = capabilities,
@@ -22,12 +13,11 @@ return {
 	-- 		telemetry = { enable = false },
 	-- 	},
 	-- })
-	--
+
 	-- lspconfig.gdscript.setup({
 	-- 	on_attach = on_attach,
 	-- 	capabilities = capabilities,
 	-- 	flags = { debounce_text_changes = 150 },
 	-- })
-	--
-	-- end,
+
 }

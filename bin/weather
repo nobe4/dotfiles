@@ -1,0 +1,215 @@
+#!/usr/bin/env zsh
+# We need the floating point math of zsh
+#/ Usage: weather [FLAG]
+#/
+#/ Powered by https://open-meteo.com/
+#/
+#/ Cache: ${CACHE}
+#/
+#/ Flags:
+#/  -h|--help     Show this help
+#/  -r|--refresh  Force a refresh
+#/     --waybar   Show JSON for waybar
+#/     --simple   Show only simple
+#/     --debug    set -x
+#/  -w|--wait     Wait for a keypress before exiting
+
+set -e
+
+SRC="${0}"
+show_help() {
+	export CACHE
+	grep ^#/ <"${SRC}" | cut -c4- | envsubst
+}
+
+CACHE="$HOME/.local/state/waybar/weather_cache.json"
+
+API_URL="https://api.open-meteo.com/v1/forecast?latitude=52.5244&longitude=13.4105&hourly=temperature_2m,weather_code,precipitation,surface_pressure&current=temperature_2m,weather_code&timezone=Europe%2FBerlin&forecast_days=3"
+
+WAIT=0
+REFRESH=0
+WAYBAR=0
+SIMPLE=0
+CURL_VERBOSITY="--silent"
+
+# WMO weather interpretation codes
+# https://github.com/open-meteo/open-meteo/blob/main/Sources/App/Helper/WeatherCode.swift
+condition_to_emoji(){
+	case "${1}" in
+		0) echo "☀️" ;; # clear sky
+		1 | 2 | 3) echo "⛅" ;; # mainly clear, partly cloudy, overcast
+		45 | 48) echo "☁️" ;; # fog
+		51 | 53 | 55 | 56 | 57) echo "🌦️" ;; # drizzle
+		61 | 63 | 65 | 66 | 67 | 80 | 81 | 82) echo "🌧️" ;; # rain
+		71 | 73 | 75 | 77 | 85 | 86) echo "❄️" ;; # snow
+		95 | 96 | 99) echo "⛈️" ;; # thunderstorm
+		*) echo "?" ;;
+	esac
+}
+
+while [ "${#}" -gt 0 ]; do
+	case "${1}" in
+		-h|--help) show_help && exit 0 ;;
+		-w|--wait) WAIT=1 ;;
+		--waybar) WAYBAR=1 ;;
+		--simple) SIMPLE=1 ;;
+		--debug)
+			set -x
+			CURL_VERBOSITY="--verbose"
+			;;
+		-r|--refresh) REFRESH=1 ;;
+		-*)
+			echo "Unknown flag '${1}'"
+			show_help
+			exit 1
+			;;
+
+		# Break on non-flags
+		*)  break ;;
+	esac
+	shift 1
+done
+
+
+if [ ! -f "${CACHE}" ] || [ -n "$(find "${CACHE}" -mmin +60 -print -quit)" ] || [[ "${REFRESH}" == 1 ]]; then
+	curl "${CURL_VERBOSITY}" \
+		-o "${CACHE}" \
+		"${API_URL}"
+fi
+
+eval "$(
+	jq -r '.current | "temp=\(.temperature_2m) code=\(.weather_code) last_updated=\(.time)"' \
+	"${CACHE}"
+)"
+emoji=$(condition_to_emoji "${code}")
+
+if [[ "${WAYBAR}" == 1 ]]; then
+	echo "{\"text\": \"${temp}°C ${emoji}\", \"tooltip\": \"${last_updated}\"}"
+	exit 0
+fi
+
+if [[ "${SIMPLE}" == 1 ]]; then
+	echo "${temp}°C ${emoji}"
+	exit 0
+fi
+
+# Full from here down
+
+echo "Current: ${temp}°C ${emoji}"
+echo "Refreshed at ${last_updated}"
+printf "\n\n"
+
+# Dates
+printf "            $(date +"%Y-%m-%d")       |      $(date +%Y-%m-%d -d '+1 day')       |      $(date +%Y-%m-%d -d '+2 day')      \n"
+
+# Temperature graph
+eval "$(
+	jq -r '.hourly.temperature_2m | "min=\(min | floor) max=\(max | ceil) div=\(((max | ceil) - (min | floor))/10.0)"' \
+	"${CACHE}"
+)"
+
+for i in $(seq 0 10); do
+	# Floating point here requires zsh
+	high=$((max - div * i))
+	low=$((high - div))
+
+	# Floating point comparison here requires zsh
+	if [ "${i}" -eq 0 ]; then
+		printf "%4d " "${max}"
+	elif [ "${i}" -eq 5 ]; then
+		printf "%4d " "${low}"
+	elif [ "${i}" -eq 10 ]; then
+		printf "%4d " "${min}"
+	else
+		printf "     "
+	fi
+
+	# shellcheck disable=SC2016 # $f is the jq variable
+	jq -j '
+	.hourly.temperature_2m[] as $f |
+		if ('"${low}"' <= $f and $f <= '"${high}"') then
+			if $f <= -5 then
+				"\u001b[36m█\u001b[m"
+			elif $f <= 0 then
+				"\u001b[34m█\u001b[m"
+			elif $f <= 10 then
+				"\u001b[32m█\u001b[m"
+			elif $f <= 20 then
+				"\u001b[33m█\u001b[m"
+			else
+				"\u001b[31m█\u001b[m"
+			end
+		elif ('"${i}"' == 5) then
+			"-"
+		else
+			" "
+		end
+		' "${CACHE}"
+		printf "\n"
+	done
+
+# Print weather emojis
+printf "     "
+jq -r '.hourly.weather_code[]' "${CACHE}" \
+	| while read -r code; read -r discard; do
+		emoji=$(condition_to_emoji "${code}")
+		printf "${emoji}"
+done
+printf "\n"
+
+# Print timeline with custom marker for right now.
+current_dt=$(date +"%Y-%m-%dT%H:00")
+printf "     "
+jq -j '
+.hourly.time[] as $t |
+	if $t == "'"${current_dt}"'" then
+		"\u001b[31m█\u001b[m"
+	elif ($t | split("T")[1] | split(":")[0]) == "00" then
+		"|"
+	elif ($t | split("T")[1] | split(":")[0]) == "12" then
+		"+"
+	else
+		"-"
+	end
+' "${CACHE}"
+
+printf "\n     0     6     12    18    0     6     12    18    0     6     12    18    \n"
+
+# Print precipitation graph with pressure overlay
+eval "$(
+	jq -r '.hourly.surface_pressure | "p_min=\(min) p_max=\(max)"' \
+	"${CACHE}"
+)"
+
+for i in $(seq 0 10); do
+	printf "     "
+
+	# Row 0 = top (high precip / low pressure), row 10 = bottom
+
+	# shellcheck disable=SC2016 # jq variables
+	jq -j --argjson row "${i}" --argjson pmin "${p_min}" --argjson pmax "${p_max}" '
+	((10 - $row) * 0.1) as $pt |
+	(if $pmax == $pmin then 1 else ($pmax - $pmin) end) as $prange |
+	[.hourly.precipitation, .hourly.surface_pressure] | transpose[] | .[0] as $f | .[1] as $p |
+		((($p - $pmin) / $prange * 10) | round) as $p_row |
+		(10 - $p_row) as $p_inv |
+		if ($p_inv == $row) then
+			if ($pt < $f) then
+				"\u001b[32m█\u001b[m"
+			else
+				"\u001b[32m-\u001b[m"
+			end
+		elif ($pt < $f) then
+			"\u001b[34m█\u001b[m"
+		else
+			" "
+		end
+	' "${CACHE}"
+	printf "\n"
+done
+
+printf "\n"
+
+if [[ "${WAIT}" == 1 ]]; then
+	read -k 1 '?press any key to continue'
+fi

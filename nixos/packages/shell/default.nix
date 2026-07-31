@@ -1,0 +1,66 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  shellAliases = import ./aliases.nix {
+    inherit lib pkgs config;
+  };
+in
+{
+
+  imports = [ ../is_linux.nix ];
+
+  programs.zsh = {
+    enable = true;
+    enableCompletion = false;
+
+    setOptions = [
+      # https://zsh.sourceforge.io/Doc/Release/Options.html
+      "ALWAYS_TO_END"
+      "INTERACTIVE_COMMENTS"
+      "AUTO_CD"
+      "AUTO_LIST"
+      "AUTO_MENU"
+      "AUTO_PUSHD"
+      "COMPLETE_IN_WORD"
+      "NO_BEEP"
+      "PROMPT_SUBST"
+      "PUSHD_IGNORE_DUPS"
+      "APPEND_HISTORY"
+      "EXTENDED_HISTORY"
+      "HIST_EXPIRE_DUPS_FIRST"
+      "HIST_FIND_NO_DUPS"
+      "HIST_IGNORE_ALL_DUPS"
+      "HIST_IGNORE_DUPS"
+      "HIST_IGNORE_SPACE"
+      "HIST_VERIFY"
+      "INC_APPEND_HISTORY"
+      "SHARE_HISTORY"
+    ];
+
+    inherit shellAliases;
+  };
+
+  programs.bash = {
+    enable = true;
+    inherit shellAliases;
+  };
+
+  ln = with config; [
+    [
+      "${dotfiles}/.zshrc"
+      "${home}/.zshrc"
+    ]
+    [
+      "${dotfiles}/.zprofile"
+      "${home}/.zprofile"
+    ]
+    [
+      "${dotfiles}/.bashrc"
+      "${home}/.bashrc"
+    ]
+  ];
+}

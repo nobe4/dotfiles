@@ -1,0 +1,112 @@
+{ pkgs, ... }:
+let
+  agenix = import ../../packages/age.nix { inherit pkgs; };
+in
+{
+  imports = [
+    /etc/nixos/hardware-configuration.nix
+
+    ../../utils/ln.nix
+
+    ../../users/nobe4.nix
+
+    ../../packages/nix
+    ../../packages/shell
+    ../../packages/system.nix
+    ../../packages/wayland.nix
+    ../../packages/gaming.nix
+    ../../packages/1password.nix
+    ../../packages/keyboard.nix
+    ../../packages/font
+    ../../packages/network.nix
+    ../../packages/vnc
+    ../../packages/cross-compile.nix
+    ../../packages/virtualization
+    ../../packages/mdns.nix
+    ../../packages/dev.nix
+    ../../packages/i2c.nix
+
+    agenix.module
+
+    ../../service/check_vitamines_availability.nix
+
+    ./media.nix
+  ];
+
+  networking.hostName = "verdi";
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  # Enable Graphical stuff to happen.
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
+  };
+
+  # Audio
+  # See pavucontrol for advanced
+  services.pipewire = {
+    enable = true;
+  };
+
+  users.users.nobe4 = {
+    packages = with pkgs; [
+      # will need to find a way to do without
+      # currently the scarlite has 2 separate output, which should be merged into one.
+      # + how to integrate that in waybar
+      pavucontrol
+      playerctl # for media play-pause control
+
+      gnupg
+      pinentry-qt
+
+      age
+      agenix.cli
+
+      signal-desktop
+      discord
+
+      # needed for envsubst
+      gettext
+      chromium # Seems that `programs.chromium` doesn't get it done
+
+      anki
+
+      colmena
+
+      (import ../../packages/deck.nix pkgs)
+    ];
+  };
+
+  # TODO: check why those are programs, and what benefits vs
+  # users.users.<x>.packages.
+  programs.firefox = {
+    enable = true;
+
+    preferences = {
+      # Rendering extensions on a scaled wayland seems to cause the popup to
+      # distort. Disabling this fixed the view.
+      "widget.wayland.fractional-scale.enabled" = false;
+    };
+  };
+
+  security.polkit.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    pinentryPackage = pkgs.pinentry-qt;
+  };
+
+  # Copy the NixOS configuration file and link it from the resulting system
+  # (/run/current-system/configuration.nix). This is useful in case you
+  # accidentally delete configuration.nix.
+  system.copySystemConfiguration = true;
+
+  # See https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion
+  system.stateVersion = "25.05"; # Do not change
+}

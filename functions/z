@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+TODO: add this as well
+	# find \
+	# 	"/tmp/mount/" \
+	# 	-mindepth 1 \
+	# 	-maxdepth 1 \
+	# 	-type d &&
+
 selection=$(
 	{
 		git-repos

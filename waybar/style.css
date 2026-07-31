@@ -1,0 +1,106 @@
+/* c16 */
+@define-color fg #f1f3f5;
+/* c9 */
+@define-color border #878988;
+/* c1 */
+@define-color bg #1d1f21;
+/* c2 */
+@define-color red #cc342b;
+/* c5 */
+@define-color blue #3971ed;
+/* c4 */
+@define-color orange #fba922;
+/* c3 */
+@define-color green #14b363;
+
+* {
+	font-family: CommitMonoV143, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+
+	border: none;
+	border-radius: 0;
+	background-image: none;
+	box-shadow: none;
+	text-shadow: none;
+	outline: none;
+	transition: none;
+	-gtk-icon-effect: none;
+	-gtk-icon-shadow: none;
+}
+
+window#waybar {
+	background-color: @bg;
+}
+
+button {
+	color: @fg;
+}
+
+button:hover {
+	background-color: @fg;
+	color: @bg;
+}
+
+#workspaces button {
+	padding: 0 5px;
+}
+
+button.active {
+	background-color: @border;
+	color: @bg;
+}
+
+button.active:hover {
+	background-color: @fg;
+}
+
+button.urgent {
+	background-color: @red;
+	color: @bg;
+}
+
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#wireplumber,
+#tray,
+#mpd,
+#idle_inhibitor,
+#custom-weather,
+#custom-hyprsunset-toggle,
+#clock {
+	padding: 0 5px 0 5px;
+}
+
+#idle_inhibitor.activated,
+#network.disconnected {
+	background-color: @red;
+}
+
+#custom-audio-playback {
+	color: @blue;
+}
+
+#custom-audio-recording {
+	color: @green;
+}
+
+#custom-webcam-recording {
+	color: @orange;
+}
+
+#custom-screen-recording {
+	margin: 0;
+	color: @red;
+}
+
+tooltip {
+	background-color: @bg;
+	color: @fg;
+	border: solid 2px @border;
+	border-radius: 0px;
+	padding: 4px;
+	margin: 0px;
+}

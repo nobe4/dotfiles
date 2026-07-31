@@ -8,7 +8,20 @@ ngrok.bin
 .telegram-creds
 .link-list
 
-Brewfile.lock.json
 nvim/lazy-lock.json
 
 vendor/
+
+# nixos-rebuild result
+result
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
