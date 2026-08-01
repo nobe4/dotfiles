@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -e
+
+COVERS_DIR=~/Downloads/covers
+DOWNLOAD_DIR=~/Downloads
+
+mkdir -p "$COVERS_DIR"
+
+csv_path="${1:?usage: thestorygraph-covers <csv-path>}"
+
+books=$(yq -p=csv \
+	'
+		.[]
+		| select(.["Last Date Read"] | split("/")[0] | to_number == 2025)
+		| select(.["Star Rating"])
+		| select(.["Star Rating"] | to_number >= 3.0)
+		| select(.["ISBN/UID"])
+		| "\(.Title)"
+	' < "$csv_path" \
+	| sort)
+
+while IFS= read -r title; do
+	[ -z "$title" ] && continue
+
+	slug=$(echo "$title" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//;s/-$//')
+
+	if [ -f "$COVERS_DIR/$slug.jpg" ]; then
+		echo "skip: $title (already exists)"
+		continue
+	fi
+
+	# Count existing files in download dir
+	before=$(find "$DOWNLOAD_DIR" -maxdepth 1 -type f | wc -l)
+
+	search=$(echo "$title" | sed 's/ /+/g')
+	xdg-open "https://www.amazon.de/s?k=book+$search"
+
+	echo "waiting for cover download: $title"
+
+	# Wait for a new file in download dir
+	while true; do
+		after=$(find "$DOWNLOAD_DIR" -maxdepth 1 -type f | wc -l)
+		if [ "$after" -gt "$before" ]; then
+			break
+		fi
+		sleep 1
+	done
+
+	# Get the newest file
+	new_file=$(find "$DOWNLOAD_DIR" -maxdepth 1 -type f -printf '%T@ %p\n' | sort -n | tail -1 | cut -d' ' -f2-)
+
+	mv "$new_file" "$COVERS_DIR/$slug.jpg"
+	echo "saved: $COVERS_DIR/$slug.jpg"
+done <<< "$books"
+
+echo "done"

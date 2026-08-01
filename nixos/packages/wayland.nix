@@ -15,12 +15,14 @@
     # xwayland.enable = false;
   };
 
+  programs.waybar.enable = true;
+  services.hypridle.enable = true;
+  programs.hyprlock.enable = true;
+
   users.users.nobe4.packages = with pkgs; [
-    # Hyprland
     hyprcursor
-    hyprlock
     hyprpicker
-    hypridle
+
     # (hyprsunset.overrideAttrs {
     #   # Waiting for a release that ships https://github.com/hyprwm/hyprsunset/pull/62
     #   version = "0f4e35a103b2f7408932bbc928823de6fee97b57";
@@ -39,7 +41,6 @@
     mako
     libnotify
 
-    waybar
     rofi
 
     # apple-cursor

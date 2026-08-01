@@ -8,6 +8,7 @@ hl.monitor({
 	position = "auto",
 	scale    = "auto",
 })
+
 hl.monitor({
 	output   = "DP-1",
 	mode     = "preferred",
@@ -18,15 +19,6 @@ hl.monitor({
 local terminal = "kitty"
 
 -- Environment variables are set in ~/.config/uwsm/env
-
--------------------
----- AUTOSTART ----
--------------------
-
-hl.on("hyprland.start", function()
-	hl.exec_cmd("waybar")
-	hl.exec_cmd("hypridle")
-end)
 
 -- TODO
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Permissions/
@@ -139,9 +131,7 @@ hl.bind(leader .. " + j", hl.dsp.window.move({ workspace = "-1" }))
 hl.bind(leader .. " + l", hl.dsp.exec_cmd('notify "TODO leader-l" -t 1000'))
 hl.bind(leader .. " + u", hl.dsp.exec_cmd('notify "TODO leader-u" -t 1000'))
 hl.bind(leader .. " + y", hl.dsp.window.move({ workspace = "+1" }))
--- Kill waybar to get out of `prevent idle`.
-hl.bind(leader .. " + apostrophe",
-		hl.dsp.exec_cmd("pkill waybar && hyprctl dispatch exec waybar && loginctl lock-session"))
+hl.bind(leader .. " + apostrophe", hl.dsp.exec_cmd("loginctl lock-session"))
 
 hl.bind(leader .. " + k", hl.dsp.window.close())
 hl.bind(leader .. " + m", hl.dsp.exec_cmd('notify "TODO leader-m" -t 1000'))
@@ -152,7 +142,7 @@ hl.bind(leader .. " + return", hl.dsp.exec_cmd(terminal))
 
 -- TODO: check how to use environment-variables, or add the PATH.
 hl.bind("XF86Launch5",
-		hl.dsp.exec_cmd('/home/nobe4/dev/nobe4/dotfiles/bin/$(printf "screenshot\\nscreenrecord" | rofi -dmenu)'))
+	hl.dsp.exec_cmd('/home/nobe4/dev/nobe4/dotfiles/bin/$(printf "screenshot\\nscreenrecord" | rofi -dmenu)'))
 hl.bind("F11", hl.dsp.exec_cmd("/home/nobe4/dev/nobe4/dotfiles/bin/commands/emoji --rofi"))
 
 -- Move/resize windows with leader + LMB/RMB and dragging
