@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env nix-shell
+#!nix-shell -i python3 -p python3
 
 import os
 import re
@@ -51,8 +52,12 @@ for f in files:
     file_changed = False
     previous_line_marker = None
 
-    with open(f, "r") as c:
-        lines = c.readlines()
+    try:
+        with open(f, "r") as c:
+            lines = c.readlines()
+    except UnicodeDecodeError:
+        print(f"skipping {f}: not valid UTF-8")
+        continue
 
     for i, line in enumerate(lines):
         marker = marker_regexp.match(line)
