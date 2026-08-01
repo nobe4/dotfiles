@@ -73,6 +73,9 @@ in
 
       anki
 
+      age
+      agenix.cli
+
       (import ../../packages/deck.nix pkgs)
     ];
   };
