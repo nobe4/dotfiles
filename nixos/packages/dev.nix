@@ -1,7 +1,6 @@
 # Defines all dependencies for development work.
 {
   config,
-  lib,
   pkgs,
   pkgs-unstable,
   ...
@@ -11,7 +10,11 @@
   users.users.nobe4.packages =
     with pkgs;
     [
-      kitty
+      (kitty.overrideAttrs (old: {
+        patches = (old.patches or [ ]) ++ [
+          ../patches/kitty_bg_alpha.patch
+        ];
+      }))
 
       entr
       fzf

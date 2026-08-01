@@ -1,0 +1,26 @@
+I'm not sure if this will be ported upstream, but it's working for me, so I
+guess a patch is acceptable.
+
+cc https://github.com/kovidgoyal/kitty/issues/10304
+
+diff --git i/kitty/cell_vertex.glsl w/kitty/cell_vertex.glsl
+index cabed1495..0cf52e493 100644
+--- i/kitty/cell_vertex.glsl
++++ w/kitty/cell_vertex.glsl
+@@ -372,7 +372,16 @@ void main() {
+     foreground = override_foreground_color(foreground, background_rgb);
+ #endif
+
++    float inactive_bg_dim = (1.f - inactive_text_alpha) * (1.f - cell_has_default_bg) * (1.f - is_special_cell);
++
++#ifndef ONLY_BACKGROUND
++    foreground = mix(foreground, color_to_vec(bg_colors0), inactive_bg_dim);
++    decoration_fg = mix(decoration_fg, color_to_vec(bg_colors0), inactive_bg_dim);
++    effective_text_alpha = mix(effective_text_alpha, effective_text_alpha / max(inactive_text_alpha, 0.001), inactive_bg_dim);
++#endif
++
+ #if !defined(ONLY_FOREGROUND)
++    background_rgb = mix(background_rgb, color_to_vec(bg_colors0), inactive_bg_dim);
+     vec4 bgpremul = vec4_premul(background_rgb, bg_alpha);
+     // draw_bg_bitfield has bit 0 set to draw default bg cells and bit 1 set to draw non-default bg cells
+     float cell_has_non_default_bg = 1.f - cell_has_default_bg;
