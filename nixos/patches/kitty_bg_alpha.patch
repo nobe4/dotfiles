@@ -4,23 +4,14 @@ guess a patch is acceptable.
 cc https://github.com/kovidgoyal/kitty/issues/10304
 
 diff --git i/kitty/cell_vertex.glsl w/kitty/cell_vertex.glsl
-index cabed1495..0cf52e493 100644
+index cabed1495..e1df40e75 100644
 --- i/kitty/cell_vertex.glsl
 +++ w/kitty/cell_vertex.glsl
-@@ -372,7 +372,16 @@ void main() {
-     foreground = override_foreground_color(foreground, background_rgb);
- #endif
-
-+    float inactive_bg_dim = (1.f - inactive_text_alpha) * (1.f - cell_has_default_bg) * (1.f - is_special_cell);
-+
-+#ifndef ONLY_BACKGROUND
-+    foreground = mix(foreground, color_to_vec(bg_colors0), inactive_bg_dim);
-+    decoration_fg = mix(decoration_fg, color_to_vec(bg_colors0), inactive_bg_dim);
-+    effective_text_alpha = mix(effective_text_alpha, effective_text_alpha / max(inactive_text_alpha, 0.001), inactive_bg_dim);
-+#endif
-+
- #if !defined(ONLY_FOREGROUND)
-+    background_rgb = mix(background_rgb, color_to_vec(bg_colors0), inactive_bg_dim);
-     vec4 bgpremul = vec4_premul(background_rgb, bg_alpha);
-     // draw_bg_bitfield has bit 0 set to draw default bg cells and bit 1 set to draw non-default bg cells
-     float cell_has_non_default_bg = 1.f - cell_has_default_bg;
+@@ -362,6 +362,7 @@ void main() {
+     bg_alpha = if_one_then(is_special_cell, 1.f, bg_alpha);
+     // Selection and cursor
+     bg_alpha = if_one_then(cell_data.has_block_cursor, effective_cursor_opacity, bg_alpha);
++    bg_alpha = mix(bg_alpha, bg_alpha * inactive_text_alpha, (1.f - cell_has_default_bg) * (1.f - is_special_cell));
+     bg = if_one_then(float(is_selected & BIT_MASK), if_one_then(use_cell_for_selection_bg, color_to_vec(fg_as_uint), color_to_vec(highlight_bg)), bg);
+     vec3 background_rgb = if_one_then(cell_data.has_block_cursor, mix(bg, cell_data.cursor.bg, cursor_opacity), bg);
+     background = background_rgb;
