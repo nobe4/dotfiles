@@ -1,7 +1,7 @@
 return {
 	-- Local
-	-- { dir = "~/dev/nobe4/withhold.nvim" },
-	-- { dir = "~/dev/nobe4/relativity.nvim" },
+	-- { dir = "~/.config/withhold.nvim" },
+	-- { dir = "~/.config/relativity.nvim" },
 	-- "nobe4/curl.vim",
 	-- "nobe4/vimcorrect",
 	-- "nobe4/relativity.nvim",

@@ -142,8 +142,8 @@ hl.bind(leader .. " + return", hl.dsp.exec_cmd(terminal))
 
 -- TODO: check how to use environment-variables, or add the PATH.
 hl.bind("XF86Launch5",
-	hl.dsp.exec_cmd('/home/nobe4/dev/nobe4/dotfiles/bin/$(printf "screenshot\\nscreenrecord" | rofi -dmenu)'))
-hl.bind("F11", hl.dsp.exec_cmd("/home/nobe4/dev/nobe4/dotfiles/bin/commands/emoji --rofi"))
+		hl.dsp.exec_cmd('/home/nobe4/.config/dotfiles/bin/$(printf "screenshot\\nscreenrecord" | rofi -dmenu)'))
+hl.bind("F11", hl.dsp.exec_cmd("/home/nobe4/.config/dotfiles/bin/commands/emoji --rofi"))
 
 -- Move/resize windows with leader + LMB/RMB and dragging
 hl.bind(leader .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })

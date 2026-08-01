@@ -74,34 +74,34 @@
 		"on-click": "pavucontrol"
 	},
 	"custom/weather": {
-		"exec": "/home/nobe4/dev/nobe4/dotfiles/bin/weather --waybar 2>&1 | tee -a /tmp/waybar-logs",
+		"exec": "/home/nobe4/.config/dotfiles/bin/weather --waybar 2>&1 | tee -a /tmp/waybar-logs",
 		"return-type": "json",
 		"interval": 60,
 		"on-click": "kitty --title weather weather --wait"
 	},
 	"custom/screen-recording": {
-		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/screen-recording.sh",
+		"exec": "/home/nobe4/.config/dotfiles/waybar/indicators/screen-recording.sh",
 		"return-type": "json",
 		"interval": 5,
-		"on-click": "/home/nobe4/dev/nobe4/dotfiles/bin/screenrecord --stop"
+		"on-click": "/home/nobe4/.config/dotfiles/bin/screenrecord --stop"
 	},
 	"custom/audio-playback": {
-		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/audio-playback.sh",
+		"exec": "/home/nobe4/.config/dotfiles/waybar/indicators/audio-playback.sh",
 		"return-type": "json",
 		"interval": 1
 	},
 	"custom/audio-recording": {
-		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/audio-recording.sh",
+		"exec": "/home/nobe4/.config/dotfiles/waybar/indicators/audio-recording.sh",
 		"return-type": "json",
 		"interval": 1
 	},
 	"custom/webcam-recording": {
-		"exec": "/home/nobe4/dev/nobe4/dotfiles/waybar/indicators/webcam-recording.sh",
+		"exec": "/home/nobe4/.config/dotfiles/waybar/indicators/webcam-recording.sh",
 		"return-type": "json",
 		"interval": 1
 	},
 	"custom/hyprsunset-toggle": {
-		"on-click": "/home/nobe4/dev/nobe4/dotfiles/bin/hyprsunset-toggle",
+		"on-click": "/home/nobe4/.config/dotfiles/bin/hyprsunset-toggle",
 		"format": "💡"
 	},
 	"idle_inhibitor": {

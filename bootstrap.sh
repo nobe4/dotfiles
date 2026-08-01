@@ -3,7 +3,7 @@
 set -ex
 
 DOTFILES_REPO="git@github.com:nobe4/dotfiles.git"
-DOTFILES_DIR="${HOME}/dev/nobe4/dotfiles"
+DOTFILES_DIR="${HOME}/.config/dotfiles"
 DOTFILES_SOURCE="${DOTFILES_DIR}/worktree/main"
 CONFIG_DIR="${HOME}/.config"
 DOTFILES_DIR="${CONFIG_DIR}/dotfiles"
