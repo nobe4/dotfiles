@@ -15,13 +15,14 @@
     # xwayland.enable = false;
   };
 
-  programs.waybar.enable = true;
   services.hypridle.enable = true;
   programs.hyprlock.enable = true;
 
   users.users.nobe4.packages = with pkgs; [
     hyprcursor
     hyprpicker
+
+    waybar
 
     # (hyprsunset.overrideAttrs {
     #   # Waiting for a release that ships https://github.com/hyprwm/hyprsunset/pull/62

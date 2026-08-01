@@ -1,6 +1,11 @@
 -- `hl` is available by hyprland.
 ---@diagnostic disable: undefined-global
 
+-- normally not needed
+hl.on("hyprland.start", function()
+	hl.exec_cmd("waybar")
+end)
+
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
 	output   = "",
