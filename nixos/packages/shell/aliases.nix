@@ -18,6 +18,7 @@ in
   "vin" = "nvim -Nu NONE"; # Vim without config;
   "vit" = "nvim +tj\ "; # Jump to tag
   "vidir" = "nvim +':normal -'";
+  "vio" = "nvim -c 'cbuffer | copen | bdelete! 1'";
 
   "gd" = "git difftool";
   "ga" = "git add";
