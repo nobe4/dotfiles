@@ -76,9 +76,6 @@ in
 // lib.optionalAttrs pkgs.stdenv.isDarwin {
   "kitty" = "$HOME/Applications/kitty.app/Contents/MacOS/kitty";
 
-  # Don't use rm unless you know what you're doing.;
-  "rm" = "echo 'use /bin/rm or trash'";
-
   # Mac Catalina is breaking everything, thanks Tim Apple.;
   # from https://www.kvraudio.com/forum/viewtopic.php?t=530824&start=15;
   "unlockvst" = "xattr -d com.apple.quarantine";
