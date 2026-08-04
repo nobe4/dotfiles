@@ -98,10 +98,9 @@
         AppleInterfaceStyle = "Dark";
         AppleShowAllExtensions = true;
         AppleShowAllFiles = true;
-        AppleEnableMouseSwipeNavigateWithScrolls = false;
-        AppleEnableSwipeNavigateWithScrolls = false;
+        AppleEnableMouseSwipeNavigateWithScrolls = true;
+        AppleEnableSwipeNavigateWithScrolls = true;
         "com.apple.sound.beep.feedback" = 1;
-        # XXX: Not working?
         "com.apple.swipescrolldirection" = false;
       };
       controlcenter = {
