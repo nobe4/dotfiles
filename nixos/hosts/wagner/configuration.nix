@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }:
 {
@@ -10,6 +9,7 @@
     system = pkgs.stdenv.hostPlatform.system;
     config.allowUnfreePredicate = (import ../../utils/unfree.nix).unstable;
   };
+  nixpkgs.config.allowUnfreePredicate = (import ../../utils/unfree.nix).stable;
 
   # NOTE: Colmena doesn't work on non-NixOS hosts, so we're stuck with this.
   environment.darwinConfig = "${config.dotfiles}/nixos/hosts/wagner/configuration.nix";
@@ -54,6 +54,8 @@
     pyenv
     rbenv
     nodenv
+
+    vault
   ];
 
   homebrew = {
@@ -71,6 +73,7 @@
 
     # TODO: check what can be removed here
     casks = [
+      "zen"
       "firefox"
       "docker-desktop"
       # XXX

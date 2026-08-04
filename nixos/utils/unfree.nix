@@ -8,6 +8,7 @@ let
     "steam"
     "steam-unwrapped"
     "winbox"
+    "vault"
   ];
   unstable = [
     "github-copilot-cli"
