@@ -4,7 +4,7 @@
 # This script installs all requirements.
 
 # Setup {
-export DOTFILE_FOLDER="${HOME:?}/dev/nobe4/dotfiles"
+export DOTFILE_FOLDER="${HOME:?}/.config/dotfiles"
 # }
 
 # TODO: port and verify this

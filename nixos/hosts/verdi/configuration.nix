@@ -4,7 +4,7 @@ let
 in
 {
   imports = [
-    /etc/nixos/hardware-configuration.nix
+    ./hardware-configuration.nix
 
     ../../utils/ln.nix
 
@@ -79,6 +79,13 @@ in
       (import ../../packages/deck.nix pkgs)
     ];
   };
+  ln = [
+    [
+      # TODO: find how to make this dynamic
+      "/home/nobe4/dev/nobe4/dotfiles"
+      "/home/nobe4/.config/dotfiles"
+    ]
+  ];
 
   # TODO: check why those are programs, and what benefits vs
   # users.users.<x>.packages.
@@ -98,11 +105,6 @@ in
     enableSSHSupport = true;
     pinentryPackage = pkgs.pinentry-qt;
   };
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  system.copySystemConfiguration = true;
 
   # See https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion
   system.stateVersion = "25.05"; # Do not change

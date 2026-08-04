@@ -1,9 +1,9 @@
 * {
-	white:  #cecdc3; // c8
-	black:  #1d1f21; // c1
-	red:    #cc342b; // c2
-	blue:   #3971ed; // c5
-	lblack: #878988; // c9
+	white:  #d0d0d0; // c8
+	black:  #101010; // c1
+	red:    #c75c66; // c2
+	blue:   #41a6d3; // c5
+	lblack: #7a7a7a; // c9
 
 	text-color:       var(white);
 	border-color:     var(white);

@@ -1,24 +1,25 @@
 #!/usr/bin/env bash
 
-TODO: add this as well
-	# find \
-	# 	"/tmp/mount/" \
-	# 	-mindepth 1 \
-	# 	-maxdepth 1 \
-	# 	-type d &&
-
 selection=$(
 	{
 		git-repos
+		find "/tmp/mount/" -maxdepth 1 -mindepth 1 -type d
 		find "${HOME}" -maxdepth 1 -mindepth 1 -type d | sed "s#^${HOME}#~#"
 	} | fzf --select-1 --query "${*}"
 )
 
 [ -z "${selection}" ] && return
 
+echo "z: cd ${selection}" >&2
+
 # no expansion of ~ is ok
 # shellcheck disable=2088
 case "${selection}" in
 	"~/"*) cd "${selection/#\~/${HOME}}" || { echo "z: cd failed: ${selection}" >&2; return 1; } ;;
-	*) cd "$(git-worktree -p --repo "${DEV_PATH}/${selection}")" || { echo "z: cd failed: ${selection}" >&2; return 1; } ;;
+	/*) cd "${selection}" || { echo "z: cd failed: ${selection}" >&2; return 1; } ;;
+	*)
+		cd "$(git-worktree -p --repo "${DEV_PATH}/${selection}")" ||
+			cd "${DEV_PATH}/${selection}" ||
+			{ echo "z: cd failed: ${selection}" >&2; return 1; }
+		;;
 esac

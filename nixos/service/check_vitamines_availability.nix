@@ -17,7 +17,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         ExecStart = ''
-          ${pkgs.bash}/bin/bash -c /home/nobe4/dev/nobe4/dotfiles/bin/check_if_vitamines_are_available.sh
+          ${pkgs.bash}/bin/bash -c /home/nobe4/.config/dotfiles/bin/check_if_vitamines_are_available.sh
         '';
       };
     };
