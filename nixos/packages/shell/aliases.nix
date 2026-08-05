@@ -74,8 +74,6 @@ in
   "gpg" = "GPG_TTY=\"$(tty)\" gpg";
 }
 // lib.optionalAttrs pkgs.stdenv.isDarwin {
-  "kitty" = "$HOME/Applications/kitty.app/Contents/MacOS/kitty";
-
   # Mac Catalina is breaking everything, thanks Tim Apple.;
   # from https://www.kvraudio.com/forum/viewtopic.php?t=530824&start=15;
   "unlockvst" = "xattr -d com.apple.quarantine";
