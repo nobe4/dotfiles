@@ -5,6 +5,6 @@ set -e
 
 while read -r pr; do
 	gh deflake "${pr}" &
-done < <(get_prs "Enter PR URL(s) to approve:" "$@")
+done < <(get_prs "Enter PR URL(s) to deflake:" "$@")
 
 wait
