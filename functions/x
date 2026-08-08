@@ -7,7 +7,8 @@ cmds=$(
 		\( -perm -u=x -o -perm -g=x -o -perm -o=x \) \
 		-not -path './vendor/*' \
 		-not -path './node_modules/*' \
-		-not -path './.git/*'
+		-not -path './.git/*' \
+		-not -path './.devenv/*'
 )
 
 # devenv produces some additional commands not found in the tree.
