@@ -19,6 +19,14 @@ autocmd("TextYankPost", {
 
 -- autocmd("FocusGained", { pattern = "*", command = "redraw!" })
 
+-- Keep inode stable so kitty detects config changes correctly
+autocmd("BufWritePre", {
+	pattern = "kitty.conf",
+	callback = function()
+		vim.opt_local.backupcopy = "yes"
+	end,
+})
+
 -- Update tmux
 -- This causes issues, it doesn't seem to add much value as well
 -- autocmd({
