@@ -1,5 +1,9 @@
 # Wayland-related resources
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 {
   # See https://github.com/NixOS/nixpkgs/blob/b15c73d61ccd7f86995da13ef45f399db53351f4/nixos/modules/services/x11/display-managers/default.nix#L39-L61
   systemd.services.display-manager.environment.XDG_CURRENT_DESKTOP = "X-NIXOS-SYSTEMD-AWARE";
@@ -23,6 +27,12 @@
     hyprpicker
 
     waybar
+
+    # Screenshot
+    swappy
+    slurp
+    grim
+    gpu-screen-recorder
 
     # (hyprsunset.overrideAttrs {
     #   # Waiting for a release that ships https://github.com/hyprwm/hyprsunset/pull/62
@@ -52,24 +62,28 @@
 
   ln = with config; [
     [
-      "${dotfiles}/rofi/"
+      "rofi"
       "${home}/.config/rofi"
     ]
     [
-      "${dotfiles}/hypr/"
+      "hypr"
       "${home}/.config/hypr"
     ]
     [
-      "${dotfiles}/waybar/"
+      "waybar"
       "${home}/.config/waybar"
     ]
     [
-      "${dotfiles}/uwsm/"
+      "uwsm"
       "${home}/.config/uwsm"
     ]
     [
-      "${dotfiles}/mako"
+      "mako"
       "${home}/.config/mako"
+    ]
+    [
+      "imv"
+      "${home}/.config/imv"
     ]
   ];
 }

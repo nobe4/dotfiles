@@ -79,13 +79,15 @@ in
       (import ../../packages/deck.nix pkgs)
     ];
   };
-  ln = [
-    [
-      # TODO: find how to make this dynamic
-      "/home/nobe4/dev/nobe4/dotfiles"
-      "/home/nobe4/.config/dotfiles"
-    ]
-  ];
+
+  # TODO: this might benefits from some refactoring, but using `ln` is not
+  # possible anymore due to it being a reference to the repo's root only.
+  # Bootstrap: point ~/.config/dotfiles at the repo checkout.
+  system.userActivationScripts.dotfiles-link.text = ''
+    ln --verbose --force --symbolic --no-target-directory \
+      "/home/nobe4/dev/nobe4/dotfiles" \
+      "/home/nobe4/.config/dotfiles" >> /tmp/ln-logs 2>&1
+  '';
 
   # TODO: check why those are programs, and what benefits vs
   # users.users.<x>.packages.

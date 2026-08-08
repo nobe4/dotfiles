@@ -79,12 +79,12 @@ hl.config({
 ---- INPUT ----
 ---------------
 
--- TODO: check how xkb works and how to configure keymappings better
 hl.config({
 	input = {
 		kb_layout    = "eu",
+		kb_options   = "caps:escape",
 		follow_mouse = 1,
-		sensitivity  = 1, -- -1.0 - 1.0, 0 means no modification.
+		sensitivity  = 1,
 	},
 
 	binds = {
@@ -95,6 +95,13 @@ hl.config({
 	ecosystem = {
 		no_donation_nag = true,
 	},
+})
+
+-- Onboard apple keyboards are colemak.
+hl.device({
+	name       = "apple-inc-apple-internal-keyboard---trackpad",
+	kb_layout  = "us",
+	kb_variant = "colemak",
 })
 
 ---------------------
@@ -260,3 +267,20 @@ hl.window_rule({
 --     disable_logs = false,
 --     enable_stdout_logs = true,
 -- }
+
+
+-- https://github.com/hyprwm/Hyprland/tree/main/example/layouts
+-- hl.layout.register("grid", {
+-- 	recalculate = function(ctx)
+-- 		local n = #ctx.targets
+-- 		if n == 0 then return end
+--
+-- 		local cols = math.ceil(math.sqrt(n))
+-- 		for i, target in ipairs(ctx.targets) do
+-- 			target:place(ctx:grid_cell(i, cols))
+-- 		end
+-- 	end,
+-- })
+--
+-- hl.window_rule({ match = { title = "kitty-test" }, workspace = "3 silent" })
+-- hl.workspace_rule({ workspace = "3", layout = "lua:grid" })

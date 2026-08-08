@@ -10,11 +10,12 @@
   users.users.nobe4.packages =
     with pkgs;
     [
-      (kitty.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [
-          ../patches/kitty_bg_alpha.patch
-        ];
-      }))
+      kitty
+      # (kitty.overrideAttrs (old: {
+      #   patches = (old.patches or [ ]) ++ [
+      #     ../patches/kitty_bg_alpha.patch
+      #   ];
+      # }))
 
       entr
       fzf
@@ -67,39 +68,39 @@
 
   ln = with config; [
     [
-      "${dotfiles}/nvim/"
+      "nvim"
       "${home}/.config/nvim"
     ]
     [
-      "${dotfiles}/.gitconfig"
+      ".gitconfig"
       "${home}/.gitconfig"
     ]
     [
-      "${dotfiles}/.gitignore_global"
+      ".gitignore_global"
       "${home}/.gitignore_global"
     ]
     [
-      "${dotfiles}/.pryrc"
+      ".pryrc"
       "${home}/.pryrc"
     ]
     [
-      "${dotfiles}/kitty/"
+      "kitty"
       "${home}/.config/kitty"
     ]
     [
-      "${dotfiles}/.ignore"
+      ".ignore"
       "${home}/.ignore"
     ]
     [
-      "${dotfiles}/.ctags.d"
+      ".ctags.d"
       "${home}/.ctags.d"
     ]
     [
-      "${dotfiles}/.vale.ini"
+      ".vale.ini"
       "${home}/.config/vale/.vale.ini"
     ]
     [
-      "${dotfiles}/gh-config.yml"
+      "gh-config.yml"
       "${home}/.config/gh/config.yml"
     ]
   ];

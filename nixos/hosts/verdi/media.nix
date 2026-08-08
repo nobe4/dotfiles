@@ -13,17 +13,11 @@
 
     # Audio
     musescore
-
-    # Screenshot
-    swappy
-    slurp
-    grim
-    gpu-screen-recorder
   ];
 
   ln = with config; [
     [
-      "${dotfiles}/imv"
+      "imv"
       "${home}/.config/imv"
     ]
   ];

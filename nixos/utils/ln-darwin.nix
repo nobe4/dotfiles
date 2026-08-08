@@ -1,8 +1,5 @@
 # Collect all the link tuples and link them.
 # Special case for darwin
-#
-# This uses a system.userActivationScripts to access files outside of
-# /nix/store.
 {
   config,
   lib,
@@ -15,12 +12,12 @@
     type = with lib.types; listOf (listOf str);
     default = [ ];
     description = ''
-      List of user symlinks to create as [ src, dst ] tuples.
-      Use config.dotfiles and config.home for paths.
+      List of user symlinks as [ rel, dst ] tuples.
+      rel is relative to the dotfiles repo root.
 
       E.g.
       ln = [
-        [ "''${config.dotfiles}/src" "''${config.home}/dst" ]
+        [ "nvim" "''${config.home}/.config/nvim" ]
       ]
     '';
   };
@@ -29,12 +26,12 @@
     type = with lib.types; listOf (listOf str);
     default = [ ];
     description = ''
-      List of root symlinks to create as [ src, dst ] tuples.
-      Use config.dotfiles and config.home for paths.
+      List of root symlinks as [ rel, dst ] tuples.
+      rel is relative to the dotfiles repo root.
 
       E.g.
       ln-root = [
-        [ "''${config.dotfiles}/src" "/bin/dst" ]
+        [ "bin/foo" "/usr/local/bin/foo" ]
       ]
     '';
   };
@@ -47,8 +44,9 @@
       lib.concatMapStringsSep "\n" (
         tuple:
         let
-          src = builtins.elemAt tuple 0;
+          rel = builtins.elemAt tuple 0;
           dst = builtins.elemAt tuple 1;
+          src = "${config.dotfiles}/${rel}";
         in
         ''
           # Need to override HOME just for this execution, and

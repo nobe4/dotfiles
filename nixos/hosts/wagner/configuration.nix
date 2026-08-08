@@ -88,7 +88,7 @@
 
   ln = with config; [
     [
-      "${dotfiles}/hammerspoon/"
+      "hammerspoon"
       "${home}/.hammerspoon"
     ]
   ];

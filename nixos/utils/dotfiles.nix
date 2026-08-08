@@ -10,11 +10,14 @@
     description = "Path to the user's home folder.";
   };
 
+  # TODO: see note in ln.nix
   options.dotfiles = lib.mkOption {
-    type = lib.types.str;
-    # TODO: this should really be '$home/.config/dotfiles' and the only
-    # entrypoint that matters is then this, instead of the full path to the file.
+    type = lib.types.coercedTo lib.types.path (p: "${p}") lib.types.str;
     default = "${config.home}/.config/dotfiles";
-    description = "Path to the dotfiles folder.";
+    description = ''
+      Base path for dotfiles.
+      A string (e.g. "/etc/dotfiles") keeps symlinks pointing to a local repo.
+      A nix path (e.g. ../../.) copies files into the store.
+    '';
   };
 }

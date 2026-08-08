@@ -5,9 +5,7 @@
   ...
 }:
 let
-  shellAliases = import ./aliases.nix {
-    inherit lib pkgs config;
-  };
+  shellAliases = import ./aliases.nix { inherit lib pkgs config; };
 in
 {
 
@@ -51,15 +49,15 @@ in
 
   ln = with config; [
     [
-      "${dotfiles}/.zshrc"
+      ".zshrc"
       "${home}/.zshrc"
     ]
     [
-      "${dotfiles}/.zprofile"
+      ".zprofile"
       "${home}/.zprofile"
     ]
     [
-      "${dotfiles}/.bashrc"
+      ".bashrc"
       "${home}/.bashrc"
     ]
   ];

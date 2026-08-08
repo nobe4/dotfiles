@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -10,13 +11,23 @@ in
     ./hardware-configuration.nix
     ./brcm
 
-    "${builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/apple/t2"
+    "${fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/apple/t2"
 
     ../../utils/ln.nix
 
-    ../../packages/mdns.nix
-
     ../../users/nobe4.nix
+    ../../packages/system.nix
+    ../../packages/mdns.nix
+    ../../packages/wayland.nix
+  ];
+
+  # Repo goes into the store; symlink it to a predictable path.
+  dotfiles = ../../..;
+  ln = [
+    [
+      ""
+      "${config.home}/.config/dotfiles/"
+    ]
   ];
 
   # Don't require a password for sudo for nobe4.
@@ -65,7 +76,15 @@ in
     vim
     git
     htop
+    kitty
+    firefox
   ];
+
+  # ref: https://nixos.wiki/wiki/Mullvad_VPN
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn; # enables the GUI
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

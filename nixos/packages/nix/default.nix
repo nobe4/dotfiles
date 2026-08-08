@@ -38,14 +38,4 @@ in
 
     (import ./nix-rebuild.nix { inherit pkgs config; })
   ];
-
-  ln-root =
-    [ ]
-    ++
-      # nix-darwin ship an environment.darwinConfig that is enough
-      (lib.optional (!isDarwin) [
-        "${config.dotfiles}/nixos/hosts/${config.networking.hostName}/configuration.nix"
-        "/etc/nixos/configuration.nix"
-      ]);
-
 }
