@@ -27,6 +27,7 @@
   users.users.nobe4.packages = with pkgs; [
     hyprcursor
     hyprpicker
+    hyprpaper
 
     waybar
 
