@@ -16,7 +16,6 @@ in
     ../../packages/wayland.nix
     ../../packages/gaming.nix
     ../../packages/1password.nix
-    ../../packages/font
     ../../packages/i18n.nix
     ../../packages/network.nix
     ../../packages/vnc
@@ -39,6 +38,11 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  console.keyMap = "us";
+
+  # Required to flash a qmk keyboard.
+  hardware.keyboard.qmk.enable = true;
 
   # Enable Graphical stuff to happen.
   boot.initrd.kernelModules = [ "amdgpu" ];
