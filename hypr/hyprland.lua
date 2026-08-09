@@ -1,6 +1,9 @@
 -- `hl` is available by hyprland.
 ---@diagnostic disable: undefined-global
 
+local terminal = "kitty"
+local leader = "SUPER"
+
 -- normally not needed
 hl.on("hyprland.start", function()
 	hl.exec_cmd("waybar")
@@ -21,7 +24,6 @@ hl.monitor({
 	scale    = 2,
 })
 
-local terminal = "kitty"
 
 -- Environment variables are set in ~/.config/uwsm/env
 
@@ -104,6 +106,7 @@ hl.device({
 	kb_layout  = "us",
 	kb_variant = "colemak",
 })
+
 hl.device({
 	name        = "apple-inc.-apple-internal-keyboard-/-trackpad-1",
 	sensitivity = 0,
@@ -113,49 +116,55 @@ hl.device({
 ---- KEYBINDINGS ----
 ---------------------
 
-local leader = "SUPER"
+local lead = function(key, command, opts)
+	hl.bind(leader .. " + " .. key, command, opts)
+end
 
-hl.bind(leader .. " + SPACE", hl.dsp.exec_cmd("rofi -show"))
+lead("SPACE", hl.dsp.exec_cmd("rofi -show"))
 
 -- bind = $leader, T, exec, kitty > /tmp/kitty.log 2> /tmp/kitty.err.log
 
-hl.bind(leader .. " + q", hl.dsp.exec_cmd('notify "TODO leader-q" -t 1000'))
-hl.bind(leader .. " + w", hl.dsp.exec_cmd('notify "TODO leader-w" -t 1000'))
-hl.bind(leader .. " + f", hl.dsp.exec_cmd('notify "TODO leader-f" -t 1000'))
-hl.bind(leader .. " + p", hl.dsp.exec_cmd('notify "TODO leader-p" -t 1000'))
-hl.bind(leader .. " + g", hl.dsp.exec_cmd('notify "TODO leader-g" -t 1000'))
+lead("q", hl.dsp.exec_cmd('notify "TODO leader-q" -t 1000'))
+lead("w", hl.dsp.exec_cmd('notify "TODO leader-w" -t 1000'))
+lead("f", hl.dsp.exec_cmd('notify "TODO leader-f" -t 1000'))
+lead("p", hl.dsp.exec_cmd('notify "TODO leader-p" -t 1000'))
+lead("g", hl.dsp.exec_cmd('notify "TODO leader-g" -t 1000'))
 
-hl.bind(leader .. " + a", hl.dsp.exec_cmd('notify "TODO leader-a" -t 1000'))
-hl.bind(leader .. " + r", hl.dsp.exec_cmd('notify "TODO leader-r" -t 1000'))
-hl.bind(leader .. " + s", hl.dsp.exec_cmd('notify "TODO leader-s" -t 1000'))
-hl.bind(leader .. " + t", hl.dsp.exec_cmd('notify "TODO leader-t" -t 1000'))
-hl.bind(leader .. " + d", hl.dsp.exec_cmd('notify "TODO leader-d" -t 1000'))
+lead("a", hl.dsp.exec_cmd('notify "TODO leader-a" -t 1000'))
+lead("r", hl.dsp.exec_cmd('notify "TODO leader-r" -t 1000'))
+lead("s", hl.dsp.exec_cmd('notify "TODO leader-s" -t 1000'))
+lead("t", hl.dsp.exec_cmd('notify "TODO leader-t" -t 1000'))
+lead("d", hl.dsp.exec_cmd('notify "TODO leader-d" -t 1000'))
 
 -- ctrl+insert/shift+insert are standard copy/paste shortcuts
-hl.bind(leader .. " + z", hl.dsp.send_shortcut({ mods = "CTRL", key = "z" }))
-hl.bind(leader .. " + x", hl.dsp.send_shortcut({ mods = "CTRL", key = "x" }))
-hl.bind(leader .. " + c", hl.dsp.send_shortcut({ mods = "CTRL", key = "Insert" }))
-hl.bind(leader .. " + v", hl.dsp.send_shortcut({ mods = "SHIFT", key = "Insert" }))
+lead("z", hl.dsp.send_shortcut({ mods = "CTRL", key = "z" }))
+lead("x", hl.dsp.send_shortcut({ mods = "CTRL", key = "x" }))
+lead("c", hl.dsp.send_shortcut({ mods = "CTRL", key = "Insert" }))
+lead("v", hl.dsp.send_shortcut({ mods = "SHIFT", key = "Insert" }))
 
 -- Right hand
-hl.bind(leader .. " + h", hl.dsp.focus({ workspace = "-1" }))
-hl.bind(leader .. " + n", hl.dsp.window.float({ action = "toggle" }))
-hl.bind(leader .. " + e", hl.dsp.window.fullscreen({ mode = "maximized" }))
-hl.bind(leader .. " + i", hl.dsp.focus({ workspace = "+1" }))
-hl.bind(leader .. " + o", hl.dsp.exec_cmd('notify "TODO leader-o" -t 1000'))
+lead("h", hl.dsp.focus({ workspace = "-1" }))
+lead("n", hl.dsp.window.float({ action = "toggle" }))
+lead("e", hl.dsp.window.fullscreen({ mode = "maximized" }))
+lead("i", hl.dsp.focus({ workspace = "+1" }))
+lead("o", hl.dsp.exec_cmd('notify "TODO leader-o" -t 1000'))
 
-hl.bind(leader .. " + j", hl.dsp.window.move({ workspace = "-1" }))
-hl.bind(leader .. " + l", hl.dsp.exec_cmd('notify "TODO leader-l" -t 1000'))
-hl.bind(leader .. " + u", hl.dsp.exec_cmd('notify "TODO leader-u" -t 1000'))
-hl.bind(leader .. " + y", hl.dsp.window.move({ workspace = "+1" }))
-hl.bind(leader .. " + apostrophe", hl.dsp.exec_cmd("loginctl lock-session"))
+lead("j", hl.dsp.window.move({ workspace = "-1" }))
+lead("l", hl.dsp.exec_cmd('notify "TODO leader-l" -t 1000'))
+lead("u", hl.dsp.exec_cmd('notify "TODO leader-u" -t 1000'))
+lead("y", hl.dsp.window.move({ workspace = "+1" }))
+lead("apostrophe", hl.dsp.exec_cmd("loginctl lock-session"))
 
-hl.bind(leader .. " + k", hl.dsp.window.close())
-hl.bind(leader .. " + m", hl.dsp.exec_cmd('notify "TODO leader-m" -t 1000'))
-hl.bind(leader .. " + comma", hl.dsp.exec_cmd('notify "TODO leader-, " -t 1000'))
+lead("k", hl.dsp.window.close())
+lead("m", hl.dsp.exec_cmd('notify "TODO leader-m" -t 1000'))
+lead("comma", hl.dsp.exec_cmd('notify "TODO leader-, " -t 1000'))
 
-hl.bind(leader .. " + period", hl.dsp.exec_cmd('notify "TODO leader-." -t 1000'))
-hl.bind(leader .. " + return", hl.dsp.exec_cmd(terminal))
+lead("period", hl.dsp.exec_cmd('notify "TODO leader-." -t 1000'))
+lead("return", hl.dsp.exec_cmd(terminal))
+
+-- Some keyboards have those
+lead("Left", hl.dsp.focus({ workspace = "-1" }))
+lead("Right", hl.dsp.focus({ workspace = "+1" }))
 
 -- TODO: check how to use environment-variables, or add the PATH.
 hl.bind("XF86Launch5",
@@ -163,8 +172,8 @@ hl.bind("XF86Launch5",
 hl.bind("F11", hl.dsp.exec_cmd("/home/nobe4/.config/dotfiles/bin/commands/emoji --rofi"))
 
 -- Move/resize windows with leader + LMB/RMB and dragging
-hl.bind(leader .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
-hl.bind(leader .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+lead("mouse:272", hl.dsp.window.drag(), { mouse = true })
+lead("mouse:273", hl.dsp.window.resize(), { mouse = true })
 
 -- Multimedia keys
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
