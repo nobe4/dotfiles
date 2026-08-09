@@ -16,7 +16,7 @@
 		"network",
 		"cpu",
 		"memory",
-		"custom/hyprsunset-toggle",
+		// "custom/hyprsunset-toggle",
 		"idle_inhibitor"
 	],
 	//
@@ -100,10 +100,10 @@
 		"return-type": "json",
 		"interval": 1
 	},
-	"custom/hyprsunset-toggle": {
-		"on-click": "/home/nobe4/.config/dotfiles/bin/hyprsunset-toggle",
-		"format": "💡"
-	},
+	// "custom/hyprsunset-toggle": {
+	// 	"on-click": "/home/nobe4/.config/dotfiles/bin/hyprsunset-toggle",
+	// 	"format": "💡"
+	// },
 	"idle_inhibitor": {
 		"format": "{icon}",
 		"format-icons": {
