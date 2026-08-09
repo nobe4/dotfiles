@@ -13,7 +13,7 @@ in
     ../../packages/nix
     ../../packages/shell
     ../../packages/system.nix
-    ../../packages/wayland.nix
+    ../../packages/wayland
     ../../packages/gaming.nix
     ../../packages/1password.nix
     ../../packages/i18n.nix

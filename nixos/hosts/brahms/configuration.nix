@@ -20,7 +20,7 @@ in
     ../../packages/i18n.nix
     ../../packages/system.nix
     ../../packages/mdns.nix
-    ../../packages/wayland.nix
+    ../../packages/wayland/mini.nix
     ../../packages/kitty.nix
   ];
 
@@ -32,6 +32,9 @@ in
       "${config.home}/.config/dotfiles"
     ]
   ];
+
+  # I don't need a dev environment.
+  programs.zsh.enable = true;
 
   # Don't require a password for sudo for nobe4.
   # This is important for colmena apply to work.
