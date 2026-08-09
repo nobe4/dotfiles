@@ -16,8 +16,8 @@ in
     ../../packages/wayland.nix
     ../../packages/gaming.nix
     ../../packages/1password.nix
-    ../../packages/keyboard.nix
     ../../packages/font
+    ../../packages/i18n.nix
     ../../packages/network.nix
     ../../packages/vnc
     ../../packages/cross-compile.nix

@@ -16,6 +16,8 @@ in
     ../../utils/ln.nix
 
     ../../users/nobe4.nix
+
+    ../../packages/i18n.nix
     ../../packages/system.nix
     ../../packages/mdns.nix
     ../../packages/wayland.nix
@@ -68,8 +70,6 @@ in
 
   networking.hostName = "brahms";
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
   console.keyMap = "colemak";
 
   environment.systemPackages = with pkgs; [
@@ -86,7 +86,6 @@ in
     package = pkgs.mullvad-vpn; # enables the GUI
   };
 
-  # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion.
