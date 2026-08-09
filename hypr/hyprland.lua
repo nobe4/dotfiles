@@ -85,7 +85,7 @@ hl.config({
 		kb_options           = "caps:escape",
 		follow_mouse         = 1,
 		sensitivity          = 1,
-		resolve_binds_by_sym = false,
+		resolve_binds_by_sym = true,
 	},
 
 	binds = {

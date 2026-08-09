@@ -28,7 +28,7 @@ in
   ln = [
     [
       ""
-      "${config.home}/.config/dotfiles/"
+      "${config.home}/.config/dotfiles"
     ]
   ];
 
