@@ -10,13 +10,6 @@
   users.users.nobe4.packages =
     with pkgs;
     [
-      kitty
-      # (kitty.overrideAttrs (old: {
-      #   patches = (old.patches or [ ]) ++ [
-      #     ../patches/kitty_bg_alpha.patch
-      #   ];
-      # }))
-
       entr
       fzf
       fd
@@ -82,10 +75,6 @@
     [
       ".pryrc"
       "${home}/.pryrc"
-    ]
-    [
-      "kitty"
-      "${home}/.config/kitty"
     ]
     [
       ".ignore"

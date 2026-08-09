@@ -24,6 +24,7 @@ in
     ../../packages/virtualization
     ../../packages/mdns.nix
     ../../packages/dev.nix
+    ../../packages/kitty.nix
     ../../packages/i2c.nix
 
     agenix.module

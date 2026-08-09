@@ -21,6 +21,7 @@ in
     ../../packages/system.nix
     ../../packages/mdns.nix
     ../../packages/wayland.nix
+    ../../packages/kitty.nix
   ];
 
   # Repo goes into the store; symlink it to a predictable path.
