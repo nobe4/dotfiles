@@ -81,10 +81,11 @@ hl.config({
 
 hl.config({
 	input = {
-		kb_layout    = "eu",
-		kb_options   = "caps:escape",
-		follow_mouse = 1,
-		sensitivity  = 1,
+		kb_layout            = "eu",
+		kb_options           = "caps:escape",
+		follow_mouse         = 1,
+		sensitivity          = 1,
+		resolve_binds_by_sym = false,
 	},
 
 	binds = {
@@ -99,9 +100,13 @@ hl.config({
 
 -- Onboard apple keyboards are colemak.
 hl.device({
-	name       = "apple-inc-apple-internal-keyboard---trackpad",
+	name       = "apple-inc.-apple-internal-keyboard-/-trackpad",
 	kb_layout  = "us",
 	kb_variant = "colemak",
+})
+hl.device({
+	name        = "apple-inc.-apple-internal-keyboard-/-trackpad-1",
+	sensitivity = 0,
 })
 
 ---------------------
