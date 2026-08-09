@@ -54,6 +54,9 @@
           (
             HOME=${config.home}
             mkdir -p "$(dirname ${dst})"
+            if [ -d "${dst}" ] && [ ! -L "${dst}" ]; then
+              rm -rf "${dst}"
+            fi
             ln --verbose --force --symbolic --no-target-directory "${src}" "${dst}" 1>&2
           )
         ''
