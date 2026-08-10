@@ -5,7 +5,6 @@
 zsh_profile
 .DS_Store
 ngrok.bin
-.telegram-creds
 .link-list
 
 nvim/lazy-lock.json
@@ -16,12 +15,6 @@ vendor/
 result
 
 # Devenv
-.devenv*
+!devenv*
 devenv.local.nix
 devenv.local.yaml
-
-# direnv
-.direnv
-
-# pre-commit
-.pre-commit-config.yaml

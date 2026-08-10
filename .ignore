@@ -1,3 +1,7 @@
 node_modules/
 vendor/
 .git
+
+# I might still want to update those
+!devenv.nix
+!devenv.yaml

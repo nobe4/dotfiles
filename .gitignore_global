@@ -49,3 +49,8 @@ n4_env
 !.github
 !.golangci.yaml
 .idea*
+
+# Nobody uses this except for me, so I'll need to add
+# !devenv* in the repos I want to keep
+.devenv*
+devenv*
