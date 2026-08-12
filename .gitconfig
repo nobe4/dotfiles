@@ -100,4 +100,6 @@
 [include]
 	# Add [maintenance] section there, so it's not tracked
 	path = ~/dev/.gitconfig
+
+[includeIf "gitdir:~/dev/github/"]
 	path = ~/dev/github/.gitconfig
