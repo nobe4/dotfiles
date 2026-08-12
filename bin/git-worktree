@@ -150,17 +150,29 @@ select_branch() {
 }
 
 list() {
-	branch=$(
+	local branch=$(
 		select_branch \
 			--prompt="Branch " \
 			--query="$*" \
+			--bind="enter:accept-or-print-query" \
 			--bind="ctrl-n:become(git-worktree --repo '${REPO}' new {q} 1>&2 ; echo {q})" \
 			--bind="ctrl-x:execute(git-worktree --repo '${REPO}' remove {1})+reload(git-worktree --repo '${REPO}' list)"
 	)
 
-	[ -z "${branch}" ] && return
+	[ -n "${branch}" ] || return
 
-	print_branch "${branch}"
+	if git -C "${ROOT}" worktree list --porcelain \
+		| grep -Fqx "branch refs/heads/${branch}"; then
+		print_branch "${branch}"
+		return
+	fi
+
+	printf 'Create branch %s? [y/N] ' "${branch}" > /dev/tty
+	local answer
+	read -r answer < /dev/tty
+	case "${answer}" in
+		[yY]*) new "${branch}" ;;
+	esac
 }
 
 REPO="."
