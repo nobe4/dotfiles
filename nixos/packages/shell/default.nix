@@ -11,6 +11,13 @@ in
 
   imports = [ ../is_linux.nix ];
 
+  environment.variables = {
+    EDITOR = "nvim";
+    VISUAL = "nvim";
+    MANPAGER = "nvim +Man!";
+    PAGER = "less";
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = false;

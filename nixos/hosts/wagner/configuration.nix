@@ -56,6 +56,10 @@
     nodenv
 
     vault
+
+    coreutils
+    diffutils
+    findutils
   ];
 
   homebrew = {
@@ -66,23 +70,18 @@
     #     + install brew from https://brew.sh/
 
     enable = true;
-    brews = [
-      "pinentry-mac"
-      "trash"
-    ];
+    brews = [ "pinentry-mac" ];
 
     # TODO: check what can be removed here
     casks = [
-      "zen"
-      "firefox"
+      # "zen"
+      # "firefox" XXX not working?
       "docker-desktop"
       # XXX
       # "1password"
       # "1password-cli"
-      "kitty"
       "notunes"
       "hammerspoon"
-      "neovide-app"
     ];
   };
 

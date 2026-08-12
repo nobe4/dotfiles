@@ -10,23 +10,16 @@
 curl https://raw.githubusercontent.com/nobe4/dotfiles/main/bootstrap.sh | bash
 ```
 
-In case of `zsh compinit: insecure directories, run compaudit for list.`:
+# In case nix-darwin fails, put that in `~/.zshrc`:
 
-```shell
-autoload -U compaudit
-compaudit | xargs chmod g-w
+```bash
+# Nix breaks after redeploying on macos.
+# This should work as a temporary workaround.
+# https://github.com/NixOS/nix/issues/3616#issuecomment-1655785404
+[[ ! $(command -v nix) && -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]] && source "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
 ```
 
-# Ubuntu keyboard setup
-
-```shell
-sudo apt-get install gnome-tweaks
-```
-
-Keyboard > Additional Layout Options > Alt & Win > Menu is mapped to Win
-Then adapt the keybindings in the settings.
-- Disable all
-- Launcher > Search: Super+Space
-- Navigation > Switch to Wspc Left: Ctrl+H
-- Navigation > Switch to Wspc Right: Ctrl+I
-- Screenshots > Take interactively: Launch5
+https://github.com/NixOS/nix/issues/3616
+https://gist.github.com/Linerre/f11ad4a6a934dcf01ee8415c9457e7b2
+https://github.com/sorin-ionescu/prezto/issues/381#issuecomment-12800590
+https://github.com/rbenv/rbenv/wiki/Unix-shell-initialization
