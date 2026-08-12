@@ -24,7 +24,7 @@ let
         if [ -d "${dst}" ] && [ ! -L "${dst}" ]; then
           rm -rf "${dst}"
         fi
-        ln --verbose --force --symbolic --no-target-directory "${src}" "${dst}" >> /tmp/${logFile} 2>&1
+        ln --verbose --force --symbolic --no-target-directory "${src}" "${dst}" >> /tmp/${logFile} 2>&1 || true
       ''
     ) tuples;
 in
