@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#/ Usage: git-ignore-why PATH...
+#/
+#/ Explain whether Git tracks or ignores each path.
+#/ Print the matching ignore file, line, pattern, and scope.
+
+set -e
+
+if [ "${#}" -eq 0 ] || [ "${1}" = "-h" ] || [ "${1}" = "--help" ]; then
+	grep ^#/ <"${0}" | cut -c4-
+	exit 0
+fi
+
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+	echo "git-ignore-why: not inside a Git repo" >&2
+	exit 1
+fi
+
+GLOBAL_IGNORE=$(git config --path --get core.excludesFile 2>/dev/null || true)
+[ -n "${GLOBAL_IGNORE}" ] || GLOBAL_IGNORE="${XDG_CONFIG_HOME:-${HOME}/.config}/git/ignore"
+
+for FILE in "$@"; do
+	RULE=""
+	RESULT="untracked: no ignore rule matches"
+
+	if RULE=$(git check-ignore --no-index --verbose -- "${FILE}" 2>/dev/null); then
+		RESULT="ignored"
+	fi
+
+	if git ls-files --error-unmatch -- "${FILE}" >/dev/null 2>&1; then
+		RESULT="tracked"
+	fi
+
+	echo "${FILE}"
+
+	if [ -n "${RULE}" ]; then
+		SCOPE="local"
+		[ "${RULE%%:*}" = "${GLOBAL_IGNORE}" ] && SCOPE="global"
+		[ "${RESULT}" = "tracked" ] && RESULT="tracked, but ignored if untracked"
+		echo "  ${RESULT} (${SCOPE}): ${RULE}"
+	else
+		echo "  ${RESULT}"
+	fi
+done

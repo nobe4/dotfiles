@@ -16,5 +16,6 @@ result
 
 # Devenv
 !devenv*
+.devenv/
 devenv.local.nix
 devenv.local.yaml
