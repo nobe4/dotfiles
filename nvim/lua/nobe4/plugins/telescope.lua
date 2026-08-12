@@ -27,6 +27,12 @@ return {
 					},
 				},
 
+				 pickers = {
+					 find_files = {
+						 follow = true
+					 }
+				 },
+
 				extensions = {
 					fzf = {
 						fuzzy = true,
