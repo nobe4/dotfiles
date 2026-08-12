@@ -31,6 +31,14 @@ in
       ""
       "${config.home}/.config/dotfiles"
     ]
+    [
+      ".zprofile"
+      "${config.home}/.zprofile"
+    ]
+    [
+      ".zshrc"
+      "${config.home}/.zshrc"
+    ]
   ];
 
   # I don't need a dev environment.

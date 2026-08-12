@@ -1,8 +1,16 @@
 #!/usr/bin/env zsh
 
+# Start Hyprland on TTY after login
+# https://wiki.hypr.land/Useful-Utilities/Systemd-start/
+if uwsm check may-start; then
+	exec uwsm start hyprland.desktop
+fi
+
+# Setup
+export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/private/.zprofile"
 
-is_macos && {
+[[ "$OSTYPE" == darwin* ]] && {
 	BREW_PREFIX="/opt/homebrew/"
 
 	# Cache `brew shellenv` so we don't spawn brew on every login. Refresh when the

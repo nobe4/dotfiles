@@ -1,7 +1,7 @@
 {
   pkgs,
   lib,
-  options,
+  config,
   ...
 }:
 let
@@ -21,7 +21,7 @@ in
     description = "nobe4";
     home = if isDarwin then "/Users/nobe4" else "/home/nobe4";
   }
-  // lib.optionalAttrs (options.programs.zsh.enable == true) {
+  // lib.optionalAttrs config.programs.zsh.enable {
     shell = pkgs.zsh;
   }
   # Linux-only
