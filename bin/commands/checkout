@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -ex
+
+[[ "$*" == "-h" ]] && cat "${0}" && exit 0
+
+get_prs "Enter PR URL(s) to checkout:" "$@" | while read -r pr; do
+	data="$(gh pr view "$pr" --json headRefName,headRepository,headRepositoryOwner -q '"\(.headRepositoryOwner.login)/\(.headRepository.name) \(.headRefName)"')"
+	repo=${data%% *}
+	branch=${data#* }
+
+	dir="$(mktemp -d)/${repo}"
+
+	gh repo clone "$repo" "$dir" -- --single-branch --branch "$branch"
+
+	kitty --detach -d "$dir"
+done
