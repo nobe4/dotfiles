@@ -98,7 +98,7 @@ prefetch_prs(){
 }
 
 ensure_cache(){
-	if [ "${FORCE}" == 1 ] || ! cache fresh dependabot prs; then
+	if [ "${FORCE}" == 1 ] || ! cache fresh dependabot prs '7 day'; then
 		prefetch_prs
 	fi
 }
