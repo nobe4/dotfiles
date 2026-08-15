@@ -1,11 +1,7 @@
 #!/usr/bin/env zsh
 # shellcheck shell=bash
 
-# Colors {
-export CLICOLOR=1
-export LSCOLORS=exfxcxdxbxegedabagacad
 autoload -U colors && colors
-# }
 
 # Functions {
 # Load compinit fast from the cached dump on every shell (-C skips the security

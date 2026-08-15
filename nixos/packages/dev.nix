@@ -62,13 +62,12 @@ in
   };
 
   environment.variables = {
-    # TODO: use DOTFILES_DIR instead
-    DOTFILE_FOLDER = "${config.dotfiles}";
     DEV_PATH = "${config.home}/dev";
     DFT_SYNTAX_HIGHLIGHT = "off";
     DFT_CONTEXT = "1";
     FZF_DEFAULT_COMMAND = "rg --files --follow";
     FZF_DEFAULT_OPTS = "--no-mouse --color=16,fg+:15,bg+:-1,gutter:0,hl:2,hl+:4,pointer:4,marker:10,prompt:7,info:8,spinner:5,header:4";
+
     PATH = [
       "${config.dotfiles}/bin/commands"
       "${config.dotfiles}/bin"

@@ -16,6 +16,12 @@ in
     VISUAL = "nvim";
     MANPAGER = "nvim +Man!";
     PAGER = "less";
+    CLICOLOR = 1;
+
+    FPATH = [
+      "${config.dotfiles}/functions"
+      "$FPATH"
+    ];
   };
 
   programs.zsh = {

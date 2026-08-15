@@ -20,4 +20,9 @@
       A nix path (e.g. ../../.) copies files into the store.
     '';
   };
+
+  config.environment.variables = {
+    # TODO: use DOTFILES_DIR instead
+    DOTFILE_FOLDER = "${config.dotfiles}";
+  };
 }

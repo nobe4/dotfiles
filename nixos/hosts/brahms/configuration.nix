@@ -17,6 +17,7 @@ in
 
     ../../users/nobe4.nix
 
+    ../../packages/shell
     ../../packages/i18n.nix
     ../../packages/system.nix
     ../../packages/mdns.nix
@@ -30,14 +31,6 @@ in
     [
       ""
       "${config.home}/.config/dotfiles"
-    ]
-    [
-      ".zprofile"
-      "${config.home}/.zprofile"
-    ]
-    [
-      ".zshrc"
-      "${config.home}/.zshrc"
     ]
   ];
 

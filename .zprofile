@@ -1,9 +1,5 @@
 #!/usr/bin/env zsh
 
-# Setup
-export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
-source "$DOTFILE_FOLDER/private/.zprofile"
-
 [[ "$OSTYPE" == darwin* ]] && {
 	BREW_PREFIX="/opt/homebrew/"
 
