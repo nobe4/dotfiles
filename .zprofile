@@ -1,11 +1,5 @@
 #!/usr/bin/env zsh
 
-# Start Hyprland on TTY after login
-# https://wiki.hypr.land/Useful-Utilities/Systemd-start/
-if command -v uwsm >/dev/null 2>&1 && uwsm check may-start; then
-	exec uwsm start hyprland.desktop
-fi
-
 # Setup
 export DOTFILE_FOLDER="${XDG_CONFIG_HOME:-${HOME:?}/.config}/dotfiles"
 source "$DOTFILE_FOLDER/private/.zprofile"

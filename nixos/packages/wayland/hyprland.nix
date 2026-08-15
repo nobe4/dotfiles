@@ -4,15 +4,9 @@
   ...
 }:
 {
-  # No display manager. Login on TTY, .zprofile starts Hyprland via UWSM.
+  # No display manager. Login on TTY, then run `hyprland-start`.
 
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-
-    # This seems to be needed for steam
-    # xwayland.enable = false;
-  };
+  programs.hyprland.enable = true;
 
   users.users.nobe4.packages = with pkgs; [
     hyprcursor
