@@ -5,6 +5,7 @@
 }:
 {
   # No display manager. Login on TTY, then run `hyprland-start`.
+  services.getty.helpLine = "help: use hyprland-start";
 
   programs.hyprland.enable = true;
 
