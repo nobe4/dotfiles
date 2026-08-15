@@ -16,4 +16,4 @@ source "$DOTFILE_FOLDER/private/.zprofile"
 	source "$brew_cache"
 }
 
-FPATH="$DOTFILE_FOLDER/functions:$FPATH"
+[[ -f "${DOTFILE_FOLDER}/private/.zprofile" ]] && source "$DOTFILE_FOLDER/private/.zprofile"

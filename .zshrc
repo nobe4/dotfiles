@@ -60,6 +60,4 @@ bindkey "^E" end-of-line
 # Limit how many files can be used by the current session
 ulimit -S -n 10240
 
-# Private {
-source "${DOTFILE_FOLDER}/private/.zshrc"
-# }
+[[ -f "${DOTFILE_FOLDER}/private/.zshrc" ]] && source "$DOTFILE_FOLDER/private/.zshrc"
