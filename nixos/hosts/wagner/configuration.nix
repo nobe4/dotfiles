@@ -55,11 +55,15 @@
     rbenv
     nodenv
 
+    ruby # macOS's version is too old.
+
     vault
 
+    # Using Unix tools instead of BSD ones
     coreutils
     diffutils
     findutils
+    unixtools.script
   ];
 
   homebrew = {
