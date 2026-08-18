@@ -53,19 +53,17 @@ new() {
 	local commitish="${2}"
 
 	if [ -n "${commitish}" ]; then
-		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "${commitish}"
-	elif git -C "${ROOT}" worktree add "worktree/${branch}" "${branch}" 2>/dev/null; then
+		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "${commitish}" >&2
+	elif git -C "${ROOT}" worktree add "worktree/${branch}" "${branch}" 2>/dev/null >&2; then
 		: # Reused an existing branch.
-	elif git -C "${ROOT}" ls-remote --exit-code --heads origin "${branch}" >/dev/null 2>&1; then
-		# Use remote if it exist
-		git -C "${ROOT}" fetch origin "${branch}"
-		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "origin/${branch}"
+	elif git -C "${ROOT}" fetch origin "+refs/heads/${branch}:refs/remotes/origin/${branch}" >/dev/null 2>&1; then
+		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "origin/${branch}" >&2
 	else
 		local base
 		base=$(select_branch --prompt="Base for ${branch} ")
 		[ -z "${base}" ] && return
 
-		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "${base}"
+		git -C "${ROOT}" worktree add -b "${branch}" "worktree/${branch}" "${base}" >&2
 		take_diff "${base}" "${branch}"
 	fi
 
