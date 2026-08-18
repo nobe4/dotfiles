@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+local -a packages
+packages=("$@")
+
+if [[ -f .ruby-version ]]; then
+	echo "use: found .ruby-version, adding ruby and ruby-lsp" >&2
+	packages+=(ruby ruby-lsp)
+fi
+
+if [[ -f Gemfile ]] &&
+	grep -Eq "^[[:space:]]*gem[[:space:]]+['\"]mysql2['\"]" Gemfile; then
+	echo "use: found mysql2 in Gemfile, adding mysql84" >&2
+	packages+=(mysql84)
+fi
+
+if [[ -f go.mod ]]; then
+	echo "use: found go.mod, adding go and gopls" >&2
+	packages+=(go gopls)
+fi
+
+packages=("${(@u)packages}")
+
+if (( ${#packages} == 0 )); then
+	echo "use: no packages given or found" >&2
+	return 1
+fi
+
+command nix-shell -p "${packages[@]}"
