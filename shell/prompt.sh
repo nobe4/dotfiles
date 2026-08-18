@@ -5,6 +5,7 @@
 	# compute the correct width for the available space left.
 	red="\[\e[31m\]"
 	green="\[\e[32m\]"
+	yellow="\[\e[33m\]"
 	blue="\[\e[34m\]"
 	reset="\[\e[0m\]"
 	cwd="\W"
@@ -15,6 +16,7 @@
 [ "${ZSH_VERSION}" ] && {
 	red="%F{1}"
 	green="%F{2}"
+	yellow="%F{3}"
 	blue="%F{4}"
 	reset="%f"
 	cwd="%c"
@@ -30,6 +32,7 @@ bash_prompt() { PS1="$(prompt)"; }
 
 prompt_on_load_callback() {
 	# Gets the new prompt value from the "$(prompt)" call.
+	# shellcheck disable=2034
 	PROMPT="$(<&"$1")"
 
 	zle reset-prompt
@@ -46,6 +49,8 @@ prompt_precmd() {
 
 # Additional details
 prompt() {
+	prompt=""
+
 	# In a worktree the cwd is the branch name, so show the repo name instead.
 	dir="${cwd}"
 
@@ -57,8 +62,11 @@ prompt() {
 		dir="$(basename "${root_dir}")"
 	fi
 
+	# hostname is yellow, only inside SSH
+	{ [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; } && prompt="${yellow}$(hostname)"
+
 	# cwd is green
-	prompt="${green}${dir}"
+	prompt="${prompt}${green}${dir}"
 
 	# git is red
 	prompt="${prompt}${red}"
