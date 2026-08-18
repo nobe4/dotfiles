@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
 
 # Made into a bin to be accessible from vim
-
-case "$(uname -s)" in
-  Linux*) auto-pr-open git push -u;;
-  Darwin*) auto-pr-open git push -u;;
-  *) exit 1
-esac
+auto-pr-open git push -u
