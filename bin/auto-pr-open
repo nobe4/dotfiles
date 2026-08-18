@@ -2,50 +2,16 @@
 
 set -e
 
-tmpfile="$(mktemp)"
-touch "$tmpfile"
-
-# In the background launch a process that looks at the output, match the GitHub
-# URLs and open them. The `s/\x1b.*//g` replaces the escape character that git can
-# insert on tty.
-# awk's `system("")` is used to flush the buffer and print the line immediately.
-# Other solutions like `stdbuf -oL` or `unbuffer` didn't work on macOS.
-tail_darwin (){
-	(
-		tail -f "$tmpfile" \
-			| awk '/https:\/\/github.com/ {print $2; system("")}' \
-			| sed -l 's/\x1b.*//g' \
-			| xargs -L1 -I{} bash -c "open '{}'"
-	) &
-	open_pid="${!}"
-}
-
-tail_linux (){
-	(
-		tail -f "$tmpfile" \
-			| awk -W interactive '/https:\/\/github.com/ {print $2; system("")}' \
-			| sed -u 's/\x1b.*//g' \
-			| xargs -d '\n' -n1 open
-	) &
-	open_pid="${!}"
-}
-
 command="$*"
 
-case "$(uname -s)" in
-	Linux*)
-		tail_linux
-		script -q "$tmpfile" -c "$command"
-		;;
-	Darwin*)
-		tail_darwin
-		script -qt1 "$tmpfile" bash -c "$command"
-		;;
-	*) exit 1
-esac
-
-
-sleep 1
-
-kill "${open_pid}"
-wait "${open_pid}" 2>/dev/null
+script -q /dev/null bash -c "$command" \
+	| tee >(
+		awk '
+			/https:\/\/github.com/ {
+				url = $2
+				sub(/\033.*/, "", url)
+				print url
+				system("")
+			}
+		' | xargs -r -d '\n' -n1 open
+	)
