@@ -26,16 +26,17 @@ in
   ];
 
   # Repo goes into the store; symlink it to a predictable path.
-  dotfiles = ../../..;
+  dotfiles = builtins.path {
+    path = ../../..;
+    name = "dotfiles";
+  };
+
   ln = [
     [
       ""
       "${config.home}/.config/dotfiles"
     ]
   ];
-
-  # I don't need a dev environment.
-  programs.zsh.enable = true;
 
   # Don't require a password for sudo for nobe4.
   # This is important for colmena apply to work.
@@ -76,6 +77,8 @@ in
   networking.hostName = "brahms";
 
   console.keyMap = "colemak";
+
+  services.logind.lidSwitch = "ignore";
 
   environment.systemPackages = with pkgs; [
     vim

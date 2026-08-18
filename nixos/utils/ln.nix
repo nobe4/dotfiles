@@ -1,7 +1,5 @@
 # Collect all the link tuples and link them.
 #
-# Note that if config.dotfiles is a nix path (and not a string), things will be
-# linked from the store, and not from the local path.
 # TODO: this really should be refactored to only link the ~/.config/dotfiles
 # from the store, the rest uses ~/.config/dotfiles.
 {
