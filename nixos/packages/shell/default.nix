@@ -16,7 +16,7 @@ in
     VISUAL = "nvim";
     MANPAGER = "nvim +Man!";
     PAGER = "less";
-    CLICOLOR = 1;
+    CLICOLOR = "1";
   };
 
   programs.zsh = {
