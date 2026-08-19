@@ -27,6 +27,10 @@ cmd=$(
 # Join each command with '&&'
 cmd=${cmd//$'\n'/' && '}
 
-print -s -- "${cmd}" # add to history
+if [ -n "${ZSH_VERSION:-}" ]; then
+	print -s -- "${cmd}"
+else
+	history -s "${cmd}"
+fi
 
 bash -c "${cmd}"
