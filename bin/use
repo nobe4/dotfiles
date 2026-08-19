@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+#/ Usage: use [PACKAGE...]
+#/
+#/ Start a Nix shell with given packages and packages found from project files.
+#/ Use devenv when devenv.nix exists.
+#/
+#/ Flags:
+#/   -h    Show this help.
+
+show_help() { grep ^#/ <"${0}" | cut -c4-; }
+[[ "$*" == "-h" ]] && show_help && exit 0
+
+[[ -f devenv.nix ]] && echo "use: found devenv.nix, consider using 'devenv shell'" >&2
+
+packages=("$@")
+
+rules=(
+	'*.rb   | ruby ruby-lsp'
+	'*.go   | go gopls golangci-lint golangci-lint-langserver'
+	'*.sh   | bash-language-server shellcheck'
+	'*.c    | clang-tools'
+	'*.lua  | lua-language-server'
+	'*.md   | marksman'
+	'*.nix  | nixd'
+	'*.py   | python3 python3Packages.python-lsp-server'
+	'*.ts   | nodejs typescript-language-server'
+	'*.css  | vscode-langservers-extracted'
+	'*.html | vscode-langservers-extracted emmet-language-server'
+	'*.json | vscode-langservers-extracted'
+	'*.yaml | yaml-language-server'
+)
+
+printf 'use: ' >&2
+
+for rule in "${rules[@]}"; do
+	pattern="${rule%% *}"
+
+	if rg --files -L -q -g "$pattern"; then
+		printf '%s ' "$pattern" >&2
+		read -r -a package_set <<< "${rule#*| }"
+		packages+=("${package_set[@]}")
+	fi
+done
+
+# Custom cases
+if rg -q --no-messages '^[[:space:]]+mysql2([[:space:](]|$)' Gemfile.lock; then
+	printf 'mysql2 ' >&2
+	packages+=(mysql84)
+fi
+
+unique_packages=()
+for package in "${packages[@]}"; do
+	for unique_package in "${unique_packages[@]}"; do
+		if [[ "$package" == "$unique_package" ]]; then
+			continue 2
+		fi
+	done
+	unique_packages+=("$package")
+done
+packages=("${unique_packages[@]}")
+
+if (( ${#packages[@]} == 0 )); then
+	printf 'no match\n' >&2
+	exit 1
+fi
+
+printf '\n' >&2
+
+echo "use: installing ${packages[*]}" >&2
+exec nix-shell -p "${packages[@]}"
