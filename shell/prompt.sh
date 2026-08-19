@@ -90,6 +90,7 @@ prompt() {
 	fi
 
 	# env is blue
+	[ -n "${IN_NIX_SHELL:-}" ] && prompt="${prompt}${blue}nix"
 	[ -n "$RBENV_SHELL" ] && prompt="${prompt}${blue}rbenv"
 	[ -n "$NODENV_SHELL" ] && prompt="${prompt}${blue}nodenv"
 	[ -n "$PIPENV_ACTIVE" ] && prompt="${prompt}${blue}pipenv"
