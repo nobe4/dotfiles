@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
 local -a packages
+
+if [[ -f devenv.nix ]]; then
+	echo "use: found devenv.nix, using devenv shell" >&2
+	command devenv shell "$@"
+	return $?
+fi
+
 packages=("$@")
 
 if find . -type f -name '*.rb' -print -quit | grep -q .; then
@@ -51,7 +58,7 @@ fi
 
 if find . -type f -name '*.ts' -print -quit | grep -q .; then
 	echo "use: found TypeScript files, adding TypeScript tools" >&2
-	packages+=(nodejs nodePackages.typescript-language-server)
+	packages+=(nodejs typescript-language-server)
 fi
 
 if find . -type f -name '*.css' -print -quit | grep -q .; then
@@ -71,7 +78,7 @@ fi
 
 if find . -type f -name '*.yaml' -print -quit | grep -q .; then
 	echo "use: found YAML files, adding yaml-language-server" >&2
-	packages+=(nodePackages.yaml-language-server)
+	packages+=(yaml-language-server)
 fi
 
 packages=("${(@u)packages}")
