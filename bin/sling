@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
+#/ Usage: sling [FLAGS]
+#/
+#/ Pick and run a command.
+#/
+#/ Flags:
+#/   -h|--help    Show this help.
+#/   -r|--reload  Reload the command list and cache.
+#/
+#/ Keys:
+#/   Enter      Run the selected command.
+#/   Ctrl-R     Reload the command list.
+#
 # from https://github.com/nobe4/sling.sh
 
 set -e
@@ -8,6 +20,16 @@ PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
 
 LOG_FILE="/tmp/sling.log"
 CACHE_FILE="$(cache path sling commands)"
+
+show_help() { grep ^#/ <"${0}" | cut -c4-; }
+
+reload() {
+	find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
+		-type f \
+		-exec basename {} \; \
+		| sort \
+		| tee "${CACHE_FILE}"
+}
 
 BECOME_COMMAND="
 	# Update the title
@@ -23,15 +45,26 @@ BECOME_COMMAND="
 		)
 "
 
+while [ "${#}" -gt 0 ]; do
+		case "${1}" in
+			-h|--help) show_help && exit 0 ;;
+			-r|--reload) reload && exit 0 ;;
+			*)
+				echo "Unknown flag '${1}'" >&2
+				show_help >&2
+				exit 1
+				;;
+		esac
+		shift 1
+done
+
 if ! cache fresh sling commands; then
-	find "${COMMANDS_PATH}" "${PRIVATE_COMMANDS_PATH}" \
-		-type f \
-		-exec basename {} \; \
-		| sort > "${CACHE_FILE}"
+	reload > /dev/null
 fi
 
 fzf \
-	--preview-window="bottom" \
-	--preview="{} -h" \
-	--bind="enter:become(${BECOME_COMMAND})" \
-	< "${CACHE_FILE}"
+		--preview-window="bottom" \
+		--preview="{} -h" \
+		--bind="enter:become(${BECOME_COMMAND})" \
+		--bind="ctrl-r:reload(sling --reload)" \
+		< "${CACHE_FILE}"
