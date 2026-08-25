@@ -1,11 +1,53 @@
 #!/bin/sh
+#/ Usage: loop [TIMEOUT] COMMAND [ARGS...]
+#/
+#/ Run COMMAND every TIMEOUT (e.g. 5s, 2m, 1h; default 1s).
+#/
+#/ Flags:
+#/   -h  Show this help.
 
 # looping through a command
 # http://stackoverflow.com/a/1289029/2558252
 # http://stackoverflow.com/a/3179059/2558252
 
+show_help() { grep '^#/' <"$0" | cut -c4-; }
+
+case "${1-}" in
+  -h)
+    show_help
+    exit 0
+    ;;
+esac
+
+timeout=1
+case "${1-}" in
+  [0-9]*[smh])
+    value=${1%?}
+    unit=${1#"$value"}
+
+    case "$value" in
+      0*|*[!0-9]*)
+        show_help >&2
+        exit 2
+        ;;
+    esac
+
+    case "$unit" in
+      s) timeout=$value ;;
+      m) timeout=$((value * 60)) ;;
+      h) timeout=$((value * 3600)) ;;
+    esac
+    shift
+    ;;
+esac
+
+if [ "$#" -eq 0 ]; then
+  show_help >&2
+  exit 2
+fi
+
 while true; do
   echo "$(date '+%S') : $*"
   "$@"
-  sleep 1
+  sleep "$timeout"
 done
