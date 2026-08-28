@@ -5,9 +5,9 @@
 #/   -r|--refresh   Refresh the emojis list
 #/   --rofi         Start a rofi window (default to fzf)
 
-set -e
+set -eo pipefail
 
-CACHE="${HOME}/.local/state/emojis.txt"
+CACHE_FILE="$(cache path emoji list)"
 
 show_help() { grep ^#/ <"${0}" | cut -c4-; }
 
@@ -31,21 +31,34 @@ while [ "${#}" -gt 0 ]; do
 	shift 1
 done
 
-if [ ! -f "${CACHE}" ] || [[ "${REFRESH}" == 1 ]]; then
-	curl https://unicode.org/Public/emoji/latest/emoji-test.txt |
-		grep 'E\d.' |
-		sed -r 's/.+# +([^ ]+) E[^ ]+ (.+)/\1 \2/' |
-		grep . \
-		> "${LIST}"
+refresh() {
+	local tmp
+	tmp="$(mktemp "${CACHE_FILE}.XXXXXX")"
 
-	echo "List refreshed at ${LIST}"
-	exit 0
+	if ! curl https://unicode.org/Public/emoji/latest/emoji-test.txt |
+			grep 'E\d.' |
+			sed -r 's/.+# +([^ ]+) E[^ ]+ (.+)/\1 \2/' |
+			grep . \
+			> "${tmp}"; then
+		rm -f "${tmp}"
+		return 1
+	fi
+
+	mv "${tmp}" "${CACHE_FILE}"
+}
+
+if [[ "${REFRESH}" == 1 ]] || ! cache fresh emoji list; then
+	echo "Refreshing emoji list at ${CACHE_FILE}" >&2
+	refresh
 fi
 
+
+[ -f "${CACHE_FILE}" ] || exit 0
+
 if [[ "${ROFI}" == 1 ]]; then
-	selection=$(rofi -dmenu -i -p "Emoji" < "${CACHE}")
+	selection=$(rofi -dmenu -i -p "Emoji" < "${CACHE_FILE}")
 else
-	selection=$(fzf --nth='2..' --query="${*}" < "${CACHE}")
+	selection=$(fzf --nth='2..' --query="${*}" < "${CACHE_FILE}")
 fi
 
 emoji=$(echo "${selection}" | cut -d' ' -f1)
