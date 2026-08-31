@@ -6,7 +6,7 @@ local leader = "SUPER"
 
 -- normally not needed
 hl.on("hyprland.start", function()
-	hl.exec_cmd("waybar")
+	hl.exec_cmd("uwsm app -- waybar")
 end)
 
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
