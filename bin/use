@@ -9,117 +9,20 @@
 
 set -e
 
-STATE_DIR="${XDG_STATE_HOME:-${HOME:?}/.local/state}/use"
-
 show_help() {
 	export STATE_DIR
 	grep ^#/ <"${0}" | cut -c4- | envsubst ;
 }
 [[ "$*" == "-h" ]] && show_help && exit 0
 
-mkdir -p "$STATE_DIR"
-
-[[ -f devenv.nix ]] && echo "use: found devenv.nix, consider using 'devenv shell'" >&2
-
-packages=("$@")
-
-start_shell() {
-	local shell_packages=("$@")
-	local hash_input package_key env_file profile_file tmp_file expression user_shell
-
-
-	hash_input="$(printf '%s\n' "${shell_packages[@]}" | LC_ALL=C sort -u)"
-
-	package_key="$(printf '%s\n' "$hash_input" | md5sum)"
-	package_key="${package_key%% *}"
-
-	env_file="${STATE_DIR}/${package_key}.bash"
-	profile_file="${STATE_DIR}/${package_key}.profile"
-
-	if [[ ! -f "$env_file" || ! -e "$profile_file" ]]; then
-		echo "use: installing ${shell_packages[*]}" >&2
-
-		expression=
-		tmp_file="${env_file}.$$"
-
-		if ! nix print-dev-env \
-				--impure \
-				--profile "$profile_file" \
-				--expr "with import <nixpkgs> {}; mkShell { packages = [ ${shell_packages[*]} ]; }" \
-				> "$tmp_file"; then
-			rm -f "$tmp_file"
-			return 1
-		fi
-
-		mv "$tmp_file" "$env_file"
-	else
-		echo "use: using cached ${shell_packages[*]}" >&2
-	fi
-
-	# sourcing $env_file can modify $SHELL, we must save it
-	user_shell="${SHELL:-bash}"
-
-	. "$env_file"
-
-	export SHELL="$user_shell"
-	exec "$SHELL" -i
-}
-
-# If any package is specified, we just use that
-if (( $# > 0 )); then
-	start_shell "${packages[@]}"
-fi
-
-rules=(
-	'*.rb   | ruby ruby-lsp'
-	'*.go   | go gopls golangci-lint golangci-lint-langserver'
-	'*.sh   | bash-language-server shellcheck'
-	'*.c    | clang-tools'
-	'*.lua  | lua-language-server'
-	'*.md   | marksman'
-	'*.nix  | nixd'
-	'*.py   | python3 python3Packages.python-lsp-server'
-	'*.ts   | nodejs typescript-language-server'
-	'*.css  | vscode-langservers-extracted'
-	'*.html | vscode-langservers-extracted emmet-language-server'
-	'*.json | vscode-langservers-extracted'
-	'*.yaml | yaml-language-server'
-)
-
-printf 'use: ' >&2
-
-for rule in "${rules[@]}"; do
-	pattern="${rule%% *}"
-
-	if rg --files -L -q -g "$pattern"; then
-		printf '%s ' "$pattern" >&2
-		read -r -a package_set <<< "${rule#*| }"
-		packages+=("${package_set[@]}")
-	fi
+# Resolve this script's real directory (following symlinks) so we always find
+# the shell.nix beside it, no matter where 'use' is called from.
+source="${BASH_SOURCE[0]}"
+while [[ -L "$source" ]]; do
+	dir="$(cd -P "$(dirname "$source")" && pwd)"
+	source="$(readlink "$source")"
+	[[ "$source" != /* ]] && source="$dir/$source"
 done
+here="$(cd -P "$(dirname "$source")" && pwd)"
 
-# Custom cases
-if rg -q --no-messages '^[[:space:]]+mysql2([[:space:](]|$)' Gemfile.lock; then
-	printf 'mysql2 ' >&2
-	packages+=(mysql84)
-fi
-
-unique_packages=()
-for package in "${packages[@]}"; do
-	for unique_package in "${unique_packages[@]}"; do
-		if [[ "$package" == "$unique_package" ]]; then
-			continue 2
-		fi
-	done
-	unique_packages+=("$package")
-done
-packages=("${unique_packages[@]}")
-
-if (( ${#packages[@]} == 0 )); then
-	printf 'no match\n' >&2
-	exit 1
-fi
-
-printf '\n' >&2
-
-start_shell "${packages[@]}"
+exec nix-shell --impure "$here/shell.nix"
