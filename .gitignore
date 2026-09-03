@@ -2,6 +2,9 @@
 !.*
 .git
 
+# Different machines might link to different places.
+private
+
 zsh_profile
 .DS_Store
 ngrok.bin
