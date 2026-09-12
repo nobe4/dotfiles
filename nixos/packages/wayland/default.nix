@@ -13,7 +13,7 @@
     ./launcher.nix
     ./notification.nix
     ./screenshot.nix
-    ./waybar.nix
+    ./quickshell.nix
   ];
 
   # TODO: to move elsewhere.

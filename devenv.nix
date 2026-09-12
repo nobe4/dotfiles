@@ -11,5 +11,7 @@
     # Needed to install nvim-telescope/telescope-fzf-native.nvim
     # Assuming I'll only install it from this repo.
     gnumake
+
+    kdePackages.qtdeclarative # For qmlls
   ];
 }

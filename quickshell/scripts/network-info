@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+device=$(iwctl device list | awk 'NR>4 {print $2; exit}')
+if [ -z "$device" ]; then
+  echo "disconnected,"
+  exit
+fi
+
+ssid=$(iwctl station "$device" show 2>/dev/null | grep "Connected network" | awk '{print $NF}')
+if [ -z "$ssid" ]; then
+  echo "disconnected,"
+  exit
+fi
+
+ip=$(ip -4 addr show "$device" 2>/dev/null | grep -oP '(?<=inet )\S+')
+gw=$(ip route show default 2>/dev/null | awk '{print $3; exit}')
+echo "wifi,$ip => $gw | $ssid"

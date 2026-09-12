@@ -6,7 +6,7 @@ local leader = "SUPER"
 
 -- normally not needed
 hl.on("hyprland.start", function()
-	hl.exec_cmd("uwsm app -- waybar")
+	hl.exec_cmd("uwsm app -- qs")
 end)
 
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
@@ -252,10 +252,9 @@ hl.window_rule({
 })
 
 hl.window_rule({
-	name  = "kitty-weather",
-	match = { class = "^kitty$", title = "^weather$" },
+	name  = "kitty-quickshell-popup",
+	match = { class = "^kitty$", title = "^quickshell-popup$" },
 	float = true,
-	size  = "800 620",
 })
 
 hl.window_rule({
