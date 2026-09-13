@@ -3,18 +3,16 @@ pragma ComponentBehavior: Bound
 import Quickshell
 import Quickshell.Services.SystemTray
 import QtQuick
+import "../../utils"
 
 Row {
-    spacing: 5
-
     Repeater {
         model: SystemTray.items
 
-        delegate: Item {
+        delegate: BarIcon {
             id: trayItem
             required property SystemTrayItem modelData
 
-            width: 17
             height: parent.height
 
             Image {

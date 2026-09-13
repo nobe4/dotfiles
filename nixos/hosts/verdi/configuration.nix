@@ -25,12 +25,12 @@ in
     ../../packages/dev.nix
     ../../packages/kitty.nix
     ../../packages/i2c.nix
+    ../../packages/bluetooth.nix
+    ../../packages/media.nix
 
     agenix.module
 
     ../../service/check_vitamines_availability.nix
-
-    ./media.nix
   ];
 
   networking.hostName = "verdi";
@@ -61,12 +61,6 @@ in
 
   users.users.nobe4 = {
     packages = with pkgs; [
-      # will need to find a way to do without
-      # currently the scarlite has 2 separate output, which should be merged into one.
-      # + how to integrate that in waybar
-      pavucontrol
-      playerctl # for media play-pause control
-
       pinentry-qt
 
       signal-desktop

@@ -2,14 +2,16 @@ pragma ComponentBehavior: Bound
 
 import Quickshell
 import QtQuick
+import "./widgets/battery/"
+import "./widgets/bluetooth/"
 import "./widgets/clock/"
 import "./widgets/idle/"
 import "./widgets/indicators/"
+import "./widgets/network/"
 import "./widgets/stats/"
 import "./widgets/tray/"
 import "./widgets/volume/"
 import "./widgets/weather/"
-import "./widgets/wifi/"
 import "./widgets/workspaces/"
 
 Variants {
@@ -65,11 +67,19 @@ Variants {
                 height: parent.height
             }
 
+            Bluetooth {
+                height: parent.height
+            }
+
+            Battery {
+                height: parent.height
+            }
+
             Stats {
                 height: parent.height
             }
 
-            Wifi {
+            Network {
                 height: parent.height
             }
 

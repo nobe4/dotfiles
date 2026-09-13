@@ -15,4 +15,5 @@ Singleton {
 
     readonly property string fontFamily: "CommitMonoV143"
     readonly property int fontSize: 14
+    readonly property int barIconWidth: 26
 }

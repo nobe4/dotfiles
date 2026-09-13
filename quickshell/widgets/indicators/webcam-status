@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+pid=$(lsof -Q -t /dev/video* | head -n 1)
+if [ -z "$pid" ]; then
+  exit
+fi
+
+title=$(hyprctl clients -j |
+  jq -r --arg pid "$pid" \
+    '.[] | select(.pid == ($pid | tonumber)) | .initialTitle' |
+  head -n 1)
+
+if [ -n "$title" ]; then
+  printf 'Webcam: %s' "$title"
+fi

@@ -1,3 +1,4 @@
+import Quickshell
 import Quickshell.Io
 import QtQuick
 import "../.."
@@ -29,6 +30,6 @@ Item {
 
     Process {
         id: calendarTerminal
-        command: ["kitty", "--title", "quickshell-popup", "--override", "initial_window_width=750", "--override", "initial_window_height=700", "sh", "-c", "cal --year --week --monday && read",]
+        command: ["bash", Quickshell.shellPath("widgets/clock/calendar")]
     }
 }

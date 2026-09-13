@@ -8,6 +8,6 @@
     ./hyprland.nix
     ./launcher.nix
     ./notification.nix
-    ./waybar.nix
+    ./quickshell.nix
   ];
 }

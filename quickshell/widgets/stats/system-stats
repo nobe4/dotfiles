@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+cpu=$(awk '/^cpu /{
+  idle=$5
+  total=0
+  for (i=2; i<=NF; i++) total+=$i
+  printf "%.0f", (1-idle/total)*100
+}' /proc/stat)
+
+memory=$(awk '
+  /MemTotal/ { total=$2 }
+  /MemAvailable/ { available=$2 }
+  END {
+    printf "%.0f%% - %.1f GiB", (1-available/total)*100, (total-available)/1048576
+  }
+' /proc/meminfo)
+
+printf 'CPU: %s%%\nMemory: %s' "$cpu" "$memory"

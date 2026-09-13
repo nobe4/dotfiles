@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+exec kitty \
+  --title quickshell-popup \
+  --override initial_window_width=750 \
+  --override initial_window_height=700 \
+  bash -c 'cal --year --week --monday && read'

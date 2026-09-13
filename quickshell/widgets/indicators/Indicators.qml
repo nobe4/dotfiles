@@ -1,16 +1,16 @@
-import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 import QtQuick
 import "../.."
+import "../../utils"
 
 Item {
     id: root
 
     width: height
 
-    property bool screenRecording: false
-    property string webcamTitle: ""
+    property string screenStatus: ""
+    property string webcamStatus: ""
 
     readonly property var audioStreams: Pipewire.nodes.values.filter(function (node) {
         return node.isStream && node.audio !== null;
@@ -76,12 +76,12 @@ Item {
 
         Dot {
             color: Style.red
-            visible: root.screenRecording
+            visible: root.screenStatus !== ""
         }
 
         Dot {
             color: Style.orange
-            visible: root.webcamTitle !== ""
+            visible: root.webcamStatus !== ""
         }
 
         Dot {
@@ -101,7 +101,7 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        visible: root.screenRecording
+        visible: root.screenStatus !== ""
         cursorShape: Qt.PointingHandCursor
         onClicked: {
             if (!stopRecording.running)
@@ -109,14 +109,11 @@ Item {
         }
     }
 
-    PopupWindow {
+    HoverPopup {
         anchor.item: root
-        anchor.edges: Edges.Bottom
-        anchor.gravity: Edges.Bottom
         implicitWidth: summaryColumn.implicitWidth + 10
         implicitHeight: summaryColumn.implicitHeight + 10
-        color: Style.bg
-        visible: statusHover.hovered
+        triggerHovered: statusHover.hovered
 
         Column {
             id: summaryColumn
@@ -125,15 +122,15 @@ Item {
             spacing: 3
 
             SummaryLine {
-                visible: root.screenRecording
+                visible: root.screenStatus !== ""
                 dotColor: Style.red
-                description: "Screen: recording (click to stop)"
+                description: root.screenStatus
             }
 
             SummaryLine {
-                visible: root.webcamTitle !== ""
+                visible: root.webcamStatus !== ""
                 dotColor: Style.orange
-                description: "Webcam: " + root.webcamTitle
+                description: root.webcamStatus
             }
 
             SummaryLine {
@@ -158,21 +155,19 @@ Item {
         objects: Pipewire.linkGroups.values
     }
 
-    Process {
-        id: screenStatus
-        command: ["pgrep", "-f", "gpu-screen-recorder"]
-        onExited: function (exitCode) {
-            root.screenRecording = exitCode === 0;
+    ScriptProcess {
+        id: screenStatusProcess
+        script: "widgets/indicators/screen-status"
+        stdout: StdioCollector {
+            onStreamFinished: root.screenStatus = text
         }
     }
 
-    Process {
-        id: webcamStatus
-        command: ["bash", "-c", "pid=$(lsof -Q -t /dev/video* | head -n 1); title=; " + "if [ -n \"$pid\" ]; then title=$(hyprctl clients -j | " + "jq -r --arg pid \"$pid\" " + "'.[] | select(.pid == ($pid | tonumber)) | .initialTitle' " + "| head -n 1); fi; printf '%s\\n' \"$title\"",]
-        stdout: SplitParser {
-            onRead: function (line) {
-                root.webcamTitle = line.trim();
-            }
+    ScriptProcess {
+        id: webcamStatusProcess
+        script: "widgets/indicators/webcam-status"
+        stdout: StdioCollector {
+            onStreamFinished: root.webcamStatus = text
         }
     }
 
@@ -187,10 +182,10 @@ Item {
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            if (!screenStatus.running)
-                screenStatus.running = true;
-            if (!webcamStatus.running)
-                webcamStatus.running = true;
+            if (!screenStatusProcess.running)
+                screenStatusProcess.running = true;
+            if (!webcamStatusProcess.running)
+                webcamStatusProcess.running = true;
         }
     }
 }
