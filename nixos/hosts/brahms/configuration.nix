@@ -23,6 +23,8 @@ in
     ../../packages/mdns.nix
     ../../packages/wayland/mini.nix
     ../../packages/kitty.nix
+    ../../packages/bluetooth.nix
+    ../../packages/media.nix
   ];
 
   # Repo goes into the store; symlink it to a predictable path.
