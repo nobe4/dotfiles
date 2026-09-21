@@ -37,7 +37,7 @@ refresh(){
 
 	echo "Cloning all the repos for ${TEAM}, this will take some time."
 	echo "⚠️ Do not do anything until this is done ⚠️"
-	<"${TEAM_CACHE_FILE}" xargs -S2048 -P8 -n1 -I{} bash -c "
+	<"${TEAM_CACHE_FILE}" xargs -P8 -n1 -I{} bash -c "
 		DIR=\"${TEAM_CACHE_DIR}/{}\"
 		echo \"Cloning {}\"
 		mkdir -p \${DIR}
