@@ -18,7 +18,6 @@ set -e
 COMMANDS_PATH="${DOTFILE_FOLDER}/bin/commands"
 PRIVATE_COMMANDS_PATH="${DOTFILE_FOLDER}/private/bin/commands"
 
-LOG_FILE="/tmp/sling.log"
 CACHE_FILE="$(cache path sling commands)"
 
 show_help() { grep ^#/ <"${0}" | cut -c4-; }
@@ -35,13 +34,10 @@ BECOME_COMMAND="
 	# Update the title
 	printf '\033]2;%s\007' {} && \
 	FROM_SLING=1 \
-	{} 2> >(tee -a ${LOG_FILE} >&2) \
-	|| \
-		( \
+	{} < /dev/tty || ( \
 			echo '{} failed' && \
-			echo 'Look at ${LOG_FILE}' && \
 			echo 'Press <CR> to exit... ' && \
-			read -r \
+			read -r _ < /dev/tty \
 		)
 "
 
