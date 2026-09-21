@@ -64,4 +64,4 @@ fi
 emoji=$(echo "${selection}" | cut -d' ' -f1)
 
 notify "Emoji copied to clipboard" "${emoji}" -t 1000
-echo "${emoji}" | copy
+printf %s "${emoji}" | copy
