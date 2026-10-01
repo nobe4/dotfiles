@@ -8,10 +8,12 @@ get_prs "Enter PR URL(s) to checkout:" "$@" | while read -r pr; do
 	repo=${data%% *}
 	branch=${data#* }
 
-	dir="$(mktemp -d)/${repo}"
-
-	gh repo clone "$repo" "$dir" -- --single-branch --branch "$branch"
+	dir="${DEV_PATH:?}/${repo}/worktree/${branch}"
+	if [ ! -d "$dir" ]; then
+		dir="$(mktemp -d)/${repo}"
+		gh repo clone "$repo" "$dir" -- --single-branch --branch "$branch"
+	fi
 
 	cd "$dir"
-	$SHELL -i
+	$SHELL -i < /dev/tty
 done
