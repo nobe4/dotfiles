@@ -87,9 +87,6 @@ refresh_cache(){
 		[ "${cache_age_in_days}" -lt "${PR_CACHE_TTL_DAYS}" ] && return
 	fi
 
-	echo "Writing repo list to ${PR_STATE_PATH}/cache in the background." >&2
-	sleep 1
-
 	# shellcheck disable=SC2016
 	gh api graphql \
 		--paginate \
