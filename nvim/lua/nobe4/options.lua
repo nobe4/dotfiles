@@ -81,8 +81,6 @@ let g:easy_align_delimiters = {
   \ ';': { 'pattern': ';', 'left_margin': 0, 'stick_to_left': 1 } }
 ]]
 
-vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
-
 if vim.g.neovide then
 	vim.opt.mouse = "a"
 	vim.opt.linespace = 1
