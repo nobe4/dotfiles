@@ -14,6 +14,9 @@ get_prs "Enter PR URL(s) to checkout:" "$@" | while read -r pr; do
 		gh repo clone "$repo" "$dir" -- --single-branch --branch "$branch"
 	fi
 
+
 	cd "$dir"
+
+	git pull
 	$SHELL -i < /dev/tty
 done
