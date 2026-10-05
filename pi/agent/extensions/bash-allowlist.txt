@@ -1,0 +1,9 @@
+rg
+grep
+find
+ls
+git status
+git log
+git diff
+git status --short && git branch --show-current && git log -5 --oneline
+git status --short && git log -5 --oneline

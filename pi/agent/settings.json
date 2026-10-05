@@ -1,0 +1,14 @@
+{
+  "defaultProvider": "github-copilot",
+  "defaultModel": "gpt-5.6-sol-fast",
+  "defaultThinkingLevel": "high",
+  "hideThinkingBlock": true,
+  "showHardwareCursor": true,
+  "quietStartup": true,
+  "enableInstallTelemetry": false,
+  "theme": "terminal",
+  "markdown": {
+    "codeBlockIndent": ""
+  },
+  "lastChangelogVersion": "0.75.4"
+}
