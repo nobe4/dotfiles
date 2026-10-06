@@ -95,7 +95,7 @@ take_diff() {
 
 	local status
 	status="$(git -C "${src}" -c color.ui=always status --short)"
-	[ -n "${status}" ] || return
+	[ -n "${status}" ] || return 0
 
 	echo "${status}" > /dev/tty
 	printf 'Take the diff from %s? [y/N] ' "${base}" > /dev/tty
