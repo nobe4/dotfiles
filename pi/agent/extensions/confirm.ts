@@ -11,7 +11,7 @@ import {
 	type ToolCallEvent,
 	type WriteToolCallEvent,
 } from "@earendil-works/pi-coding-agent";
-import { Editor, matchesKey, truncateToWidth, type EditorTheme } from "@earendil-works/pi-tui";
+import { Editor, matchesKey, Text, truncateToWidth, type EditorTheme } from "@earendil-works/pi-tui";
 
 const allowListPath = join(dirname(fileURLToPath(import.meta.url)), "bash-allowlist.txt");
 
@@ -34,6 +34,7 @@ function getEditExplanation(ctx: ExtensionContext, toolCallId: string): string {
 type ConfirmationResult = { block: true; reason: string } | undefined;
 
 const denial = new RegExp( "^(?:n|no|nope|negative|deny|decline|reject|cancel|stop|abort|forbid|forbidden|never|don['’]t|wtf)$", "i");
+const waitingWidget = "confirmation-waiting";
 
 function applyResponse(response: string): ConfirmationResult {
 	const value = response.trim();
@@ -49,12 +50,33 @@ function renderEditor(editor: Editor, width: number, placeholder: string): strin
 	return lines;
 }
 
+async function waitForEmptyEditor(ctx: ExtensionContext): Promise<boolean> {
+	if (!ctx.ui.getEditorText()) return true;
+
+	ctx.ui.setWidget(waitingWidget, (_tui, theme) =>
+		new Text(theme.fg("dim", "Review waiting. Submit or clear your draft."), 1, 0),
+	);
+	try {
+		while (ctx.ui.getEditorText()) {
+			if (ctx.signal?.aborted) return false;
+			await new Promise((resolve) => setTimeout(resolve, 100));
+		}
+		return true;
+	} finally {
+		ctx.ui.setWidget(waitingWidget, undefined);
+	}
+}
+
 async function confirm(
 	ctx: ExtensionContext,
 	approval: { title: string; explanation: string },
 ): Promise<ConfirmationResult> {
 	if (!ctx.hasUI) {
 		return { block: true, reason: "Action needs confirmation, but no UI is available" };
+	}
+
+	if (!(await waitForEmptyEditor(ctx))) {
+		return { block: true, reason: "Session ended before confirmation" };
 	}
 
 	const toolsExpanded = ctx.ui.getToolsExpanded();
