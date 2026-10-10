@@ -2,7 +2,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 import QtQuick
-import QtQuick.Controls
 import "../.."
 import "../../utils"
 
@@ -10,8 +9,14 @@ BarIcon {
     id: root
 
     property PwNode sink: Pipewire.defaultAudioSink
+    property bool outputMenuOpen: false
     readonly property int volume: sink?.ready && sink?.audio ? Math.round(sink.audio.volume * 100) : 0
     readonly property bool muted: sink?.ready && sink?.audio ? sink.audio.muted : false
+    readonly property var audioSinks: Pipewire.nodes.values.filter(function (node) {
+        return node.isSink && !node.isStream && node.audio !== null;
+    }).slice().sort(function (left, right) {
+        return root.nodeName(left).localeCompare(root.nodeName(right));
+    })
     readonly property var audioStreams: Pipewire.nodes.values.filter(function (node) {
         return node.isStream && node.audio !== null;
     })
@@ -40,6 +45,15 @@ BarIcon {
         return media ? app + ": " + media : app;
     }
 
+    function nodeName(node) {
+        return node?.description || node?.nickname || node?.name || "Unknown output";
+    }
+
+    function selectSink(node) {
+        Pipewire.preferredDefaultAudioSink = node;
+        root.outputMenuOpen = false;
+    }
+
     function volumeIcon(volume, muted) {
         if (muted)
             return "";
@@ -48,7 +62,7 @@ BarIcon {
     }
 
     PwObjectTracker {
-        objects: root.audioStreams.concat(root.sink ? [root.sink] : [])
+        objects: root.audioStreams.concat(root.audioSinks)
     }
 
     PwObjectTracker {
@@ -71,82 +85,10 @@ BarIcon {
             const delta = wheel.angleDelta.y > 0 ? 0.05 : -0.05;
             root.sink.audio.volume = Math.max(0, Math.min(1, root.sink.audio.volume + delta));
         }
-    }
-
-    component VolumeSlider: Column {
-        id: control
-
-        required property var node
-        required property string label
-        readonly property int volume: node?.ready && node?.audio ? Math.round(node.audio.volume * 100) : 0
-
-        spacing: 3
-
-        Text {
-            width: parent.width
-            color: Style.fg
-            elide: Text.ElideRight
-            font.family: Style.fontFamily
-            font.pixelSize: Style.fontSize
-            text: control.label + " " + control.volume + "%"
-        }
-
-        Row {
-            width: parent.width
-            height: 24
-            spacing: 8
-
-            Slider {
-                id: slider
-
-                width: parent.width - muteButton.width - parent.spacing
-                height: parent.height
-                enabled: control.node?.ready && control.node?.audio
-                from: 0
-                to: 1
-                value: enabled ? control.node.audio.volume : 0
-                onMoved: control.node.audio.volume = value
-
-                HoverHandler {
-                    cursorShape: Qt.PointingHandCursor
-                }
-
-                background: Rectangle {
-                    x: slider.leftPadding
-                    y: slider.topPadding + slider.availableHeight / 2 - height / 2
-                    width: slider.availableWidth
-                    height: 4
-                    color: Style.grey
-                    radius: 2
-
-                    Rectangle {
-                        width: slider.visualPosition * parent.width
-                        height: parent.height
-                        color: Style.blue
-                        radius: parent.radius
-                    }
-                }
-
-                handle: Rectangle {
-                    x: slider.leftPadding + slider.visualPosition * (slider.availableWidth - width)
-                    y: slider.topPadding + slider.availableHeight / 2 - height / 2
-                    width: 12
-                    height: 12
-                    color: slider.pressed ? Style.fg : Style.blue
-                    radius: 6
-                }
-            }
-
-            ActionButton {
-                id: muteButton
-
-                width: parent.height
-                height: parent.height
-                enabled: control.node?.ready && control.node?.audio
-                text: root.volumeIcon(control.volume, control.node?.ready && control.node?.audio?.muted)
-                textColor: control.node?.ready && control.node?.audio?.muted ? Style.red : Style.fg
-                onClicked: control.node.audio.muted = !control.node.audio.muted
-            }
+        onClicked: {
+            volumePopup.close();
+            if (!pavucontrol.running)
+                pavucontrol.running = true;
         }
     }
 
@@ -154,9 +96,13 @@ BarIcon {
         id: volumePopup
 
         anchor.item: root
-        implicitWidth: 320
+        implicitWidth: 360
         implicitHeight: volumeColumn.implicitHeight + 20
         triggerHovered: volumeMouse.containsMouse
+        onPopupOpenChanged: {
+            if (!popupOpen)
+                root.outputMenuOpen = false;
+        }
 
         Column {
             id: volumeColumn
@@ -165,39 +111,57 @@ BarIcon {
             anchors.margins: 10
             spacing: 8
 
-            VolumeSlider {
+            ActionButton {
                 width: parent.width
-                node: root.sink
-                label: root.sink?.description || root.sink?.name || "Output"
+                enabled: root.audioSinks.length > 0
+                text: root.nodeName(root.sink)
+                onClicked: root.outputMenuOpen = !root.outputMenuOpen
             }
 
-            Text {
-                visible: root.playbackStreams.length > 0
+            Column {
+                visible: root.outputMenuOpen
+                width: parent.width
+                spacing: 3
+
+                Repeater {
+                    model: root.audioSinks
+
+                    ActionButton {
+                        required property var modelData
+
+                        width: volumeColumn.width
+                        text: root.nodeName(modelData)
+                        textColor: modelData === root.sink ? Style.blue : Style.fg
+                        onClicked: root.selectSink(modelData)
+                    }
+                }
+            }
+
+            VolumeSlider {
+                id: sinkVolume
+
+                width: parent.width
+                node: root.sink
+                icon: root.volumeIcon(sinkVolume.volume, sinkVolume.muted)
+            }
+
+            Rectangle {
+                width: parent.width
+                height: 1
                 color: Style.grey
-                font.family: Style.fontFamily
-                font.pixelSize: Style.fontSize
-                text: "Playback"
             }
 
             Repeater {
                 model: root.playbackStreams
 
                 VolumeSlider {
+                    id: sourceVolume
                     required property var modelData
 
                     width: volumeColumn.width
                     node: modelData
                     label: root.streamName(modelData)
-                }
-            }
-
-            ActionButton {
-                width: parent.width
-                text: "More"
-                onClicked: {
-                    volumePopup.close();
-                    if (!pavucontrol.running)
-                        pavucontrol.running = true;
+                    icon: root.volumeIcon(sourceVolume.volume, sourceVolume.muted)
                 }
             }
         }

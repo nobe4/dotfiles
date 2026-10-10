@@ -5,9 +5,9 @@ import QtQuick
 import "./widgets/battery/"
 import "./widgets/bluetooth/"
 import "./widgets/clock/"
-import "./widgets/idle/"
 import "./widgets/indicators/"
 import "./widgets/network/"
+import "./widgets/power/"
 import "./widgets/stats/"
 import "./widgets/tray/"
 import "./widgets/volume/"
@@ -83,7 +83,7 @@ Variants {
                 height: parent.height
             }
 
-            Idle {
+            Power {
                 height: parent.height
                 active: root.idleInhibited
                 onToggled: root.idleInhibited = !root.idleInhibited

@@ -2,7 +2,9 @@
 //@ pragma UseQApplication
 
 import Quickshell
+import "./widgets/notifications/"
 
 ShellRoot {
     Bar {}
+    Notifications {}
 }

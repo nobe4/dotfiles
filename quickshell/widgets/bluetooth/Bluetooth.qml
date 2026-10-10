@@ -1,6 +1,7 @@
 pragma ComponentBehavior: Bound
 
 import Quickshell.Bluetooth as Bluez
+import Quickshell.Services.UPower
 import QtQuick
 import QtQml
 import "../.."
@@ -10,6 +11,7 @@ BarIcon {
     id: root
 
     readonly property var adapter: Bluez.Bluetooth.defaultAdapter
+    readonly property var powerDevices: UPower.devices.values
     readonly property var devices: {
         const values = root.adapter?.devices?.values ?? [];
         return values.filter(function (device) {
@@ -29,6 +31,17 @@ BarIcon {
 
     function deviceName(device) {
         return device.name || device.deviceName || device.address;
+    }
+
+    function powerDevice(device) {
+        const address = device.address.toLowerCase().replace(/[^0-9a-f]/g, "");
+        if (address === "")
+            return null;
+
+        return root.powerDevices.find(function (powerDevice) {
+            const path = powerDevice.nativePath.toLowerCase().replace(/[^0-9a-f]/g, "");
+            return !powerDevice.isLaptopBattery && path.includes(address);
+        }) ?? null;
     }
 
     function activateDevice(device) {
@@ -119,6 +132,10 @@ BarIcon {
                     required property var modelData
 
                     readonly property bool busy: modelData.pairing || modelData.state === Bluez.BluetoothDeviceState.Connecting || modelData.state === Bluez.BluetoothDeviceState.Disconnecting
+                    readonly property var powerDevice: root.powerDevice(modelData)
+                    readonly property bool batteryAvailable: modelData.batteryAvailable || powerDevice !== null
+                    readonly property real battery: modelData.batteryAvailable ? modelData.battery : powerDevice?.percentage ?? 0
+                    readonly property bool batteryCharging: powerDevice?.state === UPowerDeviceState.Charging
                     readonly property string state: {
                         if (modelData.pairing)
                             return "Pairing";
@@ -137,13 +154,26 @@ BarIcon {
                     Column {
                         width: parent.width - actionButton.width - parent.spacing
 
-                        Text {
+                        Row {
                             width: parent.width
-                            color: Style.fg
-                            elide: Text.ElideRight
-                            font.family: Style.fontFamily
-                            font.pixelSize: Style.fontSize
-                            text: root.deviceName(deviceRow.modelData)
+                            spacing: 6
+
+                            Text {
+                                width: parent.width - (batteryIcon.visible ? batteryIcon.width + parent.spacing : 0)
+                                color: Style.fg
+                                elide: Text.ElideRight
+                                font.family: Style.fontFamily
+                                font.pixelSize: Style.fontSize
+                                text: root.deviceName(deviceRow.modelData)
+                            }
+
+                            BatteryIcon {
+                                id: batteryIcon
+
+                                visible: deviceRow.batteryAvailable
+                                percentage: Math.round(deviceRow.battery * 100)
+                                charging: deviceRow.batteryCharging
+                            }
                         }
 
                         Text {

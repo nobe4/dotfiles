@@ -3,20 +3,13 @@ import QtQuick
 import "../.."
 import "../../utils"
 
-BarIcon {
+BatteryIcon {
     id: root
 
     readonly property var battery: UPower.displayDevice
     readonly property bool available: battery.ready && battery.isPresent
-    readonly property int percentage: available ? Math.round(battery.percentage * 100) : 0
-    readonly property bool charging: battery.state === UPowerDeviceState.Charging
-
-    function batteryIcon() {
-        const batteryIcons = ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹",];
-        const chargingIcons = ["󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅",];
-        const level = Math.max(0, Math.min(9, Math.ceil(root.percentage / 10) - 1));
-        return root.charging ? chargingIcons[level] : batteryIcons[level];
-    }
+    percentage: available ? Math.round(battery.percentage * 100) : 0
+    charging: battery.state === UPowerDeviceState.Charging
 
     function stateText() {
         switch (root.battery.state) {
@@ -40,14 +33,6 @@ BarIcon {
     }
 
     visible: root.available
-    color: {
-        if (root.percentage < 10)
-            return Style.red;
-        if (root.percentage < 25)
-            return Style.orange;
-        return Style.fg;
-    }
-    text: root.batteryIcon()
 
     HoverHandler {
         id: batteryHover
