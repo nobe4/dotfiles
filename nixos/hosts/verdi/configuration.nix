@@ -17,12 +17,14 @@ in
     ../../packages/gaming.nix
     ../../packages/1password.nix
     ../../packages/i18n.nix
-    ../../packages/network.nix
+    ../../packages/network
+    ../../packages/network/winbox.nix
+    ../../packages/network/mdns.nix
     ../../packages/vnc
     ../../packages/cross-compile.nix
     ../../packages/virtualization
-    ../../packages/mdns.nix
-    ../../packages/dev.nix
+    ../../packages/dev
+    ../../packages/dev/pi.nix
     ../../packages/kitty.nix
     ../../packages/i2c.nix
     ../../packages/bluetooth.nix

@@ -10,7 +10,7 @@ in
 
   imports = [
     (import ../../packages/age.nix { inherit pkgs; }).module
-    ../../packages/mdns.nix
+    ../../packages/network/mdns.nix
   ];
 
   boot.loader = {

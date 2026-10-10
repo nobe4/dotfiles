@@ -35,8 +35,8 @@
     # XXX
     # ../../packages/1password.nix
     ../../packages/nix
-    ../../packages/dev.nix
-    ../../packages/pi.nix
+    ../../packages/dev
+    ../../packages/dev/pi.nix
 
     ./shortcuts
   ];

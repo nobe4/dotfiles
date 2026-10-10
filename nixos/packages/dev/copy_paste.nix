@@ -25,5 +25,5 @@
       })
     ]
   else
-    builtins.throw "copy/paste is not supported"
+    throw "copy/paste is not supported"
 )

@@ -20,7 +20,7 @@ in
     ../../packages/shell
     ../../packages/i18n.nix
     ../../packages/system.nix
-    ../../packages/mdns.nix
+    ../../packages/network/mdns.nix
     ../../packages/wayland/mini.nix
     ../../packages/kitty.nix
     ../../packages/bluetooth.nix

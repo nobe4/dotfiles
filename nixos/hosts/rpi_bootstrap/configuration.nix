@@ -14,7 +14,7 @@ in
     {
       imports = [
         <nixpkgs/nixos/modules/installer/sd-card/sd-image-aarch64.nix>
-        ../../packages/mdns.nix
+        ../../packages/network/mdns.nix
       ];
 
       sdImage.compressImage = false;

@@ -15,4 +15,4 @@ else if pkgs ? libnotify then
     '';
   }
 else
-  builtins.throw "notify not supported"
+  throw "notify not supported"

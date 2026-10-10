@@ -1,11 +1,10 @@
 # Define all things network related.
 { pkgs, ... }:
 {
-
   users.users.nobe4.packages = with pkgs; [
     dnsutils
     unixtools.route
-    winbox4
+    unixtools.netstat
   ];
 
   networking = {
@@ -27,11 +26,5 @@
   services.mullvad-vpn = {
     enable = true;
     package = pkgs.mullvad-vpn; # enables the GUI
-  };
-
-  programs.winbox = {
-    package = pkgs.winbox4;
-    enable = true;
-    openFirewall = true;
   };
 }
