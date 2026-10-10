@@ -27,11 +27,12 @@ return {
 					},
 				},
 
-				 pickers = {
-					 find_files = {
-						 follow = true
-					 }
-				 },
+				pickers = {
+					find_files = {
+						follow = true,
+						no_ignore = true,
+					},
+				},
 
 				extensions = {
 					fzf = {
