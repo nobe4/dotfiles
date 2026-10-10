@@ -25,6 +25,8 @@ in
     ../../packages/kitty.nix
     ../../packages/bluetooth.nix
     ../../packages/media.nix
+
+    ../../../private/nixos/hosts/brahms/configuration.nix
   ];
 
   # Repo goes into the store; symlink it to a predictable path.
