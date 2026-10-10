@@ -86,6 +86,10 @@ in
     ln --verbose --force --symbolic --no-target-directory \
       "/home/nobe4/dev/nobe4/dotfiles" \
       "/home/nobe4/.config/dotfiles" >> /tmp/ln-logs 2>&1
+
+    ln --verbose --force --symbolic --no-target-directory \
+      "/home/nobe4/dev/nobe4/dotfiles-private/" \
+      "/home/nobe4/dev/nobe4/dotfiles/private" >> /tmp/ln-logs 2>&1
   '';
 
   # TODO: check why those are programs, and what benefits vs
