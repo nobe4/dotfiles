@@ -192,12 +192,6 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 --------------------------------
 
 hl.window_rule({
-	name  = "steam-float",
-	match = { class = "^steam.*$" },
-	float = true,
-})
-
-hl.window_rule({
 	name     = "pavucontrol-float",
 	match    = { class = "^org.pulseaudio.pavucontrol$" },
 	float    = true,
