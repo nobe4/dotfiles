@@ -21,6 +21,7 @@ in
     ../../packages/i18n.nix
     ../../packages/system.nix
     ../../packages/network/mdns.nix
+    ../../packages/network/mullvad/service.nix
     ../../packages/wayland/mini.nix
     ../../packages/kitty.nix
     ../../packages/bluetooth.nix
@@ -74,11 +75,18 @@ in
   users.users.nobe4 = {
     openssh.authorizedKeys.keys = [ keys.nobe4_verdi ];
   };
+  services.openssh.enable = true;
 
-  # Configure network connections interactively with nmcli or nmtui.
-  networking.networkmanager.enable = true;
 
-  networking.hostName = "brahms";
+  networking = {
+    hostName = "brahms";
+
+    networkmanager.enable = true;
+
+    firewall = {
+      allowedTCPPorts = [ 8080 ];
+    };
+  };
 
   console.keyMap = "colemak";
 
@@ -91,14 +99,6 @@ in
     kitty
     firefox
   ];
-
-  # ref: https://nixos.wiki/wiki/Mullvad_VPN
-  services.mullvad-vpn = {
-    enable = true;
-    package = pkgs.mullvad-vpn; # enables the GUI
-  };
-
-  services.openssh.enable = true;
 
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion.
   system.stateVersion = "26.05"; # Did you read the comment?

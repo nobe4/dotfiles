@@ -20,6 +20,7 @@ in
     ../../packages/network
     ../../packages/network/winbox.nix
     ../../packages/network/mdns.nix
+    ../../packages/network/mullvad
     ../../packages/vnc
     ../../packages/cross-compile.nix
     ../../packages/virtualization
