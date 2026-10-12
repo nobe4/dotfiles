@@ -1,10 +1,10 @@
 {
   config,
-  pkgs,
+  pkgs-unstable,
   ...
 }:
 let
-  pi-coding-agent = pkgs.pi-coding-agent.overrideAttrs (old: {
+  pi-coding-agent = pkgs-unstable.pi-coding-agent.overrideAttrs (old: {
     postInstall = (old.postInstall or "") + ''
       substituteInPlace \
         "$out/lib/node_modules/pi-monorepo/dist/modes/interactive/components/assistant-message.js" \
