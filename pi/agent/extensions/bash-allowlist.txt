@@ -1,9 +1,17 @@
-rg
-grep
-find
-ls
-git status
-git log
-git diff
-git status --short && git branch --show-current && git log -5 --oneline
-git status --short && git log -5 --oneline
+# JavaScript regex. Each pattern must match the whole trimmed command.
+
+# GitHub
+gh issue view(\s+.*)?
+gh pr view(\s+.*)?
+
+# Git
+git(\s+-C\s+\S+)?\s+blame(\s+.*)?
+git(\s+-C\s+\S+)?\s+branch --(show-current|all)
+git(\s+-C\s+\S+)?\s+diff(\s+.*)?
+git(\s+-C\s+\S+)?\s+grep(\s+.*)?
+git(\s+-C\s+\S+)?\s+log(\s+.*)?
+git(\s+-C\s+\S+)?\s+ls-files(\s+.*)?
+git(\s+-C\s+\S+)?\s+ls-tree(\s+.*)?
+git(\s+-C\s+\S+)?\s+remote(\s+.*)?
+git(\s+-C\s+\S+)?\s+show(\s+.*)?
+git(\s+-C\s+\S+)?\s+status(\s+.*)?
