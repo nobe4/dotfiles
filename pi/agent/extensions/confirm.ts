@@ -1,5 +1,5 @@
 import { constants } from "node:fs";
-import { access, readFile } from "node:fs/promises";
+import { access, appendFile, readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -14,6 +14,27 @@ import {
 import { Editor, matchesKey, Text, truncateToWidth, type EditorTheme } from "@earendil-works/pi-tui";
 
 const allowListPath = join(dirname(fileURLToPath(import.meta.url)), "bash-allowlist.txt");
+const shellComposition = /[;&|`\n\r]|\$\(|[<>]\(/;
+
+function parseAllowedCommands(contents: string): RegExp[] {
+	return contents
+		.split(/\r?\n/)
+		.map((line) => line.trim())
+		.filter((line) => line && !line.startsWith("#"))
+		.map((source) => new RegExp(`^(?:${source})$`));
+}
+
+function escapeRegExp(value: string): string {
+	return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+async function addAllowedCommand(command: string): Promise<void> {
+	const contents = await readFile(allowListPath, "utf8");
+	if (parseAllowedCommands(contents).some((pattern) => pattern.test(command))) return;
+
+	const separator = contents && !/[\r\n]$/.test(contents) ? "\n" : "";
+	await appendFile(allowListPath, `${separator}${escapeRegExp(command)}\n`, "utf8");
+}
 
 function getEditExplanation(ctx: ExtensionContext, toolCallId: string): string {
 	for (const entry of ctx.sessionManager.getBranch().toReversed()) {
@@ -69,7 +90,11 @@ async function waitForEmptyEditor(ctx: ExtensionContext): Promise<boolean> {
 
 async function confirm(
 	ctx: ExtensionContext,
-	approval: { title: string; explanation: string },
+	approval: {
+		title: string;
+		explanation: string;
+		approveAndWhitelist?: () => Promise<void>;
+	},
 ): Promise<ConfirmationResult> {
 	if (!ctx.hasUI) {
 		return { block: true, reason: "Action needs confirmation, but no UI is available" };
@@ -96,6 +121,9 @@ async function confirm(
 			};
 			const editor = new Editor(tui, editorTheme);
 			editor.onSubmit = done;
+			const actions = approval.approveAndWhitelist
+				? ' Enter: approve · type "safe": approve and whitelist · type feedback: refine · no: deny'
+				: " Enter: approve · type feedback: refine · no: deny";
 
 			return {
 				get focused() {
@@ -109,11 +137,7 @@ async function confirm(
 						theme.fg("toolTitle", theme.bold(approval.title)),
 						truncateToWidth(theme.fg("text", approval.explanation), width, "…"),
 						"",
-						...renderEditor(
-							editor,
-							width,
-							theme.fg("dim", " Enter: approve · type feedback: refine · no: deny"),
-						),
+						...renderEditor(editor, width, theme.fg("dim", actions)),
 					];
 				},
 				invalidate() {
@@ -125,6 +149,16 @@ async function confirm(
 				},
 			};
 		});
+
+		if (approval.approveAndWhitelist && response.trim() === "safe") {
+			try {
+				await approval.approveAndWhitelist();
+				return;
+			} catch (error) {
+				const message = error instanceof Error ? error.message : String(error);
+				return { block: true, reason: `Could not update bash allow list: ${message}` };
+			}
+		}
 
 		return applyResponse(response);
 	} finally {
@@ -170,32 +204,37 @@ async function confirmFileTool<TEvent extends ToolCallEvent>(
 export default function requireConfirmation(pi: ExtensionAPI) {
 	pi.on("tool_call", async (event, ctx) => {
 		if (isToolCallEventType("bash", event)) {
-			const command = event.input.command;
-			let allowedCommands: string[];
+			const command = event.input.command.trim();
+			if (shellComposition.test(command)) {
+				return {
+					block: true,
+					reason: "Run one command per bash call so each command can be approved separately",
+				};
+			}
+
+			let allowedCommands: RegExp[];
 			try {
-				allowedCommands = (await readFile(allowListPath, "utf8"))
-					.split(/\r?\n/)
-					.map((command) => command.trim())
-					.filter(Boolean);
+				allowedCommands = parseAllowedCommands(await readFile(allowListPath, "utf8"));
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
 				return { block: true, reason: `Could not read bash allow list: ${message}` };
 			}
 
+			if (allowedCommands.some((pattern) => pattern.test(command))) return;
+
 			if (/^bundle exec rspec(?:\s|$)/.test(command)) {
 				return confirm(ctx, {
 					title: "Run this test command?",
 					explanation: command,
+					approveAndWhitelist: () => addAllowedCommand(command),
 				});
 			}
 
-			if (allowedCommands.includes(command)) return;
-			return {
-				block: true,
-				reason:
-					"Command execution is disabled. Do not call bash again. Give the user the exact command " +
-					"and explain what it would do.",
-			};
+			return confirm(ctx, {
+				title: "Run this command?",
+				explanation: command,
+				approveAndWhitelist: () => addAllowedCommand(command),
+			});
 		}
 
 		const editResult = await confirmFileTool<EditToolCallEvent>(event, ctx, {
