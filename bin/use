@@ -20,7 +20,7 @@ show_help() {
 
 # File           | content | packages
 rules="
-	*.rb         |         | ruby ruby-lsp
+	*.rb         |         | bundler ruby ruby-lsp
 	*.go         |         | go gopls golangci-lint golangci-lint-langserver
 	*.sh         |         | bash-language-server shellcheck
 	*.c          |         | clang-tools
