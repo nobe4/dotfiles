@@ -19,8 +19,7 @@ BarIcon {
             return network.connected;
         }) ?? null;
     }
-    readonly property bool connected:
-        root.wiredDevice !== null || root.wifiNetwork !== null
+    readonly property bool connected: root.wiredDevice !== null || root.wifiNetwork !== null
 
     function signalStrength() {
         const strength = root.wifiNetwork?.signalStrength ?? 0;
@@ -50,8 +49,7 @@ BarIcon {
         if (root.wiredDevice)
             lines.push("Wired");
         if (root.wifiNetwork)
-            lines.push("Wi-Fi: " + root.wifiNetwork.name
-                + " (" + root.signalStrength() + "%)");
+            lines.push("Wi-Fi: " + root.wifiNetwork.name + " (" + root.signalStrength() + "%)");
         if (lines.length === 0)
             return "Disconnected";
 
@@ -62,12 +60,11 @@ BarIcon {
     color: {
         if (!root.connected)
             return Style.red;
-        if (Net.Networking.connectivity === Net.NetworkConnectivity.Limited
-                || Net.Networking.connectivity === Net.NetworkConnectivity.Portal)
+        if (Net.Networking.connectivity === Net.NetworkConnectivity.Limited || Net.Networking.connectivity === Net.NetworkConnectivity.Portal)
             return Style.orange;
         return Style.fg;
     }
-    text: root.wiredDevice ? "󰈀" : root.wifiNetwork ? "" : "⚠"
+    text: root.wiredDevice ? "" : root.wifiNetwork ? "" : "⚠"
 
     HoverHandler {
         id: networkHover

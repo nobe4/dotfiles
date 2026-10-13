@@ -17,7 +17,7 @@ BarIcon {
             return;
 
         root.powerError = "";
-        powerAction.command = ["systemctl", action];
+        powerAction.command = action;
         powerAction.running = true;
     }
 
@@ -57,15 +57,19 @@ BarIcon {
             Repeater {
                 model: [
                     {
-                        action: "poweroff",
+                        action: ["loginctl", "terminate-user", Quickshell.env("USER")],
+                        label: "  Logout"
+                    },
+                    {
+                        action: ["systemctl", "poweroff"],
                         label: "  Shutdown"
                     },
                     {
-                        action: "reboot",
+                        action: ["systemctl", "reboot"],
                         label: "  Restart"
                     },
                     {
-                        action: "hibernate",
+                        action: ["systemctl", "hibernate"],
                         label: "󰒲  Hibernate"
                     }
                 ]

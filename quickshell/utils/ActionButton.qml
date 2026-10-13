@@ -23,11 +23,9 @@ Controls.Button {
     }
 
     background: Rectangle {
-        color: root.down
-            ? Style.grey
-            : root.enabled && root.hovered ? Style.fg : Style.bg
+        color: root.down ? Style.grey : root.enabled && root.hovered ? Style.fg : Style.bg
         border.color: root.enabled && root.hovered ? Style.fg : Style.grey
-        radius: 3
+        radius: 0
     }
 
     HoverHandler {
