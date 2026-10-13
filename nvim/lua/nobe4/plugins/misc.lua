@@ -14,5 +14,11 @@ return {
 
 
 	"nvim-tree/nvim-web-devicons",
+	{
+		"gzitei/paint.nvim",
+		ft = { "css", "scss", "sass", "less", "stylus", "python" },
+		opts = {},
+	},
+
 	{ "hat0uma/csvview.nvim", config = function() require("csvview").setup() end },
 }
