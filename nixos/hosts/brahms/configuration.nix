@@ -82,6 +82,10 @@ in
   };
   services.openssh.enable = true;
 
+  services.printing = {
+    enable = true;
+    drivers = [ pkgs.hplip ];
+  };
 
   networking = {
     hostName = "brahms";
