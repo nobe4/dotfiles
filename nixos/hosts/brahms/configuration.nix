@@ -11,7 +11,12 @@ in
     ./hardware-configuration.nix
     ./brcm
 
-    "${fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/apple/t2"
+    "${
+      fetchGit {
+        url = "https://github.com/NixOS/nixos-hardware.git";
+        rev = "60a624466c08787ee8303393b7d4752d1826f14f";
+      }
+    }/apple/t2"
 
     ../../utils/ln.nix
 
