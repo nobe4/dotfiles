@@ -35,6 +35,11 @@ in
     ../../../private/nixos/hosts/brahms/configuration.nix
   ];
 
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [ intel-media-driver ];
+  };
+
   # Repo goes into the store; symlink it to a predictable path.
   dotfiles = builtins.path {
     path = ../../..;
