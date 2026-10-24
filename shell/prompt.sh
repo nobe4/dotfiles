@@ -85,7 +85,10 @@ prompt() {
 				dirty="*"
 			fi
 
-			prompt="${prompt}${branch}${stash_count}${dirty}"
+			pull="$(git rev-list -1 HEAD..'@{upstream}' 2> /dev/null)"
+			[ -n "${pull}" ] && pull=""
+
+			prompt="${prompt}${branch}${stash_count}${dirty}${pull}"
 		fi
 	fi
 
