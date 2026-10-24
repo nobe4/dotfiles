@@ -1,5 +1,5 @@
 import { constants } from "node:fs";
-import { access, appendFile, readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -22,18 +22,6 @@ function parseAllowedCommands(contents: string): RegExp[] {
 		.map((line) => line.trim())
 		.filter((line) => line && !line.startsWith("#"))
 		.map((source) => new RegExp(`^(?:${source})$`));
-}
-
-function escapeRegExp(value: string): string {
-	return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-async function addAllowedCommand(command: string): Promise<void> {
-	const contents = await readFile(allowListPath, "utf8");
-	if (parseAllowedCommands(contents).some((pattern) => pattern.test(command))) return;
-
-	const separator = contents && !/[\r\n]$/.test(contents) ? "\n" : "";
-	await appendFile(allowListPath, `${separator}${escapeRegExp(command)}\n`, "utf8");
 }
 
 function getEditExplanation(ctx: ExtensionContext, toolCallId: string): string {
@@ -93,7 +81,7 @@ async function confirm(
 	approval: {
 		title: string;
 		explanation: string;
-		approveAndWhitelist?: () => Promise<void>;
+		onSafe?: () => void | Promise<void>;
 	},
 ): Promise<ConfirmationResult> {
 	if (!ctx.hasUI) {
@@ -121,8 +109,8 @@ async function confirm(
 			};
 			const editor = new Editor(tui, editorTheme);
 			editor.onSubmit = done;
-			const actions = approval.approveAndWhitelist
-				? ' Enter: approve · type "safe": approve and whitelist · type feedback: refine · no: deny'
+			const actions = approval.onSafe
+				? ' Enter: approve · type "safe": approve and update regex · type feedback: refine · no: deny'
 				: " Enter: approve · type feedback: refine · no: deny";
 
 			return {
@@ -150,13 +138,13 @@ async function confirm(
 			};
 		});
 
-		if (approval.approveAndWhitelist && response.trim() === "safe") {
+		if (approval.onSafe && response.trim() === "safe") {
 			try {
-				await approval.approveAndWhitelist();
+				await approval.onSafe();
 				return;
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
-				return { block: true, reason: `Could not update bash allow list: ${message}` };
+				return { block: true, reason: `Could not request bash allow-list update: ${message}` };
 			}
 		}
 
@@ -202,6 +190,24 @@ async function confirmFileTool<TEvent extends ToolCallEvent>(
 }
 
 export default function requireConfirmation(pi: ExtensionAPI) {
+	const safeCommands = new Set<string>();
+
+	pi.on("turn_end", () => {
+		if (!safeCommands.size) return;
+
+		const commands = [...safeCommands];
+		safeCommands.clear();
+		pi.sendUserMessage(
+			`Make the smallest JavaScript regex update in ${allowListPath} that authorizes ` +
+				`these commands: ${JSON.stringify(commands)}. Prefer widening each command's ` +
+				"existing pattern. Keep one flat, repeatable alternation of allowed flags per " +
+				"command. Each flag must work independently and in any order. Keep required " +
+				"values with their flags. Preserve current command and flag restrictions. Do not " +
+				"append any exact command as a regex line. Edit the file now.",
+			{ deliverAs: "followUp" },
+		);
+	});
+
 	pi.on("tool_call", async (event, ctx) => {
 		if (isToolCallEventType("bash", event)) {
 			const command = event.input.command.trim();
@@ -222,18 +228,12 @@ export default function requireConfirmation(pi: ExtensionAPI) {
 
 			if (allowedCommands.some((pattern) => pattern.test(command))) return;
 
-			if (/^bundle exec rspec(?:\s|$)/.test(command)) {
-				return confirm(ctx, {
-					title: "Run this test command?",
-					explanation: command,
-					approveAndWhitelist: () => addAllowedCommand(command),
-				});
-			}
-
 			return confirm(ctx, {
 				title: "Run this command?",
 				explanation: command,
-				approveAndWhitelist: () => addAllowedCommand(command),
+				onSafe: () => {
+					safeCommands.add(command);
+				},
 			});
 		}
 

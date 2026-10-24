@@ -5,10 +5,15 @@
   "hideThinkingBlock": true,
   "showHardwareCursor": true,
   "quietStartup": true,
+  "outputPad": 0,
   "enableInstallTelemetry": false,
   "theme": "terminal",
   "markdown": {
     "codeBlockIndent": ""
   },
+  "packages": [
+  ],
+  "skills": [
+  ],
   "lastChangelogVersion": "1.0.2"
 }

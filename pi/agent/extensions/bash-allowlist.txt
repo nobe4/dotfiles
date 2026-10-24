@@ -1,14 +1,24 @@
 # JavaScript regex. Each pattern must match the whole trimmed command.
 
 # GitHub
-gh issue view(\s+.*)?
-gh pr view(\s+.*)?
+gh issue view(\s+[^-\s]\S*)?(?:\s+(?:--repo\s+[^-\s]\S*|--json\s+[^-\s]\S*))*
+gh pr view(\s+[^-\s]\S*)?(?:\s+(?:--repo\s+[^-\s]\S*|--json\s+[^-\s]\S*))*
+gh search (?:prs|commits)\s+"[^"$`\\\r\n]*"(?:\s+(?:--json\s+[^-\s]\S*|--limit\s+\d+))*
 
 # Git
-git(\s+-C\s+\S+)?\s+(blame|diff|grep|log|ls-files|ls-tree|remote|show|status)(\s+.*)?
-git(\s+-C\s+\S+)?\s+branch --(show-current|all)
-git branch -vv
+git(\s+-C\s+\S+)?\s+blame(\s+[^-\s]\S*)*
+git(\s+-C\s+\S+)?\s+diff(?:\s+(?:--cached|--check|--stat|--name-status|--|[^-\s]\S*))*
+git(\s+-C\s+\S+)?\s+grep(\s+[^-\s]\S*)*
+git(\s+-C\s+\S+)?\s+log(\s+(?:-\d+|--all|--follow|--oneline|--stat|--decorate|--grep=\S+|--|[^-\s]\S*))*
+git(\s+-C\s+\S+)?\s+ls-files(\s+[^-\s]\S*)*
+git(\s+-C\s+\S+)?\s+ls-tree(\s+[^-\s]\S*)*
+git(\s+-C\s+\S+)?\s+remote
+git(?:\s+-C\s+\S+)?\s+rev-parse(?:\s+[^-\s]\S*)+
+git(?:\s+-C\s+\S+)?\s+show(?:\s+(?:--stat|--oneline|--format=\S+|--no-ext-diff|--|[^-\s]\S*))*
+git(\s+-C\s+\S+)?\s+status(?:\s+(?:--short|--branch|--untracked-files=all))*
+git(\s+-C\s+\S+)?\s+branch(?:\s+(?:-a|-vv|--show-current|--all|--verbose|--no-abbrev|--contains\s+[^-\s]\S*))+
 
 # System
-readlink(\s+.*)?
-which(\s+.*)?
+readlink(\s+[^-\s]\S*)+
+which(\s+[^-\s]\S*)+
+date(\s+-u)?
