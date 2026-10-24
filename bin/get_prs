@@ -35,4 +35,4 @@ else
 	esac
 fi
 
-echo "${out}" | tr ' ' '\n' | grep -v '^$'
+printf '%s\n' "${out}" | xargs -n 1 gh pr view --json url -q '.url'
