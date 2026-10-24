@@ -3,13 +3,13 @@ local M = {}
 local snipe = require("nobe4/function/snipe")
 
 local default_opts = { noremap = true, silent = false }
-local map = function(mod, left, right, opts)
+local map = function(modes, left, right, opts)
 	if not opts then opts = default_opts end
-	vim.keymap.set(mod, left, right, opts)
+	vim.keymap.set(modes, left, right, opts)
 end
 
-local deprecated = function(mod, left, new)
-	map(mod, left, function() error("\n\nUse " .. new .. "\n") end)
+local deprecated = function(modes, left, new)
+	map(modes, left, function() error("\n\nUse " .. new .. "\n") end)
 end
 
 -- Space is the Leader key
@@ -47,6 +47,21 @@ map("c", "<CR>", function()
 			snipe()
 		end
 	end, { expr = true, silent = true })
+
+-- replaces https://github.com/nobe4/exchange.vim/blob/master/autoload/exchange.vim
+local exchange_pending = false
+map("v", "<CR>", function()
+	-- send <esc>, nvim_feedkeys doesn't accept `<esc>`
+	vim.api.nvim_feedkeys("\27", "nx", false)
+
+	if not exchange_pending then
+		vim.cmd("normal! `<mA`>mB")
+	else
+		vim.cmd("normal! `<mC`>mD`Av`By`Cv`Dp`Av`Bp")
+	end
+
+	exchange_pending = not exchange_pending
+end)
 
 map("n", "gp", "'[v']") -- Select last pasted zone
 map("v", "@", ":norm@") -- Replay mapping over visual
@@ -94,8 +109,7 @@ map("t", "<Esc>", [[<C-\><C-n>]])                                  -- Escape in 
 map("n", "<Leader>gs", ":tabnew +Git status<CR>")
 map("n", "<Leader>gp", ":!gp")
 map("n", "<Leader>gl", ":Git pull")
-map("n", "<Leader>gb", ":GBrowse<CR>")
-map("v", "<Leader>gb", ":GBrowse<CR>")
+map({ "n", "v" }, "<Leader>gb", ":GBrowse<CR>")
 
 -- VimCorrect
 map("n", "Z=", ":Correct<CR>")
