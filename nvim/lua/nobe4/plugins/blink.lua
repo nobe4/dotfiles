@@ -6,22 +6,13 @@ return {
 
 		dependencies = {
 			{ "L3MON4D3/LuaSnip", version = "v2.*" },
-			"moyiz/blink-emoji.nvim",
 		},
 
 		opts_extend = { "sources.default" },
 
 		opts = {
 			sources = {
-				default = { "lsp", "path", "snippets", "buffer", "emoji" },
-				providers = {
-					emoji = {
-						module = "blink-emoji",
-						name = "Emoji",
-						score_offset = 15,
-						opts = { insert = true },
-					},
-				},
+				default = { "lsp", "path", "snippets", "buffer" },
 			},
 			keymap = {
 				preset = "none",
