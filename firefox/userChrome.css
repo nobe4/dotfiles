@@ -1,0 +1,12 @@
+:root:not([theme-image-in-toolbox]) body, :root[theme-image-in-toolbox] #navigator-toolbox {
+	background-image: none !important;
+}
+
+#tabbrowser-tabs[orient="vertical"] {
+	--tab-margin-inline-inner: 5px !important;
+	--tab-min-height: 30px !important;
+	--tab-block-margin: 0px !important;
+	--tab-margin-block: 0px !important;
+	--tab-padding-block-end: 1px !important;
+	--tab-padding-block-start: 1px !important;
+}
