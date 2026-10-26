@@ -22,7 +22,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "copy-url@nobe4.local",
+      "id": "copy-tab-urls.firefox.nobe4",
       "strict_min_version": "109.0"
     }
   }
