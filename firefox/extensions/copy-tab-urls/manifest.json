@@ -22,8 +22,11 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "copy-tab-urls.firefox.nobe4",
-      "strict_min_version": "109.0"
+      "id": "copy-tab-urls@nobe4",
+      "strict_min_version": "109.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   }
 }
