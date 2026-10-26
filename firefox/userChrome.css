@@ -1,3 +1,14 @@
+/*
+ * Enable this file:
+ * 1. Open about:support and find the profile directory.
+ * 2. Create its chrome directory and link this file:
+ *    mkdir -p "<profile-directory>/chrome"
+ *    ln -s "$HOME/.config/dotfiles/firefox/userChrome.css" \
+ *      "<profile-directory>/chrome/userChrome.css"
+ * 3. Set toolkit.legacyUserProfileCustomizations.stylesheets to true in about:config.
+ * 4. Restart Firefox.
+ */
+
 :root:not([theme-image-in-toolbox]) body, :root[theme-image-in-toolbox] #navigator-toolbox {
 	background-image: none !important;
 }
