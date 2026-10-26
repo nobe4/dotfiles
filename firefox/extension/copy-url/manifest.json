@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Copy Tab URLs",
+  "version": "0.0.1",
+  "description": "Copy selected tab URLs, one per line.",
+  "permissions": [
+    "clipboardWrite",
+    "notifications",
+    "tabs"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "commands": {
+    "copy-tab-urls": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+C",
+        "mac": "Command+Shift+C"
+      },
+      "description": "Copy selected tab URLs"
+    }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "copy-url@nobe4.local",
+      "strict_min_version": "109.0"
+    }
+  }
+}
