@@ -37,6 +37,7 @@
     ../../packages/nix
     ../../packages/dev
     ../../packages/dev/pi.nix
+    ../../packages/font
 
     ./shortcuts
     ./slack-mark-read.nix
