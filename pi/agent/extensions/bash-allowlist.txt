@@ -17,8 +17,10 @@ git(?:\s+-C\s+\S+)?\s+rev-parse(?:\s+[^-\s]\S*)+
 git(?:\s+-C\s+\S+)?\s+show(?:\s+(?:--stat|--oneline|--format=\S+|--no-ext-diff|--|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+status(?:\s+(?:--short|--branch|--untracked-files=all))*
 git(\s+-C\s+\S+)?\s+branch(?:\s+(?:-a|-vv|--show-current|--all|--verbose|--no-abbrev|--contains\s+[^-\s]\S*))+
+git(\s+-C\s+\S+)?\s+worktree\s+list
 
 # System
 readlink(\s+[^-\s]\S*)+
 which(\s+[^-\s]\S*)+
 date(\s+-u)?
+stat(?:\s+(?:-c\s+'%s bytes'))*\s+[^-\s]\S*

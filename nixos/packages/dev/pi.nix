@@ -3,19 +3,8 @@
   pkgs-unstable,
   ...
 }:
-let
-  pi-coding-agent = pkgs-unstable.pi-coding-agent.overrideAttrs (old: {
-    postInstall = (old.postInstall or "") + ''
-      substituteInPlace \
-        "$out/lib/node_modules/pi-monorepo/dist/modes/interactive/components/assistant-message.js" \
-        --replace-fail \
-        "new Markdown(content.text.trim(), 1, 0, this.markdownTheme)" \
-        "new Markdown(content.text.trim(), 0, 0, this.markdownTheme)"
-    '';
-  });
-in
 {
-  users.users.nobe4.packages = [ pi-coding-agent ];
+  users.users.nobe4.packages = [ pkgs-unstable.pi-coding-agent ];
 
   ln = with config; [
     [

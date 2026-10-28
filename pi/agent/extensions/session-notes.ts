@@ -1,6 +1,6 @@
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import { uuidv7 } from "@earendil-works/pi-ai";
+import { type AssistantMessage, uuidv7 } from "@earendil-works/pi-ai";
 import {
 	convertToLlm,
 	serializeConversation,
@@ -15,6 +15,8 @@ const systemPrompt = `Distill one coding session into a concise Markdown note.
 Return only this format:
 
 <date>: <one-line TLDR>
+
+Cost: $<session cost>
 
 <body with useful details>
 
@@ -78,6 +80,13 @@ export default function sessionNotes(pi: ExtensionAPI) {
 			const transcript = serializeConversation(convertToLlm(messages));
 			if (!transcript.trim()) return;
 
+			let cost = 0;
+			for (const entry of ctx.sessionManager.getEntries()) {
+				if (entry.type !== "message" || entry.message.role !== "assistant") continue;
+				cost += (entry.message as AssistantMessage).usage.cost.total;
+			}
+			const formattedCost = `$${cost.toFixed(3)}`;
+
 			const response = await ctx.modelRegistry.complete(
 				ctx.model,
 				{
@@ -88,7 +97,7 @@ export default function sessionNotes(pi: ExtensionAPI) {
 							content: [
 								{
 									type: "text",
-									text: `Date: ${date}\n\nExisting note:\n${existingNote || "None"}\n\nTranscript:\n${transcript}`,
+									text: `Date: ${date}\nCost: ${formattedCost}\n\nExisting note:\n${existingNote || "None"}\n\nTranscript:\n${transcript}`,
 								},
 							],
 							timestamp: Date.now(),
@@ -107,7 +116,11 @@ export default function sessionNotes(pi: ExtensionAPI) {
 				.map((block) => block.text)
 				.join("\n")
 				.trim();
-			if (!note.startsWith(`${date}:`) || !note.includes("\n## Links\n")) {
+			if (
+				!note.startsWith(`${date}:`) ||
+				!note.includes(`\n\nCost: ${formattedCost}\n`) ||
+				!note.includes("\n## Links\n")
+			) {
 				throw new Error("model returned an invalid note");
 			}
 
