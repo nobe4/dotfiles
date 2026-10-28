@@ -10,4 +10,5 @@ in
     keys.nobe4_verdi
     keys.root_bach
   ];
+  "wagner-slack-mark-read.age".publicKeys = [ keys.nobe4_wagner ];
 }

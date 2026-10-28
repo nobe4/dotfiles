@@ -39,6 +39,7 @@
     ../../packages/dev/pi.nix
 
     ./shortcuts
+    ./slack-mark-read.nix
   ];
 
   networking = {

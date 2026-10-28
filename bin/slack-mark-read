@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#/ Usage: slack-mark-read < FILE
+#/
+#/ Marks each TEAM:CHANNEL_ID conversation from stdin as read.
+
+set -e
+
+authenticated_team=""
+
+mark_read() {
+	local team="${1}"
+	local channel="${2}"
+	local latest_ts body exports
+
+	if [ "${authenticated_team}" != "${team}" ]; then
+		exports="$(gh slack auth -t "${team}")"
+		eval "${exports}"
+		authenticated_team="${team}"
+	fi
+
+	latest_ts="$(
+		gh slack api get conversations.history \
+			-t "${team}" \
+			-f "channel=${channel}" \
+			-f limit=1 \
+			| jq -er '.messages[0].ts // error(.error)'
+	)"
+
+	body="$(
+		jq -cn \
+			--arg channel "${channel}" \
+			--arg ts "${latest_ts}" \
+			'{channel: $channel, ts: $ts}'
+	)"
+
+	gh slack api post conversations.mark \
+		-t "${team}" \
+		-b "${body}" \
+		| jq -er 'if .ok then "ok" else error(.error) end' \
+		>/dev/null
+
+	printf 'Marked %s:%s as read.\n' "${team}" "${channel}"
+}
+
+while IFS=: read -r team channel || [ -n "${team}${channel}" ]; do
+	[ -z "${team}${channel}" ] && continue
+	mark_read "${team}" "${channel}"
+done
