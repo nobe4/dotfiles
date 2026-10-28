@@ -9,6 +9,12 @@
 
 Firefox temporary add-ons when the browser exits.
 
+## Disable the default shortuct
+
+1. Open `about:keyboard`
+2. Scroll to the corresponding
+3. reset/disable
+
 ## Update a temporary add-on
 
 After changing files, return to `about:debugging#/runtime/this-firefox` and
@@ -45,7 +51,17 @@ The signed add-on remains installed after Firefox restarts.
 Open `about:addons`, select the gear menu, then select **Manage Extension
 Shortcuts** to inspect or change extension shortcuts.
 
+To stop websites from overriding extension shortcuts:
+
+1. Open `about:config`.
+2. Search for `permissions.default.shortcuts`.
+3. Set its numeric value to `2`.
+
+This browser-wide setting blocks websites from overriding Firefox shortcuts. It
+avoids granting the extension access to website data.
+
 ## References
 
 - [Temporary installation](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/)
 - [Signing and distribution](https://extensionworkshop.com/documentation/publish/signing-and-distribution-overview/)
+- [permissions `2`](https://support.mozilla.org/en-US/questions/1241294)
