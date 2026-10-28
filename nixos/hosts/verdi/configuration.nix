@@ -26,6 +26,7 @@ in
     ../../packages/virtualization
     ../../packages/dev
     ../../packages/dev/pi.nix
+    ../../packages/dev/docker.nix
     ../../packages/kitty.nix
     ../../packages/i2c.nix
     ../../packages/bluetooth.nix
