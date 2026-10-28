@@ -4,6 +4,7 @@ import Quickshell
 import QtQuick
 import "./widgets/battery/"
 import "./widgets/bluetooth/"
+import "./widgets/brightness/"
 import "./widgets/clock/"
 import "./widgets/indicators/"
 import "./widgets/network/"
@@ -64,6 +65,10 @@ Variants {
             }
 
             Volume {
+                height: parent.height
+            }
+
+            Brightness {
                 height: parent.height
             }
 

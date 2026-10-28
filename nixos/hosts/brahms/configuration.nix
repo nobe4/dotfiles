@@ -110,6 +110,7 @@ in
     vim
     git
     htop
+    brightnessctl
     kitty
     firefox
   ];
