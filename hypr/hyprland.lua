@@ -108,8 +108,10 @@ hl.device({
 })
 
 hl.device({
-	name        = "apple-inc.-apple-internal-keyboard-/-trackpad-1",
-	sensitivity = 0,
+	name                 = "apple-inc.-apple-internal-keyboard-/-trackpad-1",
+	sensitivity          = 0,
+	tap_to_click         = false,
+	disable_while_typing = true,
 })
 
 ---------------------
