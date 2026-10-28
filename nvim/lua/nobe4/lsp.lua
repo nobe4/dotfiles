@@ -32,6 +32,30 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
+-- switch to ruby-lsp if it's in bundler
+vim.lsp.config("ruby_lsp", {
+	cmd = function(dispatchers, config)
+		local root_dir = config and config.root_dir
+		local lockfile = root_dir and vim.fs.joinpath(root_dir, "Gemfile.lock")
+		local command = { "ruby-lsp" }
+
+		if lockfile and vim.fn.filereadable(lockfile) == 1 then
+			for _, line in ipairs(vim.fn.readfile(lockfile)) do
+				if line:match("^    ruby%-lsp %(") then
+					command = { "bundle", "exec", "ruby-lsp" }
+					break
+				end
+			end
+		end
+
+		return vim.lsp.rpc.start(
+			command,
+			dispatchers,
+			root_dir and { cwd = config.cmd_cwd or root_dir }
+		)
+	end,
+})
+
 for _, f in pairs(vim.api.nvim_get_runtime_file("lsp/*.lua", true)) do
 	local server_name = vim.fn.fnamemodify(f, ":t:r")
 	vim.lsp.enable(server_name)
