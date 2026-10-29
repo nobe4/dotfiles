@@ -40,7 +40,7 @@
     ../../packages/font
 
     ./shortcuts
-    ./slack-mark-read.nix
+    ./launchd
   ];
 
   networking = {

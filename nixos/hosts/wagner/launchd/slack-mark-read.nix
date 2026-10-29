@@ -4,7 +4,7 @@
   ...
 }:
 let
-  agenix = import ../../packages/age.nix { inherit pkgs; };
+  agenix = import ../../../packages/age.nix { inherit pkgs; };
 in
 {
   imports = [ agenix.module ];
@@ -12,7 +12,7 @@ in
   age = {
     identityPaths = [ "${config.home}/.ssh/id_ed25519" ];
     secrets.slack-mark-read = {
-      file = ../../secrets/wagner-slack-mark-read.age;
+      file = ../../../secrets/wagner-slack-mark-read.age;
       owner = config.system.primaryUser;
       group = "staff";
     };
