@@ -30,6 +30,7 @@ return {
 				pickers = {
 					find_files = {
 						follow = true,
+						hidden = true,
 						no_ignore = true,
 					},
 				},
