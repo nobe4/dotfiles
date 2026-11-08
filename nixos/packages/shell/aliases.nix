@@ -73,6 +73,9 @@ in
   "gccunsafe" = "gcc -fno-stack-protector -D_FORTIFY_SOURCE=0";
   "gpg" = "GPG_TTY=\"$(tty)\" gpg";
 }
+// lib.optionalAttrs (config.networking.hostName == "verdi") {
+  "ps2" = "nix-shell -p pcsx2 --run pcsx2-qt";
+}
 // lib.optionalAttrs pkgs.stdenv.isDarwin {
   # Mac Catalina is breaking everything, thanks Tim Apple.;
   # from https://www.kvraudio.com/forum/viewtopic.php?t=530824&start=15;
