@@ -80,8 +80,7 @@ prompt() {
 			stash_count="$(git stash list 2> /dev/null | wc -l | tr -d ' ')"
 			[ "${stash_count}" = "0" ] && stash_count=""
 
-			git update-index --refresh > /dev/null 2>&1
-			if ! git diff-index --no-ext-diff --quiet --exit-code HEAD -- 2> /dev/null; then
+			if [ -n "$(git status --porcelain --untracked-files=no 2> /dev/null)" ]; then
 				dirty="*"
 			fi
 
