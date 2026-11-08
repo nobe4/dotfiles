@@ -13,7 +13,7 @@ Singleton {
     readonly property color orange: "#e7d13d" // c4
     readonly property color blue: "#41a6d3" // c5
 
-    readonly property string fontFamily: "CommitMonoV143"
+    readonly property string fontFamily: "Nordwand Mono"
     readonly property int fontSize: 14
     readonly property int barIconWidth: 26
 }
