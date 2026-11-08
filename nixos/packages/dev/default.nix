@@ -53,7 +53,8 @@ in
     ]
     ++ (import ./copy_paste.nix { inherit pkgs config; })
     ++ [ (import ./notify.nix { inherit pkgs config; }) ]
-    ++ (import ./jq.nix { inherit pkgs; });
+    ++ (import ./jq.nix { inherit pkgs; })
+    ++ [ (import ./open.nix { inherit pkgs; }) ];
 
   programs.direnv = {
     enable = !pkgs.stdenv.isDarwin;
