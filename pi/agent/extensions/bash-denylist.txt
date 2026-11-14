@@ -1,0 +1,2 @@
+# JavaScript regex. Each pattern must match the whole trimmed command.
+# Deny rules override allow rules and cannot be approved at the prompt.

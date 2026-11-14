@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import {
 	createEditToolDefinition,
 	isToolCallEventType,
+	withFileMutationQueue,
 	type EditToolCallEvent,
 	type ExtensionAPI,
 	type ExtensionContext,
@@ -12,17 +13,12 @@ import {
 	type WriteToolCallEvent,
 } from "@earendil-works/pi-coding-agent";
 import { Editor, matchesKey, Text, truncateToWidth, type EditorTheme } from "@earendil-works/pi-tui";
+import { addDeniedCommand, commandDecision, parseCommandPatterns } from "./confirm/bash-rules.ts";
 
-const allowListPath = join(dirname(fileURLToPath(import.meta.url)), "bash-allowlist.txt");
+const extensionDirectory = dirname(fileURLToPath(import.meta.url));
+const allowListPath = join(extensionDirectory, "bash-allowlist.txt");
+const denyListPath = join(extensionDirectory, "bash-denylist.txt");
 const shellComposition = /[;&|`\n\r]|\$\(|[<>]\(/;
-
-function parseAllowedCommands(contents: string): RegExp[] {
-	return contents
-		.split(/\r?\n/)
-		.map((line) => line.trim())
-		.filter((line) => line && !line.startsWith("#"))
-		.map((source) => new RegExp(`^(?:${source})$`));
-}
 
 function getEditExplanation(ctx: ExtensionContext, toolCallId: string): string {
 	for (const entry of ctx.sessionManager.getBranch().toReversed()) {
@@ -82,6 +78,7 @@ async function confirm(
 		title: string;
 		explanation: string;
 		onSafe?: () => void | Promise<void>;
+		onNever?: () => void | Promise<void>;
 	},
 ): Promise<ConfirmationResult> {
 	if (!ctx.hasUI) {
@@ -109,9 +106,10 @@ async function confirm(
 			};
 			const editor = new Editor(tui, editorTheme);
 			editor.onSubmit = done;
-			const actions = approval.onSafe
-				? ' Enter: approve · type "safe": approve and update regex · type feedback: refine · no: deny'
-				: " Enter: approve · type feedback: refine · no: deny";
+			const actions = " Enter: approve" +
+				(approval.onSafe ? ' · safe: approve and update regex' : "") +
+				(approval.onNever ? ' · never: block and update regex' : "") +
+				" · type feedback: refine · no: deny";
 
 			return {
 				get focused() {
@@ -145,6 +143,16 @@ async function confirm(
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
 				return { block: true, reason: `Could not request bash allow-list update: ${message}` };
+			}
+		}
+
+		if (approval.onNever && response.trim().toLowerCase() === "never") {
+			try {
+				await approval.onNever();
+				return { block: true, reason: "Command added to the bash deny list" };
+			} catch (error) {
+				const message = error instanceof Error ? error.message : String(error);
+				return { block: true, reason: `Could not update bash deny list: ${message}` };
 			}
 		}
 
@@ -191,21 +199,36 @@ async function confirmFileTool<TEvent extends ToolCallEvent>(
 
 export default function requireConfirmation(pi: ExtensionAPI) {
 	const safeCommands = new Set<string>();
+	const neverCommands = new Set<string>();
 
 	pi.on("turn_end", () => {
-		if (!safeCommands.size) return;
+		if (safeCommands.size) {
+			const commands = [...safeCommands];
+			safeCommands.clear();
+			pi.sendUserMessage(
+				`Make the smallest JavaScript regex update in ${allowListPath} that authorizes ` +
+					`these commands: ${JSON.stringify(commands)}. Prefer widening each command's ` +
+					"existing pattern. Keep one flat, repeatable alternation of allowed flags per " +
+					"command. Each flag must work independently and in any order. Keep required " +
+					"values with their flags. Preserve current command and flag restrictions. Do not " +
+					"append any exact command as a regex line. Edit the file now.",
+				{ deliverAs: "followUp" },
+			);
+		}
 
-		const commands = [...safeCommands];
-		safeCommands.clear();
-		pi.sendUserMessage(
-			`Make the smallest JavaScript regex update in ${allowListPath} that authorizes ` +
-				`these commands: ${JSON.stringify(commands)}. Prefer widening each command's ` +
-				"existing pattern. Keep one flat, repeatable alternation of allowed flags per " +
-				"command. Each flag must work independently and in any order. Keep required " +
-				"values with their flags. Preserve current command and flag restrictions. Do not " +
-				"append any exact command as a regex line. Edit the file now.",
-			{ deliverAs: "followUp" },
-		);
+		if (neverCommands.size) {
+			const commands = [...neverCommands];
+			neverCommands.clear();
+			pi.sendUserMessage(
+				`Make the smallest JavaScript regex update in ${denyListPath} that blocks ` +
+					`the command families represented by ${JSON.stringify(commands)}. These exact ` +
+					"commands are already blocked. Prefer widening an existing pattern. Replace " +
+					"their exact-command entries with suitable patterns, but keep every previously " +
+					"blocked command denied. Do not change the allow list or run these commands. " +
+					"Edit the file now.",
+				{ deliverAs: "followUp" },
+			);
+		}
 	});
 
 	pi.on("tool_call", async (event, ctx) => {
@@ -218,21 +241,30 @@ export default function requireConfirmation(pi: ExtensionAPI) {
 				};
 			}
 
-			let allowedCommands: RegExp[];
+			let decision: ReturnType<typeof commandDecision>;
 			try {
-				allowedCommands = parseAllowedCommands(await readFile(allowListPath, "utf8"));
+				const denied = parseCommandPatterns(await readFile(denyListPath, "utf8"));
+				const allowed = parseCommandPatterns(await readFile(allowListPath, "utf8"));
+				decision = commandDecision(command, allowed, denied);
 			} catch (error) {
 				const message = error instanceof Error ? error.message : String(error);
-				return { block: true, reason: `Could not read bash allow list: ${message}` };
+				return { block: true, reason: `Could not read bash command lists: ${message}` };
 			}
 
-			if (allowedCommands.some((pattern) => pattern.test(command))) return;
+			if (decision === "never") {
+				return { block: true, reason: "Command matches the bash deny list and cannot run" };
+			}
+			if (decision === "safe") return;
 
 			return confirm(ctx, {
 				title: "Run this command?",
 				explanation: command,
 				onSafe: () => {
 					safeCommands.add(command);
+				},
+				onNever: async () => {
+					await withFileMutationQueue(denyListPath, () => addDeniedCommand(denyListPath, command));
+					neverCommands.add(command);
 				},
 			});
 		}
