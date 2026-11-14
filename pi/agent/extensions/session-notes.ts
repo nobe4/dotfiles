@@ -1,6 +1,7 @@
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { type AssistantMessage, uuidv7 } from "@earendil-works/pi-ai";
+import { complete } from "@earendil-works/pi-ai/compat";
 import {
 	convertToLlm,
 	serializeConversation,
@@ -86,9 +87,16 @@ export default function sessionNotes(pi: ExtensionAPI) {
 				cost += (entry.message as AssistantMessage).usage.cost.total;
 			}
 			const formattedCost = `$${cost.toFixed(3)}`;
+			const auth = await ctx.modelRegistry.getApiKeyAndHeaders(ctx.model);
+			if (!auth.ok) throw new Error(auth.error);
+			const providerAuth = await ctx.modelRegistry.getProviderAuth(ctx.model.provider);
+			if (!providerAuth) throw new Error(`No authentication found for "${ctx.model.provider}"`);
+			const model = providerAuth.auth.baseUrl
+				? { ...ctx.model, baseUrl: providerAuth.auth.baseUrl }
+				: ctx.model;
 
-			const response = await ctx.modelRegistry.complete(
-				ctx.model,
+			const response = await complete(
+				model,
 				{
 					systemPrompt,
 					messages: [
@@ -104,7 +112,13 @@ export default function sessionNotes(pi: ExtensionAPI) {
 						},
 					],
 				},
-				{ cacheRetention: "none", sessionId: uuidv7() },
+				{
+					apiKey: auth.apiKey,
+					headers: auth.headers,
+					env: auth.env,
+					cacheRetention: "none",
+					sessionId: uuidv7(),
+				},
 			);
 
 			if (response.stopReason !== "stop") {
