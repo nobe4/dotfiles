@@ -52,4 +52,7 @@ in
     };
 
   brahms = { ... }: { };
+  vangelis = { ... }: { };
+
+  # lasso   NAS, not nix
 }
