@@ -9,32 +9,19 @@ if [ $# -eq 0 ]; then
 fi
 
 servers=$(cat << EOF
-US           | OpenDNS                 | 208.67.222.220  |
-US           | Google                  | 8.8.8.8         |
-US           | Quad9                   | 9.9.9.9         |
-US           | Verizon F. Bus.         | 98.113.146.9    |
-US           | AT&T Services           | 12.121.117.201  |
-Canada       | Cogecodata              | 66.199.45.225   |
-Russia       | YANDEX LLC              | 77.88.8.8       |
-South Africa | Telkom SA Ltd           | 196.15.170.131  |
-Netherlands  | Methahodos              | 213.125.105.234 |
-France       | Association G.          | 80.67.169.12    |
-Spain        | Prioritytelecom S. S.A. | 212.230.255.1   |
-Switzerland  | Oskar Em.               | 194.209.157.109 |
-Denmark      | Tele Danmark            | 80.196.100.209  |
-Germany      | DNS.WATCH               | 84.200.70.40    |
-Brazil       | Claro S.A               | 200.248.178.54  |
-Malaysia     | Ohana Com. Sdn Bhd      | 103.26.250.4    |
-New Zealand  | ICONZ Ltd               | 210.48.77.68    |
-South Korea  | LG Dacom Co.            | 164.124.101.2   |
-China        | Aliyun C. Co. Ltd       | 223.5.5.5       |
-India        | Kappa I. S. P. Ltd      | 115.178.96.2    |
-Pakistan     | Multinet P. Pvt. Ltd    | 125.209.116.22  |
-Portugal     | CLOUDITY Net.           | 185.83.212.30   |
-Ireland      | Daniel Cid              | 185.228.168.9   |
-Bangladesh   | Pabna Cable Vision      | 103.153.154.2   |
+Global       | Cloudflare              | 1.1.1.1         |
+Global       | Google                  | 8.8.8.8         |
+Global       | Quad9                   | 9.9.9.9         |
+Global       | OpenDNS                 | 208.67.222.222  |
+Global       | AdGuard (unfiltered)    | 94.140.14.140   |
+Global       | Control D (unfiltered)  | 76.76.2.0       |
+Germany      | DNS.WATCH               | 84.200.69.80    |
+Russia       | Yandex                  | 77.88.8.8       |
+China        | AliDNS                  | 223.5.5.5       |
+China        | DNSPod                  | 119.29.29.29    |
 EOF
 )
+server_count=$(echo "$servers" | wc -l)
 
 echo "$0 $@"
 while true; do
@@ -55,7 +42,6 @@ while true; do
 		sleep 0.2
 	done
 
-	# Go back up 24 lines and rewrite
-	printf "\033[24A"
+	printf "\033[%dA" "$server_count"
 	sleep 0.2
 done
