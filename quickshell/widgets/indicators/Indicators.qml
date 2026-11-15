@@ -1,3 +1,4 @@
+import Quickshell.Hyprland
 import Quickshell.Io
 import Quickshell.Services.Pipewire
 import QtQuick
@@ -9,7 +10,11 @@ Item {
 
     width: height
 
-    property string screenStatus: ""
+    // gg: events have no initial state; restart capture after Quickshell starts.
+    property bool monitorCaptureActive: false
+    property bool windowCaptureActive: false
+    readonly property bool screenCaptureActive: monitorCaptureActive || windowCaptureActive
+        || screenCaptureHold.running
     property string webcamStatus: ""
 
     readonly property var audioStreams: Pipewire.nodes.values.filter(function (node) {
@@ -76,7 +81,7 @@ Item {
 
         Dot {
             color: Style.red
-            visible: root.screenStatus !== ""
+            visible: root.screenCaptureActive
         }
 
         Dot {
@@ -99,16 +104,6 @@ Item {
         id: statusHover
     }
 
-    MouseArea {
-        anchors.fill: parent
-        visible: root.screenStatus !== ""
-        cursorShape: Qt.PointingHandCursor
-        onClicked: {
-            if (!stopRecording.running)
-                stopRecording.running = true;
-        }
-    }
-
     HoverPopup {
         anchor.item: root
         implicitWidth: summaryColumn.implicitWidth + 10
@@ -122,9 +117,9 @@ Item {
             spacing: 3
 
             SummaryLine {
-                visible: root.screenStatus !== ""
+                visible: root.screenCaptureActive
                 dotColor: Style.red
-                description: root.screenStatus
+                description: "Screen recording or sharing"
             }
 
             SummaryLine {
@@ -155,12 +150,30 @@ Item {
         objects: Pipewire.linkGroups.values
     }
 
-    ScriptProcess {
-        id: screenStatusProcess
-        script: "widgets/indicators/screen-status"
-        stdout: StdioCollector {
-            onStreamFinished: root.screenStatus = text
+    Connections {
+        target: Hyprland
+
+        function onRawEvent(event) {
+            if (event.name !== "screencast")
+                return;
+
+            const [state, owner] = event.parse(2);
+            if (state !== "0" && state !== "1")
+                return;
+            if (owner !== "monitor" && owner !== "window")
+                return;
+
+            screenCaptureHold.restart();
+            if (owner === "monitor")
+                root.monitorCaptureActive = state === "1";
+            else if (owner === "window")
+                root.windowCaptureActive = state === "1";
         }
+    }
+
+    Timer {
+        id: screenCaptureHold
+        interval: 1500
     }
 
     ScriptProcess {
@@ -171,19 +184,12 @@ Item {
         }
     }
 
-    Process {
-        id: stopRecording
-        command: ["/home/nobe4/.config/dotfiles/bin/screenrecord", "--stop"]
-    }
-
     Timer {
         interval: 5000
         running: true
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            if (!screenStatusProcess.running)
-                screenStatusProcess.running = true;
             if (!webcamStatusProcess.running)
                 webcamStatusProcess.running = true;
         }
