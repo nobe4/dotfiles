@@ -23,11 +23,30 @@
       "nobe4"
       "tpoulet"
     ];
+
     users.users.lisail = {
       isSystemUser = true;
       group = "lisail";
       home = "/var/lib/lisail";
     };
+
+    security.sudo.extraRules = [
+      {
+        groups = [ "lisail" ];
+        runAs = "root";
+        commands =
+          map
+            (command: {
+              inherit command;
+              options = [ "NOPASSWD" ];
+            })
+            [
+              "/run/current-system/sw/bin/systemctl ^(start|stop|restart|reload|reset-failed) lisail([.]service)?$"
+              "/run/current-system/sw/bin/systemctl ^--no-pager status lisail([.]service)?$"
+              "/run/current-system/sw/bin/journalctl ^--no-pager --follow --unit lisail([.]service)?$"
+            ];
+      }
+    ];
 
     systemd.services.lisail = {
       description = "Lisail HTTP server";
