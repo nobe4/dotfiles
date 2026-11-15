@@ -8,8 +8,6 @@
     ./services/traefik.nix
   ];
 
-  _module.args.lisailPort = 8000;
-
   deployment = {
     targetHost = "51.83.202.194";
     # First deploy needs to use root before nobe4 is trusted.
