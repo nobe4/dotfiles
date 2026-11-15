@@ -1,60 +1,39 @@
-{ lib, ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
     ./users.nix
+    ./network.nix
+    ./ssh.nix
+    ./services/traefik.nix
   ];
+
+  _module.args.lisailPort = 8000;
 
   deployment = {
     targetHost = "51.83.202.194";
-    targetUser = lib.mkForce "root";
+    # First deploy needs to use root before nobe4 is trusted.
+    # targetUser = lib.mkForce "root";
   };
 
-  # Was true during bootstrap
-  #  boot.initrd.systemd.enable = false;
+  # Allow nobe4 to update the nix store and decrypt age secrets at deploy.
+  nix.settings.trusted-users = [
+    "root"
+    "nobe4"
+  ];
+  age.identityPaths = [ "/home/nobe4/.ssh/id_ed25519" ];
+
+  # True during bootstrap to force the grub selection.
+  # boot.initrd.systemd.enable = false;
   boot.loader.grub = {
     enable = true;
     device = "/dev/sda";
   };
 
-  networking = {
-    hostName = "vangelis";
-
-    # network is managed by OVH
-    networkmanager.enable = false;
-
-    interfaces.ens3 = {
-      useDHCP = true;
-
-      ipv6.addresses = [
-        {
-          address = "2001:41d0:601:1100::223";
-          prefixLength = 128;
-        }
-      ];
-
-      ipv6.routes = [
-        {
-          address = "2001:41d0:601:1100::";
-          prefixLength = 64;
-        }
-      ];
-    };
-
-    defaultGateway6 = {
-      address = "2001:41d0:601:1100::1";
-      interface = "ens3";
-    };
-  };
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "prohibit-password";
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-    };
-  };
+  environment.systemPackages = with pkgs; [
+    unixtools.netstat
+    vim
+  ];
 
   system.stateVersion = "26.05";
 }

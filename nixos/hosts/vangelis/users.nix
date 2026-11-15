@@ -13,9 +13,15 @@ in
       extraGroups = [ "wheel" ];
       openssh.authorizedKeys.keys = [ ssh_keys.nobe4_verdi ];
     };
+
+    tpoulet = {
+      isNormalUser = true;
+      openssh.authorizedKeys.keys = [ ssh_keys.tpoulet_all ];
+    };
   };
 
   # Don't require a password for sudo for nobe4.
+  # Required for colmena deploys.
   security.sudo.extraRules = [
     {
       users = [ "nobe4" ];

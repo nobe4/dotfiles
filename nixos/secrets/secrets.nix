@@ -10,5 +10,9 @@ in
     keys.nobe4_verdi
     keys.root_bach
   ];
+  "vangelis-lisail-htpasswd.age".publicKeys = [
+    keys.nobe4_verdi
+    keys.nobe4_vangelis
+  ];
   "wagner-slack-mark-read.age".publicKeys = [ keys.nobe4_wagner ];
 }
