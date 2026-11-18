@@ -1,6 +1,7 @@
 { pkgs, ... }:
 let
   agenix = import ../../packages/age.nix { inherit pkgs; };
+  keys = import ../../packages/ssh_keys.nix;
 in
 {
   imports = [
@@ -114,6 +115,11 @@ in
     enableSSHSupport = true;
     pinentryPackage = pkgs.pinentry-qt;
   };
+
+  users.users.nobe4 = {
+    openssh.authorizedKeys.keys = [ keys.nobe4_wagner ];
+  };
+  services.openssh.enable = true;
 
   # See https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion
   system.stateVersion = "25.05"; # Do not change
