@@ -6,6 +6,8 @@
     ./network.nix
     ./ssh.nix
     ./services/traefik.nix
+    ./services/drop.nix
+    ./services/linote.nix
   ];
 
   deployment = {
