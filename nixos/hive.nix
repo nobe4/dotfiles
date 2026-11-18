@@ -2,22 +2,24 @@ let
   system = "x86_64-linux";
   unfree = import ./utils/unfree.nix;
 
+  # nix-prefetch-url --unpack https://github.com/NixOS/nixpkgs/archive/nixos-26.05.tar.gz
   nixos-26_05 =
     import
       (fetchTarball {
         url = "https://github.com/NixOS/nixpkgs/archive/nixos-26.05.tar.gz";
-        sha256 = "1parjl7b3gbmsyj05172pyi3ymz8xqv7bhaa9dca9x1p91cg8fv2";
+        sha256 = "1956vsp8b0nj2hg9llwk5ad4diz9dw2159camzfydvy2z40wpr8k";
       })
       {
         inherit system;
         config.allowUnfreePredicate = unfree.stable;
       };
 
+  # nix-prefetch-url --unpack https://github.com/NixOS/nixpkgs/archive/nixpkgs-unstable.tar.gz
   nixos-unstable =
     import
       (fetchTarball {
         url = "https://github.com/NixOS/nixpkgs/archive/nixpkgs-unstable.tar.gz";
-        sha256 = "1850ky2d8lvv2m60grz5dlfr4d03s4b6kj4vbpba7lff0hlvg13s";
+        sha256 = "1zbwxnk9kghl14jk25k2xvjg8m4ncdq1x1w19lclpra1csgdcan9";
       })
       {
         inherit system;
