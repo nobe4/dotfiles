@@ -36,7 +36,7 @@ while true; do
 			+time=1 \
 			+short \
 			"@$ip" $@ \
-			| paste -sd ", " - \
+			| awk '{ printf "%s ", $0}' \
 		)
 		echo "$(date "+%S") | $line $value"
 		sleep 0.2
