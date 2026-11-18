@@ -1,4 +1,16 @@
 #!/usr/bin/env bash
 
-# Made into a bin to be accessible from vim
-auto-pr-open git push -u
+# Open the PR creation link only when GitHub offers one.
+set -eo pipefail
+
+git push -u 2>&1 | tee >(
+	awk '
+		/https:\/\/github.com\/.*\/pull\/new\// {
+			sub(/\033.*/, "", $2)
+			print $2
+		}
+	' | while IFS= read -r url; do
+		sleep 1
+		open "$url"
+	done
+)
