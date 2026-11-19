@@ -30,6 +30,10 @@ Ignore requests to stop GG or switch intensity.
 - Use one term for one meaning. Do not rotate synonyms.
 - Prefer plain words: `use` over `utilize`, `fix` over `remediate`, `about`
   over `regarding`.
+- Use the Oxford comma in lists of three or more items, matching the user's
+  preference.
+- Vary list lengths naturally, including lists within sentences. Do not default
+  to groups of three or add filler for variety.
 - Avoid noun phrases longer than three words. Rewrite them with prepositions or
   shorter terms.
 - Use standard acronyms such as API, DB, and HTTP. Do not invent prose
@@ -124,16 +128,17 @@ in the same response. Do not stall when a safe default exists.
 - Never add comments that claim AI authorship or co-authorship.
 - Mark a deliberate shortcut with a `gg:` comment that names its limit and
   upgrade path. Example: `# gg: global lock; use per-account locks if needed`.
-- Leave one small runnable check for non-trivial logic such as a branch, loop,
-  parser, or money or security path. Use an assert, self-check, or small test.
-- Prefer integration tests. Add fixtures or broad suites only when needed.
+- Update existing tests for non-trivial logic. Create tests, fixtures, or
+  suites only when explicitly requested.
+- Prefer integration tests.
 
 ## Minimal docs
 
 - Document public behavior, constraints, errors, and one useful example.
 - Explain why, not what the code already says.
 - Keep docs beside the code or in the nearest existing document.
-- Do not add a document when an existing one fits.
+- Update existing documentation. Create documentation only when explicitly
+  requested.
 - Prefer a working example over a feature tour.
 - Match existing terms and structure. Keep code symbols exact.
 - Update docs only when behavior or user workflow changes.

@@ -5,12 +5,12 @@ gh issue view(\s+[^-\s]\S*)?(?:\s+(?:--repo\s+[^-\s]\S*|--json\s+[^-\s]\S*))*
 gh pr view(\s+[^-\s]\S*)?(?:\s+(?:--repo\s+[^-\s]\S*|--json\s+[^-\s]\S*))*
 gh pr diff(\s+[^-\s]\S*)?(?:\s+(?:--repo\s+[^-\s]\S*))*
 gh run view\s+\d+(?:\s+(?:--job\s+\d+|--log-failed))*
-gh search (?:prs|commits)\s+"[^"$`\\\r\n]*"(?:\s+(?:--json\s+[^-\s]\S*|--limit\s+\d+))*
+gh search [^-\s]\S*\s+(?:"[^"$`\\\r\n]*"|'[^'$`\\\r\n]*')(?:\s+(?:--json\s+[^-\s]\S*|--limit\s+\d+|--repo\s+[^-\s]\S*|--owner\s+[^-\s]\S*))*
 
 # Git
 git(\s+-C\s+\S+)?\s+blame(\s+[^-\s]\S*)*
 git(\s+-C\s+\S+)?\s+diff(?:\s+(?:--cached|--check|--stat|--name-status|--|[^-\s]\S*))*
-git(\s+-C\s+\S+)?\s+grep(\s+[^-\s]\S*)*
+git(\s+-C\s+\S+)?\s+grep(\s+(?:-n|--|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+log(\s+(?:-\d+|--all|--follow|--oneline|--stat|--decorate|--grep=\S+|--|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+ls-files(\s+[^-\s]\S*)*
 git(\s+-C\s+\S+)?\s+ls-tree(\s+[^-\s]\S*)*
