@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 let
   vnc-server = {
     addr = "127.0.0.1";
@@ -24,8 +24,7 @@ in
 
     (pkgs.writeShellScriptBin "vnc" ''
       systemctl --user ''${1:?} vnc-server vnc-client
-      echo 'see port ${toString vnc-client.port} on'
-      ip a | grep 10.0.0 | awk '{ print $2; }'
+      echo 'http://${config.networking.hostName}.local:${toString vnc-client.port}'
     '')
   ];
 
