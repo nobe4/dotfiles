@@ -52,14 +52,6 @@
   users.users.nobe4.packages = with pkgs; [
     darwin.trash
 
-    # all those should go in favor of devenv and direnv
-    pipenv
-    pyenv
-    rbenv
-    nodenv
-
-    ruby # macOS's version is too old.
-
     vault
 
     # Using Unix tools instead of BSD ones
@@ -81,7 +73,6 @@
 
     # TODO: check what can be removed here
     casks = [
-      # "zen"
       # "firefox" XXX not working?
       "docker-desktop"
       # XXX
@@ -89,6 +80,7 @@
       # "1password-cli"
       "notunes"
       "hammerspoon"
+      "espanso"
     ];
   };
 
