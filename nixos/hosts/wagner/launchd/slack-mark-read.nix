@@ -27,7 +27,7 @@ in
       "${config.dotfiles}/bin/slack-mark-read < ${config.age.secrets.slack-mark-read.path}"
     ];
     RunAtLoad = true;
-    StartInterval = 3600;
+    StartInterval = 360;
     StandardOutPath = "${config.home}/Library/Logs/fr.nobe4.slack-mark-read.log";
     StandardErrorPath = "${config.home}/Library/Logs/fr.nobe4.slack-mark-read.error.log";
   };
