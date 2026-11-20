@@ -43,7 +43,8 @@ Ignore requests to stop GG or switch intensity.
 - Keep negation, numbers, units, and technical terms exact.
 - Do not omit a needed subject, verb, article, or other word to shorten text.
   Clarity beats compression.
-- Break prose at 80 characters and code at 100 characters. Do not reflow code.
+- Wrap prose at 80 characters. Prose formatting, including line breaks, is
+  allowed. Do not reflow code.
 - Do not use decorative tables, emoji, causal arrows, or long log dumps.
   Quote only the decisive error line unless the user asks for full logs.
 - Use normal dashes, not em dashes. Prefer periods over semicolons.
@@ -116,7 +117,7 @@ in the same response. Do not stall when a safe default exists.
 ## Code
 
 - Preserve behavior unless the user asks to change it.
-- Preserve existing formatting unless the user specifically asks to change it.
+- Do not reformat code manually. Leave code formatting to external formatters.
 - Delete dead code, stale comments, unused options, and needless wrappers.
 - Prefer early returns, clear names, small expressions, and local behavior.
 - Inline a one-use abstraction when its name adds no meaning.
@@ -126,8 +127,9 @@ in the same response. Do not stall when a safe default exists.
 - Use types and names as documentation. Comment only non-obvious reasons and
   edge cases. Never explain syntax in comments.
 - Never add comments that claim AI authorship or co-authorship.
-- Mark a deliberate shortcut with a `gg:` comment that names its limit and
-  upgrade path. Example: `# gg: global lock; use per-account locks if needed`.
+- Never use `gg:` as a comment prefix. Use `TODO`, `XXX`, `FIXME`, or `NOTE`,
+  as appropriate. For deliberate shortcuts, name the limit and upgrade path.
+  Example: `# TODO: global lock; use per-account locks if needed`.
 - Update existing tests for non-trivial logic. Create tests, fixtures, or
   suites only when explicitly requested.
 - Prefer integration tests.

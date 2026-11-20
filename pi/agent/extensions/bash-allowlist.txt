@@ -9,11 +9,11 @@ gh search [^-\s]\S*\s+(?:"[^"$`\\\r\n]*"|'[^'$`\\\r\n]*')(?:\s+(?:--json\s+[^-\s
 
 # Git
 git(\s+-C\s+\S+)?\s+blame(\s+[^-\s]\S*)*
-git(\s+-C\s+\S+)?\s+diff(?:\s+(?:--cached|--check|--stat|--name-status|--|[^-\s]\S*))*
+git(\s+-C\s+\S+)?\s+diff(?:\s+(?:--cached|--check|--stat|--numstat|--name-status|--|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+grep(\s+(?:-n|--|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+log(\s+(?:-\d+|--all|--follow|--oneline|--stat|--decorate|--grep=\S+|--|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+ls-files(\s+[^-\s]\S*)*
-git(\s+-C\s+\S+)?\s+ls-tree(\s+[^-\s]\S*)*
+git(\s+-C\s+\S+)?\s+ls-tree(\s+(?:-r|--name-only|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+remote(?:\s+-v)*
 git(?:\s+-C\s+\S+)?\s+rev-parse(?:\s+[^-\s]\S*)+
 git(?:\s+-C\s+\S+)?\s+show(?:\s+(?:--stat|--oneline|--format=\S+|--no-ext-diff|--|[^-\s]\S*))*
