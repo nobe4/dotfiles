@@ -18,7 +18,9 @@ case "${selection}" in
 	"~/"*) cd "${selection/#\~/${HOME}}" || { echo "z: cd failed: ${selection}" >&2; return 1; } ;;
 	/*) cd "${selection}" || { echo "z: cd failed: ${selection}" >&2; return 1; } ;;
 	*)
-		cd "$(git-worktree -p --repo "${DEV_PATH}/${selection}")" ||
+		worktree=$(git-worktree -p --repo "${DEV_PATH}/${selection}") &&
+			[ -n "${worktree}" ] &&
+			cd "${worktree}" ||
 			cd "${DEV_PATH}/${selection}" ||
 			{ echo "z: cd failed: ${selection}" >&2; return 1; }
 		;;
