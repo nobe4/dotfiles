@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
-#/ Usage: add_to_repo [-r|--role ROLE] [OWNER/REPO...] [HANDLE...]
+#/ Usage: add_to_repo [-r|--role ROLE] [--repos OWNER/REPO...] [--users USER...] [--teams ORG/TEAM...]
 #/
-#/ Add every handle to every repository with the same role.
+#/ Add every user and team to every repository with the same role.
 #/
 #/ Options:
-#/   -r|--role ROLE   read (pull), triage, write (push), maintain, or admin
-#/   -h|--help        Show this help
+#/   --repos OWNER/REPO...  Repositories to grant access to
+#/   --users USER...        Usernames, with or without @
+#/   --teams ORG/TEAM...    Teams, with or without @; TEAM is the team slug
+#/   -r|--role ROLE         read (pull), triage, write (push), maintain, or admin
+#/   -h|--help              Show this help
+#/
+#/ Example: add_to_repo --role write --repos acme/project --users alice --teams acme/developers
 
 set -e
 
@@ -13,14 +18,17 @@ show_help() { grep ^#/ <"${0}" | cut -c4-; }
 
 role=""
 repos=()
-handles=()
+users=()
+teams=()
 
-add_items() {
-	local item
-	for item in "${@}"; do
-		case "${item}" in
-			*/*) repos+=("${item}") ;;
-			*) handles+=("${item#@}") ;;
+read_items() {
+	local input="${1}"
+	local -a items
+	while read -r -a items && [ "${#items[@]}" -gt 0 ]; do
+		case "${input}" in
+			--repos) repos+=("${items[@]}") ;;
+			--users) users+=("${items[@]#@}") ;;
+			--teams) teams+=("${items[@]#@}") ;;
 		esac
 	done
 }
@@ -32,12 +40,21 @@ while [ "${#}" -gt 0 ]; do
 			role="${2:?Role is required}"
 			shift 1
 			;;
-		-*) printf 'Unknown flag: %s\n' "${1}" >&2; exit 1 ;;
-		*)
-			while read -r -a items; do
-				add_items "${items[@]}"
-			done <<< "${1}"
+		--repos|--users|--teams)
+			input="${1}"
+			shift 1
+			if [ "${#}" -eq 0 ] || [[ "${1}" == -* ]]; then
+				printf '%s requires at least one value.\n' "${input}" >&2
+				exit 1
+			fi
+			while [ "${#}" -gt 0 ] && [[ "${1}" != -* ]]; do
+				read_items "${input}" <<< "${1}"
+				shift 1
+			done
+			continue
 			;;
+		-*) printf 'Unknown flag: %s\n' "${1}" >&2; exit 1 ;;
+		*) printf 'Unexpected argument: %s. Use --repos, --users, or --teams.\n' "${1}" >&2; exit 1 ;;
 	esac
 	shift 1
 done
@@ -53,26 +70,42 @@ case "${role}" in
 	*) printf 'Invalid role: %s\n' "${role}" >&2; exit 1 ;;
 esac
 
-if [ "${#repos[@]}" -eq 0 ] || [ "${#handles[@]}" -eq 0 ]; then
-	printf 'Repositories and handles (spaces or newlines, blank line to finish):\n' >&2
-	while read -r -a items && [ "${#items[@]}" -gt 0 ]; do
-		add_items "${items[@]}"
-	done < /dev/tty
+if [ "${#repos[@]}" -eq 0 ]; then
+	printf 'Repositories (OWNER/REPO, spaces or newlines, blank line to finish):\n' >&2
+	read_items --repos < /dev/tty
 fi
 
-if [ "${#repos[@]}" -eq 0 ] || [ "${#handles[@]}" -eq 0 ]; then
-	printf 'At least one repository and one handle are required.\n' >&2
+if [ "${#users[@]}" -eq 0 ] && [ "${#teams[@]}" -eq 0 ]; then
+	printf 'Users (spaces or newlines, blank line to finish or skip):\n' >&2
+	read_items --users < /dev/tty
+	printf 'Teams (ORG/TEAM, spaces or newlines, blank line to finish or skip):\n' >&2
+	read_items --teams < /dev/tty
+fi
+
+if [ "${#repos[@]}" -eq 0 ] || { [ "${#users[@]}" -eq 0 ] && [ "${#teams[@]}" -eq 0 ]; }; then
+	printf 'At least one repository and one user or team are required.\n' >&2
 	exit 1
 fi
 
 printf 'Retry: ' >&2
-printf '%q ' "${0}" --role "${role}" "${repos[@]}" "${handles[@]}" >&2
+printf '%q ' "${0}" --role "${role}" --repos "${repos[@]}" >&2
+if [ "${#users[@]}" -gt 0 ]; then
+	printf '%q ' --users "${users[@]}" >&2
+fi
+if [ "${#teams[@]}" -gt 0 ]; then
+	printf '%q ' --teams "${teams[@]}" >&2
+fi
 printf '\n' >&2
 
 for repo in "${repos[@]}"; do
-	for handle in "${handles[@]}"; do
-		printf 'Adding %s to %s with role %s\n' "${handle}" "${repo}" "${role}" >&2
-		gh api --method PUT "repos/${repo}/collaborators/${handle}" \
+	for user in "${users[@]}"; do
+		printf 'Adding user %s to %s with role %s\n' "${user}" "${repo}" "${role}" >&2
+		gh api --method PUT "repos/${repo}/collaborators/${user}" \
+			-f permission="${permission}" --silent
+	done
+	for team in "${teams[@]}"; do
+		printf 'Adding team %s to %s with role %s\n' "${team}" "${repo}" "${role}" >&2
+		gh api --method PUT "orgs/${team%%/*}/teams/${team#*/}/repos/${repo}" \
 			-f permission="${permission}" --silent
 	done
 done
