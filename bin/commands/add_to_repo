@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+#/ Usage: add_to_repo [-r|--role ROLE] [OWNER/REPO...] [HANDLE...]
+#/
+#/ Add every handle to every repository with the same role.
+#/
+#/ Options:
+#/   -r|--role ROLE   read (pull), triage, write (push), maintain, or admin
+#/   -h|--help        Show this help
+
+set -e
+
+show_help() { grep ^#/ <"${0}" | cut -c4-; }
+
+role=""
+repos=()
+handles=()
+
+add_items() {
+	local item
+	for item in "${@}"; do
+		case "${item}" in
+			*/*) repos+=("${item}") ;;
+			*) handles+=("${item#@}") ;;
+		esac
+	done
+}
+
+while [ "${#}" -gt 0 ]; do
+	case "${1}" in
+		-h|--help) show_help && exit 0 ;;
+		-r|--role)
+			role="${2:?Role is required}"
+			shift 1
+			;;
+		-*) printf 'Unknown flag: %s\n' "${1}" >&2; exit 1 ;;
+		*)
+			while read -r -a items; do
+				add_items "${items[@]}"
+			done <<< "${1}"
+			;;
+	esac
+	shift 1
+done
+
+if [ -z "${role}" ]; then
+	role="$(printf '%s\n' read triage write maintain admin | fzf --prompt='role > ')"
+fi
+
+case "${role}" in
+	read|pull) permission="pull" ;;
+	write|push) permission="push" ;;
+	triage|maintain|admin) permission="${role}" ;;
+	*) printf 'Invalid role: %s\n' "${role}" >&2; exit 1 ;;
+esac
+
+if [ "${#repos[@]}" -eq 0 ] || [ "${#handles[@]}" -eq 0 ]; then
+	printf 'Repositories and handles (spaces or newlines, blank line to finish):\n' >&2
+	while read -r -a items && [ "${#items[@]}" -gt 0 ]; do
+		add_items "${items[@]}"
+	done < /dev/tty
+fi
+
+if [ "${#repos[@]}" -eq 0 ] || [ "${#handles[@]}" -eq 0 ]; then
+	printf 'At least one repository and one handle are required.\n' >&2
+	exit 1
+fi
+
+printf 'Retry: ' >&2
+printf '%q ' "${0}" --role "${role}" "${repos[@]}" "${handles[@]}" >&2
+printf '\n' >&2
+
+for repo in "${repos[@]}"; do
+	for handle in "${handles[@]}"; do
+		printf 'Adding %s to %s with role %s\n' "${handle}" "${repo}" "${role}" >&2
+		gh api --method PUT "repos/${repo}/collaborators/${handle}" \
+			-f permission="${permission}" --silent
+	done
+done
+
+read -r -n 1 -s -p 'Press any key to exit...' < /dev/tty
+printf '\n' >&2
