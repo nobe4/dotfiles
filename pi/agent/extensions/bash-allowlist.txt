@@ -11,7 +11,7 @@ gh search [^-\s]\S*\s+(?:"[^"$`\\\r\n]*"|'[^'$`\\\r\n]*')(?:\s+(?:--json\s+[^-\s
 git(\s+-C\s+\S+)?\s+blame(\s+[^-\s]\S*)*
 git(\s+-C\s+\S+)?\s+diff(?:\s+(?:--cached|--check|--stat|--numstat|--name-status|--|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+grep(\s+(?:-n|--|[^-\s]\S*))*
-git(\s+-C\s+\S+)?\s+log(\s+(?:-\d+|--all|--follow|--oneline|--stat|--decorate|--grep=\S+|--|[^-\s]\S*))*
+git(\s+-C\s+\S+)?\s+log(\s+(?:-\d+|--all|--follow|--oneline|--stat|--decorate|--format=\S+|--grep=\S+|--|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+ls-files(\s+[^-\s]\S*)*
 git(\s+-C\s+\S+)?\s+ls-tree(\s+(?:-r|--name-only|[^-\s]\S*))*
 git(\s+-C\s+\S+)?\s+remote(?:\s+-v)*
