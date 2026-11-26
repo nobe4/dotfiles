@@ -101,12 +101,14 @@ for repo in "${repos[@]}"; do
 	for user in "${users[@]}"; do
 		printf 'Adding user %s to %s with role %s\n' "${user}" "${repo}" "${role}" >&2
 		gh api --method PUT "repos/${repo}/collaborators/${user}" \
-			-f permission="${permission}" --silent
+			-f permission="${permission}" --silent ||
+			printf 'Failed to add user %s to %s\n' "${user}" "${repo}" >&2
 	done
 	for team in "${teams[@]}"; do
 		printf 'Adding team %s to %s with role %s\n' "${team}" "${repo}" "${role}" >&2
 		gh api --method PUT "orgs/${team%%/*}/teams/${team#*/}/repos/${repo}" \
-			-f permission="${permission}" --silent
+			-f permission="${permission}" --silent ||
+			printf 'Failed to add team %s to %s\n' "${team}" "${repo}" >&2
 	done
 done
 
